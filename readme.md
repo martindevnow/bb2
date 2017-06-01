@@ -11,8 +11,8 @@ As such, it is strongly recommended that pets be fed a BARF diet.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Barf Bento, please send an e-mail to Brianna Martin at 
-benm@martindevnow.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within B.A.R.F. Bento, please send an e-mail to Benjamin Martin at 
+benm@barfbento.com. All security vulnerabilities will be promptly addressed.
 
 ## License
 
