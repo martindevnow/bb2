@@ -7,7 +7,7 @@ Too often, pet owners are misinformed by mass media and so, without knowing bett
 diet consisting primarily of grains and other carbohydrates which their stomachs are not equipped to 
 digest properly. This can lead to significant complications later in life for your pets. 
 
-As such, it is strongly recommended that pets be fed a BARF diet. 
+As such, it is strongly recommended that pets be fed a B.A.R.F. diet. 
 
 ## Security Vulnerabilities
 
