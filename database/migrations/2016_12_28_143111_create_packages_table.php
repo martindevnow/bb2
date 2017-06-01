@@ -22,6 +22,7 @@ class CreatePackagesTable extends Migration
             $table->integer('external_lb_cost');
             $table->integer('profit_margin');
             $table->boolean('active')->default(1);
+            $table->boolean('public')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

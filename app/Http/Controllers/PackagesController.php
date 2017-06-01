@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Martin\Subscriptions\Package;
 
 class PackagesController extends Controller
 {

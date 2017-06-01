@@ -102,10 +102,10 @@
             <div class="col-md-4 hidden-sm hidden-xs pricing-col">
                 <div class="pricing-table pricing-table-description">
                     <div class="pricing-table-head">
-                        <h2> Plans Available
+                        <h2> Packages Available
                             <span>Officia deserunt mollitia</span>
                         </h2>
-                        <h3 class="price"> Pay Monthly </h3>
+                        <h3 class="price"> Pay Weekly </h3>
                     </div>
                     <ul class="pricing-table-content">
                         <li>
@@ -144,7 +144,7 @@
             <div class="col-md-2 pricing-col">
                 <div class="pricing-table">
                     <div class="pricing-table-head">
-                        <h2> Begginer
+                        <h2> Basic
                             <span>Officia deserunt mollitia</span>
                         </h2>
                         <h3 class="price"> $
@@ -218,7 +218,7 @@
             <div class="col-md-2 pricing-col">
                 <div class="pricing-table">
                     <div class="pricing-table-head">
-                        <h2> Professional
+                        <h2> Classic
                             <span>Officia deserunt mollitia</span>
                         </h2>
                         <h3 class="price"> $
@@ -292,7 +292,7 @@
             <div class="col-md-2 pricing-col">
                 <div class="pricing-table">
                     <div class="pricing-table-head">
-                        <h2> Expert
+                        <h2> Premium
                             <span>Officia deserunt mollitia</span>
                         </h2>
                         <h3 class="price"> $

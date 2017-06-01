@@ -10,7 +10,6 @@ use Martin\Customers\Pet;
 use Martin\Delivery\Delivery;
 use Martin\Delivery\PickupAppointment;
 use Martin\Delivery\PickupLocation;
-use Martin\Products\Plan;
 
 class Subscription extends Model
 {
@@ -83,9 +82,12 @@ class Subscription extends Model
      *
      * @param Package $package
      * @param ActivityLevel $activityLevel
-     * @param Frequency $frequency
+     * @param Frequency $paymentFrequency
+     * @param Frequency $deliveryFrequency
+     * @param PickupLocation $location
+     * @param PickupAppointment $appointment
      * @param User $user
-     * @return
+     * @param Pet $pet
      */
     public static function makeNew(Package $package,
                                     ActivityLevel $activityLevel,
