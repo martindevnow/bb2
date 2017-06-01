@@ -12,8 +12,8 @@ As such, it is strongly recommended that pets be fed a BARF diet.
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Barf Bento, please send an e-mail to Brianna Martin at 
-briannam@martindevnow.com. All security vulnerabilities will be promptly addressed.
+benm@martindevnow.com. All security vulnerabilities will be promptly addressed.
 
 ## License
 
-Barf Bento is software licensed under a [Proprietary license](https://en.wikipedia.org/wiki/Proprietary_software).
+B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wikipedia.org/wiki/Proprietary_software).
