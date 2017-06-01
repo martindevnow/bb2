@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionFrequenciesTable extends Migration
+class CreatePackagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateSubscriptionFrequenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_frequencies', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->increments('id');
-            
+
             $table->string('label');
             $table->string('code');
-            
-            $table->integer('multiplier');
-            $table->integer('discount_percent');
+            $table->integer('lb_cost');
+            $table->integer('external_lb_cost');
+            $table->integer('profit_margin');
             $table->boolean('active')->default(1);
-
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,6 +34,6 @@ class CreateSubscriptionFrequenciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_frequencies');
+        Schema::dropIfExists('packages');
     }
 }

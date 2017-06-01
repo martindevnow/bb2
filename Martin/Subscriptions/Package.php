@@ -1,11 +1,11 @@
 <?php
 
-namespace Martin\Products;
+namespace Martin\Subscriptions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SubPackage extends Model
+class Package extends Model
 {
     use SoftDeletes;
 

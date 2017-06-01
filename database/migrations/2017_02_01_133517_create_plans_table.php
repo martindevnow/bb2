@@ -18,9 +18,9 @@ class CreatePlansTable extends Migration
 
             $table->string('plan_name');
 
-            $table->integer('subscription_package_id');
-            $table->integer('subscription_frequency_id');
-            $table->integer('subscription_activity_level_id');
+            $table->integer('package_id');
+            $table->integer('frequency_id');
+            $table->integer('activity_level_id');
 
             $table->integer('internal_cost');
             $table->integer('external_cost');

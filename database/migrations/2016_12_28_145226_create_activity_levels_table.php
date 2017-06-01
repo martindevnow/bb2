@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionPackagesTable extends Migration
+class CreateActivityLevelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateSubscriptionPackagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_packages', function (Blueprint $table) {
+        Schema::create('activity_levels', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('label');
             $table->string('code');
-            $table->integer('lb_cost');
-            $table->integer('external_lb_cost');
-            $table->integer('profit_margin');
+
+            $table->integer("multiplier");
             $table->boolean('active')->default(1);
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +34,6 @@ class CreateSubscriptionPackagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_packages');
+        Schema::dropIfExists('activity_levels');
     }
 }

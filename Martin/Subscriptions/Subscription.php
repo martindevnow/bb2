@@ -1,6 +1,6 @@
 <?php
 
-namespace Martin\Products;
+namespace Martin\Subscriptions;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +10,7 @@ use Martin\Customers\Pet;
 use Martin\Delivery\Delivery;
 use Martin\Delivery\PickupAppointment;
 use Martin\Delivery\PickupLocation;
+use Martin\Products\Plan;
 
 class Subscription extends Model
 {
@@ -32,16 +33,16 @@ class Subscription extends Model
         'pet_weight_lbs',
 
         // Package/Activity/Frequency Data
-        'sub_package_id',
-        'sub_activity_level_id',
-        'sub_delivery_frequency_id',
-        'sub_payment_frequency_id',
+        'package_id',
+        'activity_level_id',
+        'delivery_frequency_id',
+        'payment_frequency_id',
 
-        // Details of the Sub at the time the sub was made (in case of price changes, etc)
-        'sub_package_external_lb_cost',
-        'sub_activity_level_multiplier',
-        'sub_frequency_multiplier',
-        'sub_frequency_discount_percent',
+        // Details of the  at the time the sub was made (in case of price changes, etc)
+        'package_external_lb_cost',
+        'activity_level_multiplier',
+        'frequency_multiplier',
+        'frequency_discount_percent',
 
         // Delivery Info
         'pickup_location_id',
@@ -67,50 +68,50 @@ class Subscription extends Model
     ];
 
     /**
-     * Get the label for this specific subscription
+     * Get the label for this specific subSubscription
      *
      * @return string
      */
     public function getLabel() {
-        return $this->subPackage->label . ' - '
-            . $this->subActivityLevel->label . ' - '
-            . $this->subPaymentFrequency->label;
+        return $this->package->label . ' - '
+            . $this->activityLevel->label . ' - '
+            . $this->paymentFrequency->label;
     }
 
     /**
      * Build a new Subscription for this Pet/User
      *
-     * @param SubPackage $package
-     * @param SubActivityLevel $activityLevel
-     * @param SubFrequency $frequency
+     * @param Package $package
+     * @param ActivityLevel $activityLevel
+     * @param Frequency $frequency
      * @param User $user
      * @return
      */
-    public static function makeNew(SubPackage $package,
-                                    SubActivityLevel $activityLevel,
-                                    SubFrequency $paymentFrequency,
-                                    SubFrequency $deliveryFrequency,
+    public static function makeNew(Package $package,
+                                    ActivityLevel $activityLevel,
+                                    Frequency $paymentFrequency,
+                                    Frequency $deliveryFrequency,
                                     PickupLocation $location,
                                     PickupAppointment $appointment,
                                     User $user,
                                     Pet $pet) {
         $cost = static::calculateCost($package, $activityLevel, $paymentFrequency, $pet->weight);
-        $plan = Plan::where('subscription_package_id', $package->id)
-            ->where('subscription_activity_level_id', $activityLevel->id)
-            ->where('subscription_frequency_id', $paymentFrequency->id)
+        $plan = Plan::where('subSubscription_package_id', $package->id)
+            ->where('subSubscription_activity_level_id', $activityLevel->id)
+            ->where('subSubscription_frequency_id', $paymentFrequency->id)
             ->firstOrFail();
 
         $sub = new static([
             'plan_id'                           => $plan->id,
             'plan_quantity'                     => $pet->getPlanQuantity(),
-            'sub_package_id'                    => $package->id,
-            'sub_package_external_lb_cost'      => $package->external_lb_cost,
-            'sub_activity_level_id'             => $activityLevel->id,
-            'sub_activity_level_multiplier'     => $activityLevel->multiplier,
-            'sub_payment_frequency_id'                  => $paymentFrequency->id,
-            'sub_delivery_frequency_id'                 => $deliveryFrequency->id,
-            'sub_payment_frequency_multiplier'          => $paymentFrequency->multiplier,
-            'sub_payment_frequency_discount_percent'    => $paymentFrequency->discount_percent,
+            'package_id'                    => $package->id,
+            'package_external_lb_cost'      => $package->external_lb_cost,
+            'activity_level_id'             => $activityLevel->id,
+            'activity_level_multiplier'     => $activityLevel->multiplier,
+            'payment_frequency_id'                  => $paymentFrequency->id,
+            'delivery_frequency_id'                 => $deliveryFrequency->id,
+            'payment_frequency_multiplier'          => $paymentFrequency->multiplier,
+            'payment_frequency_discount_percent'    => $paymentFrequency->discount_percent,
             'pickup_location_id'                => $location->id,
             'pickup_appointment_id'             => $appointment->id,
             'user_id'                           => $user->id,
@@ -136,7 +137,7 @@ class Subscription extends Model
     }
 
     /**
-     * Deactivate this subscription
+     * Deactivate this subSubscription
      *
      * @return bool
      */
@@ -150,12 +151,12 @@ class Subscription extends Model
     /**
      * Calculate the external cost of the plan for the customer
      *
-     * @param SubPackage $package
-     * @param SubActivityLevel $activityLevel
-     * @param SubFrequency $frequency
+     * @param Package $package
+     * @param ActivityLevel $activityLevel
+     * @param Frequency $frequency
      * @return mixed
      */
-    public static function calculateCost(SubPackage $package, SubActivityLevel $activityLevel, SubFrequency $frequency, $weight) {
+    public static function calculateCost(Package $package, ActivityLevel $activityLevel, Frequency $frequency, $weight) {
         return $package->external_lb_cost
             * $activityLevel->multiplier * $weight * 7
             * $frequency->multiplier * (1 - $frequency->discount_percent);
@@ -164,13 +165,13 @@ class Subscription extends Model
     /**
      * Calculate the internal cost of purchasing the meat/materials
      *
-     * @param SubPackage $package
-     * @param SubActivityLevel $activityLevel
-     * @param SubFrequency $frequency
+     * @param Package $package
+     * @param ActivityLevel $activityLevel
+     * @param Frequency $frequency
      * @param int $weight
      * @return mixed
      */
-    public static function calculateInternalCost(SubPackage $package, SubActivityLevel $activityLevel, SubFrequency $frequency, $weight = 5)
+    public static function calculateInternalCost(Package $package, ActivityLevel $activityLevel, Frequency $frequency, $weight = 5)
     {
         return $package->lb_cost // using internal cost
             * $activityLevel->multiplier * $weight * 7
@@ -181,9 +182,9 @@ class Subscription extends Model
      * @return mixed
      */
     public function getCalculatedCost() {
-        return $this->subPackage->external_lb_cost
-            * $this->subActivityLevel->multiplier * 7
-            * $this->subPaymentFrequency->multiplier * (1 - $this->subPaymentFrequency->discount_percent);
+        return $this->package->external_lb_cost
+            * $this->activityLevel->multiplier * 7
+            * $this->paymentFrequency->multiplier * (1 - $this->paymentFrequency->discount_percent);
     }
 
     /**
@@ -216,45 +217,45 @@ class Subscription extends Model
      * @param $value
      * @return float|int
      */
-    public function getSubPackageExternalLbCostAttribute($value) {
+    public function getPackageExternalLbCostAttribute($value) {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setSubPackageExternalLbCostAttribute($value) {
-        $this->attributes['sub_package_external_lb_cost'] = round($value * 100);
+    public function setPackageExternalLbCostAttribute($value) {
+        $this->attributes['package_external_lb_cost'] = round($value * 100);
     }
 
     /**
      * @param $value
      * @return float|int
      */
-    public function getSubActivityLevelMultiplierAttribute($value) {
+    public function getActivityLevelMultiplierAttribute($value) {
         return $value / 1000;
     }
 
     /**
      * @param $value
      */
-    public function setSubActivityLevelMultiplierAttribute($value) {
-        $this->attributes['sub_activity_level_multiplier'] = round($value * 1000);
+    public function setActivityLevelMultiplierAttribute($value) {
+        $this->attributes['activity_level_multiplier'] = round($value * 1000);
     }
 
     /**
      * @param $value
      * @return float|int
      */
-    public function getSubFrequyencyDiscountPercentAttribute($value) {
+    public function getFrequencyDiscountPercentAttribute($value) {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setSubFrequyencyDiscountPercentAttribute($value) {
-        $this->attributes['sub_frequency_discount_percent'] = round($value * 100);
+    public function setFrequencyDiscountPercentAttribute($value) {
+        $this->attributes['frequency_discount_percent'] = round($value * 100);
     }
 
 
@@ -265,29 +266,29 @@ class Subscription extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subPackage() {
-        return $this->belongsTo(SubPackage::class);
+    public function package() {
+        return $this->belongsTo(Package::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subActivityLevel() {
-        return $this->belongsTo(SubActivityLevel::class);
+    public function activityLevel() {
+        return $this->belongsTo(ActivityLevel::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subPaymentFrequency() {
-        return $this->belongsTo(SubFrequency::class, 'sub_payment_frequency_id');
+    public function paymentFrequency() {
+        return $this->belongsTo(Frequency::class, 'payment_frequency_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subDeliveryFrequency() {
-        return $this->belongsTo(SubFrequency::class, 'sub_delivery_frequency_id');
+    public function deliveryFrequency() {
+        return $this->belongsTo(Frequency::class, 'delivery_frequency_id');
     }
 
     /**

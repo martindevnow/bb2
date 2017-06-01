@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 class PackagesController extends Controller
 {
     /**
@@ -17,7 +18,8 @@ class PackagesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('packages.index');
+        $packages = Package::all();
+        return view('packages.index')->with(compact('packages'));
     }
 
 }

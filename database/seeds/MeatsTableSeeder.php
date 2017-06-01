@@ -17,7 +17,7 @@ class MeatsTableSeeder extends Seeder
         DB::table('meats')->truncate();
         $this->seedFromCSV('meats', '/seeds/csv/meats.csv');
 
-        DB::table('meat_sub_package')->truncate();
-        $this->seedFromCSV('meat_sub_package', '/seeds/csv/meat_sub_package.csv');
+        DB::table('meat_package')->truncate();
+        $this->seedFromCSV('meat_package', '/seeds/csv/meat_package.csv');
     }
 }

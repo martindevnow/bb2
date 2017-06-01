@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMeatSubPackageTable extends Migration
+class CreateFrequenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateMeatSubPackageTable extends Migration
      */
     public function up()
     {
-        Schema::create('meat_sub_package', function (Blueprint $table) {
+        Schema::create('frequencies', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->integer('meat_id');
-            $table->integer('sub_package_id');
-            $table->double('meat_percentage', 6, 2);
+            
+            $table->string('label');
+            $table->string('code');
+            
+            $table->integer('multiplier');
+            $table->integer('discount_percent');
+            $table->boolean('active')->default(1);
 
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +35,6 @@ class CreateMeatSubPackageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meat_sub_package');
+        Schema::dropIfExists('frequencies');
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Martin\Products\SubActivityLevel;
-use Martin\Products\SubFrequency;
-use Martin\Products\SubPackage;
+use Martin\Subscriptions\ActivityLevel;
+use Martin\Subscriptions\Frequency;
+use Martin\Subscriptions\Package;
 
 class SubscriptionDetailsSeeder extends Seeder
 {
@@ -17,14 +17,14 @@ class SubscriptionDetailsSeeder extends Seeder
         /**
          * Package Types
          */
-        SubPackage::create([
+        Package::create([
             'label' => 'Basic',
             'code'  => 'basic',
             'lb_cost' => 2.00,
             'profit_margin' => 0.50,
             'external_lb_cost'  => (2.00 * (1 / (1 - 0.50))),
         ]);
-        SubPackage::create([
+        Package::create([
             'label' => 'Classic',
             'code'  => 'classic',
             'lb_cost' => 2.19,
@@ -32,7 +32,7 @@ class SubscriptionDetailsSeeder extends Seeder
             'external_lb_cost'  => (2.19 * (1 / ( 1 - 0.50))),
 
         ]);
-        SubPackage::create([
+        Package::create([
             'label' => 'Premium',
             'code'  => 'premium',
             'lb_cost' => 2.40,
@@ -45,17 +45,17 @@ class SubscriptionDetailsSeeder extends Seeder
         /**
          * Activity Levels
          */
-        SubActivityLevel::create([
+        ActivityLevel::create([
             'label' => 'Low',
             'code'  => 'low',
             'multiplier' => 0.020,
         ]);
-        SubActivityLevel::create([
+        ActivityLevel::create([
             'label' => 'Medium',
             'code'  => 'medium',
             'multiplier' => 0.025,
         ]);
-        SubActivityLevel::create([
+        ActivityLevel::create([
             'label' => 'High',
             'code'  => 'high',
             'multiplier' => 0.030,
@@ -64,23 +64,23 @@ class SubscriptionDetailsSeeder extends Seeder
         /**
          * Delivery Frequencies
          */
-        SubFrequency::create([
+        Frequency::create([
             'label' => 'Weekly',
             'code'  => 'weekly',
             'multiplier'        => 1,
             'discount_percent'  => 0,
         ]);
-        SubFrequency::create([
+        Frequency::create([
             'label' => 'Bi-Weekly',
             'code'  => 'biweekly',
             'multiplier'        => 2,
-            'discount_percent'  => 0.04,
+            'discount_percent'  => 0.00,
         ]);
-        SubFrequency::create([
+        Frequency::create([
             'label' => 'Monthly',
             'code'  => 'monthly',
             'multiplier'        => 4,
-            'discount_percent'  => 0.05,
+            'discount_percent'  => 0.00,
         ]);
 
         

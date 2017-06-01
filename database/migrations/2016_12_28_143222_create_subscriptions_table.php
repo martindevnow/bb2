@@ -26,19 +26,19 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('pet_weight_lbs');
 
 
-            $table->integer('sub_package_id');
-            $table->integer('sub_activity_level_id');
-            $table->integer('sub_delivery_frequency_id');
-            $table->integer('sub_payment_frequency_id');
+            $table->integer('package_id');
+            $table->integer('activity_level_id');
+            $table->integer('delivery_frequency_id');
+            $table->integer('payment_frequency_id');
 
 
             // At the time of setting up the subscription, the following are taken
             // from their respective tables. This is in case there is a price
             // change, it won't affect the existing subscriptions here
-            $table->integer('sub_package_external_lb_cost')->nullable();
-            $table->integer('sub_activity_level_multiplier')->nullable();
-            $table->integer('sub_payment_frequency_multiplier')->nullable();
-            $table->integer('sub_payment_frequency_discount_percent')->nullable();
+            $table->integer('package_external_lb_cost')->nullable();
+            $table->integer('activity_level_multiplier')->nullable();
+            $table->integer('payment_frequency_multiplier')->nullable();
+            $table->integer('payment_frequency_discount_percent')->nullable();
 
 
             /**

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Martin\Products\Plan;
+use Martin\Subscriptions\Plan;
 
 class PlansTableSeeder extends Seeder
 {
@@ -12,9 +12,9 @@ class PlansTableSeeder extends Seeder
      */
     public function run()
     {
-        $packages = \Martin\Products\SubPackage::all();
-        $als = \Martin\Products\SubActivityLevel::all();
-        $freqs = \Martin\Products\SubFrequency::all();
+        $packages = \Martin\Subscriptions\Package::all();
+        $als = \Martin\Subscriptions\ActivityLevel::all();
+        $freqs = \Martin\Subscriptions\Frequency::all();
 
         foreach ($packages as $package)
         {
@@ -22,14 +22,13 @@ class PlansTableSeeder extends Seeder
             {
                 foreach ($freqs as $freq)
                 {
-                    $internalCost = \Martin\Products\Subscription::calculateInternalCost($package, $al, $freq, 5);
-                    $externalCost = \Martin\Products\Subscription::calculateCost($package, $al, $freq, 5);
-
+                    $internalCost = \Martin\Subscriptions\Subscription::calculateCost($package, $al, $freq, 5);
+                    $externalCost = $internalCost * 1.5;
                     Plan::create([
                         'plan_name' => $this->getName($package, $al, $freq),
-                        'subscription_package_id' => $package->id,
-                        'subscription_activity_level_id' => $al->id,
-                        'subscription_frequency_id' => $freq->id,
+                        'package_id' => $package->id,
+                        'activity_level_id' => $al->id,
+                        'frequency_id' => $freq->id,
                         'internal_cost' => $internalCost,
                         'external_cost' => $externalCost,
                         'active' => true,
