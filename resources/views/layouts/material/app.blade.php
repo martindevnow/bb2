@@ -30,7 +30,7 @@
 </div>
 <div class="sb-site-container">
 
-    @include('layouts.material.top-nav')
+    @include('layouts.material.nav.top')
 
     @yield('content')
 
@@ -54,7 +54,7 @@
     </div>
 </div>
 <!-- sb-site-container -->
-@include('layouts.material.side-nav')
+@include('layouts.material.nav.left')
 <script src="/material/js/plugins.min.js"></script>
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>

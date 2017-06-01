@@ -2,9 +2,9 @@
     <div class="sb-slidebar-container">
         <header class="ms-slidebar-header">
             <div class="ms-slidebar-login">
-                <a href="javascript:void(0)" class="withripple">
+                <a href="/login" class="withripple">
                     <i class="zmdi zmdi-account"></i> Login</a>
-                <a href="javascript:void(0)" class="withripple">
+                <a href="/register" class="withripple">
                     <i class="zmdi zmdi-account-add"></i> Register</a>
             </div>
             <div class="ms-slidebar-title">
