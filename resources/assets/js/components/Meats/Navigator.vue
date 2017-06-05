@@ -9,7 +9,7 @@
             </thead>
             <tbody>
             <tr v-for="meat in collection">
-                <td>{{ meat.name }}</td>
+                <td>{{ meat.label }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs">
                         <i class="fa fa-pencil"></i>

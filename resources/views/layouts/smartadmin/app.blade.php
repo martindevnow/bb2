@@ -115,6 +115,7 @@ Use search to find needed section.
         <!-- widget grid -->
         <section id="widget-grid" class="">
 
+            @yield('content')
             <!-- row -->
             {{--<div class="row">--}}
                 {{--<article class="col-sm-12">--}}
@@ -259,29 +260,33 @@ you can add as many as you like
 
 <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
 <!-- Voice command : plugin -->
-<script src="/smartadmin/js/speech/voicecommand.min.js"></script>
+{{--<script src="/smartadmin/js/speech/voicecommand.min.js"></script>--}}
 
 <!-- SmartChat UI : plugin -->
-<script src="/smartadmin/js/smart-chat-ui/smart.chat.ui.min.js"></script>
-<script src="/smartadmin/js/smart-chat-ui/smart.chat.manager.min.js"></script>
+{{--<script src="/smartadmin/js/smart-chat-ui/smart.chat.ui.min.js"></script>--}}
+{{--<script src="/smartadmin/js/smart-chat-ui/smart.chat.manager.min.js"></script>--}}
 
 <!-- PAGE RELATED PLUGIN(S) -->
 
 <!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip -->
-<script src="/smartadmin/js/plugin/flot/jquery.flot.cust.min.js"></script>
-<script src="/smartadmin/js/plugin/flot/jquery.flot.resize.min.js"></script>
-<script src="/smartadmin/js/plugin/flot/jquery.flot.time.min.js"></script>
-<script src="/smartadmin/js/plugin/flot/jquery.flot.tooltip.min.js"></script>
+{{--<script src="/smartadmin/js/plugin/flot/jquery.flot.cust.min.js"></script>--}}
+{{--<script src="/smartadmin/js/plugin/flot/jquery.flot.resize.min.js"></script>--}}
+{{--<script src="/smartadmin/js/plugin/flot/jquery.flot.time.min.js"></script>--}}
+{{--<script src="/smartadmin/js/plugin/flot/jquery.flot.tooltip.min.js"></script>--}}
 
 <!-- Vector Maps Plugin: Vectormap engine, Vectormap language -->
-<script src="/smartadmin/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="/smartadmin/js/plugin/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+{{--<script src="/smartadmin/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>--}}
+{{--<script src="/smartadmin/js/plugin/vectormap/jquery-jvectormap-world-mill-en.js"></script>--}}
 
 <!-- Full Calendar -->
-<script src="/smartadmin/js/plugin/moment/moment.min.js"></script>
-<script src="/smartadmin/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>
+{{--<script src="/smartadmin/js/plugin/moment/moment.min.js"></script>--}}
+{{--<script src="/smartadmin/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>--}}
 
-@include('layouts.smartadmin.js.random')
+
+<script src="/js/app.js"></script>
+
+
+{{--@include('layouts.smartadmin.js.random')--}}
 
 <!-- Your GOOGLE ANALYTICS CODE Below -->
 <script type="text/javascript">

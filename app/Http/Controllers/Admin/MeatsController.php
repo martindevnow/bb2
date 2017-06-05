@@ -11,3 +11,4 @@ class MeatsController extends Controller
         return view('admin.meats.index');
     }
 }
+
