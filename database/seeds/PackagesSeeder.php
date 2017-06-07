@@ -17,28 +17,67 @@ class PackagesSeeder extends Seeder
         /**
          * Package Types
          */
+
+        /**
+         * Basic -- And Variations
+         */
         Package::create([
             'label' => 'Basic',
             'code'  => 'basic',
-            'lb_cost' => 2.00,
             'profit_margin' => 0.50,
-            'external_lb_cost'  => (2.00 * (1 / (1 - 0.50))),
         ]);
+        Package::create([
+            'label' => 'Basic (No Chicken)',
+            'code'  => 'basic-no-chicken',
+            'profit_margin' => 0.50,
+            'public'=> false,
+
+        ]);
+
+        /**
+         * Classic -- And Variations
+         */
         Package::create([
             'label' => 'Classic',
             'code'  => 'classic',
-            'lb_cost' => 2.19,
             'profit_margin' => 0.50,
-            'external_lb_cost'  => (2.19 * (1 / ( 1 - 0.50))),
-
         ]);
+        Package::create([
+            'label' => 'Classic (No Chicken)',
+            'code'  => 'classic-no-chicken',
+            'profit_margin' => 0.50,
+            'public'=> false,
+        ]);
+        Package::create([
+            'label' => 'Classic (No Poultry)',
+            'code'  => 'classic-no-poultry',
+            'profit_margin' => 0.50,
+            'public'=> false,
+        ]);
+        Package::create([
+            'label' => 'Classic (No Fish)',
+            'code'  => 'classic-no-fish',
+            'profit_margin' => 0.50,
+            'public'=> false,
+        ]);
+        Package::create([
+            'label' => 'Classic (No Pork)',
+            'code'  => 'classic-no-pork',
+            'profit_margin' => 0.50,
+            'public'=> false,
+        ]);
+        Package::create([
+            'label' => 'Classic (Whole Prey)',
+            'code'  => 'classic-whole-prey',
+            'profit_margin' => 0.50,
+            'public'=> false,
+        ]);
+
+
         Package::create([
             'label' => 'Premium',
             'code'  => 'premium',
-            'lb_cost' => 2.40,
             'profit_margin' => 0.50,
-            'external_lb_cost'  => (2.40 * (1 / (1 - 0.50))),
-
         ]);
     }
 }

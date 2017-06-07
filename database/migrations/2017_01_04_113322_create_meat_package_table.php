@@ -18,7 +18,7 @@ class CreateMeatPackageTable extends Migration
 
             $table->integer('meat_id');
             $table->integer('package_id');
-            $table->double('meat_percentage', 6, 2);
+            $table->double('number_of_meals', 5, 2);
 
             $table->timestamps();
             $table->softDeletes();

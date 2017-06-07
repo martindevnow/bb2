@@ -4,16 +4,17 @@ namespace Martin\Products;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\Subscriptions\Package;
 
 class Meat extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'label',
+        'type',
+        'variety',
         'code',
-        'internal_cost',
-        'external_cost',
+        'cost_per_lb',
     ];
 
 
@@ -25,32 +26,16 @@ class Meat extends Model
      * @param $value
      * @return float|int
      */
-    public function getInternalLbCostAttribute($value) {
+    public function getCostPerLbAttribute($value) {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setInternalLbCostAttribute($value) {
-        $this->attributes['internal_lb_cost'] = round($value * 100);
+    public function setCostPerLbAttribute($value) {
+        $this->attributes['cost_per_lb'] = round($value * 100);
     }
-
-    /**
-     * @param $value
-     * @return float|int
-     */
-    public function getExternalLbCostAttribute($value) {
-        return $value / 100;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setExternalLbCostAttribute($value) {
-        $this->attributes['external_lb_cost'] = round($value * 100);
-    }
-
 
     /**
      * Relationships
@@ -60,7 +45,8 @@ class Meat extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subPackages() {
-        return $this->belongsToMany(SubPackage::class)->withPivot('meat_percentage');
+        return $this->belongsToMany(Package::class)
+            ->withPivot('number_of_meals');
     }
 }
 

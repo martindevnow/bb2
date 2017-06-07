@@ -1943,6 +1943,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -4413,7 +4419,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(34)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 34 */
@@ -31837,7 +31843,7 @@ var Component = __webpack_require__(8)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -31875,7 +31881,7 @@ var Component = __webpack_require__(8)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Meats\\Navigator.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Meats/Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -31932,10 +31938,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('table', {
     staticClass: "table table-bordered table-responsive table-striped"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.collection), function(meat) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(meat.label))]), _vm._v(" "), _vm._m(1, true)])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(meat.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(meat.variety))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(meat.code))]), _vm._v(" "), _c('td', [_vm._v("$" + _vm._s(meat.cost_per_lb.toFixed(2)))]), _vm._v(" "), _vm._m(1, true)])
   }))])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('td', [_vm._v("Name")]), _vm._v(" "), _c('td', [_vm._v("Action")])])])
+  return _c('thead', [_c('tr', [_c('td', [_vm._v("Type")]), _vm._v(" "), _c('td', [_vm._v("Variety")]), _vm._v(" "), _c('td', [_vm._v("Code")]), _vm._v(" "), _c('td', [_vm._v("Cost")]), _vm._v(" "), _c('td', [_vm._v("Action")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', [_c('button', {
     staticClass: "btn btn-primary btn-xs"

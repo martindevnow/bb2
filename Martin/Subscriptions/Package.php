@@ -4,6 +4,7 @@ namespace Martin\Subscriptions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\Products\Meat;
 
 class Package extends Model
 {
@@ -84,6 +85,7 @@ class Package extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function meats() {
-        return $this->belongsToMany(Meat::class)->withPivot('meat_percentage');
+        return $this->belongsToMany(Meat::class)
+            ->withPivot('number_of_meals');
     }
 }

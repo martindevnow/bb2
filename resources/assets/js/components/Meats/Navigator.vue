@@ -3,13 +3,19 @@
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
-                <td>Name</td>
+                <td>Type</td>
+                <td>Variety</td>
+                <td>Code</td>
+                <td>Cost</td>
                 <td>Action</td>
             </tr>
             </thead>
             <tbody>
             <tr v-for="meat in collection">
-                <td>{{ meat.label }}</td>
+                <td>{{ meat.type }}</td>
+                <td>{{ meat.variety }}</td>
+                <td>{{ meat.code }}</td>
+                <td>${{ meat.cost_per_lb.toFixed(2) }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs">
                         <i class="fa fa-pencil"></i>

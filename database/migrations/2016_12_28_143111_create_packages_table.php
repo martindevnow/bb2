@@ -18,8 +18,6 @@ class CreatePackagesTable extends Migration
 
             $table->string('label');
             $table->string('code');
-            $table->integer('lb_cost');
-            $table->integer('external_lb_cost');
             $table->integer('profit_margin');
             $table->boolean('active')->default(1);
             $table->boolean('public')->default(1);
