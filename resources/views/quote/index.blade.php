@@ -5,7 +5,7 @@
 
     {{--<div class="material-background"></div>--}}
 
-    <div class="ms-hero-page-override ms-hero-img-city ms-hero-bg-primary">
+    <div class="ms-hero-page-override ms-hero-img-farm ms-hero-bg-primary">
         <div class="container">
             <div class="text-center">
                 {{--<span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>--}}

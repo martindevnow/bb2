@@ -17,13 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@index');
 Route::get('/index', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
-
 
 Route::get('/cart', 'CartController@index');
 Route::get('/contact', 'ContactController@index');

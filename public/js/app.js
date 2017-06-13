@@ -1027,6 +1027,12 @@ __webpack_require__(31);
 
 window.Vue = __webpack_require__(44);
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -1038,7 +1044,7 @@ Vue.component('admin-meats-navigator', __webpack_require__(38));
 Vue.component('example', __webpack_require__(37));
 
 var app = new Vue({
-  el: '#content'
+    el: '#content'
 });
 
 /***/ }),
@@ -31843,7 +31849,7 @@ var Component = __webpack_require__(8)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -31881,7 +31887,7 @@ var Component = __webpack_require__(8)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Meats/Navigator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Meats\\Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 

@@ -18,6 +18,23 @@
     <script src="/material/js/html5shiv.min.js"></script>
     <script src="/material/js/respond.min.js"></script>
     <![endif]-->
+
+
+    <style>
+        .ms-hero-img-barfhome {
+            background-image: url(/barfbento/img/raw.JPG);
+            background-size: cover;
+            background-position: bottom center;
+            background-repeat: no-repeat;
+        }
+
+        .ms-hero-img-farm {
+            background-image: url(/barfbento/img/large/farm.jpg);
+            background-size: cover;
+            background-position: bottom center;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 <body>
 <div id="ms-preload" class="ms-preload">
