@@ -104,7 +104,8 @@
                         <p class="wow fadeInLeft animation-delay-8" style="visibility: visible; animation-name: fadeInLeft;">
                             Deceptive labels have been causing an uproar and lead to a decline in consumer confidence.
                             Things like "all-beef" should be just that, but pet food manufacturers are allowed to add water,
-                            preservatives and even "seasonings" to their product.</p>
+                            preservatives and even "seasonings" to their product.
+                        3</p>
                         <div class="text-center">
                             <a href="/faq" class="btn btn-warning btn-raised mr-1 wow flipInX animation-delay-14" style="visibility: visible; animation-name: flipInX;">
                                 <i class="zmdi zmdi-chart-donut"></i> Learn More </a>
