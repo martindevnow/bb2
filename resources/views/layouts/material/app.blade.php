@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#333">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>B.A.R.F. Bento</title>
     <meta name="description" content="Raw Dog Food Delivery Service">
     <link rel="shortcut icon" href="/material/img/favicon.png?v=3">
@@ -34,6 +35,10 @@
             background-position: bottom center;
             background-repeat: no-repeat;
         }
+
+        .ms-footbar {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +50,7 @@
         </div>
     </div>
 </div>
-<div class="sb-site-container">
+<div class="sb-site-container" id="content">
 
     @include('layouts.material.nav.top')
 
@@ -73,6 +78,11 @@
 <!-- sb-site-container -->
 @include('layouts.material.nav.left')
 <script src="/material/js/plugins.min.js"></script>
+{{--<script--}}
+        {{--src="https://code.jquery.com/jquery-3.2.1.js"--}}
+        {{--integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="--}}
+        {{--crossorigin="anonymous"></script>--}}
+{{--<script src="/js/app.js"></script>--}}
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
 </body>

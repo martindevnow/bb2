@@ -47,4 +47,16 @@ class AllLoadingTest extends TestCase
         $response = $this->get('/quote');
         $response->assertStatus(200);
     }
+
+    /** @test */
+    public function it_loads_the_login_page() {
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function it_loads_the_register_page() {
+        $response = $this->get('/register');
+        $response->assertStatus(200);
+    }
 }

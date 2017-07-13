@@ -31,6 +31,14 @@
                                     <i class="zmdi zmdi-info-outline"></i> Simply fill out the fields below to get your
                                     <strong>quote</strong> to being the B.A.R.F. diet</p>
                             </div>
+
+
+                            <quotes-calculator></quotes-calculator>
+
+
+
+
+
                             <form class="form-horizontal">
                                 <fieldset>
                                     <legend>Legend</legend>
@@ -93,21 +101,6 @@
                                         <label for="select111" class="col-md-2 control-label">Select</label>
                                         <div class="col-md-10">
                                             <div class="btn-group bootstrap-select form-control">
-                                                {{--<button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" data-id="select111" title="Ea nam qui vel consequatur">--}}
-                                                    {{--<span class="filter-option pull-left">Ea nam qui vel consequatur</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button>--}}
-                                                {{--<div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false">--}}
-                                                        {{--<li data-original-index="0" class="selected"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">--}}
-                                                                {{--<span class="text">Ea nam qui vel consequatur</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>--}}
-                                                        {{--<li data-original-index="1"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false">--}}
-                                                                {{--<span class="text">Dolorem perspiciatis adipisci </span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>--}}
-                                                        {{--<li data-original-index="2"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false">--}}
-                                                                {{--<span class="text">Aperiam, debitis deleniti</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>--}}
-                                                        {{--<li data-original-index="3"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false">--}}
-                                                                {{--<span class="text">Accusamus non qui amet eum</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>--}}
-                                                        {{--<li data-original-index="4"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false">--}}
-                                                                {{--<span class="text">Doloremque commodi impedit</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>--}}
-                                                    {{--</ul>--}}
-                                                {{--</div>--}}
                                                 <select id="select111" class="form-control selectpicker" data-dropup-auto="false" tabindex="-98">
                                                     <option>Ea nam qui vel consequatur</option>
                                                     <option>Dolorem perspiciatis adipisci </option>

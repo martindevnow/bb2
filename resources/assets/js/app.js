@@ -23,7 +23,12 @@ $.ajaxSetup({
 
 Vue.component(
     'admin-meats-navigator',
-    require('./components/Meats/Navigator.vue')
+    require('./components/Admin/Meats/Navigator.vue')
+);
+
+Vue.component(
+    'quotes-calculator',
+    require('./components/Quotes/Calculator.vue')
 );
 
 Vue.component('example', require('./components/Example.vue'));
