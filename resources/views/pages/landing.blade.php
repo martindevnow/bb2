@@ -288,5 +288,26 @@
                 </div>
             </div>
         </section>
+
+
+        <section class="shipping">
+
+            <div class="container pt-6">
+                <h1 class="color-primary text-center wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Our Service Area</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary animated fadeInUp animation-delay-7">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="zmdi zmdi-map"></i>Shipping Area</h3>
+                            </div>
+                            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=12HuD4sUWj4Kk0yhWsp9-ttJcZN4" width="100%" height="480"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
     </div>
 @endsection
