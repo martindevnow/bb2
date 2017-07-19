@@ -29,18 +29,18 @@ class Column {
         }
     }
 
-    private function trimQuotes($element): string {
+    private function trimQuotes($element) {
         $element = substr($element, 0, -1);
         $element = substr($element, 1);
         return $element;
     }
 
-    public function getField(): string {
+    public function getField() {
         return $this->table ? $this->table . '->' . $this->field . '===' : '';
     }
 }
 
-function getExtensionFromString($str): string {
+function getExtensionFromString($str) {
     $parts = explode('.', $str);
     return $parts[count($parts) - 1];
 }
@@ -52,7 +52,7 @@ function convertTsvToCsv(string $table, string $filepath) {
     $newFileContents = "";
     $handle = fopen(base_path() . $filepath, "r");
 
-    if($handle !== FALSE) {
+    if ($handle !== FALSE) {
         while ( ! feof($handle) ) {
 
             $currentLine = "";
