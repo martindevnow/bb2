@@ -17,6 +17,8 @@ class SubscriptionsSeeder extends Seeder
     {
         DB::table('subscriptions')->truncate();
 
-        $this->seedFromCSV('subscriptions', '/seeds/csv/subscriptions.csv');
+        $this->seedFromCSV('subscriptions',
+            '/seeds/csv/subscriptions.csv',
+            \Martin\Subscriptions\Subscription::class);
     }
 }

@@ -17,7 +17,6 @@ class Meat extends Model
         'cost_per_lb',
     ];
 
-
     /**
      * Mutators
      */

@@ -22,6 +22,8 @@ Route::get('/home', 'PagesController@index');
 Route::get('/index', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 
+Route::get('/faq', 'FaqController@index');
+
 Route::get('/cart', 'CartController@index');
 Route::get('/contact', 'ContactController@index');
 Route::get('/packages', 'PackagesController@index');

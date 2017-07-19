@@ -17,7 +17,9 @@ class PetsTableSeeder extends Seeder
     {
         DB::table('pets')->truncate();
 
-        $this->seedFromCSV('pets', '/seeds/csv/pets.csv');
+        $this->seedFromCSV('pets',
+            '/seeds/csv/pets.csv',
+            Pet::class);
 
     }
 }

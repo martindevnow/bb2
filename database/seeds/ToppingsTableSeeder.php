@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Martin\Products\Meat;
 
-class DeliveriesTableSeeder extends Seeder
+class ToppingsTableSeeder extends Seeder
 {
     use CanSeedFromCSV;
     /**
@@ -13,8 +13,10 @@ class DeliveriesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('deliveries')->truncate();
 
-        $this->seedFromCSV('deliveries', '/seeds/csv/deliveries.csv', \Martin\Delivery\Delivery::class);
+        DB::table('toppings')->truncate();
+        $this->seedFromGoogle('toppings',
+            \Martin\Products\Topping::class);
     }
+
 }

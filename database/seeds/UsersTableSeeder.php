@@ -39,14 +39,5 @@ class UsersTableSeeder extends Seeder
                 ]);
             }
         }
-//
-//        $admin = User::where('name', 'Admin')->firstOrFail();
-//        $admin->assignRole('admin');
-//
-//        $bri = User::where('name', 'Brianna Martin')->firstOrFail();
-//        $bri->assignRole('admin');
-//
-//        $viv = User::where('name', 'Vivian Wong')->firstOrFail();
-//        $viv->assignRole('admin');
     }
 }

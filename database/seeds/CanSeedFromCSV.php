@@ -3,11 +3,17 @@
 
 trait CanSeedFromCSV {
 
+    public function seedFromGoogle(string $table, string $class = null) {
+        convertTsvToCsv($table, '/seeds/fromGoogle/' . $table . '.csv');
+        $this->seedFromCSV($table, '/seeds/csv/' . $table . '.csv', $class);
+    }
+
     /**
-     * @param $table
-     * @param $file_path
+     * @param string $table
+     * @param string $file_path
+     * @param string|null $class
      */
-    public function seedFromCSV($table, $file_path) {
+    public function seedFromCSV(string $table, string $file_path, string $class = null) {
 
         $col_names = [];
 
@@ -33,8 +39,6 @@ trait CanSeedFromCSV {
                 if (trim($value) == "")
                     continue;
 
-
-
                 // Check to see if the data is relational
                 if ($this->dataIsRelational($value)) {
                     $model = $this->getRelationalModel($value);
@@ -47,7 +51,14 @@ trait CanSeedFromCSV {
 
                 $insert_data[$col_names[$col_number]] = $value;
             }
-            DB::table($table)->insert($insert_data);
+
+            if ($class) {
+                $model = new $class ($insert_data);
+                $model->save();
+            }
+            else {
+                DB::table($table)->insert($insert_data);
+            }
         }
     }
 

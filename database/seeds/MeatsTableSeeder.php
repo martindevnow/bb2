@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Martin\Products\Meat;
 
 class MeatsTableSeeder extends Seeder
 {
@@ -15,9 +14,9 @@ class MeatsTableSeeder extends Seeder
     {
 
         DB::table('meats')->truncate();
-        $this->seedFromCSV('meats', '/seeds/csv/meats.csv');
+        $this->seedFromGoogle('meats', \Martin\Products\Meat::class);
 
-        DB::table('meat_package')->truncate();
-        $this->seedFromCSV('meat_package', '/seeds/csv/meat_package.csv');
+//        DB::table('meat_package')->truncate();
+//        $this->seedFromCSV('meat_package', '/seeds/csv/meat_package.csv');
     }
 }

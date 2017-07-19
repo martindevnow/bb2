@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMeatPackageTable extends Migration
+class CreateMealPackageTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateMeatPackageTable extends Migration
      */
     public function up()
     {
-        Schema::create('meat_package', function (Blueprint $table) {
+        Schema::create('meal_package', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('meat_id');
+            $table->integer('meal_id');
             $table->integer('package_id');
             $table->double('number_of_meals', 5, 2);
 
@@ -32,6 +32,6 @@ class CreateMeatPackageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meat_package');
+        Schema::dropIfExists('meal_package');
     }
 }

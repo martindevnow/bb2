@@ -4,11 +4,11 @@ Route::get('/', function () {
     return view('admin.index');
 });
 
-Route::resource('/deliveries',      'DeliveriesController');
+//Route::resource('/deliveries',      'DeliveriesController');
 Route::resource('/meats',           'MeatsController');
-Route::resource('/payments',        'PaymentsController');
-Route::resource('/pets',            'PetsController');
-Route::resource('/subscriptions',   'SubscriptionsController');
-Route::resource('/subpackages',     'SubpackagesController');
-Route::resource('/users',           'UsersController');
+//Route::resource('/payments',        'PaymentsController');
+//Route::resource('/pets',            'PetsController');
+//Route::resource('/subscriptions',   'SubscriptionsController');
+//Route::resource('/subpackages',     'SubpackagesController');
+//Route::resource('/users',           'UsersController');
 
