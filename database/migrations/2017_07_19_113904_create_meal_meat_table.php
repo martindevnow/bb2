@@ -15,10 +15,8 @@ class CreateMealMeatTable extends Migration
     {
         Schema::create('meal_meat', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code');
-            $table->string('label');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer('meal_id');
+            $table->integer('meat_id');
         });
     }
 

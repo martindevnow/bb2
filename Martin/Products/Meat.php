@@ -43,9 +43,8 @@ class Meat extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function subPackages() {
-        return $this->belongsToMany(Package::class)
-            ->withPivot('number_of_meals');
+    public function meals() {
+        return $this->belongsToMany(Meal::class);
     }
 }
 

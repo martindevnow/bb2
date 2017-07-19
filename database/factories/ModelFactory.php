@@ -22,3 +22,30 @@ $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker) {
+    return [
+        'code'  => ucwords($faker->name),
+        'type'  => $faker->word,
+        'variety'   => $faker->word,
+        'cost_per_lb'   => $faker->numberBetween(99, 300) / 100,
+    ];
+});
+
+$factory->define(\Martin\Products\Meal::class, function (Faker\Generator $faker) {
+    return [
+        'code'  => ucwords($faker->name),
+        'label'  => $faker->word,
+        'meal_value'   => $faker->numberBetween(1, 2),
+    ];
+});
+
+$factory->define(\Martin\ACL\Role::class, function (Faker\Generator $faker) {
+    return [
+        'code'  => ucwords($faker->name),
+        'label'  => $faker->word,
+        'description'   => $faker->sentence(4),
+    ];
+});
+
+

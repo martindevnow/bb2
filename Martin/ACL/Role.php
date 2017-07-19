@@ -32,7 +32,7 @@ class Role extends Model
      * Attach the given Permission to $this Role
      *
      * @param Permission $permission
-     * @return bool|void
+     * @return bool
      */
     public function givePermissionTo(Permission $permission)
     {
@@ -47,7 +47,7 @@ class Role extends Model
      * Detach the given Permission to $this Role
      *
      * @param Permission $permission
-     * @return bool|void
+     * @return bool
      */
     public function removePermissionTo(Permission $permission)
     {
