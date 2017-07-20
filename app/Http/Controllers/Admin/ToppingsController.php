@@ -28,7 +28,7 @@ class ToppingsController extends Controller
         $this->validate($request, [
             'code'          => 'required|unique:toppings',
             'label'         => 'required',
-            'cost_per_kg'   => 'required|integer',
+            'cost_per_kg'   => 'required',
         ]);
 
         Topping::create($request->only(['label', 'code', 'cost_per_kg']));

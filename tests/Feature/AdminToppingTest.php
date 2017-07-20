@@ -74,7 +74,8 @@ class AdminToppingTest extends TestCase
 
         $request = $topping->toArray();
         $request['_token'] = csrf_token();
-        $this->post('/admin/toppings', $topping->toArray());
+        $this->post('/admin/toppings', $topping->toArray())
+        ->assertStatus(302);
 
         // Make adjustment for the mutator on create();
         $topping->cost_per_kg *= 100;

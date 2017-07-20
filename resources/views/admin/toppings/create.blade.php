@@ -66,7 +66,7 @@
                 <small id="cost_per_kgHelp" class="form-text text-muted">Cost per KG of topping</small>
             </div>
 
-        <button type="submit" class="btn btn-primary" >Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
 
     </form>
 

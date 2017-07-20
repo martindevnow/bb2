@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Support\Facades\DB;
 use Martin\Products\Meal;
 use Martin\Products\Topping;
 use Martin\Products\Meat;
@@ -9,7 +10,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ToppingsTest extends TestCase
+class ToppingsUnitTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -31,6 +32,31 @@ class ToppingsTest extends TestCase
         $this->assertEquals('Chicken', $topping->label);
         $this->assertEquals(2, $topping->cost_per_kg);
     }
+
+    /** @test */
+    public function cost_is_mutated_when_saving() {
+        $costInDollars = 1;
+        $costInCents = $costInDollars * 100;
+
+        factory(Topping::class)->create(['cost_per_kg' => $costInDollars]);
+        $this->assertDatabaseHas('toppings', ['cost_per_kg' => $costInCents]);
+    }
+
+    /** @test */
+    public function cost_is_mutated_when_retrieving() {
+        $costInDollars = 1;
+        $costInCents = $costInDollars * 100;
+
+        $topping = factory(Topping::class)->make([
+            'code'=> 'THISTOPPING',
+            'cost_per_kg' => $costInCents
+        ]);
+        DB::table('toppings')->insert($topping->toArray());
+        $topping_clone = Topping::whereCode('THISTOPPING')->firstOrFail();
+        $this->assertEquals($costInDollars, $topping_clone->cost_per_kg);
+
+    }
+
 
     /** @test */
     public function it_has_many_meals_that_it_belongs_to() {

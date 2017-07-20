@@ -25,7 +25,7 @@ $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
 
 $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker) {
     return [
-        'code'  => ucwords($faker->name),
+        'code'  => ucwords($faker->word),
         'type'  => $faker->word,
         'variety'   => $faker->word,
         'cost_per_lb'   => $faker->numberBetween(99, 300) / 100,
@@ -34,7 +34,7 @@ $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker)
 
 $factory->define(\Martin\Products\Topping::class, function (Faker\Generator $faker) {
     return [
-        'code'  => ucwords($faker->name),
+        'code'  => ucwords($faker->word),
         'label'  => $faker->word,
         'cost_per_kg'   => $faker->numberBetween(99, 300) / 100,
     ];
@@ -42,7 +42,7 @@ $factory->define(\Martin\Products\Topping::class, function (Faker\Generator $fak
 
 $factory->define(\Martin\Products\Meal::class, function (Faker\Generator $faker) {
     return [
-        'code'  => ucwords($faker->name),
+        'code'  => ucwords($faker->word),
         'label'  => $faker->word,
         'meal_value'   => $faker->numberBetween(1, 2),
     ];
@@ -50,7 +50,7 @@ $factory->define(\Martin\Products\Meal::class, function (Faker\Generator $faker)
 
 $factory->define(\Martin\ACL\Role::class, function (Faker\Generator $faker) {
     return [
-        'code'  => ucwords($faker->name),
+        'code'  => ucwords($faker->word),
         'label'  => $faker->word,
         'description'   => $faker->sentence(4),
     ];

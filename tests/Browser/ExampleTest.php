@@ -8,12 +8,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ExampleTest extends DuskTestCase
 {
-    /**
-     * A basic browser test example.
-     *
-     * @return void
-     */
-    public function testBasicExample()
+    /** @test */
+    public function it_can_load_the_homepage()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
