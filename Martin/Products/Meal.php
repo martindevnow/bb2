@@ -10,7 +10,7 @@ class Meal extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'code', 'label', 'meal_number',
+        'code', 'label', 'meal_value',
     ];
 
     /**

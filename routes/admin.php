@@ -6,6 +6,7 @@ Route::get('/', function () {
 
 //Route::resource('/deliveries',      'DeliveriesController');
 Route::resource('/meats',           'MeatsController');
+Route::resource('/meals',           'MealsController');
 //Route::resource('/payments',        'PaymentsController');
 //Route::resource('/pets',            'PetsController');
 //Route::resource('/subscriptions',   'SubscriptionsController');

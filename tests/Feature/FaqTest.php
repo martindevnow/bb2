@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FaqTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /** @test */
     public function a_user_can_visit_the_faq_page()
     {

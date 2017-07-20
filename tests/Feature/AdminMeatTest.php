@@ -66,15 +66,6 @@ class AdminMeatTest extends TestCase
             ->assertSee('<form');
     }
 
-
-    /** @test */
-    public function an_admin_can_fill_in_the_form() {
-        $this->loginAsAdmin();
-
-        $this->visit('/admin/meats/create');
-
-    }
-
     /** @test */
     public function an_admin_can_submit_a_form_to_add_a_meat() {
         $this->loginAsAdmin();
@@ -82,6 +73,8 @@ class AdminMeatTest extends TestCase
         $meat = factory(Meat::class)->make();
 
         $this->post('/admin/meats', $meat->toArray());
+
+        // Make adjustment for the mutator on create();
         $meat->cost_per_lb *= 100;
 
         $this->assertDatabaseHas('meats', $meat->toArray());
