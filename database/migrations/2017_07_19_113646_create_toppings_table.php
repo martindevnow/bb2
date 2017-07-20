@@ -17,6 +17,7 @@ class CreateToppingsTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('label');
+            $table->integer('cost_per_kg')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

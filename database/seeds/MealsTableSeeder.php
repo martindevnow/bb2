@@ -17,7 +17,10 @@ class MealsTableSeeder extends Seeder
         DB::table('meals')->truncate();
         $this->seedFromGoogle('meals', \Martin\Products\Meal::class);
 
-//        DB::table('meal_package')->truncate();
-//        $this->seedFromCSV('meal_package', '/seeds/csv/meal_package.csv');
+        DB::table('meal_meat')->truncate();
+        $this->seedFromGoogle('meal_meat');
+
+        DB::table('meal_topping')->truncate();
+        $this->seedFromGoogle('meal_topping');
     }
 }

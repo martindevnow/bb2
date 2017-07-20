@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Martin\ACL\User;
 use Martin\Products\Meal;
+use Martin\Products\Meat;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -74,5 +75,27 @@ class AdminMealTest extends TestCase
 
         $this->post('/admin/meals', $meal->toArray());
         $this->assertDatabaseHas('meals', $meal->toArray());
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_simgle_meal() {
+        $this->loginAsAdmin();
+
+        $meal = factory(Meal::class)->create();
+
+        $this->get('/admin/meals/' . $meal->id)
+                ->assertSee($meal->code);
+    }
+
+    /** @test */
+    public function meats_are_visible_on_the_individual_meal_page() {
+        $this->loginAsAdmin();
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class, 3)->create();
+
+        $this->get('/admin/meals/' . $meal->id)
+            ->assertSee($meat[0]->code)
+            ->assertSee($meat[1]->code)
+            ->assertSee($meat[2]->code);
     }
 }

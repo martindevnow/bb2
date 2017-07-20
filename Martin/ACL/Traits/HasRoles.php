@@ -33,7 +33,7 @@ trait HasRoles {
      * Assign the given role to the user.
      *
      * @param  string $role
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function assignRole($role)
     {

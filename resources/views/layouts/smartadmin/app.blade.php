@@ -14,7 +14,12 @@
 
     <!-- Basic Styles -->
     <link rel="stylesheet" type="text/css" media="screen" href="/smartadmin/css/bootstrap.min.css">
+    <!-- Font Awesome 4 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/smartadmin/css/font-awesome.min.css">
+
+    {{--<!-- Font Awesome 5 -->--}}
+    {{--<link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome-core.css">--}}
+    {{--<link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome-solid.css">--}}
 
     <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
     <link rel="stylesheet" type="text/css" media="screen" href="/smartadmin/css/smartadmin-production-plugins.min.css">
@@ -50,6 +55,11 @@
     <link rel="apple-touch-startup-image" href="/smartadmin/img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
     <link rel="apple-touch-startup-image" href="/smartadmin/img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
     <link rel="apple-touch-startup-image" href="/smartadmin/img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+
+
+    {{--<!-- new for FontAwesome 5 -->--}}
+    {{--<script defer src="/js/packs/solid.js"></script>--}}
+    {{--<script defer src="/js/fontawesome.js"></script>--}}
 
 </head>
 
@@ -116,6 +126,8 @@ Use search to find needed section.
         @include('layouts.smartadmin.breadcrumb')
         <!-- widget grid -->
         <section id="widget-grid" class="">
+
+            @include('flash::message')
 
             @yield('content')
             <!-- row -->
@@ -286,6 +298,12 @@ you can add as many as you like
 
 
 <script src="/js/app.js"></script>
+
+<script>
+    $('#flash-overlay-modal').modal();
+    $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+</script>
+
 
 
 {{--@include('layouts.smartadmin.js.random')--}}

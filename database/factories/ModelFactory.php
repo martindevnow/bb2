@@ -32,6 +32,14 @@ $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker)
     ];
 });
 
+$factory->define(\Martin\Products\Topping::class, function (Faker\Generator $faker) {
+    return [
+        'code'  => ucwords($faker->name),
+        'label'  => $faker->word,
+        'cost_per_kg'   => $faker->numberBetween(99, 300) / 100,
+    ];
+});
+
 $factory->define(\Martin\Products\Meal::class, function (Faker\Generator $faker) {
     return [
         'code'  => ucwords($faker->name),

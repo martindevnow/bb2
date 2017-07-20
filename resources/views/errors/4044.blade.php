@@ -1,4 +1,7 @@
-@extends('layouts.material.app')
+@php
+    $layout = explode('/', request()->path())[0] === 'admin' ? 'smartadmin' : 'material';
+@endphp
+@extends('layouts.'. $layout .'.app')
 
 @section('content')
 <div class="container">

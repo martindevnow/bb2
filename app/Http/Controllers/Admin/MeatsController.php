@@ -48,6 +48,8 @@ class MeatsController extends Controller
             'code'      => 'required',
             'type'      => 'required',
             'variety'   => 'required',
+            'cost_per_lb'   => 'required',
+
         ]);
 
         $meat->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']));

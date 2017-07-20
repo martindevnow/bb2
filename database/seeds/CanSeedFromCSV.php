@@ -113,6 +113,7 @@ trait CanSeedFromCSV {
         if (strpos($value, '===') !== false)
             $value = $this->getRelationalModel($value)->id;
 
+        // dd (compact('table', 'field', 'value'));
         return DB::table($table)->where($field, '=', $value)->first();
     }
 }

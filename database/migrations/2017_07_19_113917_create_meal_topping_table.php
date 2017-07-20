@@ -13,7 +13,11 @@ class CreateMealToppingTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('meal_topping', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('meal_id');
+            $table->integer('topping_id');
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ class CreateMealToppingTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('meal_topping');
     }
 }

@@ -49,22 +49,22 @@
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="value">Value:</label>
+                    <label for="meal_value">Meal Value:</label>
                     <input type="text"
-                           name="value"
-                           value="{{ $meal->value }}"
+                           name="meal_value"
+                           value="{{ $meal->meal_value }}"
                            class="form-control"
-                           id="value"
-                           aria-describedby="valueHelp"
-                           placeholder="Value of meal"
+                           id="meal_value"
+                           aria-describedby="meal_valueHelp"
+                           placeholder="Meal Value"
                            autocomplete="off">
-                    @if ($errors->has('value'))
+                    @if ($errors->has('meal_value'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('value') }}</strong>
+                            <strong>{{ $errors->first('meal_value') }}</strong>
                         </span>
                     @endif
                 </div>
-                <small id="valueHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
+                <small id="meal_valueHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>
