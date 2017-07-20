@@ -16,11 +16,11 @@ class CreatePackagesTable extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('label');
             $table->string('code');
-            $table->integer('profit_margin');
+            $table->string('label');
             $table->boolean('active')->default(1);
             $table->boolean('public')->default(1);
+
             $table->timestamps();
             $table->softDeletes();
         });

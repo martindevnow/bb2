@@ -18,7 +18,7 @@ class CreateMealPackageTable extends Migration
 
             $table->integer('meal_id');
             $table->integer('package_id');
-            $table->double('number_of_meals', 5, 2);
+            $table->string('calendar_code');
 
             $table->timestamps();
             $table->softDeletes();

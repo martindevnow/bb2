@@ -56,4 +56,11 @@ $factory->define(\Martin\ACL\Role::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator $faker) {
+    return [
+        'code'  => ucwords($faker->word),
+        'label'  => $faker->word,
+    ];
+});
+
 
