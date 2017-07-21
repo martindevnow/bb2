@@ -37,9 +37,10 @@ class PackagesController extends Controller
             'label' => 'required'
         ]);
 
-        Package::create($request->only(['code', 'label']));
+        $package = Package::create($request->only(['code', 'label']));
 
-        flash('Created a new package, labeled: ' . $request->label)->success();
+        flash('The package ' . $package->label . ' has been saved.')->success();
+
         return redirect()->back();
     }
 
@@ -57,7 +58,7 @@ class PackagesController extends Controller
         $package->fill($request->only(['code', 'label']))
             ->save();
 
-        flash('Updated the package labeled: ' . $package->label)->success();
+        flash('The package ' . $package->label . ' has been updated.')->success();
 
         return redirect('/admin/packages');
     }
@@ -65,11 +66,19 @@ class PackagesController extends Controller
     public function destroy(Package $package) {
         $package->delete();
 
-        flash('The package: ' . $package->label . ' has been deleted.')->success();
+        flash('The package ' . $package->label . ' has been deleted.')->success();
 
         return redirect()->back();
     }
 
+    /**
+     * AJAX request only...
+     * TODO: This should be separated out to an Class to handle AJAX calls
+     *
+     * @param Package $package
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function setMeal(Package $package, Request $request) {
         $this->validate($request, [
             'meal_id'   => 'required|integer',

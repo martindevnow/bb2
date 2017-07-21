@@ -37,9 +37,10 @@ class MealsController extends Controller
             'meal_value'    => 'required|integer|between:1,2',
         ]);
 
-        Meal::create($request->only(['label', 'code', 'meal_value']));
+        $meal = Meal::create($request->only(['label', 'code', 'meal_value']));
 
-        flash('Your meal has been saved.')->success();
+        flash('Your meal '. $meal->label .' has been saved.')->success();
+
         return redirect('/admin/meals');
     }
 
@@ -58,7 +59,7 @@ class MealsController extends Controller
         $meal->fill($request->only(['code', 'label', 'meal_value']))
             ->save();
 
-        flash('Updated the meal labeled: ' . $meal->label)->success();
+        flash('The meal ' . $meal->label . ' has been updated.')->success();
 
         return redirect('/admin/meals');
     }
@@ -66,7 +67,7 @@ class MealsController extends Controller
     public function destroy(Meal $meal) {
         $meal->delete();
 
-        flash('The meal: ' . $meal->label . ' has been deleted.')->success();
+        flash('The meal ' . $meal->label . ' has been deleted.')->success();
 
         return redirect()->back();
     }

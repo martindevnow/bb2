@@ -31,7 +31,10 @@ class ToppingsController extends Controller
             'cost_per_kg'   => 'required',
         ]);
 
-        Topping::create($request->only(['label', 'code', 'cost_per_kg']));
+        $topping = Topping::create($request->only(['label', 'code', 'cost_per_kg']));
+
+        flash('The topping ' . $topping->label . ' was saved.')->success();
+
         return redirect('/admin/toppings');
     }
 
@@ -45,11 +48,14 @@ class ToppingsController extends Controller
         $this->validate($request, [
             'code'      => 'required',
             'label'      => 'required',
-            'cost_per_kg'   => 'required|integer',
+            'cost_per_kg'   => 'required',
         ]);
 
         $topping->fill($request->only(['code', 'label', 'cost_per_kg']));
         $topping->save();
+
+        flash('The topping ' . $topping->label . ' was updated.')->success();
+
         return redirect('/admin/toppings');
     }
 

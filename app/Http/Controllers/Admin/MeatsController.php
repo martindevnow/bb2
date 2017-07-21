@@ -33,7 +33,11 @@ class MeatsController extends Controller
             'cost_per_lb'   => 'required',
         ]);
 
-        Meat::create($request->only(['type', 'variety', 'code', 'cost_per_lb']));
+
+        $meat = Meat::create($request->only(['type', 'variety', 'code', 'cost_per_lb']));
+
+        flash('The meat ' . $meat->type . ' - ' . $meat->variety .' was saved.')->success();
+
         return redirect('/admin/meats');
     }
 
@@ -49,11 +53,13 @@ class MeatsController extends Controller
             'type'      => 'required',
             'variety'   => 'required',
             'cost_per_lb'   => 'required',
-
         ]);
 
         $meat->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']));
         $meat->save();
+
+        flash('The meat ' . $meat->type . ' - ' . $meat->variety .' was updated.')->success();
+
         return redirect('/admin/meats');
     }
 

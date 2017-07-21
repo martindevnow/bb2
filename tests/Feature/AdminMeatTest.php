@@ -58,7 +58,7 @@ class AdminMeatTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_view_a_single_meal() {
+    public function an_admin_can_view_a_single_meat() {
         $this->loginAsAdmin();
 
         $meat = factory(Meat::class)->create();
@@ -89,7 +89,6 @@ class AdminMeatTest extends TestCase
 
         $this->assertDatabaseHas('meats', $meat->toArray());
     }
-
 
     /** @test */
     public function an_admin_can_edit_a_meat() {

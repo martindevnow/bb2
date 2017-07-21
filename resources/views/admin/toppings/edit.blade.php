@@ -3,7 +3,7 @@
 @section('content')
 
     <h1>Meats: Edit</h1>
-    <form action="/admin/meats/{{ $meat->id }}" method="POST">
+    <form action="/admin/toppings/{{ $topping->id }}" method="POST">
         <?= csrf_field() ?>
             <input name="_method" type="hidden" value="PUT">
 
@@ -12,11 +12,11 @@
                     <label for="code">Code:</label>
                     <input type="text"
                            name="code"
-                           value="{{ $meat->code }}"
+                           value="{{ $topping->code }}"
                            class="form-control"
                            id="code"
                            aria-describedby="codeHelp"
-                           placeholder="Code of the meat"
+                           placeholder="Code of the topping"
                            autocomplete="off">
                     @if ($errors->has('code'))
                         <span class="help-block">
@@ -29,62 +29,43 @@
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="type">Type:</label>
+                    <label for="label">Label:</label>
                     <input type="text"
-                           name="type"
-                           value="{{ $meat->type }}"
+                           name="label"
+                           value="{{ $topping->label }}"
                            class="form-control"
-                           id="type"
-                           aria-describedby="typeHelp"
-                           placeholder="Type of meat"
+                           id="label"
+                           aria-describedby="labelHelp"
+                           placeholder="Label of topping"
                            autocomplete="off">
-                    @if ($errors->has('type'))
+                    @if ($errors->has('label'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('type') }}</strong>
+                            <strong>{{ $errors->first('label') }}</strong>
                         </span>
                     @endif
                 </div>
-                <small id="typeHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
             </div>
+
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="variety">Variety:</label>
+                    <label for="cost_per_kg">Cost_per_kg:</label>
                     <input type="text"
-                           name="variety"
-                           value="{{ $meat->variety }}"
+                           name="cost_per_kg"
+                           value="{{ $topping->cost_per_kg }}"
                            class="form-control"
-                           id="variety"
-                           aria-describedby="varietyHelp"
-                           placeholder="Variety of meat"
+                           id="cost_per_kg"
+                           aria-describedby="cost_per_kgHelp"
+                           placeholder="Cost per pound of topping"
                            autocomplete="off">
-                    @if ($errors->has('variety'))
+                    @if ($errors->has('cost_per_kg'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('variety') }}</strong>
+                            <strong>{{ $errors->first('cost_per_kg') }}</strong>
                         </span>
                     @endif
                 </div>
-                <small id="varietyHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="cost_per_lb">Cost_per_lb:</label>
-                    <input type="text"
-                           name="cost_per_lb"
-                           value="{{ $meat->cost_per_lb }}"
-                           class="form-control"
-                           id="cost_per_lb"
-                           aria-describedby="cost_per_lbHelp"
-                           placeholder="Cost per pound of meat"
-                           autocomplete="off">
-                    @if ($errors->has('cost_per_lb'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('cost_per_lb') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <small id="cost_per_lbHelp" class="form-text text-muted">How much does this meat cost us?</small>
+                <small id="cost_per_kgHelp" class="form-text text-muted">How much does this topping cost us?</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>
