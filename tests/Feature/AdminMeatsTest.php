@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminMeatTest extends TestCase
+class AdminMeatsTest extends TestCase
 {
     use DatabaseMigrations;
 
