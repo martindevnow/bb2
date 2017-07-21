@@ -44,7 +44,7 @@ class AdminMeatTest extends TestCase
         $this->loginAsAdmin();
         $this->assertTrue($this->user->isAdmin());
 
-        $this->get('/admin/meats')
+        $this->get('/admin/meats')  // INDEX method
             ->assertStatus(200);
     }
 
@@ -53,15 +53,25 @@ class AdminMeatTest extends TestCase
         $meat = factory(Meat::class)->create();
         $this->loginAsAdmin();
 
-        $this->get('/admin/meats')
+        $this->get('/admin/meats')  // INDEX method
             ->assertSee($meat->type);
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_single_meal() {
+        $this->loginAsAdmin();
+
+        $meat = factory(Meat::class)->create();
+
+        $this->get('/admin/meats/' . $meat->id) // SHOW method
+            ->assertSee($meat->code);
     }
 
     /** @test */
     public function an_admin_can_see_the_form_to_add_a_meat() {
         $this->loginAsAdmin();
 
-        $this->get('/admin/meats/create')
+        $this->get('/admin/meats/create')   // CREATE method
             ->assertStatus(200)
             ->assertSee('<form');
     }
@@ -72,11 +82,64 @@ class AdminMeatTest extends TestCase
 
         $meat = factory(Meat::class)->make();
 
-        $this->post('/admin/meats', $meat->toArray());
+        $this->post('/admin/meats', $meat->toArray());  // STORE method
 
         // Make adjustment for the mutator on create();
         $meat->cost_per_lb *= 100;
 
         $this->assertDatabaseHas('meats', $meat->toArray());
+    }
+
+
+    /** @test */
+    public function an_admin_can_edit_a_meat() {
+        $this->loginAsAdmin();
+
+        $meat = factory(Meat::class)->create();
+
+        $this->get('/admin/meats/' . $meat->id . '/edit')   // EDIT method
+        ->assertStatus(200)
+            ->assertSee('<form')
+            ->assertSee($meat->type);
+    }
+
+    /** @test */
+    public function an_admin_can_save_changes_to_a_meat() {
+        $this->loginAsAdmin();
+
+        $meat = factory(Meat::class)->create();
+        $id = $meat->id;
+
+        $post_data = $meat->toArray();
+        unset($post_data['id']);
+
+        $post_data['type'] = 'NEW_TYPE';
+        $post_data['_method'] = 'PATCH';
+
+        $this->post('/admin/meats/'. $id, $post_data)   // UPDATE method
+        ->assertStatus(302);
+        $this->assertDatabaseHas('meats', [
+            'type' => $post_data['type'],
+            'variety' => $post_data['variety'],
+            'id' => $id
+        ]);
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_meat_from_the_db() {
+        $this->loginAsAdmin();
+
+        $meat = factory(Meat::class)->create();
+        $id = $meat->id;
+
+        $post_data = [
+            '_method' => 'DELETE',
+        ];
+
+        $this->post('/admin/meats/'. $id, $post_data)   // UPDATE method
+        ->assertStatus(302);
+        $this->seeIsSoftDeletedInDatabase('meats', [
+            'id' => $id
+        ]);
     }
 }

@@ -106,8 +106,8 @@ class AdminMealTest extends TestCase
         $meal = factory(Meal::class)->create();
 
         $this->get('/admin/meals/' . $meal->id . '/edit')   // EDIT method
-            ->assertStatus(200);
-        $this->assertSee('<form')
+            ->assertStatus(200)
+            ->assertSee('<form')
             ->assertSee($meal->label);
     }
 
@@ -133,6 +133,22 @@ class AdminMealTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function an_admin_can_delete_a_meal_from_the_db() {
+        $this->loginAsAdmin();
 
+        $meal = factory(Meal::class)->create();
+        $id = $meal->id;
+
+        $post_data = [
+            '_method' => 'DELETE',
+        ];
+
+        $this->post('/admin/meals/'. $id, $post_data)   // UPDATE method
+            ->assertStatus(302);
+        $this->seeIsSoftDeletedInDatabase('meals', [
+            'id' => $id
+        ]);
+    }
 
 }

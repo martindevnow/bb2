@@ -27,11 +27,14 @@
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </a>
-                        <a href="/admin/meals/delete">
-                            <button class="btn btn-danger btn-xs">
+                        <form action="/admin/meals/{{ $meal->id }}" method="POST">
+                            <?= csrf_field() ?>
+                            <input name="_method" type="hidden" value="DELETE">
+                            <input name="meal_id" type="hidden" value="{{ $meal->id }}">
+                            <button class="btn btn-xs btn-danger">
                                 <i class="fa fa-trash"></i>
                             </button>
-                        </a>
+                        </form>
                     </td>
                 </tr>
             </tbody>
