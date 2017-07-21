@@ -33,6 +33,10 @@ class ToppingsUnitTest extends TestCase
         $this->assertEquals(2, $topping->cost_per_kg);
     }
 
+    /**
+     * Mutators
+     */
+
     /** @test */
     public function cost_is_mutated_when_saving() {
         $costInDollars = 1;
@@ -57,6 +61,9 @@ class ToppingsUnitTest extends TestCase
 
     }
 
+    /**
+     * Relationships
+     */
 
     /** @test */
     public function it_has_many_meals_that_it_belongs_to() {

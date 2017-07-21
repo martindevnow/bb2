@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Support\Facades\DB;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Tests\TestCase;
@@ -32,6 +33,38 @@ class MeatsTest extends TestCase
         $this->assertEquals('Ground', $meat->variety);
         $this->assertEquals(1.5, $meat->cost_per_lb);
     }
+
+    /**
+     * Mutators
+     */
+
+    /** @test */
+    public function cost_is_mutated_when_saving() {
+        $costInDollars = 1;
+        $costInCents = $costInDollars * 100;
+
+        factory(Meat::class)->create(['cost_per_lb' => $costInDollars]);
+        $this->assertDatabaseHas('meats', ['cost_per_lb' => $costInCents]);
+    }
+
+    /** @test */
+    public function cost_is_mutated_when_retrieving() {
+        $costInDollars = 1;
+        $costInCents = $costInDollars * 100;
+
+        $meat = factory(Meat::class)->make([
+            'code'=> 'THISMEAT',
+            'cost_per_lb' => $costInCents
+        ]);
+        DB::table('meats')->insert($meat->toArray());
+        $meat_clone = Meat::whereCode('THISMEAT')->firstOrFail();
+        $this->assertEquals($costInDollars, $meat_clone->cost_per_lb);
+
+    }
+
+    /**
+     * Relationships
+     */
 
     /** @test */
     public function it_has_many_meals_that_it_belongs_to() {

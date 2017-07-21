@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AdminMeatsTest extends DuskTestCase
 {
+    use DatabaseMigrations;
 
     /** @test */
     public function it_can_add_a_new_meat()
