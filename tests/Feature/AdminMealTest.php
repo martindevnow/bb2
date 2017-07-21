@@ -54,15 +54,37 @@ class AdminMealTest extends TestCase
         $meal = factory(Meal::class)->create();
         $this->loginAsAdmin();
 
-        $this->get('/admin/meals')
+        $this->get('/admin/meals')  // INDEX method
             ->assertSee($meal->label);
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_single_meal() {
+        $this->loginAsAdmin();
+
+        $meal = factory(Meal::class)->create();
+
+        $this->get('/admin/meals/' . $meal->id) // SHOW method
+            ->assertSee($meal->code);
+    }
+
+    /** @test */
+    public function meats_are_visible_on_the_individual_meal_page() {
+        $this->loginAsAdmin();
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class, 3)->create();
+
+        $this->get('/admin/meals/' . $meal->id) // SHOW method
+            ->assertSee($meat[0]->code)
+            ->assertSee($meat[1]->code)
+            ->assertSee($meat[2]->code);
     }
 
     /** @test */
     public function an_admin_can_see_the_form_to_add_a_meal() {
         $this->loginAsAdmin();
 
-        $this->get('/admin/meals/create')
+        $this->get('/admin/meals/create')   // CREATE method
             ->assertStatus(200)
             ->assertSee('<form');
     }
@@ -73,29 +95,44 @@ class AdminMealTest extends TestCase
 
         $meal = factory(Meal::class)->make();
 
-        $this->post('/admin/meals', $meal->toArray());
+        $this->post('/admin/meals', $meal->toArray());  // STORE method
         $this->assertDatabaseHas('meals', $meal->toArray());
     }
 
     /** @test */
-    public function an_admin_can_view_a_simgle_meal() {
+    public function an_admin_can_edit_a_meal() {
         $this->loginAsAdmin();
 
         $meal = factory(Meal::class)->create();
 
-        $this->get('/admin/meals/' . $meal->id)
-                ->assertSee($meal->code);
+        $this->get('/admin/meals/' . $meal->id . '/edit')   // EDIT method
+            ->assertStatus(200);
+        $this->assertSee('<form')
+            ->assertSee($meal->label);
     }
 
     /** @test */
-    public function meats_are_visible_on_the_individual_meal_page() {
+    public function an_admin_can_save_changes_to_a_meal() {
         $this->loginAsAdmin();
-        $meal = factory(Meal::class)->create();
-        $meat = factory(Meat::class, 3)->create();
 
-        $this->get('/admin/meals/' . $meal->id)
-            ->assertSee($meat[0]->code)
-            ->assertSee($meat[1]->code)
-            ->assertSee($meat[2]->code);
+        $meal = factory(Meal::class)->create();
+        $id = $meal->id;
+
+        $post_data = $meal->toArray();
+        unset($post_data['id']);
+
+        $post_data['label'] = 'NEW_LABEL';
+        $post_data['_method'] = 'PATCH';
+
+        $this->post('/admin/meals/'. $id, $post_data)   // UPDATE method
+            ->assertStatus(302);
+        $this->assertDatabaseHas('meals', [
+            'code' => $post_data['code'],
+            'label' => $post_data['label'],
+            'id' => $id
+        ]);
     }
+
+
+
 }

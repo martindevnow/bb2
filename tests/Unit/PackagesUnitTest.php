@@ -29,8 +29,6 @@ class PackagesUnitTest extends TestCase
 
         $this->assertEquals('BASIC', $package->code);
         $this->assertEquals('Basic', $package->label);
-
-
     }
 
     /**
@@ -43,12 +41,13 @@ class PackagesUnitTest extends TestCase
         $package = factory(Package::class)->create();
 
         $package->addMeal($meal[0], '1-B');
-
         $package = $package->fresh(['meals']);
+
         $this->assertCount(1, $package->meals);
 
         $package->addMeal($meal[1], '1-D');
         $package = $package->fresh(['meals']);
+
         $this->assertCount(2, $package->meals);
     }
 
@@ -59,9 +58,10 @@ class PackagesUnitTest extends TestCase
 
         $package->addMeal($meal, '1-B');
         $package = $package->fresh(['meals']);
-        $package->removeMeal('1-B');
 
+        $package->removeMeal('1-B');
         $package = $package->fresh(['meals']);
+
         $this->assertCount(0, $package->meals);
     }
 
@@ -75,7 +75,6 @@ class PackagesUnitTest extends TestCase
             'package_id'   => $package->id,
             'meal_id'   => $meal->id,
         ]);
-
         $package = $package->fresh(['meals']);
 
         $this->assertTrue($package->hasMeal($meal));
@@ -108,7 +107,6 @@ class PackagesUnitTest extends TestCase
             'package_id'   => $package->id,
             'meal_id'   => $meal->id,
         ]);
-
         $package = $package->fresh(['meals']);
 
         $this->assertTrue($package->hasMeal($meal));
@@ -124,8 +122,8 @@ class PackagesUnitTest extends TestCase
         $package = $package->fresh(['meals']);
 
         $package->removeMeal('2-B');
-
         $package = $package->fresh(['meals']);
+
         $this->assertCount(0, $package->meals);
     }
 
@@ -138,7 +136,6 @@ class PackagesUnitTest extends TestCase
         $package = $package->fresh(['meals']);
 
         $package->addMeal($meal[1]->id, '2-B');
-
         $package = $package->fresh(['meals']);
 
         $this->assertEquals($meal[1]->id, $package->meals()->first()->id);

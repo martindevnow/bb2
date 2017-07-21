@@ -55,7 +55,7 @@ class MealsController extends Controller
             'meal_value'   => 'required|integer|between:1,2',
         ]);
 
-        $meal->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']))
+        $meal->fill($request->only(['code', 'label', 'meal_value']))
             ->save();
 
         flash('Updated the meal labeled: ' . $meal->label)->success();
