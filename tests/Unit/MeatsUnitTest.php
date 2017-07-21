@@ -59,7 +59,6 @@ class MeatsTest extends TestCase
         DB::table('meats')->insert($meat->toArray());
         $meat_clone = Meat::whereCode('THISMEAT')->firstOrFail();
         $this->assertEquals($costInDollars, $meat_clone->cost_per_lb);
-
     }
 
     /**

@@ -58,7 +58,6 @@ class ToppingsUnitTest extends TestCase
         DB::table('toppings')->insert($topping->toArray());
         $topping_clone = Topping::whereCode('THISTOPPING')->firstOrFail();
         $this->assertEquals($costInDollars, $topping_clone->cost_per_kg);
-
     }
 
     /**
