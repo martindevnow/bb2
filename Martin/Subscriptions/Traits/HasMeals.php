@@ -11,9 +11,9 @@ trait HasMeals {
      * @param $calendar_code
      * @return
      */
-    public function addMeal($meal, $calendar_code) {
-        if ($this->hasMeal($meal)) {
-            $this->removeMeal($meal);
+    public function addMeal($meal, string $calendar_code) {
+        if ($this->hasMeal($calendar_code)) {
+            $this->removeMeal($calendar_code);
         }
 
         if (is_string($meal))
@@ -22,11 +22,13 @@ trait HasMeals {
                 compact('calendar_code')
             );
 
-        if ($meal instanceof Meal)
-            return $this->meals()->attach(
+        if ($meal instanceof Meal) {
+            $attach = $this->meals()->save(
                 $meal,
                 compact('calendar_code')
             );
+            return $attach;
+        }
 
         return $this->meals()->attach(
             Meal::findOrFail($meal),
@@ -35,6 +37,9 @@ trait HasMeals {
     }
 
     public function hasMeal($meal) {
+        if ($this->meals->count() == 0)
+            return false;
+
         if ($meal instanceof Meal)
             return !! $this->meals->filter(function($val, $key) use ($meal) {
                 return $val->id === $meal->id;

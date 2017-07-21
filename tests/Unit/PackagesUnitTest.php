@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Martin\Products\Meal;
 use Martin\Products\Topping;
+use Martin\Subscriptions\MealPackage;
 use Martin\Subscriptions\Package;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -43,6 +44,7 @@ class PackagesUnitTest extends TestCase
 
         $package->addMeal($meal[0], '1-B');
 
+        $package = $package->fresh(['meals']);
         $this->assertCount(1, $package->meals);
 
         $package->addMeal($meal[1], '1-D');
@@ -56,6 +58,7 @@ class PackagesUnitTest extends TestCase
         $package = factory(Package::class)->create();
 
         $package->addMeal($meal, '1-B');
+        $package = $package->fresh(['meals']);
         $package->removeMeal('1-B');
 
         $package = $package->fresh(['meals']);
@@ -73,6 +76,8 @@ class PackagesUnitTest extends TestCase
             'meal_id'   => $meal->id,
         ]);
 
+        $package = $package->fresh(['meals']);
+
         $this->assertTrue($package->hasMeal($meal));
         $this->assertTrue($package->hasMeal($meal->id));
     }
@@ -87,6 +92,7 @@ class PackagesUnitTest extends TestCase
             'package_id'   => $package->id,
             'meal_id'   => $meal->id,
         ]);
+        $package = $package->fresh(['meals']);
 
         $this->assertTrue($package->hasMeal($meal));
         $this->assertTrue($package->hasMeal($meal->id));
@@ -103,6 +109,8 @@ class PackagesUnitTest extends TestCase
             'meal_id'   => $meal->id,
         ]);
 
+        $package = $package->fresh(['meals']);
+
         $this->assertTrue($package->hasMeal($meal));
         $this->assertTrue($package->hasMeal($meal->id));
     }
@@ -113,6 +121,8 @@ class PackagesUnitTest extends TestCase
         $meal = factory(Meal::class)->create();
 
         $package->addMeal($meal->id, '2-B');
+        $package = $package->fresh(['meals']);
+
         $package->removeMeal('2-B');
 
         $package = $package->fresh(['meals']);
@@ -121,13 +131,16 @@ class PackagesUnitTest extends TestCase
 
     /** @test */
     public function adding_a_meal_with_same_calendar_code_replaces_old() {
-        $package = factory(Package::class)->create();
-        $meal = factory(Meal::class, 2)->create();
+        $package = factory(Package::class)->create(['code' => 'package']);
+        $meal = factory(Meal::class, 2)->create(['code' => 'meal']);
 
         $package->addMeal($meal[0]->id, '2-B');
+        $package = $package->fresh(['meals']);
+
         $package->addMeal($meal[1]->id, '2-B');
 
         $package = $package->fresh(['meals']);
+
         $this->assertEquals($meal[1]->id, $package->meals()->first()->id);
     }
 }

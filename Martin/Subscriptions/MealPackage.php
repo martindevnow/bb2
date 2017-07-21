@@ -11,6 +11,8 @@ class MealPackage extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'meal_package';
+
     protected $fillable = [
         'meal_id',
         'package_id',
