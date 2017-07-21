@@ -55,11 +55,20 @@ class MealsController extends Controller
             'meal_value'   => 'required|integer|between:1,2',
         ]);
 
-        $meal->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']));
-        $meal->save();
+        $meal->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']))
+            ->save();
 
-        flash('Your changes have been saved.')->success();
+        flash('Updated the meal labeled: ' . $meal->label)->success();
+
         return redirect('/admin/meals');
+    }
+
+    public function destroy(Meal $meal) {
+        $meal->delete();
+
+        flash('The meal: ' . $meal->label . ' has been deleted.')->success();
+
+        return redirect()->back();
     }
 
     /**

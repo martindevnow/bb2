@@ -27,6 +27,11 @@ Vue.component(
 );
 
 Vue.component(
+    'admin-meals-select-box',
+    require('./components/Admin/Meals/SelectBox.vue')
+);
+
+Vue.component(
     'quotes-calculator',
     require('./components/Quotes/Calculator.vue')
 );

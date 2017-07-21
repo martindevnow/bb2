@@ -52,19 +52,19 @@ trait HasMeals {
 
         if (is_string($meal))
             return !! $this->meals->filter(function($val, $key) use ($meal) {
-                return $val->pivot->calendar_code === $meal;
-            });
+                return $val->pivot->calendar_code == $meal;
+            })->count();
 
         // TODO: Throw an error here.
         return false;
     }
 
     public function removeMeal($meal) {
-        if (is_string($meal))
-        {
+        if (is_string($meal)) {
             $meals = $this->meals->filter(function($val, $key) use ($meal) {
                 return $val->pivot->calendar_code == $meal;
             });
+
             if ( $meals->count() !== 1)
                 return false;   // TODO: Throw an error here
 
@@ -81,8 +81,8 @@ trait HasMeals {
     public function getMeal($meal) {
         if (is_string($meal))
             return $this->meals->filter(function($val, $key) use ($meal) {
-                return $val->pivot->calendar_code === $meal;
-            })[0];
+                return $val->pivot->calendar_code == $meal;
+            })->first();
 
         // TODO: Throw an error here...
         return false;

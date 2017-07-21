@@ -61,6 +61,53 @@
     {{--<script defer src="/js/packs/solid.js"></script>--}}
     {{--<script defer src="/js/fontawesome.js"></script>--}}
 
+    <style>
+        @media (min-width: 768px){
+            .seven-cols .col-md-1,
+            .seven-cols .col-sm-1,
+            .seven-cols .col-lg-1  {
+                width: 100%;
+                *width: 100%;
+            }
+        }
+
+
+        @media (min-width: 992px) {
+            .seven-cols .col-md-1,
+            .seven-cols .col-sm-1,
+            .seven-cols .col-lg-1 {
+                width: 14.285714285714285714285714285714%;
+                *width: 14.285714285714285714285714285714%;
+            }
+        }
+
+
+        @media (min-width: 1200px) {
+            .seven-cols .col-md-1,
+            .seven-cols .col-sm-1,
+            .seven-cols .col-lg-1 {
+                width: 14.285714285714285714285714285714%;
+                *width: 14.285714285714285714285714285714%;
+            }
+        }
+
+        td > form {
+            display: inline-block;
+        }
+
+        .schedule-day {
+            border: 1px solid dimgrey;
+            /*border-right: 1px solid dimgrey;*/
+        }
+
+        .schedule-day-title {
+            text-align: center;
+            font-size: 2rem;
+
+
+        }
+    </style>
+
 </head>
 
 <!--
@@ -305,6 +352,8 @@ you can add as many as you like
 </script>
 
 
+@yield('scripts')
+
 
 {{--@include('layouts.smartadmin.js.random')--}}
 
@@ -322,7 +371,6 @@ you can add as many as you like
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(ga, s);
     })();
-
 </script>
 
 </body>

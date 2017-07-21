@@ -52,5 +52,13 @@ class ToppingsController extends Controller
         $topping->save();
         return redirect('/admin/toppings');
     }
+
+    public function destroy(Topping $topping) {
+        $topping->delete();
+
+        flash('The topping: ' . $topping->label . ' has been deleted.')->success();
+
+        return redirect()->back();
+    }
 }
 

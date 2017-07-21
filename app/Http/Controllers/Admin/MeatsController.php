@@ -56,5 +56,13 @@ class MeatsController extends Controller
         $meat->save();
         return redirect('/admin/meats');
     }
+
+    public function destroy(Meat $meat) {
+        $meat->delete();
+
+        flash('The meat: ' . $meat->type .' - '. $meat->variety . ' has been deleted.')->success();
+
+        return redirect()->back();
+    }
 }
 

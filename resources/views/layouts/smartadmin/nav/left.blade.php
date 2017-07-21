@@ -39,6 +39,10 @@
                 <a href="/admin/toppings"><i class="fa fa-cutlery"></i>
                     <span class="menu-item-parent">Toppings</span></a>
             </li>
+            <li>
+                <a href="/admin/packages"><i class="fa fa-cutlery"></i>
+                    <span class="menu-item-parent">Packages</span></a>
+            </li>
 
 
             {{--<li class="active">--}}

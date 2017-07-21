@@ -1,9 +1,13 @@
 @extends('layouts.smartadmin.app')
 
 @section('content')
-    <h1>Toppings</h1>
+    <h1>Toppings: All</h1>
     <div class="row">
-        {{--<admin-toppings-navigator></admin-toppings-navigator>--}}
+        <a href="/admin/toppings/create">
+            <button class="btn btn-block btn-primary">
+                <i class="fa fa-wrench"></i> Create New
+            </button>
+        </a>
 
         <table class="table table-responsive table-striped table-bordered">
             <thead>
@@ -26,11 +30,15 @@
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </a>
-                        <a href="/admin/toppings/delete">
-                            <button class="btn btn-danger btn-xs">
+
+                        <form action="/admin/toppings/{{ $topping->id }}" method="POST">
+                            <?= csrf_field() ?>
+                            <input name="_method" type="hidden" value="DELETE">
+                            <input name="topping_id" type="hidden" value="{{ $topping->id }}">
+                            <button class="btn btn-xs btn-danger">
                                 <i class="fa fa-trash"></i>
                             </button>
-                        </a>
+                        </form>
                     </td>
                 </tr>
             @endforeach
