@@ -9,8 +9,6 @@ use Martin\Products\Meal;
 
 class MealPackage extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'meal_package';
 
     protected $fillable = [
@@ -18,9 +16,6 @@ class MealPackage extends Model
         'package_id',
         'calendar_code',
     ];
-
-
-
 
     /**
      * Relationships

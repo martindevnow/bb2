@@ -1,12 +1,13 @@
 <template>
     <section>
         <div class="form-group">
+            <span class="meal-title">{{ label }}</span>
             <select class="form-control meal-select"
                     :id="selectedId"
-                    v-model="meal"
+                    v-model="selectedMeal"
             >
-                <option>{{ defaultMeal.label }}...</option>
                 <option v-for="meal in meals"
+                        :selected="meal.id === selectedMeal.id"
                         :value="meal">{{ meal.label }}</option>
             </select>
         </div>
@@ -16,15 +17,23 @@
 
 <script>
 export default {
-    props: ['day', 'package_id', 'meals', 'label', 'defaultMeal'],
+    props: ['day', 'package_id', 'label', 'preset_meal_id'],
     data() {
         return {
-            meal: {}
+            selectedMeal: {},
+            meals: []
         }
     },
     mounted() {
-        if (this.defaultMeal == '') {
-            this.defaultMeal = { label: this.label };
+        this.loadMeals();
+        if (this.preset_meal_id != 0) {
+            let meals = this.meals.filter((meal) => {
+                return meal.id == this.preset_meal_id;
+            });
+            if (meals.length !== 1) {
+                return null;
+            }
+            this.selectedMeal = meals[0];
         }
     },
     computed: {
@@ -33,17 +42,24 @@ export default {
         }
     },
     methods: {
+        loadMeals() {
+            let vm = this;
+            axios.get('/api/meals').then(function(response) {
+                vm.meals = response.data;
+            }).catch(function(error) {
+                console.log(error);
+            })
+        }
     },
     watch: {
-        meal(newMeal, oldMeal) {
+        selectedMeal(newMeal, oldMeal) {
             if (newMeal == 'Breakfast' || newMeal == 'Dinner' || newMeal == '')
                 return ;
 
             axios.post('/admin/packages/' + this.package_id + '/setMeal', {
-                'meal_id': this.meal.id,
+                'meal_id': this.selectedMeal.id,
                 'calendar_code': this.day
             }).then(function(response) {
-
                 $('.ajax-success-message').show().delay(3000).fadeOut(350);
             }).catch(function(error) {
                 alert('There was an error.');

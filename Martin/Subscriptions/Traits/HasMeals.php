@@ -3,6 +3,7 @@
 namespace Martin\Subscriptions\Traits;
 
 use Martin\Products\Meal;
+use Martin\Subscriptions\MealPackage;
 
 trait HasMeals {
 
@@ -68,7 +69,12 @@ trait HasMeals {
             if ( $meals->count() !== 1)
                 return false;   // TODO: Throw an error here
 
-            return $meals->first()->delete();
+            $mealToRemove = $meals->first();
+            $pivot = MealPackage::where('package_id', $mealToRemove->pivot->package_id)
+                ->where('meal_id', $mealToRemove->pivot->meal_id)
+                ->where('calendar_code', $meal)
+                ->first();
+            return $pivot->delete();
         }
 
         if ($meal instanceof Meal)

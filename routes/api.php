@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('meats', function() {
     return \Martin\Products\Meat::all();
 });
+
+Route::get('meals', function() {
+    return \Martin\Products\Meal::all();
+});

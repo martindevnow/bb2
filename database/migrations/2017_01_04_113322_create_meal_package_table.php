@@ -15,13 +15,9 @@ class CreateMealPackageTable extends Migration
     {
         Schema::create('meal_package', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('meal_id');
             $table->integer('package_id');
             $table->string('calendar_code');
-
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 

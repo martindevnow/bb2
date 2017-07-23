@@ -91,4 +91,39 @@ class PackagesController extends Controller
         return response(null, 200);
     }
 
+    /**
+     * @param Package $package
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateCalendar(Package $package, Request $request) {
+        $this->validate($request, [
+            'selected-1B'  => 'required|integer|exists:meals,id',
+            'selected-2B'  => 'required|integer|exists:meals,id',
+            'selected-3B'  => 'required|integer|exists:meals,id',
+            'selected-4B'  => 'required|integer|exists:meals,id',
+            'selected-5B'  => 'required|integer|exists:meals,id',
+            'selected-6B'  => 'required|integer|exists:meals,id',
+            'selected-7B'  => 'required|integer|exists:meals,id',
+            'selected-1D'  => 'required|integer|exists:meals,id',
+            'selected-2D'  => 'required|integer|exists:meals,id',
+            'selected-3D'  => 'required|integer|exists:meals,id',
+            'selected-4D'  => 'required|integer|exists:meals,id',
+            'selected-5D'  => 'required|integer|exists:meals,id',
+            'selected-6D'  => 'required|integer|exists:meals,id',
+            'selected-7D'  => 'required|integer|exists:meals,id',
+        ]);
+
+        foreach($request->all() as $param => $val) {
+            if (strpos($param, 'selected') !== false) {
+                $day = explode('-', $param)[1];
+                $package->addMeal((int) $val, $day);
+            }
+        }
+
+        flash('The calendar has been updated as shown below.')->success();
+
+        return redirect()->back();
+    }
+
 }

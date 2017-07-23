@@ -29,21 +29,23 @@ class Package extends Model
     /**
      * Get the average cost per pound of food for this package
      *
-     * @param Pet $pet
      * @return float|int
      */
-    public function costPerLb(Pet $pet = null) {
-        $costPerLb = $this->meals->reduce(function($carry, Meal $meal) {
+    public function costPerLb() {
+        if (! $this->meals()->count())
+            return 0;
+
+        return $this->meals->reduce(function($carry, Meal $meal) {
                 return $carry + $meal->costPerLb();
             }) / $this->meals()->count();
-
-        if ( ! $pet)
-            return $costPerLb;
-
-        return $costPerLb * $pet->mealSize();
-
     }
 
+    /**
+     * Get the cost per meal for the pet on this plan
+     *
+     * @param Pet $pet
+     * @return float
+     */
     public function costPerMeal(Pet $pet) {
         return $pet->mealSize() * $this->costPerLb() ;
     }

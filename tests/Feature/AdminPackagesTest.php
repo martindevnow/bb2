@@ -74,9 +74,9 @@ class AdminPackagesTest extends TestCase
         $meal = factory(Meal::class, 3)->create();
 
         $this->get('/admin/packages/' . $package->id) // SHOW method
-            ->assertSee($meal[0]->code)
-            ->assertSee($meal[1]->code)
-            ->assertSee($meal[2]->code);
+            ->assertSee($meal[0]->label)
+            ->assertSee($meal[1]->label)
+            ->assertSee($meal[2]->label);
     }
 
     /** @test */

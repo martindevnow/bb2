@@ -216,6 +216,6 @@ class PackagesUnitTest extends TestCase
 
         $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2.0]);
 
-        $this->assertEquals(($chickenCost * 7 + $turkeyCost * 7) / 14 * 0.5, $package->costPerLb($pet));
+        $this->assertEquals(($chickenCost * 7 + $turkeyCost * 7) / 14 * 0.5, $package->costPerMeal($pet));
     }
 }
