@@ -23,6 +23,18 @@ $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(\Martin\Customers\Pet::class, function (Faker\Generator $faker) {
+    return [
+        'name'  => ucwords($faker->word),
+        'species'  => ucwords($faker->word),
+        'breed'   => $faker->word,
+        'weight'   => $faker->numberBetween(35, 120),
+        'activity_level'   => $faker->randomElement([2.0, 2.5, 3.0]),
+        'birthday'   => $faker->dateTime,
+        'user_id'   => factory(\Martin\ACL\User::class)->create()->id,
+    ];
+});
+
 $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker) {
     return [
         'code'  => ucwords($faker->word),

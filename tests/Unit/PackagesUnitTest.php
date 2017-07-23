@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use Martin\Customers\Pet;
 use Martin\Products\Meal;
+use Martin\Products\Meat;
 use Martin\Products\Topping;
 use Martin\Subscriptions\MealPackage;
 use Martin\Subscriptions\Package;
@@ -139,5 +141,81 @@ class PackagesUnitTest extends TestCase
         $package = $package->fresh(['meals']);
 
         $this->assertEquals($meal[1]->id, $package->meals()->first()->id);
+    }
+
+    /**
+     * Cost related stuff
+     */
+
+    /** @test */
+    public function it_returns_the_internal_cost_of_the_meat_on_average() {
+        $package = factory(Package::class)->create();
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+        $package = $package->fresh(['meals']);
+
+        $this->assertEquals(($chickenCost * 7 + $turkeyCost * 7) / 14, $package->costPerLb());
+    }
+
+    /** @test */
+    public function it_returns_the_internal_cost_of_the_meal_on_average() {
+        $package = factory(Package::class)->create();
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+        $package = $package->fresh(['meals']);
+
+        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2.0]);
+
+        $this->assertEquals(($chickenCost * 7 + $turkeyCost * 7) / 14 * 0.5, $package->costPerLb($pet));
     }
 }

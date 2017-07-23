@@ -174,4 +174,5 @@ class MealsTest extends TestCase
         $this->assertTrue($meal->hasTopping($topping->id));
         $this->assertTrue($meal->hasTopping($topping->code));
     }
+
 }

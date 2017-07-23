@@ -17,6 +17,7 @@ class Pet extends Model
         'breed',
         'weight',
         'birthday',
+        'activity_level'
     ];
 
     protected $dates = [
@@ -30,6 +31,29 @@ class Pet extends Model
      */
     public function getPlanQuantity() {
         return round($this->weight / 5);
+    }
+
+    public function mealSize() {
+        return $this->weight * $this->activity_level / 100 / 2;
+    }
+
+    public function mealSizeInGrams() {
+        return $this->mealSize() * 454;
+    }
+
+    /**
+     * @param $activity_level
+     * @return float|int
+     */
+    public function getActivityLevelAttribute($activity_level) {
+        return $activity_level / 100;
+    }
+
+    /**
+     * @param $activity_level
+     */
+    public function setActivityLevelAttribute($activity_level) {
+        $this->attributes['activity_level'] = round($activity_level * 100);
     }
 
     /**

@@ -22,6 +22,7 @@ class CreatePetsTable extends Migration
             $table->string('species')->nullable();
             $table->string('breed')->nullable();
             $table->integer('weight');
+            $table->integer('activity_level')->default(200);
             $table->dateTime('birthday')->nullable();
 
             $table->timestamps();
