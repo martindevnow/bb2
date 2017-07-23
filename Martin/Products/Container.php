@@ -75,6 +75,11 @@ class Container {
             + $this->sticker['cost'];
     }
 
+    /**
+     * Return the cost per week for the meat containers
+     *
+     * @return float|int
+     */
     public function costPerWeek() {
         return $this->cost() * $this->containersPerWeek();
     }

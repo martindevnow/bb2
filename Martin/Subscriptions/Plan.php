@@ -11,17 +11,56 @@ class Plan extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'stripe_plan_name',
+        'user_id',
+        'delivery_id',
+        'shipping_cost',    // cents
+
+        'pet_id',
+        'pet_weight',       // lbs
+        'pet_activity_level',
+
         'package_id',
-        'frequency_id',
+        'package_stripe_code',
+        'package_base',     // cents
+
+        'weeks_at_a_time',
         'active',
     ];
-
 
 
     /**
      * Mutators
      */
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getPackageBaseAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPackageBaseAttribute($value) {
+        $this->attributes['package_base'] = round($value * 100);
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getShippingCostAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setShippingCostAttribute($value) {
+        $this->attributes['shipping_cost'] = round($value * 100);
+    }
 
 
     /**
@@ -31,7 +70,7 @@ class Plan extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subPackage() {
+    public function package() {
         return $this->belongsTo(Package::class, 'package_id');
     }
 }

@@ -10,7 +10,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PetsTest extends TestCase
+class PetsUnitTest extends TestCase
 {
     use DatabaseMigrations;
 

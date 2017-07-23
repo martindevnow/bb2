@@ -75,4 +75,40 @@ $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator
     ];
 });
 
+$factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(\Martin\ACL\User::class)->create()->id,
+        'delivery_id' => factory(\Martin\Core\Address::class)->create()->id,
+        'shipping_cost' => $faker->numberBetween(6,15),
+        'pet_id' => factory(\Martin\Customers\Pet::class)->create()->id,
+        'pet_weight' => $faker->numberBetween(10,90),
+        'pet_activity_level' => $faker->randomElement([2, 2.5, 3]),
+        'package_id' => factory(\Martin\Subscriptions\Package::class)->create()->id,
+        'package_stripe_code' => $faker->word,
+        'package_base' => $faker->numberBetween(100,300),
+        'weeks_at_a_time' => $faker->numberBetween(1,4),
+        'active' => 1,
+    ];
+});
+
+$factory->define(\Martin\Core\Address::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->word,
+        'company' => $faker->word,
+
+        'street_1' => $faker->streetAddress,
+        'street_2' => '',
+        'city' => $faker->city,
+        'province' => $faker->word,
+        'postal_code' => $faker->postcode,
+        'country' => $faker->country,
+
+        'phone' => $faker->phoneNumber,
+        'buzzer' => $faker->numberBetween(1000,5000),
+    ];
+});
+
+
+
 

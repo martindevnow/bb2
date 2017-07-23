@@ -16,14 +16,19 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('plan_name');
+            $table->integer('user_id');
+            $table->integer('delivery_id');
+            $table->integer('shipping_cost');
+
+            $table->integer('pet_id');
+            $table->integer('pet_weight');
+            $table->integer('pet_activity_level');
 
             $table->integer('package_id');
-            $table->integer('frequency_id');
-            $table->integer('activity_level_id');
+            $table->string('package_stripe_code');
+            $table->integer('package_base');
 
-            $table->integer('internal_cost');
-            $table->integer('external_cost');
+            $table->integer('weeks_at_a_time');
 
             $table->boolean('active')->default(true);
 
