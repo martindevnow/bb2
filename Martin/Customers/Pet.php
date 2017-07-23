@@ -5,7 +5,7 @@ namespace Martin\Customers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
-use Martin\Products\Subscription;
+use Martin\Subscriptions\Subscription;
 
 class Pet extends Model
 {

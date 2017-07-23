@@ -150,4 +150,43 @@ class AdminPackagesTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function an_admin_can_update_the_calendar() {
+        $this->loginAsAdmin();
+
+        $package = factory(Package::class)->create();
+        $meals = factory(Meal::class, 2)->create();
+
+        $post_data = [];
+        $post_data['selected-1B'] = $meals[0]->id;
+        $post_data['selected-2B'] = $meals[0]->id;
+        $post_data['selected-3B'] = $meals[0]->id;
+        $post_data['selected-4B'] = $meals[0]->id;
+        $post_data['selected-5B'] = $meals[0]->id;
+        $post_data['selected-6B'] = $meals[0]->id;
+        $post_data['selected-7B'] = $meals[0]->id;
+        $post_data['selected-1D'] = $meals[1]->id;
+        $post_data['selected-2D'] = $meals[1]->id;
+        $post_data['selected-3D'] = $meals[1]->id;
+        $post_data['selected-4D'] = $meals[1]->id;
+        $post_data['selected-5D'] = $meals[1]->id;
+        $post_data['selected-6D'] = $meals[1]->id;
+        $post_data['selected-7D'] = $meals[1]->id;
+        $post_data['_method'] = 'PUT';
+
+        $this->post('/admin/packages/' . $package->id . '/updateCalendar', $post_data)
+            ->assertStatus(302);
+
+        $this->assertDatabaseHas('meal_package', [
+            'package_id' => $package->id,
+            'meal_id'   => $meals[0]->id,
+            'calendar_code' => '1B'
+        ]);
+        $this->assertDatabaseHas('meal_package', [
+            'package_id' => $package->id,
+            'meal_id'   => $meals[1]->id,
+            'calendar_code' => '1D'
+        ]);
+    }
+
 }
