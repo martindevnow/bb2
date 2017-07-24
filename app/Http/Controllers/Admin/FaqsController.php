@@ -16,10 +16,11 @@ class FaqsController extends Controller
      */
     public function index() {
         $faq_categories = FaqCategory::with('faqs')->get();
-        $faqs = Faq::with('category')->get();
+        $uncategorized_faqs = Faq::with('category')
+            ->where('faq_category_id', null)->get();
 
         return view('admin.faqs.index')
-            ->with(compact('faqs', 'faq_categories'));
+            ->with(compact('uncategorized_faqs', 'faq_categories'));
     }
 
     /**
