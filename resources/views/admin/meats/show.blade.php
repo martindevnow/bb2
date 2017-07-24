@@ -1,7 +1,7 @@
 @extends('layouts.smartadmin.app')
 
 @section('content')
-    <h1>Meals</h1>
+    <h1>Meals: Details</h1>
     <div class="row">
         {{--<admin-meats-navigator></admin-meats-navigator>--}}
 

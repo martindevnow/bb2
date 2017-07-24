@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Meats: Add</h1>
+    <h1>Toppings: Add</h1>
     <form action="/admin/toppings" method="POST">
         <?= csrf_field() ?>
 
@@ -15,7 +15,7 @@
                            class="form-control"
                            id="code"
                            aria-describedby="codeHelp"
-                           placeholder="Code of the topping"
+                           placeholder="Code"
                            autocomplete="off">
                     @if ($errors->has('code'))
                         <span class="help-block">
@@ -35,7 +35,7 @@
                            class="form-control"
                            id="label"
                            aria-describedby="labelHelp"
-                           placeholder="Label of topping"
+                           placeholder="Label"
                            autocomplete="off">
                     @if ($errors->has('label'))
                         <span class="help-block">
@@ -43,19 +43,19 @@
                         </span>
                     @endif
                 </div>
-                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">What appears on the website.</small>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="cost_per_kg">Cost_per_kg:</label>
+                    <label for="cost_per_kg">Cost per Kilogram:</label>
                     <input type="text"
                            name="cost_per_kg"
                            value="{{ old('cost_per_kg') }}"
                            class="form-control"
                            id="cost_per_kg"
                            aria-describedby="cost_per_kgHelp"
-                           placeholder="How much does it cost?"
+                           placeholder="Cost"
                            autocomplete="off">
                     @if ($errors->has('cost_per_kg'))
                         <span class="help-block">
@@ -63,7 +63,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="cost_per_kgHelp" class="form-text text-muted">Cost per KG of topping</small>
+                <small id="cost_per_kgHelp" class="form-text text-muted">Cost per KG of this topping</small>
             </div>
 
         <button type="submit" class="btn btn-primary">Add</button>

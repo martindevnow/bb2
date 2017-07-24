@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Meats: Edit</h1>
+    <h1>FAQs: Edit</h1>
     <form action="/admin/faqs/{{ $faq->id }}" method="POST">
         <?= csrf_field() ?>
             <input name="_method" type="hidden" value="PUT">
@@ -65,7 +65,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="questionHelp" class="form-text text-muted">What is the question?</small>
+                <small id="questionHelp" class="form-text text-muted">The question being asked.</small>
             </div>
 
 
@@ -86,7 +86,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="answerHelp" class="form-text text-muted">What is the answer?</small>
+                <small id="answerHelp" class="form-text text-muted">The answer to the question.</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>

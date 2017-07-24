@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Meats: Add</h1>
+    <h1>FAQs: Add</h1>
     <form action="/admin/faqs" method="POST">
         <?= csrf_field() ?>
 
@@ -15,7 +15,7 @@
                            class="form-control"
                            id="code"
                            aria-describedby="codeHelp"
-                           placeholder="Code of the faq"
+                           placeholder="Code"
                            autocomplete="off">
                     @if ($errors->has('code'))
                         <span class="help-block">
@@ -35,7 +35,7 @@
                            class="form-control"
                            id="label"
                            aria-describedby="labelHelp"
-                           placeholder="Label of faq"
+                           placeholder="Label"
                            autocomplete="off">
                     @if ($errors->has('label'))
                         <span class="help-block">
@@ -43,7 +43,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">What will appear on the website.</small>
             </div>
 
             <div class="form-group">
@@ -83,7 +83,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="answerHelp" class="form-text text-muted">The asnwer to the question</small>
+                <small id="answerHelp" class="form-text text-muted">The answer to the question.</small>
             </div>
 
         <button type="submit" class="btn btn-primary">Add</button>

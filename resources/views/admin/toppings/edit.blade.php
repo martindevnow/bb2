@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Meats: Edit</h1>
+    <h1>Toppings: Edit</h1>
     <form action="/admin/toppings/{{ $topping->id }}" method="POST">
         <?= csrf_field() ?>
             <input name="_method" type="hidden" value="PUT">
@@ -16,7 +16,7 @@
                            class="form-control"
                            id="code"
                            aria-describedby="codeHelp"
-                           placeholder="Code of the topping"
+                           placeholder="Code"
                            autocomplete="off">
                     @if ($errors->has('code'))
                         <span class="help-block">
@@ -36,7 +36,7 @@
                            class="form-control"
                            id="label"
                            aria-describedby="labelHelp"
-                           placeholder="Label of topping"
+                           placeholder="Label"
                            autocomplete="off">
                     @if ($errors->has('label'))
                         <span class="help-block">
@@ -44,7 +44,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">What appears on the website.</small>
             </div>
 
 
@@ -57,7 +57,7 @@
                            class="form-control"
                            id="cost_per_kg"
                            aria-describedby="cost_per_kgHelp"
-                           placeholder="Cost per pound of topping"
+                           placeholder="Cost"
                            autocomplete="off">
                     @if ($errors->has('cost_per_kg'))
                         <span class="help-block">
@@ -65,7 +65,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="cost_per_kgHelp" class="form-text text-muted">How much does this topping cost us?</small>
+                <small id="cost_per_kgHelp" class="form-text text-muted">Cost per KG of this topping.</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>

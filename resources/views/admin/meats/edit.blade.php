@@ -44,7 +44,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="typeHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="typeHelp" class="form-text text-muted">Species / Animal.</small>
             </div>
 
             <div class="form-group">
@@ -64,12 +64,12 @@
                         </span>
                     @endif
                 </div>
-                <small id="varietyHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
+                <small id="varietyHelp" class="form-text text-muted">Cut or Format</small>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="cost_per_lb">Cost_per_lb:</label>
+                    <label for="cost_per_lb">Cost per Pound:</label>
                     <input type="text"
                            name="cost_per_lb"
                            value="{{ $meat->cost_per_lb }}"
@@ -84,7 +84,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="cost_per_lbHelp" class="form-text text-muted">How much does this meat cost us?</small>
+                <small id="cost_per_lbHelp" class="form-text text-muted">Cost per pound of meat</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>

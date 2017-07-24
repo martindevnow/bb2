@@ -24,7 +24,11 @@
 
             @foreach($uncategorized_faqs as $faq)
                 <tr>
-                    <td>{{ $faq->code }}</td>
+                    <td>
+                        <a href="/admin/faqs/{{ $faq->id }}">
+                            {{ $faq->code }}
+                        </a>
+                    </td>
                     <td>{{ $faq->label }}</td>
                     <td>{{ $faq->question }}</td>
                     <td>{{ $faq->answer }}</td>

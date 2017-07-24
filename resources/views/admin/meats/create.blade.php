@@ -43,7 +43,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="typeHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="typeHelp" class="form-text text-muted">Species / Animal</small>
             </div>
 
             <div class="form-group">
@@ -63,12 +63,12 @@
                         </span>
                     @endif
                 </div>
-                <small id="varietyHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
+                <small id="varietyHelp" class="form-text text-muted">Cut or Format</small>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
-                    <label for="cost_per_lb">Cost_per_lb:</label>
+                    <label for="cost_per_lb">Cost per Pound:</label>
                     <input type="text"
                            name="cost_per_lb"
                            value="{{ old('cost_per_lb') }}"

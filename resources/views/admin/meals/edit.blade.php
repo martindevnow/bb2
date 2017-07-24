@@ -44,7 +44,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">What will appear on the website.</small>
             </div>
 
             <div class="form-group">
@@ -56,7 +56,7 @@
                            class="form-control"
                            id="meal_value"
                            aria-describedby="meal_valueHelp"
-                           placeholder="Meal Value"
+                           placeholder="1 or 2"
                            autocomplete="off">
                     @if ($errors->has('meal_value'))
                         <span class="help-block">
@@ -64,7 +64,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="meal_valueHelp" class="form-text text-muted">Like, cube, ground, chunk, slice, etc...</small>
+                <small id="meal_valueHelp" class="form-text text-muted">1 = one meal, 2 = one day's worth of food</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>

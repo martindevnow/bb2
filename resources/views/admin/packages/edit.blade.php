@@ -16,7 +16,7 @@
                            class="form-control"
                            id="code"
                            aria-describedby="codeHelp"
-                           placeholder="Code of the package"
+                           placeholder="Code"
                            autocomplete="off">
                     @if ($errors->has('code'))
                         <span class="help-block">
@@ -36,7 +36,7 @@
                            class="form-control"
                            id="label"
                            aria-describedby="labelHelp"
-                           placeholder="Label of package"
+                           placeholder="Label"
                            autocomplete="off">
                     @if ($errors->has('label'))
                         <span class="help-block">
@@ -44,7 +44,7 @@
                         </span>
                     @endif
                 </div>
-                <small id="labelHelp" class="form-text text-muted">Like, chicken, beef, etc...</small>
+                <small id="labelHelp" class="form-text text-muted">What appears on the website.</small>
             </div>
 
         <button type="submit" class="btn btn-primary" >Update</button>

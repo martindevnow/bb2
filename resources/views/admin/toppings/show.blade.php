@@ -1,7 +1,7 @@
 @extends('layouts.smartadmin.app')
 
 @section('content')
-    <h1>Meals</h1>
+    <h1>Toppings: Details</h1>
     <div class="row">
 
         <table class="table table-responsive table-striped table-bordered">

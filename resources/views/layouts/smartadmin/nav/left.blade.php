@@ -36,12 +36,32 @@
                     <span class="menu-item-parent">Meals</span></a>
             </li>
             <li>
-                <a href="/admin/toppings"><i class="fa fa-cutlery"></i>
+                <a href="/admin/toppings"><i class="fa fa-tint"></i>
                     <span class="menu-item-parent">Toppings</span></a>
             </li>
             <li>
-                <a href="/admin/packages"><i class="fa fa-cutlery"></i>
+                <a href="/admin/packages"><i class="fa fa-th-large"></i>
                     <span class="menu-item-parent">Packages</span></a>
+            </li>
+            <li>
+                <a href="/admin/faqs"><i class="fa fa-question"></i>
+                    <span class="menu-item-parent">FAQs</span></a>
+            </li>
+            <li>
+                <a href="/admin/users"><i class="fa fa-users"></i>
+                    <span class="menu-item-parent">Users</span></a>
+            </li>
+            <li>
+                <a href="/admin/payments"><i class="fa fa-money"></i>
+                    <span class="menu-item-parent">Payments</span></a>
+            </li>
+            <li>
+                <a href="/admin/plans"><i class="fa fa-repeat"></i>
+                    <span class="menu-item-parent">Plans</span></a>
+            </li>
+            <li>
+                <a href="/admin/bugs"><i class="fa fa-bug"></i>
+                    <span class="menu-item-parent">Bugs</span></a>
             </li>
 
 
