@@ -27,6 +27,8 @@
 
 
 
+
+
     <div class="container">
         <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -100px;">
             <div class="card-block-big">
@@ -36,52 +38,93 @@
                 <p>Perferendis, blanditiis unde fugiat voluptas molestias velit asperiores rerum ipsam animi eum temporibus at numquam, nobis voluptates minus maxime cum obcaecati! Tenetur sit corporis laudantium inventore officia officiis odio repellat dolore
                     quos
                     <a href="#">repudiandae voluptas ad facere</a>, amet placeat animi voluptatem distinctio beatae.</p>
-            </div>
-            <img src="/material/img/demo/team.jpg" alt="" class="img-responsive">
-            <div class="card-block-big">
-                <h2 class="color-primary">Vision</h2>
-                <p>Officia, sapiente consectetur id, similique enim aliquam eligendi. Fugiat quos libero quis adipisci assumenda molestias perspiciatis provident, non soluta numquam quasi iste asperiores quibusdam fuga quaerat excepturi amet porro nam, architecto
-                    consequatur qui sed ratione! Tempore asperiores omnis sit totam harum fugit provident magnam, eveniet quis optio? Doloremque, porro dolorum.</p>
-                <p class="lead">Lorem ipsum dolor sit amet consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                <p>Est deserunt expedita saepe minima voluptatum velit. Fugiat rerum dolor sed dolorum sunt possimus eaque magni reiciendis harum, accusantium maiores animi odit eligendi ipsam. Voluptatum architecto nisi repellat sint, nulla tenetur obcaecati
-                    excepturi provident at, autem, hic expedita ex totam porro sit soluta maiores fugit nam accusantium odit minima magni.</p>
-            </div>
-            <div class="bg-info">
-                <div class="card-block-big">
-                    <h2 class="color-white text-center mb-4">Some Achievements</h2>
+
+                <!-- FAQ -->
+                <div class="card nav-tabs-ver-container">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-block text-center wow zoomInUp animation-delay-2" style="visibility: visible; animation-name: zoomInUp;">
-                                <h2 class="counter color-info">450</h2>
-                                <i class="fa fa-4x fa-coffee color-info"></i>
-                                <p class="mt-2 no-mb lead small-caps color-info">cups of coffee</p>
-                            </div>
+                        <div class="col-md-3">
+                            <ul class="nav nav-tabs-ver nav-tabs-ver-primary" role="tablist">
+                                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><i class="zmdi zmdi-home"></i> Home</a></li>
+                                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="zmdi zmdi-account"></i> Profile</a></li>
+                                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><i class="zmdi zmdi-email"></i> Messages</a></li>
+                                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="zmdi zmdi-settings"></i> Settings</a></li>
+                            </ul>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-block text-center wow zoomInUp animation-delay-5" style="visibility: visible; animation-name: zoomInUp;">
-                                <h2 class="counter color-info">64</h2>
-                                <i class="fa fa-4x fa-briefcase color-info"></i>
-                                <p class="mt-2 no-mb lead small-caps color-info">projects done</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-block text-center wow zoomInUp animation-delay-4" style="visibility: visible; animation-name: zoomInUp;">
-                                <h2 class="counter color-info">600</h2>
-                                <i class="fa fa-4x fa-comments-o color-info"></i>
-                                <p class="mt-2 no-mb lead small-caps color-info">comments</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-block text-center wow zoomInUp animation-delay-3" style="visibility: visible; animation-name: zoomInUp;">
-                                <h2 class="counter color-info">3500</h2>
-                                <i class="fa fa-4x fa-group color-info"></i>
-                                <p class="mt-2 no-mb lead small-caps color-info">happy clients</p>
+                        <div class="col-md-9 nav-tabs-ver-container-content">
+                            <div class="card-block">
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="home">
+
+
+
+                                        <div class="panel-group ms-collapse" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingOne">
+                                                    <h4 class="panel-title ms-rotate-icon">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div class="panel-body">
+                                                        ...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title ms-rotate-icon">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body">
+                                                        ...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingThree">
+                                                    <h4 class="panel-title ms-rotate-icon">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                    <div class="panel-body">
+                                                        ...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="profile">
+                                        ...
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="messages">
+                                        ...
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="settings">
+                                        ...
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p class="lead lead-lg text-center mt-4">These numbers are only possible thanks to you.
-                        <br> Thank you for growing with us!</p>
                 </div>
+
+
+
+
+
+
             </div>
         </div>
     </div>

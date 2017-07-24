@@ -109,6 +109,24 @@ $factory->define(\Martin\Core\Address::class, function (Faker\Generator $faker) 
     ];
 });
 
+$factory->define(\Martin\Core\Faq::class, function(Faker\Generator $faker) {
+    return [
+        'faq_category_id'  => factory(\Martin\Core\FaqCategory::class)->create()->id,
+        'code'  => $faker->word,
+        'label' => ucfirst($faker->word),
+        'question'  => $faker->sentence . '?',
+        'answer' => $faker->sentence(25),
+    ];
+});
+
+
+$factory->define(\Martin\Core\FaqCategory::class, function(Faker\Generator $faker) {
+    return [
+        'code'  => $faker->word,
+        'label' => ucfirst($faker->word),
+    ];
+});
+
 
 
 
