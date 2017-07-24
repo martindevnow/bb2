@@ -64,7 +64,9 @@ class AdminMeatsTest extends TestCase
         $meat = factory(Meat::class)->create();
 
         $this->get('/admin/meats/' . $meat->id) // SHOW method
-            ->assertSee($meat->code);
+            ->assertSee($meat->code)
+            ->assertSee($meat->type)
+            ->assertSee($meat->variety);
     }
 
     /** @test */

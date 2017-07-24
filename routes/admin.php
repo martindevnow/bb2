@@ -6,6 +6,7 @@ Route::get('/', function () {
 
 //Route::resource('/deliveries',      'DeliveriesController');
 
+Route::resource('/faqs', 'FaqsController');
 Route::resource('/packages', 'PackagesController');
 Route::post('/packages/{package}/setMeal', 'PackagesController@setMeal');
 Route::put('/packages/{package}/updateCalendar', 'PackagesController@updateCalendar');

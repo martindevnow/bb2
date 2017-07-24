@@ -64,7 +64,8 @@ class AdminToppingsTest extends TestCase
         $topping = factory(Topping::class)->create();
 
         $this->get('/admin/toppings/' . $topping->id)     // SHOW method
-        ->assertSee($topping->code);
+            ->assertSee($topping->code)
+            ->assertSee($topping->label);
     }
 
     /** @test */

@@ -65,7 +65,8 @@ class AdminMealsTest extends TestCase
         $meal = factory(Meal::class)->create();
 
         $this->get('/admin/meals/' . $meal->id) // SHOW method
-            ->assertSee($meal->code);
+            ->assertSee($meal->code)
+            ->assertSee($meal->label);
     }
 
     /** @test */

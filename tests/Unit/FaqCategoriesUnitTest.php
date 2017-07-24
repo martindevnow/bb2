@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class FaqsCategoriesUnitTest extends TestCase
+class FaqCategoriesUnitTest extends TestCase
 {
     use DatabaseMigrations;
 
