@@ -167,7 +167,7 @@
                             <figcaption class="ms-thumbnail-caption text-center">
                                 <div class="ms-thumbnail-caption-content">
                                     {{--<h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>--}}
-                                    <p>{{ $pic->caption->text }}</p>
+                                    <p>{{ substr($pic->caption->text, 0, 300) }} {{ strlen($pic->caption->text) > 300 ? '...' : '' }}</p>
                                     <a href="{{ $pic->link }}" class="btn btn-white btn-raised color-primary">
                                         <i class="zmdi zmdi-eye"></i> View more</a>
                                 </div>
