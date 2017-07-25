@@ -2,21 +2,17 @@
 
 namespace Martin\ACL;
 
-//use Laravel\Passport\HasApiTokens;
-use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Martin\ACL\Traits\HasRoles;
-use Martin\Core\Activity;
 use Martin\Customers\Pet;
-use Martin\Products\Subscription;
+use Martin\Subscriptions\Plan;
 
 class User extends Authenticatable
 {
     use HasRoles;
     use SoftDeletes;
-//    use HasApiTokens;
     use Notifiable;
 
     /**
@@ -25,7 +21,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -55,34 +53,6 @@ class User extends Authenticatable
     }
 
     /**
-     * User isn't active or inactive.
-     * Only their subscriptions are..
-     * because a user can have more than 1...
-     * each PET can have a subscription
-     */
-    public function activate($customerId) {
-        return $this->update([
-            'stripe_customer_id'    => $customerId,
-//            'stripe_active'         => true,
-        ]);
-    }
-//    public function deactivate(Subscription $subscription) {
-//        $this->update([
-//            'stripe_active'         => false,
-//            'subscription_ends_at'  => Carbon::now(),
-//        ]);
-//    }
-
-    /**
-     * A User hasMany Activities tracked by the system
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function activities() {
-        return $this->hasMany(Activity::class);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pets() {
@@ -92,7 +62,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions() {
-        return $this->hasMany(Subscription::class);
+    public function plans() {
+        return $this->hasMany(Plan::class);
     }
 }

@@ -22,14 +22,15 @@ class UsersUnitTest extends TestCase
     /** @test */
     public function it_has_all_fields_assignable() {
         $time = Carbon::now();
-        $user = factory(User::class)->create([
+        $userData = [
             'name'                  => 'name',
             'email'                 => 'email@email.com',
             'password'              => 'pass',
             'stripe_customer_id'    => 'testing...',
             'stripe_active'         => true,
             'subscription_end_at'   => $time,
-        ]);
+        ];
+        $user = factory(User::class)->create($userData);
 
         $this->assertEquals('name', $user->name);
         $this->assertEquals('email@email.com', $user->email);
@@ -37,6 +38,21 @@ class UsersUnitTest extends TestCase
         $this->assertEquals('testing...', $user->stripe_customer_id);
         $this->assertEquals(true, $user->stripe_active);
         $this->assertEquals($time, $user->subscription_end_at);
+    }
+
+    /** @test */
+    public function it_has_all_fields_fillable() {
+        $time = Carbon::now();
+        $userData = [
+            'name'                  => 'name',
+            'email'                 => 'email@email.com',
+            'password'              => 'pass',
+            'stripe_customer_id'    => 'testing...',
+            'stripe_active'         => true,
+            'subscription_end_at'   => $time,
+        ];
+        $user = factory(User::class)->create($userData);
+        $this->assertDatabaseHas('users', $userData);
     }
 
     /**
