@@ -5,7 +5,7 @@
     "license": "Private",
     "type": "project",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.0",
         "dompdf/dompdf": "^0.8.0",
         "laracasts/flash": "^3.0",
         "laravel/cashier": "~7.0",
