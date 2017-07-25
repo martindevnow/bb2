@@ -13,8 +13,7 @@ class TreatsTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function a_guest_can_see_treats()
-    {
+    public function a_guest_can_see_treats() {
         $this->get('/treats')
             ->assertStatus(200);
     }
