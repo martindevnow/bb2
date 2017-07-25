@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin;
 
 use Martin\ACL\User;
 use Martin\Products\Topping;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminToppingsTest extends TestCase
+class ToppingsTest extends TestCase
 {
     use DatabaseMigrations;
 

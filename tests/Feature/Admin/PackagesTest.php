@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin;
 
 use Martin\Products\Meal;
 use Martin\Subscriptions\Package;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminPackagesTest extends TestCase
+class PackagesTest extends TestCase
 {
     use DatabaseMigrations;
 
