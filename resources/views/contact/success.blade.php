@@ -15,38 +15,9 @@
     <div class="container">
         <div class="card card-hero animated fadeInUp animation-delay-7">
             <div class="card-block">
-                <form class="form-horizontal" action="/contact/send" method="POST">
-                    {!! csrf_field() !!}
-                    <fieldset>
-                        <div class="form-group is-empty">
-                            <label for="inputName" class="col-md-2 control-label">Name</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="inputName" placeholder="Name" name="name"> </div>
-                        </div>
-                        <div class="form-group is-empty">
-                            <label for="inputEmail" class="col-md-2 control-label">Email</label>
-                            <div class="col-md-9">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email"> </div>
-                        </div>
-                        <div class="form-group is-empty">
-                            <label for="inputSubject" class="col-md-2 control-label">Subject</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="inputSubject" placeholder="Subject" name="subject"> </div>
-                        </div>
-                        <div class="form-group is-empty">
-                            <label for="textArea" class="col-md-2 control-label">Message</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control" rows="5" id="textArea" placeholder="Your message..." name="body"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-2">
-                                <button type="submit" class="btn btn-raised btn-primary">Submit</button>
-                                <button type="button" class="btn btn-danger">Cancel</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
+
+                <h1>Thank you.</h1>
+
             </div>
         </div>
         <div class="card card-primary">
