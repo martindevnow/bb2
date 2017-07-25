@@ -169,155 +169,25 @@
                 <p class="lead lead-lg color-medium">Get inspired with our best work</p>
             </div>
             <div class="row">
+                @foreach($pics as $pic)
                 <div class="col-md-4 col-sm-6 mb-4">
                     <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                         <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port9.jpg" alt="" class="img-responsive">
+                            <img src="{{ $pic->images->standard_resolution->url }}" alt="" class="img-responsive">
                             <figcaption class="ms-thumbnail-caption text-center">
                                 <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
+                                    {{--<h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>--}}
+                                    <p>{{ $pic->caption->text }}</p>
+                                    <a href="{{ $pic->link }}" class="btn btn-white btn-raised color-primary">
                                         <i class="zmdi zmdi-eye"></i> View more</a>
                                 </div>
                             </figcaption>
                         </figure>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                        <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port11.jpg" alt="" class="img-responsive">
-                            <figcaption class="ms-thumbnail-caption text-center">
-                                <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
-                                        <i class="zmdi zmdi-eye"></i> View more</a>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                        <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port23.jpg" alt="" class="img-responsive">
-                            <figcaption class="ms-thumbnail-caption text-center">
-                                <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
-                                        <i class="zmdi zmdi-eye"></i> View more</a>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                        <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port7.jpg" alt="" class="img-responsive">
-                            <figcaption class="ms-thumbnail-caption text-center">
-                                <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
-                                        <i class="zmdi zmdi-eye"></i> View more</a>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                        <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port4.jpg" alt="" class="img-responsive">
-                            <figcaption class="ms-thumbnail-caption text-center">
-                                <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
-                                        <i class="zmdi zmdi-eye"></i> View more</a>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="ms-thumbnail-container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                        <figure class="ms-thumbnail">
-                            <img src="/material/img/demo/port2.jpg" alt="" class="img-responsive">
-                            <figcaption class="ms-thumbnail-caption text-center">
-                                <div class="ms-thumbnail-caption-content">
-                                    <h3 class="ms-thumbnail-caption-title">Lorem ipsum dolor sit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    <a href="javascript:void(0)" class="btn btn-white btn-raised color-primary">
-                                        <i class="zmdi zmdi-eye"></i> View more</a>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
-
-
-
-
-
-
-
-    <div class="page-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ol class="breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">About Us</li>
-                    </ol>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-8 col-sm-8">
-                    <h3>Lorem ipsum dolor sit amet</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <img src="/barfbento/img/about us.jpg" class="img-responsive img-rounded" alt="dodolan manuk catalog template">
-                </div>
-            </div>
-
-            <div class="row padd20-top-btm">
-                <div class="col-md-4 col-sm-4">
-                    <img src="/barfbento/img/about us more.jpg" class="img-responsive img-rounded" alt="dodolan manuk barfbento template">
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <h3>Lorem ipsum dolor sit amet</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
-                </div>
-            </div>
-
-            <div class="row padd20-top-btm">
-                <div class="col-md-8 col-sm-8">
-                    <h3>Lorem ipsum dolor sit amet</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <img src="/barfbento/img/about us pic.jpg" class="img-responsive img-rounded" alt="dodolan manuk barfbento template">
-                </div>
-            </div>
-
-
-            <div class="row padd20-top-btm">
-                <div class="col-md-12 text-center">
-                    <h3>Lorem ipsum dolor sit amet</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
