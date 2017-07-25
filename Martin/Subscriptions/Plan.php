@@ -5,6 +5,7 @@ namespace Martin\Subscriptions;
 use App\Http\Controllers\PackagesController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\Transactions\Payment;
 
 class Plan extends Model
 {
@@ -72,5 +73,12 @@ class Plan extends Model
      */
     public function package() {
         return $this->belongsTo(Package::class, 'package_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function payments() {
+        return $this->morphMany(Payment::class, 'paymentable');
     }
 }

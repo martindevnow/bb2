@@ -2,14 +2,6 @@
 
 @section('content')
 
-
-
-
-
-
-
-
-
     <div class="ms-hero-page-override ms-hero-img-city ms-hero-bg-primary">
         <div class="container">
             <div class="text-center">
@@ -22,10 +14,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
     <div class="container">
         <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -100px;">

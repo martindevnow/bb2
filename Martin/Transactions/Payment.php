@@ -34,6 +34,27 @@ class Payment extends Model
         'received_at'
     ];
 
+
+    /**
+     * Mutators
+     */
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getAmountPaidAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setAmountPaidAttribute($value) {
+        $this->attributes['amount_paid'] = round($value * 100);
+    }
+
+
     /**
      * Relationships
      */

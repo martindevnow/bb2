@@ -17,10 +17,10 @@ class CreatePaymentsTable extends Migration
             $table->increments('id');
 
             $table->integer('payer_id');
-            $table->integer('collector_id');
+            $table->integer('collector_id')->nullable();
 
-            $table->integer('paymentable_id');
-            $table->string('paymentable_type');
+            $table->integer('paymentable_id')->nullable();
+            $table->string('paymentable_type')->nullable();
 
             $table->dateTime('received_at');
             $table->enum('format', [

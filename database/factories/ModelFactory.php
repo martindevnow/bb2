@@ -119,11 +119,25 @@ $factory->define(\Martin\Core\Faq::class, function(Faker\Generator $faker) {
     ];
 });
 
-
 $factory->define(\Martin\Core\FaqCategory::class, function(Faker\Generator $faker) {
     return [
         'code'  => $faker->word,
         'label' => ucfirst($faker->word),
+    ];
+});
+
+$factory->define(\Martin\Transactions\Payment::class, function(Faker\Generator $faker) {
+    return [
+        'payer_id'  => factory(\Martin\ACL\User::class)->create()->id,
+        'collector_id' => factory(\Martin\ACL\User::class)->create()->id,
+        'received_at' => $faker->dateTime,
+        'format'  => $faker->randomElement([
+            'stripe',
+            'cash',
+            'paypal',
+            'other'
+        ]),
+        'amount_paid' => $faker->numberBetween(1000,5000),
     ];
 });
 
