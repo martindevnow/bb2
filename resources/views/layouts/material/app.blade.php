@@ -22,23 +22,24 @@
 
 
     <style>
-        .ms-hero-img-barfhome {
-            background-image: url(/barfbento/img/raw.JPG);
-            background-size: cover;
-            background-position: bottom center;
-            background-repeat: no-repeat;
-        }
+.ms-hero-img-barfhome {
+    background-image: url(/barfbento/img/raw.JPG);
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
 
-        .ms-hero-img-farm {
-            background-image: url(/barfbento/img/large/farm.jpg);
-            background-size: cover;
-            background-position: bottom center;
-            background-repeat: no-repeat;
-        }
+.ms-hero-img-farm {
+    background-image: url(/barfbento/img/large/farm.jpg);
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
 
-        .ms-footbar {
-            margin-top: 0;
-        }
+.ms-footbar {
+    margin-top: 0;
+}
+
 @media screen and (max-width: 767px) {
 
     .navbar-header {
@@ -51,6 +52,11 @@
         align-items: center;
     }
 }
+
+        .ms-slidebar .ms-slidebar-header {
+            background-image: none;
+            background-color: #7f7f7f;
+        }
 
 
 
