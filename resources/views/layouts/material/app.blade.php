@@ -39,6 +39,21 @@
         .ms-footbar {
             margin-top: 0;
         }
+@media screen and (max-width: 1000px) {
+
+    .navbar-header {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .navbar .container-full {
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+
     </style>
 </head>
 <body>
