@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.material.app');
-});
-
 Auth::routes();
 
 Route::get('/', 'PagesController@index');

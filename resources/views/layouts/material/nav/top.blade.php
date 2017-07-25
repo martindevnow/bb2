@@ -3,14 +3,14 @@
 
         <div id="navbar" class="navbar-collapse collapse navbar-left" style="position: absolute; left: 1rem;">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li class="{{ app('request')->is('/') ? 'active' : '' }}">
                     <a href="/" data-name="home">Home</a>
                 </li>
-                <li>
+                <li class="{{ app('request')->is('quote') ? 'active' : '' }}">
                     <a href="/quote" data-name="quote">Quote
                     </a>
                 </li>
-                <li class="yamm-fw">
+                <li class="{{ app('request')->is('treats') ? 'active' : '' }}">
                     <a href="/treats" data-name="treats">Treats
                     </a>
                 </li>
@@ -29,15 +29,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse navbar-right" style="position: absolute; right: 1rem;">
             <ul class="nav navbar-nav">
-                <li class="dropdown">
+                <li class="{{ app('request')->is('packages') ? 'active' : '' }}">
                     <a href="/packages" data-name="packages">Packages
                     </a>
                 </li>
-                <li class="dropdown">
+                <li class="{{ app('request')->is('about') ? 'active' : '' }}">
                     <a href="/about" data-name="about">About
                     </a>
                 </li>
-                <li class="dropdown">
+                <li class="{{ app('request')->is('contact') ? 'active' : '' }}">
                     <a href="/contact" data-name="contact">Contact
                     </a>
                 </li>
