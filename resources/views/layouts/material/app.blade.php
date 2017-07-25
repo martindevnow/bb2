@@ -39,7 +39,7 @@
         .ms-footbar {
             margin-top: 0;
         }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 767px) {
 
     .navbar-header {
         margin-left: auto;
