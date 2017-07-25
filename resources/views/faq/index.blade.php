@@ -32,9 +32,8 @@
     <div class="container">
         <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -100px;">
             <div class="card-block-big">
-                <h1 class="color-primary">About Us</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus sequi illo labore eaque eveniet porro in, molestias deleniti corporis ea repellendus
-                    <strong>laborum dolores veniam nam</strong> mollitia culpa accusamus non voluptates corrupti? A inventore et veniam dignissimos, animi suscipit magnam nihil sed repellendus placeat eveniet vitae est impedit alias aliquid eius?</p>
+                <h1 class="color-primary">Frequenty Asked Questions</h1>
+                <p>Deciding to change your pet's diet is not an easy</p>
                 <p>Perferendis, blanditiis unde fugiat voluptas molestias velit asperiores rerum ipsam animi eum temporibus at numquam, nobis voluptates minus maxime cum obcaecati! Tenetur sit corporis laudantium inventore officia officiis odio repellat dolore
                     quos
                     <a href="#">repudiandae voluptas ad facere</a>, amet placeat animi voluptatem distinctio beatae.</p>
@@ -44,76 +43,42 @@
                     <div class="row">
                         <div class="col-md-3">
                             <ul class="nav nav-tabs-ver nav-tabs-ver-primary" role="tablist">
-                                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><i class="zmdi zmdi-home"></i> Home</a></li>
-                                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="zmdi zmdi-account"></i> Profile</a></li>
-                                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><i class="zmdi zmdi-email"></i> Messages</a></li>
-                                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="zmdi zmdi-settings"></i> Settings</a></li>
+                                @foreach($categories as $index => $category)
+                                <li role="presentation" class="{{ $index == 0 ? 'active' : '' }}"><a href="#{{ $category->code }}" aria-controls="home" role="tab" data-toggle="tab"><i class="zmdi"></i> {{ $category->label }}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                         <div class="col-md-9 nav-tabs-ver-container-content">
                             <div class="card-block">
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="home">
 
-
-
+                                    @foreach($categories as $index => $category)
+                                    <div role="tabpanel" class="tab-pane {{ $index == 0 ? 'active' : '' }}" id="{{ $category->code }}">
                                         <div class="panel-group ms-collapse" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+                                            @foreach($category->faqs as $faqIndex => $faq)
                                             <div class="panel panel-default">
-                                                <div class="panel-heading" role="tab" id="headingOne">
+                                                <div class="panel-heading" role="tab" id="heading-{{ $index }}-{{ $faqIndex }}">
                                                     <h4 class="panel-title ms-rotate-icon">
-                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
+                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ $index }}-{{ $faqIndex }}" aria-expanded="false" aria-controls="collapse-{{ $index }}-{{ $faqIndex }}">
+                                                            <i class="fa fa-question"></i> {{ $faq->question }}
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                <div id="collapse-{{ $index }}-{{ $faqIndex }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ $index }}-{{ $faqIndex }}">
                                                     <div class="panel-body">
-                                                        ...
+                                                        {{ $faq->answer }}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading" role="tab" id="headingTwo">
-                                                    <h4 class="panel-title ms-rotate-icon">
-                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                    <div class="panel-body">
-                                                        ...
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading" role="tab" id="headingThree">
-                                                    <h4 class="panel-title ms-rotate-icon">
-                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                            <i class="zmdi zmdi-attachment-alt"></i> Collapsible Group Item
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                                    <div class="panel-body">
-                                                        ...
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @endforeach
+
+
                                         </div>
+                                    </div>
+                                    @endforeach
 
-
-
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="profile">
-                                        ...
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="messages">
-                                        ...
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="settings">
-                                        ...
-                                    </div>
                                 </div>
                             </div>
                         </div>
