@@ -65,7 +65,6 @@ class FaqsTest extends TestCase
 
         $this->get('/admin/faqs/' . $faq->id)     // SHOW method
             ->assertSee($faq->code)
-            ->assertSee($faq->label)
             ->assertSee($faq->question)
             ->assertSee($faq->answer);
     }
@@ -123,7 +122,7 @@ class FaqsTest extends TestCase
         ->assertStatus(302);
         $this->assertDatabaseHas('faqs', [
             'code' => $post_data['code'],
-            'label' => $post_data['label'],
+            'question' => $post_data['question'],
             'id' => $id
         ]);
     }

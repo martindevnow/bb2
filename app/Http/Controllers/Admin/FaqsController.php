@@ -40,7 +40,8 @@ class FaqsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        return view('admin.faqs.create');
+        $categories = FaqCategory::all();
+        return view('admin.faqs.create')->with(compact('categories'));
     }
 
     /**
@@ -52,12 +53,11 @@ class FaqsController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'code'          => 'required|unique:faqs',
-            'label'         => 'required',
             'question'      => 'required',
             'answer'        => 'required',
         ]);
 
-        $faq = Faq::create($request->only(['label', 'code', 'question', 'answer']));
+        $faq = Faq::create($request->only(['code', 'question', 'answer']));
 
         flash('The faq ' . $faq->label . ' was saved.')->success();
 
@@ -86,12 +86,11 @@ class FaqsController extends Controller
     public function update(Faq $faq, Request $request) {
         $this->validate($request, [
             'code'          => 'required',
-            'label'         => 'required',
             'question'      => 'required',
             'answer'        => 'required',
         ]);
 
-        $faq->fill($request->only(['code', 'label', 'question', 'answer']));
+        $faq->fill($request->only(['code', 'question', 'answer']));
         $faq->save();
 
         flash('The faq ' . $faq->label . ' was updated.')->success();

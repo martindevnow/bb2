@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\DB;
 use Martin\ACL\Role;
 use Martin\ACL\User;
 
@@ -76,5 +77,14 @@ abstract class TestCase extends BaseTestCase
         ));
 
         return $this;
+    }
+
+    public function tearDown()
+    {
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
+
+        parent::tearDown();
     }
 }

@@ -19,7 +19,6 @@ class CreateFaqsTable extends Migration
             $table->integer('faq_category_id')->nullable();
 
             $table->string('code');
-            $table->string('label');
             $table->string('question');
             $table->text('answer');
 

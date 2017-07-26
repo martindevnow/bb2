@@ -113,7 +113,6 @@ $factory->define(\Martin\Core\Faq::class, function(Faker\Generator $faker) {
     return [
         'faq_category_id'  => factory(\Martin\Core\FaqCategory::class)->create()->id,
         'code'  => $faker->word,
-        'label' => ucfirst($faker->word),
         'question'  => $faker->sentence . '?',
         'answer' => $faker->sentence(25),
     ];

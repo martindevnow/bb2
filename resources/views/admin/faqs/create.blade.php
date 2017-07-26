@@ -2,93 +2,150 @@
 
 @section('content')
 
-    <h1>FAQs: Add</h1>
-    <form action="/admin/faqs" method="POST">
-        <?= csrf_field() ?>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="code">Code:</label>
-                    <input type="text"
-                           name="code"
-                           value="{{ old('code') }}"
-                           class="form-control"
-                           id="code"
-                           aria-describedby="codeHelp"
-                           placeholder="Code"
-                           autocomplete="off">
-                    @if ($errors->has('code'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('code') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <small id="codeHelp" class="form-text text-muted">Must be unique</small>
+    <div class="jarviswidget jarviswidget-color-blue jarviswidget-sortable" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false" role="widget">
+
+        <!-- widget options:
+        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+        data-widget-colorbutton="false"
+        data-widget-editbutton="false"
+        data-widget-togglebutton="false"
+        data-widget-deletebutton="false"
+        data-widget-fullscreenbutton="false"
+        data-widget-custombutton="false"
+        data-widget-collapsed="true"
+        data-widget-sortable="false"
+
+        -->
+
+        <header role="heading"><div class="jarviswidget-ctrls" role="menu">   <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"><i class="fa fa-minus "></i></a> <a href="javascript:void(0);" class="button-icon jarviswidget-fullscreen-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Fullscreen"><i class="fa fa-expand "></i></a> <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete"><i class="fa fa-times"></i></a></div>
+            <span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
+            <h2> FAQ: Create </h2>
+            <!-- <div class="widget-toolbar">
+            add: non-hidden - to disable auto hide
+
+            </div>-->
+            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span></header>
+
+        <!-- widget div-->
+        <div role="content">
+
+            <div class="widget-body no-padding smart-form">
+                <!-- content goes here -->
+                <h5 class="todo-group-title"><i class="fa fa-warning"></i> Create a new FAQ</h5>
+
+                <form action="/admin/faqs" method="POST" class="smart-form">
+
+                    <header>
+                        Create a new FAQ item
+                    </header>
+
+
+                    <?= csrf_field() ?>
+                    <fieldset>
+
+                        <div class="row">
+                            <section class="col col-6">
+                                <label class="label" for="code">Code:</label>
+                                <label class="input">
+
+                                    <input type="text"
+                                           name="code"
+                                           value="{{ old('code') }}"
+                                           class="form-control"
+                                           id="code"
+                                           aria-describedby="codeHelp"
+                                           placeholder="Code"
+                                           autocomplete="off">
+                                </label>
+
+                                @if ($errors->has('code'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('code') }}</strong>
+                                    </span>
+                                @endif
+                                <small id="codeHelp" class="form-text text-muted">Must be unique</small>
+                            </section>
+
+                            <section class="col col-6">
+                                <label class="label" for="faq_category_id">Category:</label>
+                                <label class="select">
+                                    <select name="faq_category_id">
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->label }}</option>
+                                        @endforeach
+                                    </select>
+                                </label>
+                            </section>
+                        </div>
+
+
+                        <div class="row">
+                            <section class="col col-6">
+                                <label class="label" for="question">Question:</label>
+                                <label class="input">
+
+                                    <input type="text"
+                                           name="question"
+                                           value="{{ old('question') }}"
+                                           class="form-control"
+                                           id="question"
+                                           aria-describedby="questionHelp"
+                                           placeholder="Question?"
+                                           autocomplete="off">
+                                </label>
+
+                                @if ($errors->has('question'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('question') }}</strong>
+                                    </span>
+                                @endif
+                                <small id="questionHelp" class="form-text text-muted">The question being asked</small>
+                            </section>
+
+                        </div>
+                        <section>
+                            <label class="label" for="answer">Answer:</label>
+                            <label class="textarea textarea-resizable">
+
+                                <textarea name="answer"
+                                          rows="5"
+                                          width="100%"
+                                          value="{{ old('answer') }}"
+                                          class="custom-scroll"
+                                          id="answer"
+                                          aria-describedby="answerHelp"
+                                          placeholder="Answer?"
+                                          autocomplete="off"></textarea>
+                            </label>
+
+                            @if ($errors->has('answer'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('answer') }}</strong>
+                                </span>
+                            @endif
+                            <small id="answerHelp" class="form-text text-muted">The answer to the question.</small>
+                        </section>
+
+                    </fieldset>
+
+                    <footer>
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="window.history.back();">
+                            Back
+                        </button>
+                    </footer>
+                </form>
+
+                <!-- end content -->
             </div>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="label">Label:</label>
-                    <input type="text"
-                           name="label"
-                           value="{{ old('label') }}"
-                           class="form-control"
-                           id="label"
-                           aria-describedby="labelHelp"
-                           placeholder="Label"
-                           autocomplete="off">
-                    @if ($errors->has('label'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('label') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <small id="labelHelp" class="form-text text-muted">What will appear on the website.</small>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="question">Question:</label>
-                    <input type="text"
-                           name="question"
-                           value="{{ old('question') }}"
-                           class="form-control"
-                           id="question"
-                           aria-describedby="questionHelp"
-                           placeholder="Question?"
-                           autocomplete="off">
-                    @if ($errors->has('question'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('question') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <small id="questionHelp" class="form-text text-muted">The question being asked</small>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="answer">Answer:</label>
-                    <input type="text"
-                           name="answer"
-                           value="{{ old('answer') }}"
-                           class="form-control"
-                           id="answer"
-                           aria-describedby="answerHelp"
-                           placeholder="Answer?"
-                           autocomplete="off">
-                    @if ($errors->has('answer'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('answer') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <small id="answerHelp" class="form-text text-muted">The answer to the question.</small>
-            </div>
-
-        <button type="submit" class="btn btn-primary">Add</button>
-
-    </form>
+        </div>
+        <!-- end widget div -->
+    </div>
 
 
 @endsection

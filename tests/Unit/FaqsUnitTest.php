@@ -22,13 +22,11 @@ class FaqsUnitTest extends TestCase
     public function faqs_have_the_following_fields_mass_assignable() {
         $faq = factory(Faq::class)->create([
             'code'  => 'CODE',
-            'label' => 'LABEL',
             'question'  => 'QUESTION',
             'answer'    => 'ANSWER',
         ]);
 
         $this->assertEquals('CODE', $faq->code);
-        $this->assertEquals('LABEL', $faq->label);
         $this->assertEquals('QUESTION', $faq->question);
         $this->assertEquals('ANSWER', $faq->answer);
     }

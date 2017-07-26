@@ -14,13 +14,13 @@ class FaqCategoriesUnitTest extends TestCase
 
     /** @test */
     public function faq_categories_have_a_model_factory() {
-        $faq = factory(Faq::class)->create();
-        $this->assertTrue($faq instanceof Faq);
+        $faq = factory(FaqCategory::class)->create();
+        $this->assertTrue($faq instanceof FaqCategory);
     }
 
     /** @test */
     public function faq_categories_have_the_following_fields_mass_assignable() {
-        $faq = factory(Faq::class)->create([
+        $faq = factory(FaqCategory::class)->create([
             'code'  => 'CODE',
             'label' => 'LABEL',
         ]);
