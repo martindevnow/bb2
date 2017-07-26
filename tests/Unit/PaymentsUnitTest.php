@@ -23,7 +23,7 @@ class PaymentsUnitTest extends TestCase
     /** @test */
     public function a_payment_has_all_fields_assignable() {
         $payment = factory(Payment::class)->create([
-            'payer_id'      => factory(User::class)->create()->id,
+            'customer_id'      => factory(User::class)->create()->id,
             'collector_id'  => factory(User::class)->create()->id,
             'received_at'   => time(),
             'format'        => 'paypal',
@@ -74,11 +74,11 @@ class PaymentsUnitTest extends TestCase
         $guest = factory(User::class)->create();
 
         $payment = factory(Payment::class)->create([
-            'payer_id'  => $guest->id,
+            'customer_id'  => $guest->id,
             'collector_id'  => $this->user->id,
         ]);
 
-        $this->assertEquals($guest->name, $payment->payer->name);
+        $this->assertEquals($guest->name, $payment->customer->name);
         $this->assertEquals($this->user->name, $payment->collector->name);
     }
 

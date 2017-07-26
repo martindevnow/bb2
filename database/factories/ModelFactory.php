@@ -128,7 +128,7 @@ $factory->define(\Martin\Core\FaqCategory::class, function(Faker\Generator $fake
 
 $factory->define(\Martin\Transactions\Payment::class, function(Faker\Generator $faker) {
     return [
-        'payer_id'  => factory(\Martin\ACL\User::class)->create()->id,
+        'customer_id'  => factory(\Martin\ACL\User::class)->create()->id,
         'collector_id' => factory(\Martin\ACL\User::class)->create()->id,
         'received_at' => $faker->dateTime,
         'format'  => $faker->randomElement([

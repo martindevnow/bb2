@@ -16,7 +16,7 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'payer_id',
+        'customer_id',
         'collector_id',
         'paymentable_id',
         'paymentable_type',
@@ -73,8 +73,8 @@ class Payment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payer() {
-        return $this->belongsTo(User::class, 'payer_id');
+    public function customer() {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     /**

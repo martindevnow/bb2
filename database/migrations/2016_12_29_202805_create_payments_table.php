@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('payer_id');
+            $table->integer('customer_id');
             $table->integer('collector_id')->nullable();
 
             $table->integer('paymentable_id')->nullable();
@@ -27,6 +27,7 @@ class CreatePaymentsTable extends Migration
                 'stripe',
                 'cash',
                 'paypal',
+                'eTransfer',
                 'other',
             ]);
             $table->integer('amount_paid');
