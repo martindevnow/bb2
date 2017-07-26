@@ -120,41 +120,37 @@
 
 
 
-        <section id="about">
-            <div class="container pt-6">
-                <h2 class="right-line">Why We Do This</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="color-primary wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Description</h3>
-                        <p class="wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat cum laudantium quos tempora magnam voluptas sint perspiciatis nulla ipsa itaque atque quod incidunt maiores iusto, laborum, magni aliquam. Aut eligendi nesciunt nobis eum
-                            dolorum maxime corporis dicta, repudiandae eveniet ab laboriosam minima voluptate quaerat sequi modi suscipit cumque unde rerum.</p>
-                        <p class="wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis porro, magni obcaecati cupiditate nulla rem quae, eveniet corrupti reprehenderit maiores nobis doloribus expedita non quasi itaque. Incidunt, delectus quidem vitae laudantium,
-                            natus quibusdam odio eius eligendi tenetur! Ea, repudiandae eveniet ab minima laboriosam minima voluptate quaerat sequi harum.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h3 class="color-primary wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Knowledge</h3>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-6" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"> HTML 5 &amp; CSS 3 </div>
+        <div class="container">
+            <div class="card wow fadeInUp mt-6" style="visibility: visible; animation-name: fadeInUp;">
+                <div class="card-block card-block-big">
+                    <h2 class="text-center fw-500">Benefits of B.A.R.F.</h2>
+                    <p class="lead text-center center-block mw-800">Give your pet the healthy, balanced diet they deserve.</p>
+                    <div class="row mt-4">
+                        <div class="col-md-6 col-md-push-6 text-justify">
+                            <h3 class="color-primary">In Summary</h3>
+                            <p class="dropcaps">Maintaining a healthy diet is something we take for granted as humans.</p>
+                            <p>Explicabo numquam quam amet vel laboriosam odio eaque quos esse cumque, nam deserunt ducimus odit libero asperiores necessitatibus, soluta corporis dignissimos. Delectus temporibus iusto debitis obcaecati accusantium, dolorum ad doloremque
+                                maiores optio ut magni praesentium cupiditate dolore.</p>
+                            <p>Nulla delectus tempora ab ipsum molestias dolorem explicabo nihil. Officia quia iusto sint, iure nemo vitae aperiam, corrupti aliquid fugit, qui dolore voluptatibus eos quisquam obcaecati, omnis iste illum optio. Maxime atque hic vero.
+                                Doloribus eius sit laborum fugiat necessitatibus tempora facilis facere cumque, ipsum nam, temporibus, perferendis non ratione!</p>
                         </div>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-8" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%"> Javascript &amp; Jquery </div>
-                        </div>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-10" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%"> PHP 5 &amp; MYSQL 5 </div>
-                        </div>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-12" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"> C/C++ </div>
-                        </div>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-14" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%"> Python </div>
-                        </div>
-                        <div class="progress progress-lg wow fadeInUp animation-delay-16" style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"> Node.js </div>
+                        <div class="col-md-6 col-md-pull-6">
+                            <h3 class="color-primary">Our Principles</h3>
+                            <ol class="service-list list-unstyled">
+                                <li>Lorem ipsum dolor sit amet,
+                                    <strong>consectetur adipisicing elit</strong>. Nihil suscipit cupiditate expedita hic earum vero sint, recusandae itaque, rem distinctio.</li>
+                                <li>Totam porro sit, obcaecati quos quae iure tenetur, soluta voluptatem sapiente rerum ipsam delectus corporis voluptates voluptate, nulla mollitia pariatur.</li>
+                                <li>Enim quas nesciunt sequi odit, ut
+                                    <a href="#">quisquam vitae commodi</a> animi placeat nihil saepe magnam aliquam, vero harum quae doloribus aut nostrum veniam alias!</li>
+                                <li>Lorem ipsum dolor sit amet,
+                                    <strong>consectetur adipisicing elit</strong>. Nihil suscipit cupiditate expedita hic earum vero sint, recusandae itaque, rem distinctio.</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+
+        </div>
 
 
 
@@ -200,7 +196,7 @@
 
 
         <section id="team">
-            <div class="container pt-6">
+            <div class="container pt-6 ">
                 <h1 class="color-primary text-center wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Who We Are</h1>
                 <div class="row">
                     <div class="col-md-2"></div>

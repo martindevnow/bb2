@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Carbon\Carbon;
 use Martin\ACL\User;
 use Martin\Customers\Pet;
+use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -71,5 +72,19 @@ class UsersUnitTest extends TestCase
         $user[0]->pets()->save($pet[1]);
         $user[0] = $user[0]->fresh(['pets']);
         $this->assertCount(2, $user[0]->pets);
+    }
+
+    /** @test */
+    public function a_user_has_many_plans_that_belongs_to_the_user() {
+        $user = factory(User::class, 2)->create();
+        $plan = factory(Plan::class, 2)->create();
+
+        $user[0]->plans()->save($plan[0]);
+
+        $this->assertCount(1, $user[0]->plans);
+
+        $user[0]->plans()->save($plan[1]);
+        $user[0] = $user[0]->fresh(['plans']);
+        $this->assertCount(2, $user[0]->plans);
     }
 }

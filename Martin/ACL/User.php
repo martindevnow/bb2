@@ -26,13 +26,18 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $guarded = [
+        'stripe_customer_id'
+    ];
+
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -44,12 +49,20 @@ class User extends Authenticatable
     }
 
     /**
-     * @param $name
-     * @param $weight
-     * @return \Illuminate\Database\Eloquent\Model
+     * Return a simple list of the pets
+     *
+     * @return string
      */
-    public function createNewPet($name, $weight) {
-        return $this->pets()->create(compact("name", "weight"));
+    public function getPets() {
+        if (! $this->pets()->count())
+            return '';
+
+        $result = '';
+        foreach($this->pets as $pet) {
+            $result .= $pet->name . ', ';
+        }
+
+        return substr($result, 0, -2);
     }
 
     /**

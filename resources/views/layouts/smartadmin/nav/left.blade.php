@@ -52,6 +52,10 @@
                     <span class="menu-item-parent">Users</span></a>
             </li>
             <li>
+                <a href="/admin/pets"><i class="fa fa-cloud"></i>
+                    <span class="menu-item-parent">Pets</span></a>
+            </li>
+            <li>
                 <a href="/admin/payments"><i class="fa fa-money"></i>
                     <span class="menu-item-parent">Payments</span></a>
             </li>
