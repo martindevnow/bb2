@@ -31,7 +31,7 @@ $factory->define(\Martin\Customers\Pet::class, function (Faker\Generator $faker)
         'weight'   => $faker->numberBetween(35, 120),
         'activity_level'   => $faker->randomElement([2.0, 2.5, 3.0]),
         'birthday'   => $faker->dateTime,
-        'user_id'   => factory(\Martin\ACL\User::class)->create()->id,
+        'owner_id'   => factory(\Martin\ACL\User::class)->create()->id,
     ];
 });
 

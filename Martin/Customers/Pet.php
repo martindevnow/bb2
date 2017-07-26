@@ -17,7 +17,8 @@ class Pet extends Model
         'breed',
         'weight',
         'birthday',
-        'activity_level'
+        'activity_level',
+        'owner_id',
     ];
 
     protected $dates = [
@@ -72,7 +73,7 @@ class Pet extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     /**

@@ -52,6 +52,7 @@ class PetsTest extends TestCase
         $pet = factory(Pet::class)->create();
         $this->loginAsAdmin();
 
+
         $this->get('/admin/pets')   // INDEX method
             ->assertSee($pet->name);
     }
@@ -83,7 +84,6 @@ class PetsTest extends TestCase
         $pet = factory(Pet::class)->make();
 
         $request = $pet->toArray();
-        unset($request['user_id']);
         $request['_token'] = csrf_token();
 
         $this->post('/admin/pets', $request) // STORE method

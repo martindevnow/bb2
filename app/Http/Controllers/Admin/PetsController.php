@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Martin\ACL\User;
 use Martin\Customers\Pet;
 
 class PetsController extends Controller
@@ -37,7 +38,9 @@ class PetsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        return view('admin.pets.create');
+        $customers = User::all();
+        return view('admin.pets.create')
+            ->with(compact('customers'));
     }
 
     /**
@@ -51,9 +54,10 @@ class PetsController extends Controller
             'name'      => 'required',
             'weight'    => 'required',
             'activity_level'    => 'required',
+            'owner_id'    => 'required|exists:users,id',
         ]);
 
-        $pet = Pet::create($request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday']));
+        $pet = Pet::create($request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday', 'owner_id']));
 
         flash('The pet ' . $pet->name . ' was saved.')->success();
 
@@ -67,8 +71,9 @@ class PetsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Pet $pet) {
+        $customers = User::all();
         return view('admin.pets.edit')
-            ->with(compact('pet'));
+            ->with(compact('pet', 'customers'));
 
     }
 
@@ -84,9 +89,10 @@ class PetsController extends Controller
             'name'      => 'required',
             'weight'    => 'required',
             'activity_level'    => 'required',
+            'owner_id'    => 'required|exists:users,id',
         ]);
 
-        $petData = $request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday']);
+        $petData = $request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday', 'owner_id']);
 
         $pet->fill($petData);
         $pet->save();

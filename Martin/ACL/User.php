@@ -69,7 +69,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pets() {
-        return $this->hasMany(Pet::class);
+        return $this->hasMany(Pet::class, 'owner_id');
     }
 
     /**
