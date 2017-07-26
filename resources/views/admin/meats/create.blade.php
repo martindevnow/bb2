@@ -32,7 +32,6 @@
 
             <div class="widget-body no-padding smart-form">
 
-
                 <form action="/admin/meats" method="POST">
                     <header>
                         Create a Meat:
