@@ -9,6 +9,10 @@ digest properly. This can lead to significant complications later in life for yo
 
 As such, it is strongly recommended that pets be fed a B.A.R.F. diet. 
 
+## Versions
+
+Current: 1.0.0 (Release: August 2017)
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within B.A.R.F. Bento, please send an e-mail to Benjamin Martin at 
