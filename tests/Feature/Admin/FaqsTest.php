@@ -83,7 +83,6 @@ class FaqsTest extends TestCase
         $this->loginAsAdmin();
 
         $faq = factory(Faq::class)->make();
-        unset($faq->faq_category_id);
 
         $request = $faq->toArray();
         $request['_token'] = csrf_token();
