@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     <div class="jarviswidget jarviswidget-color-blue jarviswidget-sortable" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false" role="widget">
 
         <!-- widget options:
@@ -21,7 +20,7 @@
 
         <header role="heading"><div class="jarviswidget-ctrls" role="menu">   <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"><i class="fa fa-minus "></i></a> <a href="javascript:void(0);" class="button-icon jarviswidget-fullscreen-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Fullscreen"><i class="fa fa-expand "></i></a> <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete"><i class="fa fa-times"></i></a></div>
             <span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
-            <h2> FAQ: Create </h2>
+            <h2> FAQs </h2>
             <!-- <div class="widget-toolbar">
             add: non-hidden - to disable auto hide
 
@@ -32,8 +31,6 @@
         <div role="content">
 
             <div class="widget-body no-padding smart-form">
-                <!-- content goes here -->
-                <h5 class="todo-group-title"><i class="fa fa-warning"></i> Create a new FAQ</h5>
 
                 <form action="/admin/faqs" method="POST" class="smart-form">
 
@@ -41,8 +38,8 @@
                         Create a new FAQ item
                     </header>
 
-
                     <?= csrf_field() ?>
+
                     <fieldset>
 
                         <div class="row">
@@ -73,7 +70,9 @@
                                 <label class="select">
                                     <select name="faq_category_id">
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->label }}</option>
+                                            <option value="{{ $category->id }}"
+                                                    {{ old('faq_category_id') === $category->id ? 'selected="selected"' : '' }}
+                                            >{{ $category->label }}</option>
                                         @endforeach
                                     </select>
                                 </label>
@@ -111,13 +110,13 @@
 
                                 <textarea name="answer"
                                           rows="5"
-                                          width="100%"
-                                          value="{{ old('answer') }}"
                                           class="custom-scroll"
                                           id="answer"
                                           aria-describedby="answerHelp"
                                           placeholder="Answer?"
-                                          autocomplete="off"></textarea>
+                                          autocomplete="off">
+                                    {{ old('answer') }}
+                                </textarea>
                             </label>
 
                             @if ($errors->has('answer'))

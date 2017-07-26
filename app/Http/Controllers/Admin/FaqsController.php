@@ -55,9 +55,10 @@ class FaqsController extends Controller
             'code'          => 'required|unique:faqs',
             'question'      => 'required',
             'answer'        => 'required',
+            'faq_category_id'   => 'required|exists:faq_categories,id',
         ]);
 
-        $faq = Faq::create($request->only(['code', 'question', 'answer']));
+        $faq = Faq::create($request->only(['code', 'question', 'answer', 'faq_category_id']));
 
         flash('The faq ' . $faq->label . ' was saved.')->success();
 
@@ -71,8 +72,9 @@ class FaqsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Faq $faq) {
+        $categories = FaqCategory::all();
         return view('admin.faqs.edit')
-            ->with(compact('faq'));
+            ->with(compact('faq', 'categories'));
 
     }
 
@@ -88,9 +90,10 @@ class FaqsController extends Controller
             'code'          => 'required',
             'question'      => 'required',
             'answer'        => 'required',
+            'faq_category_id'   => 'required|exists:faq_categories,id',
         ]);
 
-        $faq->fill($request->only(['code', 'question', 'answer']));
+        $faq->fill($request->only(['code', 'question', 'answer', 'faq_category_id']));
         $faq->save();
 
         flash('The faq ' . $faq->label . ' was updated.')->success();
