@@ -83,7 +83,11 @@
                         <tbody>
                         @foreach($pets as $pet)
                             <tr>
-                                <td>{{ $pet->name }}</td>
+                                <td>
+                                    <a href="/admin/pets/{{ $pet->id }}">
+                                        {{ $pet->name }}
+                                    </a>
+                                </td>
                                 <td>{{ $pet->owner->name }}</td>
                                 <td>{{ $pet->weight }} lb</td>
                                 <td>{{ $pet->activity_level }} %</td>

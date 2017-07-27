@@ -79,7 +79,11 @@
                         <tbody>
                         @foreach($toppings as $topping)
                             <tr>
-                                <td>{{ $topping->code }}</td>
+                                <td>
+                                    <a href="/admin/toppings/{{ $topping->id }}">
+                                        {{ $topping->code }}
+                                    </a>
+                                </td>
                                 <td>{{ $topping->label }}</td>
                                 <td>{{ $topping->cost_per_kg }}</td>
                                 <td>

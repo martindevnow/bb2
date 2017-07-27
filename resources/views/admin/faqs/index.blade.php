@@ -81,7 +81,11 @@
                         <tbody>
                             @foreach($faq_category->faqs as $faq)
                                 <tr>
-                                    <td>{{ $faq->code }}</td>
+                                    <td>
+                                        <a href="/admin/faqs/{{ $faq->id }}">
+                                            {{ $faq->code }}
+                                        </a>
+                                    </td>
                                     <td>{{ $faq->question }}</td>
                                     <td>{{ $faq->answer }}</td>
                                     <td>

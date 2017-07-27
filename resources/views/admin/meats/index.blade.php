@@ -80,7 +80,11 @@
                         <tbody>
                         @foreach($meats as $meat)
                             <tr>
-                                <td>{{ $meat->code }}</td>
+                                <td>
+                                    <a href="/admin/meats/{{ $meat->id }}">
+                                        {{ $meat->code }}
+                                    </a>
+                                </td>
                                 <td>{{ $meat->type }}</td>
                                 <td>{{ $meat->variety }}</td>
                                 <td>{{ $meat->cost_per_lb }}</td>

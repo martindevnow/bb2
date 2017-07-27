@@ -18,7 +18,6 @@
 
 @endsection
 
-
 @section('content')
 
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">
@@ -81,7 +80,11 @@
                         <tbody>
                         @foreach($payments as $payment)
                             <tr>
-                                <td>{{ $payment->received_at->format('Y-m-d') }}</td>
+                                <td>
+                                    <a href="/admin/payments/{{ $payment->id }}">
+                                        {{ $payment->received_at->format('Y-m-d') }}
+                                    </a>
+                                </td>
                                 <td>{{ $payment->customer->name }}</td>
                                 <td>{{ $payment->amount_paid }}</td>
                                 <td>{{ $payment->format }}</td>

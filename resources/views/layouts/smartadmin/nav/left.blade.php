@@ -28,37 +28,39 @@
 
         <ul>
             <li>
-                <a href="/admin/meats"><i class="fa fa-coffee"></i>
-                    <span class="menu-item-parent">Meats</span></a>
+                <a href="/admin/faqs"><i class="fa fa-question"></i>
+                    <span class="menu-item-parent">FAQs</span></a>
             </li>
             <li>
                 <a href="/admin/meals"><i class="fa fa-cutlery"></i>
                     <span class="menu-item-parent">Meals</span></a>
             </li>
             <li>
-                <a href="/admin/toppings"><i class="fa fa-tint"></i>
-                    <span class="menu-item-parent">Toppings</span></a>
+                <a href="/admin/meats"><i class="fa fa-coffee"></i>
+                    <span class="menu-item-parent">Meats</span></a>
             </li>
             <li>
                 <a href="/admin/packages"><i class="fa fa-th-large"></i>
                     <span class="menu-item-parent">Packages</span></a>
             </li>
             <li>
-                <a href="/admin/faqs"><i class="fa fa-question"></i>
-                    <span class="menu-item-parent">FAQs</span></a>
-            </li>
-            <li>
-                <a href="/admin/users"><i class="fa fa-users"></i>
-                    <span class="menu-item-parent">Users</span></a>
+                <a href="/admin/payments"><i class="fa fa-money"></i>
+                    <span class="menu-item-parent">Payments</span></a>
             </li>
             <li>
                 <a href="/admin/pets"><i class="fa fa-cloud"></i>
                     <span class="menu-item-parent">Pets</span></a>
             </li>
             <li>
-                <a href="/admin/payments"><i class="fa fa-money"></i>
-                    <span class="menu-item-parent">Payments</span></a>
+                <a href="/admin/toppings"><i class="fa fa-tint"></i>
+                    <span class="menu-item-parent">Toppings</span></a>
             </li>
+            <li>
+                <a href="/admin/users"><i class="fa fa-users"></i>
+                    <span class="menu-item-parent">Users</span></a>
+            </li>
+
+
             <li>
                 <a href="/admin/plans"><i class="fa fa-repeat"></i>
                     <span class="menu-item-parent">Plans</span></a>
