@@ -28,6 +28,10 @@
 
         <ul>
             <li>
+                <a href="/admin/deliveries"><i class="fa fa-truck"></i>
+                    <span class="menu-item-parent">Deliveries</span></a>
+            </li>
+            <li>
                 <a href="/admin/faqs"><i class="fa fa-question"></i>
                     <span class="menu-item-parent">FAQs</span></a>
             </li>
@@ -38,6 +42,10 @@
             <li>
                 <a href="/admin/meats"><i class="fa fa-coffee"></i>
                     <span class="menu-item-parent">Meats</span></a>
+            </li>
+            <li>
+                <a href="/admin/orders"><i class="fa fa-document"></i>
+                    <span class="menu-item-parent">Orders</span></a>
             </li>
             <li>
                 <a href="/admin/packages"><i class="fa fa-th-large"></i>

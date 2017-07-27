@@ -112,7 +112,7 @@ class DeliveriesTest extends TestCase
         $this->get('/admin/deliveries/' . $delivery->id . '/edit')   // EDIT method
             ->assertStatus(200)
             ->assertSee('<form')
-            ->assertSee($delivery->tracking_number); // TODO: Write this properly
+            ->assertSee($delivery->tracking_number);
     }
 
     /** @test */
