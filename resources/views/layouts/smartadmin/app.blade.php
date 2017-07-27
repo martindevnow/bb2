@@ -170,45 +170,22 @@ Use search to find needed section.
     <!-- MAIN CONTENT -->
     <div id="content">
 
-        @include('layouts.smartadmin.breadcrumb')
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <h1 class="page-title txt-color-blueDark">
+                    @yield('breadcrumb_left')
+                </h1>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+                @yield('breadcrumb_right')
+            </div>
+        </div>
         <!-- widget grid -->
         <section id="widget-grid" class="">
 
             @include('flash::message')
 
             @yield('content')
-            <!-- row -->
-            {{--<div class="row">--}}
-                {{--<article class="col-sm-12">--}}
-
-                    {{--@include('layouts.smartadmin.widgets.live-feeds')--}}
-
-                {{--</article>--}}
-            {{--</div>--}}
-
-            <!-- end row -->
-
-            <!-- row -->
-
-            {{--<div class="row">--}}
-
-                {{--<article class="col-sm-12 col-md-12 col-lg-6">--}}
-
-                    {{--@include('layouts.smartadmin.widgets.smart-chat')--}}
-
-                    {{--@include('layouts.smartadmin.widgets.my-events')--}}
-
-                {{--</article>--}}
-
-                {{--<article class="col-sm-12 col-md-12 col-lg-6">--}}
-
-                    {{--@include('layouts.smartadmin.widgets.birds-eye')--}}
-
-                    {{--@include('layouts.smartadmin.widgets.todo')--}}
-
-                {{--</article>--}}
-
-            {{--</div>--}}
 
             <!-- end row -->
 
