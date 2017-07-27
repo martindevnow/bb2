@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDeliveriesTable extends Migration
+class CreateCouriersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,11 @@ class CreateDeliveriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('deliveries', function (Blueprint $table) {
+        Schema::create('couriers', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('recipient_id');
-            $table->integer('order_id');
-            $table->integer('courier_id');
-
-            $table->dateTime('shipped_at');
-            $table->dateTime('delivered_at');
-
-            $table->string('tracking_number');
-            $table->string('instructions');
+            $table->string('code');
+            $table->string('label');
 
             $table->timestamps();
             $table->softDeletes();
@@ -38,6 +31,6 @@ class CreateDeliveriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('deliveries');
+        Schema::dropIfExists('couriers');
     }
 }

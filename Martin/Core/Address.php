@@ -11,6 +11,7 @@ class Address extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'active',
         'name',
         'description',
         'company',

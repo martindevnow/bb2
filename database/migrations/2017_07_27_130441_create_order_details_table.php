@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFrequenciesTable extends Migration
+class CreateOrderDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,9 @@ class CreateFrequenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('frequencies', function (Blueprint $table) {
+        Schema::create('order_details', function (Blueprint $table) {
             $table->increments('id');
-            
-            $table->string('label');
-            $table->string('code');
-            
-            $table->integer('multiplier');
-            $table->integer('discount_percent');
-            $table->boolean('active')->default(1);
-
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -35,6 +26,6 @@ class CreateFrequenciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('frequencies');
+        Schema::dropIfExists('order_details');
     }
 }

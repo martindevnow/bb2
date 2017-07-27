@@ -5,6 +5,7 @@ namespace Martin\Delivery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
+use Martin\Transactions\Order;
 
 class Delivery extends Model
 {
@@ -16,14 +17,15 @@ class Delivery extends Model
      * @var array
      */
     protected $fillable = [
-        'deliverer_id',
         'recipient_id',
+        'order_id',
+        'courier_id',
 
-        'deliverable_id',
-        'deliverable_type',
-
+        'shipped_at',
         'delivered_at',
-        'days_of_food_delivered',
+
+        'tracking_number',
+        'instructions',
     ];
 
     /**
@@ -32,8 +34,18 @@ class Delivery extends Model
      * @var array
      */
     protected $dates = [
+        'shipped_at',
         'delivered_at',
     ];
+
+    /**
+     * Return whether or not this delivery has been delivered
+     *
+     * @return bool
+     */
+    public function delivered() {
+        return ! $this->delivered_at == null;
+    }
 
 
     /**
@@ -45,8 +57,8 @@ class Delivery extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function deliverer() {
-        return $this->belongsTo(User::class, 'deliverer_id');
+    public function courier() {
+        return $this->belongsTo(Courier::class, 'courier_id');
     }
 
     /**
@@ -59,11 +71,9 @@ class Delivery extends Model
     }
 
     /**
-     * Return what the delivery is applied to (ie. subscription, purchase, etc)
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * Return the order that is being delivered
      */
-    public function deliverable() {
-        return $this->morphTo();
+    public function order() {
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

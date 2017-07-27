@@ -140,6 +140,37 @@ $factory->define(\Martin\Transactions\Payment::class, function(Faker\Generator $
     ];
 });
 
+$factory->define(\Martin\Delivery\Delivery::class, function(Faker\Generator $faker) {
+    $user = factory(\Martin\ACL\User::class)->create();
+    $order = factory(\Martin\Transactions\Order::class)->create(['customer_id' => $user->id]);
+    return [
+        'recipient_id' => $user->id,
+        'shipped_at' => $faker->dateTime,
+        'delivered_at' => $faker->dateTime,
+        'courier_id'    => factory(\Martin\Delivery\Courier::class)->create()->id,
+        'tracking_number' => "".$faker->numberBetween(1000,5000),
+        'instructions' => $faker->sentence,
+        'order_id' => $order->id,
+    ];
+});
+
+$factory->define(\Martin\Transactions\Order::class, function(Faker\Generator $faker) {
+    return [
+        'customer_id'  => factory(\Martin\ACL\User::class)->create()->id,
+        'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
+        'subtotal' => $faker->numberBetween(1000,5000),
+        'tax' => $faker->numberBetween(1000,5000),
+        'total_cost' => $faker->numberBetween(1000,5000),
+    ];
+});
+
+$factory->define(\Martin\Delivery\Courier::class, function(Faker\Generator $faker) {
+    return [
+        'code'  => $faker->word,
+        'label' => ucfirst($faker->word),
+    ];
+});
+
 
 
 

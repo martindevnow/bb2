@@ -4,26 +4,39 @@ Route::get('/', function () {
     return view('admin.index');
 });
 
-//Route::resource('/deliveries',      'DeliveriesController');
+// Deliveries
+Route::resource('/deliveries', 'DeliveriesController');
 
-Route::resource('/payments', 'PaymentsController');
-Route::resource('/users', 'UsersController');
-Route::resource('/pets', 'PetsController');
+// FAQs
 Route::resource('/faqs', 'FaqsController');
-Route::resource('/packages', 'PackagesController');
-Route::post('/packages/{package}/setMeal', 'PackagesController@setMeal');
-Route::put('/packages/{package}/updateCalendar', 'PackagesController@updateCalendar');
-Route::resource('/meats', 'MeatsController');
-Route::resource('/toppings', 'ToppingsController');
+
+// Meals
 Route::resource('/meals', 'MealsController');
 Route::post('/meals/{meal}/addMeat', 'MealsController@addMeat');
 Route::post('/meals/{meal}/removeMeat', 'MealsController@removeMeat');
 Route::post('/meals/{meal}/addTopping', 'MealsController@addTopping');
 Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 
-//Route::resource('/payments',        'PaymentsController');
-//Route::resource('/pets',            'PetsController');
+// Meats
+Route::resource('/meats', 'MeatsController');
+
+// Packages
+Route::resource('/packages', 'PackagesController');
+Route::post('/packages/{package}/setMeal', 'PackagesController@setMeal');
+Route::put('/packages/{package}/updateCalendar', 'PackagesController@updateCalendar');
+
+// Payments
+Route::resource('/payments', 'PaymentsController');
+
+// Pets
+Route::resource('/pets', 'PetsController');
+
+// Toppings
+Route::resource('/toppings', 'ToppingsController');
+
+// Users
+Route::resource('/users', 'UsersController');
+
+// Deprecated
 //Route::resource('/subscriptions',   'SubscriptionsController');
 //Route::resource('/subpackages',     'SubpackagesController');
-//Route::resource('/users',           'UsersController');
-
