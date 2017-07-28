@@ -5,6 +5,8 @@ namespace Martin\Subscriptions;
 use App\Http\Controllers\PackagesController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\ACL\User;
+use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
 class Plan extends Model
@@ -12,7 +14,7 @@ class Plan extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
+        'customer_id',
         'delivery_id',
         'shipping_cost',    // cents
 
@@ -68,6 +70,14 @@ class Plan extends Model
      * Relationships
      */
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer() {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -80,5 +90,43 @@ class Plan extends Model
      */
     public function payments() {
         return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders() {
+        return $this->hasMany(Order::class, 'plan_id');
+    }
+
+    /**
+     * Generators
+     */
+
+    public function generateOrder() {
+        if (! $this->orders()->count()) {
+            $delivery_date = $this->getFirstDeliveryDate();
+        } else {
+            $delivery_date = $this->orders()
+                ->orderBy('deliver_by', 'DESC')
+                ->first()
+                ->deliver_by;
+        }
+
+        $this->orders()->create([
+            'customer_id'   => $this->customer_id
+        ]);
+
+
+    }
+
+
+
+    /**
+     * Other
+     */
+
+    public function getFirstDeliveryDate() {
+        return $this->created_at;
     }
 }

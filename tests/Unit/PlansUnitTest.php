@@ -9,6 +9,7 @@ use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
+use Martin\Transactions\Order;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -31,7 +32,7 @@ class PlansUnitTest extends TestCase
         $package = factory(Package::class)->create();
 
         $plan = factory(Plan::class)->create([
-            'user_id'  => $user->id,
+            'customer_id'  => $user->id,
             'delivery_id'  => $address->id,
             'shipping_cost' => 11.5,
             'pet_id'  => $pet->id,
@@ -74,6 +75,30 @@ class PlansUnitTest extends TestCase
         DB::table('plans')->insert($plan->toArray());
         $plan_clone = Plan::where('package_stripe_code', 'THIS_PLAN')->firstOrFail();
         $this->assertEquals($package_baseInDollars, $plan_clone->package_base);
+    }
+
+    /**
+     * Relationships
+     */
+
+    /** @test */
+    public function a_plan_can_have_many_orders() {
+        $order = factory(Order::class)->create();
+        $plan = $order->plan;
+
+        $this->assertTrue($plan instanceof Plan);
+        $this->assertCount(1, $plan->orders);
+    }
+
+
+    /**
+     * Generators
+     */
+
+    public function a_plan_can_generate_the_first_order() {
+        $plan = factory(Plan::class)->create();
+
+        $plan->generateOrder();
     }
 
 }

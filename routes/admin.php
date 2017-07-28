@@ -20,6 +20,9 @@ Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 // Meats
 Route::resource('/meats', 'MeatsController');
 
+// Orders
+Route::resource('/orders', 'OrdersController');
+
 // Packages
 Route::resource('/packages', 'PackagesController');
 Route::post('/packages/{package}/setMeal', 'PackagesController@setMeal');

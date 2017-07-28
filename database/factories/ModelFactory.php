@@ -12,6 +12,8 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+use Carbon\Carbon;
+
 $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -77,7 +79,7 @@ $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator
 
 $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $faker) {
     return [
-        'user_id' => factory(\Martin\ACL\User::class)->create()->id,
+        'customer_id' => factory(\Martin\ACL\User::class)->create()->id,
         'delivery_id' => factory(\Martin\Core\Address::class)->create()->id,
         'shipping_cost' => $faker->numberBetween(6,15),
         'pet_id' => factory(\Martin\Customers\Pet::class)->create()->id,
@@ -156,11 +158,13 @@ $factory->define(\Martin\Delivery\Delivery::class, function(Faker\Generator $fak
 
 $factory->define(\Martin\Transactions\Order::class, function(Faker\Generator $faker) {
     return [
+        'plan_id'  => factory(\Martin\Subscriptions\Plan::class)->create()->id,
         'customer_id'  => factory(\Martin\ACL\User::class)->create()->id,
         'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
         'subtotal' => $faker->numberBetween(1000,5000),
         'tax' => $faker->numberBetween(1000,5000),
         'total_cost' => $faker->numberBetween(1000,5000),
+        'deliver_by' => Carbon::now()->addDays(3),
     ];
 });
 

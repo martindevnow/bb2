@@ -207,15 +207,4 @@
 
     </div>
 
-
-
-
-
-
-
-    <h1>Packages: Details</h1>
-
-
-
-
 @endsection

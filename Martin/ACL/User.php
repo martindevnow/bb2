@@ -76,6 +76,6 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function plans() {
-        return $this->hasMany(Plan::class);
+        return $this->hasMany(Plan::class, 'customer_id');
     }
 }

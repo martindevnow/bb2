@@ -4,6 +4,7 @@ namespace Martin\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\Transactions\Order;
 use ReflectionClass;
 
 class Address extends Model
@@ -37,8 +38,7 @@ class Address extends Model
      *
      * @return string
      */
-    protected function getAddressableType()
-    {
+    protected function getAddressableType() {
         if ($this->type)
             return $this->type;
 
@@ -51,8 +51,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getUrlToAddressable()
-    {
+    public function getUrlToAddressable() {
         return "/admin/{$this->getAddressableType()}/{$this->addressable_id}";
     }
 
@@ -61,8 +60,11 @@ class Address extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function addressable()
-    {
+    public function addressable() {
         return $this->morphTo();
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class, 'delivery_address_id');
     }
 }
