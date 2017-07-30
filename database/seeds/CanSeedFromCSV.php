@@ -42,8 +42,9 @@ trait CanSeedFromCSV {
                 // Check to see if the data is relational
                 if ($this->dataIsRelational($value)) {
                     $model = $this->getRelationalModel($value);
-                    if ($model == null)
-                        dd ([$data, $col_number, $col_names[$col_number], $value]);
+//                    if ($model == null)
+                        // TODO: Make this 'smarter'
+//                        dd ([$data, $col_number, $col_names[$col_number], $value]);
 
                     $insert_data[$col_names[$col_number]] = $model->id;
                     continue;
@@ -113,7 +114,14 @@ trait CanSeedFromCSV {
         if (strpos($value, '===') !== false)
             $value = $this->getRelationalModel($value)->id;
 
-        // dd (compact('table', 'field', 'value'));
-        return DB::table($table)->where($field, '=', $value)->first();
+//        if ($value == "benm@barfbento.com")
+//         dd (compact('table', 'field', 'value'));
+        $model = DB::table($table)->where($field, '=', $value)->first();
+
+        if (!$model) {
+            $data = DB::table($table)->get();
+            dd(compact('table', 'field', 'value', 'data'));
+        }
+        return $model;
     }
 }

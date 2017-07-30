@@ -34,6 +34,9 @@ Route::resource('/payments', 'PaymentsController');
 // Pets
 Route::resource('/pets', 'PetsController');
 
+// Plans
+Route::resource('/plans', 'PlansController');
+
 // Toppings
 Route::resource('/toppings', 'ToppingsController');
 

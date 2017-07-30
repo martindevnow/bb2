@@ -8,7 +8,7 @@
 
     <ul id="sparks" class="">
         <li class="sparks-info">
-            <a href="/admin/packages/create">
+            <a href="/admin/plans/create">
                 <button class="btn btn-block btn-primary">
                     <i class="fa fa-wrench"></i> Create New
                 </button>
@@ -47,13 +47,6 @@
         <!-- widget div-->
         <div role="content">
 
-            <!-- widget edit box -->
-            <div class="jarviswidget-editbox">
-                <!-- This area used as dropdown edit box -->
-
-            </div>
-            <!-- end widget edit box -->
-
             <!-- widget content -->
             <div class="widget-body no-padding">
 
@@ -70,29 +63,31 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <td>Code</td>
-                            <td>Label</td>
-                            <td>Average Cost</td>
+                            <td>Pet</td>
+                            <td>Package</td>
+                            <td>Average</td>
+                            <td>Weekly Cost</td>
                             <td>Action</td>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($packages as $package)
+                        @foreach($plans as $plan)
                             <tr>
-                                <td><a href="/admin/packages/{{ $package->id }}">{{ $package->code }}</a></td>
-                                <td>{{ $package->label }}</td>
-                                <td>{{ $package->costPerLb() }}</td>
+                                <td><a href="/admin/plans/{{ $plan->id }}">{{ $plan->pet->name }}</a></td>
+                                <td>{{ $plan->package->label }}</td>
+                                <td>{{ $plan->package->costPerLb() }}</td>
+                                <td>{{ $plan->package->weekly_cost }}</td>
                                 <td>
-                                    <a href="/admin/packages/{{ $package->id }}/edit">
+                                    <a href="/admin/plans/{{ $plan->id }}/edit">
                                         <button class="btn btn-primary btn-xs">
                                             <i class="fa fa-pencil"></i>
                                         </button>
                                     </a>
 
-                                    <form action="/admin/packages/{{ $package->id }}" method="POST">
+                                    <form action="/admin/plans/{{ $plan->id }}" method="POST">
                                         <?= csrf_field() ?>
                                         <input name="_method" type="hidden" value="DELETE">
-                                        <input name="package_id" type="hidden" value="{{ $package->id }}">
+                                        <input name="plan_id" type="hidden" value="{{ $plan->id }}">
                                         <button class="btn btn-xs btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </button>

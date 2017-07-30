@@ -13,13 +13,8 @@ class PetsTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         DB::table('pets')->truncate();
-
-        $this->seedFromCSV('pets',
-            '/seeds/csv/pets.csv',
-            Pet::class);
-
+        $this->seedFromGoogle('pets', Pet::class);
     }
 }

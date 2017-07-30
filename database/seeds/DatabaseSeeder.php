@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(ACLTableSeeder::class);
 
-
         $this->call(FaqsTableSeeder::class);
+        $this->call(AddressesTableSeeder::class);
 
         /**
          * Pets
          */
-//        $this->call(PetsTableSeeder::class);    // Must be after Users
+        $this->call(PetsTableSeeder::class);    // Must be after Users
 
         /**
          * Products
@@ -31,19 +31,21 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductsTableSeeder::class);
 
         /**
-         * Subscription Models (Plans, Activity, Frequency, and Package)
-         */
-//        $this->call(PackagesSeeder::class);
-//        $this->call(ActivityLevelsSeeder::class);
-//        $this->call(FrequenciesSeeder::class);
-//        $this->call(PlansTableSeeder::class);       // Must be after Sub Data
-
-        /**
          * Meats
          */
         $this->call(MeatsTableSeeder::class);
         $this->call(ToppingsTableSeeder::class);
         $this->call(MealsTableSeeder::class);
+
+        /**
+         * Subscription Models (Plans, Activity, Frequency, and Package)
+         */
+        $this->call(PackagesSeeder::class);
+
+        $this->call(PlansTableSeeder::class);
+//        $this->call(ActivityLevelsSeeder::class);
+//        $this->call(FrequenciesSeeder::class);
+//        $this->call(PlansTableSeeder::class);       // Must be after Sub Data
 
         /**
          * Pickup Locations and Appointment Times

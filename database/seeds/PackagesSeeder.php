@@ -1,83 +1,27 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Martin\Customers\Pet;
 use Martin\Subscriptions\ActivityLevel;
 use Martin\Subscriptions\Frequency;
 use Martin\Subscriptions\Package;
 
 class PackagesSeeder extends Seeder
 {
+    use CanSeedFromCSV;
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
-        /**
-         * Package Types
-         */
+    public function run() {
+        echo "Loading \"Packages\"...\r\n";
+        DB::table('packages')->truncate();
+        $this->seedFromGoogle('packages', Package::class);
 
-        /**
-         * Basic -- And Variations
-         */
-        Package::create([
-            'label' => 'Basic',
-            'code'  => 'basic',
-            'profit_margin' => 0.50,
-        ]);
-        Package::create([
-            'label' => 'Basic (No Chicken)',
-            'code'  => 'basic-no-chicken',
-            'profit_margin' => 0.50,
-            'public'=> false,
-
-        ]);
-
-        /**
-         * Classic -- And Variations
-         */
-        Package::create([
-            'label' => 'Classic',
-            'code'  => 'classic',
-            'profit_margin' => 0.50,
-        ]);
-        Package::create([
-            'label' => 'Classic (No Chicken)',
-            'code'  => 'classic-no-chicken',
-            'profit_margin' => 0.50,
-            'public'=> false,
-        ]);
-        Package::create([
-            'label' => 'Classic (No Poultry)',
-            'code'  => 'classic-no-poultry',
-            'profit_margin' => 0.50,
-            'public'=> false,
-        ]);
-        Package::create([
-            'label' => 'Classic (No Fish)',
-            'code'  => 'classic-no-fish',
-            'profit_margin' => 0.50,
-            'public'=> false,
-        ]);
-        Package::create([
-            'label' => 'Classic (No Pork)',
-            'code'  => 'classic-no-pork',
-            'profit_margin' => 0.50,
-            'public'=> false,
-        ]);
-        Package::create([
-            'label' => 'Classic (Whole Prey)',
-            'code'  => 'classic-whole-prey',
-            'profit_margin' => 0.50,
-            'public'=> false,
-        ]);
-
-
-        Package::create([
-            'label' => 'Premium',
-            'code'  => 'premium',
-            'profit_margin' => 0.50,
-        ]);
+        echo "Loading \"Meal Packages\"...\r\n";
+        DB::table('meal_package')->truncate();
+        $this->seedFromGoogle('meal_package');
     }
 }

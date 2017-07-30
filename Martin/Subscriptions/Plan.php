@@ -28,6 +28,8 @@ class Plan extends Model
         'package_stripe_code',
         'package_base',     // cents
 
+        'weekly_cost',
+
         'weeks_at_a_time',
         'active',
     ];
@@ -126,18 +128,25 @@ class Plan extends Model
      * Generators
      */
 
+    /**
+     * TOD: Make the deliveryData 'smarter'
+     *
+     * @return Model
+     */
     public function generateOrder() {
         if (! $this->orders()->count()) {
             $delivery_date = $this->getFirstDeliveryDate();
         } else {
             $delivery_date = $this->getLatestOrder()
-                ->deliver_by;
+                ->deliver_by
+                ->addDays(7)
+            ;
         }
 
         $subtotal = $this->calculateSubtotal();
-        $tax = $this->delivery_address->getTax();
+        $tax = $this->deliveryAddress->getTax();
 
-        $this->orders()->create([
+        return $this->orders()->create([
             'customer_id'   => $this->customer_id,
             'delivery_address_id'   => $this->delivery_address_id,
 //            'shipping_cost' => $this->deliveryAddress
@@ -145,7 +154,7 @@ class Plan extends Model
             'subtotal'  => $subtotal,
             'tax'   => $tax,
             'total_cost' => $tax + $subtotal,
-            'delivery_by'   => $this->getDeliveryBy(),
+            'deliver_by'   => $delivery_date,
         ]);
     }
 

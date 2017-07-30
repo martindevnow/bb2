@@ -25,9 +25,14 @@ class CreatePlansTable extends Migration
             $table->integer('pet_activity_level');
 
             $table->integer('package_id');
-            $table->string('package_stripe_code');
-            $table->integer('package_base');
 
+            // TODO: Remove or change this
+            $table->string('package_stripe_code')->nullable();
+
+            // TODO: Make this seedable??
+            $table->integer('package_base')->nullable();
+
+            $table->integer('weekly_cost');
             $table->integer('weeks_at_a_time');
 
             $table->boolean('active')->default(true);

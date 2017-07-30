@@ -17,7 +17,7 @@ class CreateAddressesTable extends Migration {
             $table->increments('id');
 
             $table->boolean('active')->default(true);
-            $table->string('name');
+            $table->string('name')->default('main');
             $table->string('description')->nullable();
             $table->string('company')->nullable();
 

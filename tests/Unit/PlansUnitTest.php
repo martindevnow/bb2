@@ -100,9 +100,12 @@ class PlansUnitTest extends TestCase
         $plan = factory(Plan::class)->create();
 
         $order = $plan->generateOrder();
-
+        $orderData = $order->toArray();
+        $orderData['subtotal'] *= 100;
+        $orderData['tax'] *= 100;
+        $orderData['total_cost'] *= 100;
         $this->assertTrue($order instanceof Order);
-        $this->assertDatabaseHas('orders', $order->toArray());
+        $this->assertDatabaseHas('orders', $orderData);
     }
 
 }

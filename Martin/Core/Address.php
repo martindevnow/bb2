@@ -56,6 +56,15 @@ class Address extends Model
     }
 
     /**
+     * TODO: Make this 'smarter'
+     *
+     * @return int
+     */
+    public function getTax() {
+        return 0;
+    }
+
+    /**
      * An Address can be attached to Any Entity
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
