@@ -80,7 +80,7 @@ $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator
 $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $faker) {
     return [
         'customer_id' => factory(\Martin\ACL\User::class)->create()->id,
-        'delivery_id' => factory(\Martin\Core\Address::class)->create()->id,
+        'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
         'shipping_cost' => $faker->numberBetween(6,15),
         'pet_id' => factory(\Martin\Customers\Pet::class)->create()->id,
         'pet_weight' => $faker->numberBetween(10,90),

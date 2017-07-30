@@ -33,7 +33,7 @@ class PlansUnitTest extends TestCase
 
         $plan = factory(Plan::class)->create([
             'customer_id'  => $user->id,
-            'delivery_id'  => $address->id,
+            'delivery_address_id'  => $address->id,
             'shipping_cost' => 11.5,
             'pet_id'  => $pet->id,
             'pet_weight' => 55,
@@ -95,6 +95,7 @@ class PlansUnitTest extends TestCase
      * Generators
      */
 
+    /**  */
     public function a_plan_can_generate_the_first_order() {
         $plan = factory(Plan::class)->create();
 

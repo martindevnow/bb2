@@ -6,6 +6,7 @@ use App\Http\Controllers\PackagesController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
+use Martin\Core\Address;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -15,7 +16,7 @@ class Plan extends Model
 
     protected $fillable = [
         'customer_id',
-        'delivery_id',
+        'delivery_address_id',
         'shipping_cost',    // cents
 
         'pet_id',
@@ -100,6 +101,13 @@ class Plan extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deliveryAddress() {
+        return $this->belongsTo(Address::class, 'delivery_address_id');
+    }
+
+    /**
      * Generators
      */
 
@@ -114,7 +122,9 @@ class Plan extends Model
         }
 
         $this->orders()->create([
-            'customer_id'   => $this->customer_id
+            'customer_id'   => $this->customer_id,
+            'delivery_address_id'   => $this->delivery_address_id,
+            'subtotal'  => $this->calculateSubtotal(),
         ]);
 
 
@@ -126,7 +136,9 @@ class Plan extends Model
      * Other
      */
 
+
     public function getFirstDeliveryDate() {
         return $this->created_at;
     }
+
 }
