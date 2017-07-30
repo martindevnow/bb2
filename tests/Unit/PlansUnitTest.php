@@ -95,11 +95,14 @@ class PlansUnitTest extends TestCase
      * Generators
      */
 
-    /**  */
+    /** @test */
     public function a_plan_can_generate_the_first_order() {
         $plan = factory(Plan::class)->create();
 
-        $plan->generateOrder();
+        $order = $plan->generateOrder();
+
+        $this->assertTrue($order instanceof Order);
+        $this->assertDatabaseHas('orders', $order->toArray());
     }
 
 }

@@ -50,6 +50,10 @@ class Package extends Model
         return $pet->mealSize() * $this->costPerLb() ;
     }
 
+    public function costPetWeek(Pet $pet) {
+        return $this->costPerMeal($pet) * 14;
+    }
+
 
 
     /**

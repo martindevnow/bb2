@@ -13,8 +13,8 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'customer_id',
         'plan_id',
+        'customer_id',
         'delivery_address_id',
         'subtotal',
         'tax',

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
+use Martin\Customers\Pet;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -107,6 +108,20 @@ class Plan extends Model
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
+    public function pet() {
+        return $this->belongsTo(Pet::class, 'pet_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLatestOrder(): mixed
+    {
+        return $this->orders()
+            ->orderBy('deliver_by', 'DESC')
+            ->first();
+    }
+
     /**
      * Generators
      */
@@ -115,19 +130,23 @@ class Plan extends Model
         if (! $this->orders()->count()) {
             $delivery_date = $this->getFirstDeliveryDate();
         } else {
-            $delivery_date = $this->orders()
-                ->orderBy('deliver_by', 'DESC')
-                ->first()
+            $delivery_date = $this->getLatestOrder()
                 ->deliver_by;
         }
+
+        $subtotal = $this->calculateSubtotal();
+        $tax = $this->delivery_address->getTax();
 
         $this->orders()->create([
             'customer_id'   => $this->customer_id,
             'delivery_address_id'   => $this->delivery_address_id,
-            'subtotal'  => $this->calculateSubtotal(),
+//            'shipping_cost' => $this->deliveryAddress
+//                ->getShippingCostByMealSize($this->pet->mealSizeInGrams()),
+            'subtotal'  => $subtotal,
+            'tax'   => $tax,
+            'total_cost' => $tax + $subtotal,
+            'delivery_by'   => $this->getDeliveryBy(),
         ]);
-
-
     }
 
 
@@ -136,9 +155,29 @@ class Plan extends Model
      * Other
      */
 
-
+    /**
+     * TODO: Make this 'smarter'
+     *
+     * @return mixed
+     */
     public function getFirstDeliveryDate() {
         return $this->created_at;
     }
+
+    public function calculateSubtotal() {
+        return $this->weeks_at_a_time *
+            ($this->package->costPetWeek($this->pet)
+                + $this->getPackagingCost());
+    }
+
+    /**
+     * TODO: Make this 'smarter'
+     *
+     * @return float
+     */
+    public function getPackagingCost() {
+        return 4.50;
+    }
+
 
 }
