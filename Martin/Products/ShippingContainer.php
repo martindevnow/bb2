@@ -47,9 +47,10 @@ class ShippingContainer {
      * Static constructor to build a Container based on the meal weight
      *
      * @param Container $container
+     * @param int $numberOfWeeks
      * @return static
      */
-    public static function selectContainer(Container $container, integer $numberOfWeeks = 1) {
+    public static function selectContainer(Container $container, $numberOfWeeks = 1) {
         return new static(
             collect(ShippingContainer::$shippers)
                 ->filter(function($shipper) use ($container, $numberOfWeeks) {

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /home/vagrant/Web/bb2/app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/nv.d3.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="../js/html5shiv.min.js"></script>
+  <script src="../js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="../index.html">/home/vagrant/Web/bb2</a></li>
+        <li><a href="index.html">app</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Exceptions/Handler.php.html#9">Handler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ResetPasswordController.php.html#8">ResetPasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#3">Columns</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#8">BroadcastServiceProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/ContactReceived.php.html#10">ContactReceived</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#8">RedirectIfAuthenticated</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/AdminMiddleware.php.html#7">AdminMiddleware</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TreatsController.php.html#7">TreatsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/QuoteController.php.html#5">QuoteController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PagesController.php.html#8">PagesController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/HomeController.php.html#7">HomeController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/FaqController.php.html#8">FaqController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Controller.php.html#12">Controller</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#9">ContactController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#5">CartController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisterController.php.html#10">RegisterController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#14">DeliveriesController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/LoginController.php.html#8">LoginController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ForgotPasswordController.php.html#8">ForgotPasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#9">UsersController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#9">ToppingsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#12">PlansController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#10">PetsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#12">PaymentsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PackagesController.php.html#7">PackagesController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#9">OrdersController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#10">MeatsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#12">MealsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#10">FaqsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#10">FaqCategoriesController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#24">Column</a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#12">MealsController</a></td><td class="text-right">240</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#9">OrdersController</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#9">UsersController</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="helpers.php.html#24">Column</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#9">Handler</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Middleware/AdminMiddleware.php.html#7">AdminMiddleware</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="helpers.php.html#3">Columns</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Controllers/Controller.php.html#12">Controller</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#8">RedirectIfAuthenticated</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Exceptions/Handler.php.html#33"><abbr title="Handler::report">report</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#69"><abbr title="ToppingsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisterController.php.html#37"><abbr title="RegisterController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/LoginController.php.html#35"><abbr title="LoginController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ForgotPasswordController.php.html#28"><abbr title="ForgotPasswordController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#108"><abbr title="UsersController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#82"><abbr title="UsersController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#69"><abbr title="UsersController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#49"><abbr title="UsersController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#39"><abbr title="UsersController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#29"><abbr title="UsersController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#16"><abbr title="UsersController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#103"><abbr title="ToppingsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#82"><abbr title="ToppingsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#49"><abbr title="ToppingsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisterController.php.html#63"><abbr title="RegisterController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#39"><abbr title="ToppingsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#29"><abbr title="ToppingsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ToppingsController.php.html#16"><abbr title="ToppingsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#120"><abbr title="PlansController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#93"><abbr title="PlansController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#79"><abbr title="PlansController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#54"><abbr title="PlansController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#42"><abbr title="PlansController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#32"><abbr title="PlansController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PlansController.php.html#19"><abbr title="PlansController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#111"><abbr title="PetsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#87"><abbr title="PetsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisterController.php.html#48"><abbr title="RegisterController::validator">validator</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ResetPasswordController.php.html#35"><abbr title="ResetPasswordController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#52"><abbr title="PetsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TreatsController.php.html#12"><abbr title="TreatsController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#47"><abbr title="Column::getField">getField</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#41"><abbr title="Column::trimQuotes">trimQuotes</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#29"><abbr title="Column::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#14"><abbr title="Columns::getColumnLine">getColumnLine</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#6"><abbr title="Columns::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#15"><abbr title="BroadcastServiceProvider::boot">boot</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/ContactReceived.php.html#31"><abbr title="ContactReceived::build">build</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/ContactReceived.php.html#21"><abbr title="ContactReceived::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#18"><abbr title="RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/AdminMiddleware.php.html#17"><abbr title="AdminMiddleware::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TreatsController.php.html#20"><abbr title="TreatsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TreatsController.php.html#15"><abbr title="TreatsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/QuoteController.php.html#19"><abbr title="QuoteController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#10"><abbr title="CartController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/QuoteController.php.html#10"><abbr title="QuoteController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PagesController.php.html#17"><abbr title="PagesController::about">about</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PagesController.php.html#13"><abbr title="PagesController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PagesController.php.html#10"><abbr title="PagesController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/HomeController.php.html#24"><abbr title="HomeController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/HomeController.php.html#14"><abbr title="HomeController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/FaqController.php.html#16"><abbr title="FaqController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Controller.php.html#16"><abbr title="Controller::getDateFromRequest">getDateFromRequest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#53"><abbr title="ContactController::success">success</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#31"><abbr title="ContactController::send">send</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#21"><abbr title="ContactController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#19"><abbr title="CartController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#73"><abbr title="PetsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#40"><abbr title="PetsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#45"><abbr title="Handler::render">render</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#83"><abbr title="FaqCategoriesController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#33"><abbr title="MealsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#29"><abbr title="MealsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#21"><abbr title="MealsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#14"><abbr title="MealsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#110"><abbr title="FaqsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#88"><abbr title="FaqsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#74"><abbr title="FaqsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#53"><abbr title="FaqsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#42"><abbr title="FaqsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#32"><abbr title="FaqsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqsController.php.html#17"><abbr title="FaqsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#103"><abbr title="FaqCategoriesController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#70"><abbr title="FaqCategoriesController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#52"><abbr title="MealsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#51"><abbr title="FaqCategoriesController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#41"><abbr title="FaqCategoriesController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#31"><abbr title="FaqCategoriesController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/FaqCategoriesController.php.html#17"><abbr title="FaqCategoriesController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#137"><abbr title="DeliveriesController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#105"><abbr title="DeliveriesController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#89"><abbr title="DeliveriesController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#58"><abbr title="DeliveriesController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#44"><abbr title="DeliveriesController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#34"><abbr title="DeliveriesController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DeliveriesController.php.html#21"><abbr title="DeliveriesController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#57"><abbr title="Handler::unauthenticated">unauthenticated</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#47"><abbr title="MealsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#67"><abbr title="MealsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#30"><abbr title="PetsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#84"><abbr title="OrdersController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PetsController.php.html#17"><abbr title="PetsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#120"><abbr title="PaymentsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#93"><abbr title="PaymentsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#79"><abbr title="PaymentsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#54"><abbr title="PaymentsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#42"><abbr title="PaymentsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#32"><abbr title="PaymentsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/PaymentsController.php.html#19"><abbr title="PaymentsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PackagesController.php.html#21"><abbr title="PackagesController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PackagesController.php.html#12"><abbr title="PackagesController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#128"><abbr title="OrdersController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#97"><abbr title="OrdersController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#49"><abbr title="OrdersController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#80"><abbr title="MealsController::addMeat">addMeat</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#39"><abbr title="OrdersController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#29"><abbr title="OrdersController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#16"><abbr title="OrdersController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#66"><abbr title="MeatsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#50"><abbr title="MeatsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#44"><abbr title="MeatsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#28"><abbr title="MeatsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#24"><abbr title="MeatsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#19"><abbr title="MeatsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MeatsController.php.html#12"><abbr title="MeatsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#140"><abbr title="MealsController::removeTopping">removeTopping</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#120"><abbr title="MealsController::addTopping">addTopping</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#100"><abbr title="MealsController::removeMeat">removeMeat</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="helpers.php.html#51"><abbr title="Column::getColumn">getColumn</abbr></a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Middleware/AdminMiddleware.php.html#17"><abbr title="AdminMiddleware::handle">handle</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#57"><abbr title="Handler::unauthenticated">unauthenticated</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#80"><abbr title="MealsController::addMeat">addMeat</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#100"><abbr title="MealsController::removeMeat">removeMeat</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#120"><abbr title="MealsController::addTopping">addTopping</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/MealsController.php.html#140"><abbr title="MealsController::removeTopping">removeTopping</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#49"><abbr title="OrdersController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UsersController.php.html#82"><abbr title="UsersController::update">update</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Controller.php.html#16"><abbr title="Controller::getDateFromRequest">getDateFromRequest</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#18"><abbr title="RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="helpers.php.html#6"><abbr title="Columns::__construct">__construct</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="helpers.php.html#14"><abbr title="Columns::getColumnLine">getColumnLine</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="helpers.php.html#29"><abbr title="Column::__construct">__construct</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="helpers.php.html#47"><abbr title="Column::getField">getField</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="helpers.php.html#51"><abbr title="Column::getColumn">getColumn</abbr></a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 4.0.8</a> using <a href="https://secure.php.net/" target="_top">PHP 7.1.3-3+deb.sury.org~xenial+1</a> with <a href="https://xdebug.org/">Xdebug 2.5.1</a> and <a href="https://phpunit.de/">PHPUnit 5.7.21</a> at Mon Jul 31 11:13:10 EDT 2017.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../js/jquery.min.js" type="text/javascript"></script>
+  <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../js/holder.min.js" type="text/javascript"></script>
+  <script src="../js/d3.min.js" type="text/javascript"></script>
+  <script src="../js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([31,0,0,0,0,0,0,0,0,0,0,8], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([120,0,0,0,0,0,0,0,0,0,0,12], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[100,0,"<a href=\"Http\/Kernel.php.html#7\">Kernel<\/a>"],[0,4,"<a href=\"Exceptions\/Handler.php.html#9\">Handler<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#14\">DeliveriesController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#10\">FaqCategoriesController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#10\">FaqsController<\/a>"],[0,15,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#12\">MealsController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#10\">MeatsController<\/a>"],[0,8,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#9\">OrdersController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/PackagesController.php.html#7\">PackagesController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#12\">PaymentsController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#10\">PetsController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#12\">PlansController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#9\">ToppingsController<\/a>"],[0,8,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#9\">UsersController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/ForgotPasswordController.php.html#8\">ForgotPasswordController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/LoginController.php.html#8\">LoginController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/RegisterController.php.html#10\">RegisterController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/ResetPasswordController.php.html#8\">ResetPasswordController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/CartController.php.html#5\">CartController<\/a>"],[0,4,"<a href=\"Http\/Controllers\/ContactController.php.html#9\">ContactController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Controller.php.html#12\">Controller<\/a>"],[0,2,"<a href=\"Http\/Controllers\/FaqController.php.html#8\">FaqController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/HomeController.php.html#7\">HomeController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/PagesController.php.html#8\">PagesController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/QuoteController.php.html#5\">QuoteController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/TreatsController.php.html#7\">TreatsController<\/a>"],[0,4,"<a href=\"Http\/Middleware\/AdminMiddleware.php.html#7\">AdminMiddleware<\/a>"],[100,0,"<a href=\"Http\/Middleware\/EncryptCookies.php.html#7\">EncryptCookies<\/a>"],[0,2,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#8\">RedirectIfAuthenticated<\/a>"],[100,0,"<a href=\"Http\/Middleware\/TrimStrings.php.html#7\">TrimStrings<\/a>"],[100,0,"<a href=\"Http\/Middleware\/VerifyCsrfToken.php.html#7\">VerifyCsrfToken<\/a>"],[0,2,"<a href=\"Mail\/ContactReceived.php.html#10\">ContactReceived<\/a>"],[100,3,"<a href=\"Providers\/AppServiceProvider.php.html#9\">AppServiceProvider<\/a>"],[100,1,"<a href=\"Providers\/AuthServiceProvider.php.html#8\">AuthServiceProvider<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#8\">BroadcastServiceProvider<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#8\">EventServiceProvider<\/a>"],[100,6,"<a href=\"Providers\/RouteServiceProvider.php.html#8\">RouteServiceProvider<\/a>"],[0,4,"<a href=\"helpers.php.html#3\">Columns<\/a>"],[0,7,"<a href=\"helpers.php.html#24\">Column<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"Exceptions\/Handler.php.html#33\">Handler::report<\/a>"],[0,1,"<a href=\"Exceptions\/Handler.php.html#45\">Handler::render<\/a>"],[0,2,"<a href=\"Exceptions\/Handler.php.html#57\">Handler::unauthenticated<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#21\">DeliveriesController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#34\">DeliveriesController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#44\">DeliveriesController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#58\">DeliveriesController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#89\">DeliveriesController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#105\">DeliveriesController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/DeliveriesController.php.html#137\">DeliveriesController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#17\">FaqCategoriesController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#31\">FaqCategoriesController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#41\">FaqCategoriesController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#51\">FaqCategoriesController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#70\">FaqCategoriesController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#83\">FaqCategoriesController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqCategoriesController.php.html#103\">FaqCategoriesController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#17\">FaqsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#32\">FaqsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#42\">FaqsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#53\">FaqsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#74\">FaqsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#88\">FaqsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/FaqsController.php.html#110\">FaqsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#14\">MealsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#21\">MealsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#29\">MealsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#33\">MealsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#47\">MealsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#52\">MealsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#67\">MealsController::destroy<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#80\">MealsController::addMeat<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#100\">MealsController::removeMeat<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#120\">MealsController::addTopping<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/MealsController.php.html#140\">MealsController::removeTopping<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#12\">MeatsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#19\">MeatsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#24\">MeatsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#28\">MeatsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#44\">MeatsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#50\">MeatsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/MeatsController.php.html#66\">MeatsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#16\">OrdersController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#29\">OrdersController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#39\">OrdersController::create<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#49\">OrdersController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#84\">OrdersController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#97\">OrdersController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#128\">OrdersController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PackagesController.php.html#12\">PackagesController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PackagesController.php.html#21\">PackagesController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#19\">PaymentsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#32\">PaymentsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#42\">PaymentsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#54\">PaymentsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#79\">PaymentsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#93\">PaymentsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PaymentsController.php.html#120\">PaymentsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#17\">PetsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#30\">PetsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#40\">PetsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#52\">PetsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#73\">PetsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#87\">PetsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PetsController.php.html#111\">PetsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#19\">PlansController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#32\">PlansController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#42\">PlansController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#54\">PlansController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#79\">PlansController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#93\">PlansController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/PlansController.php.html#120\">PlansController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#16\">ToppingsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#29\">ToppingsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#39\">ToppingsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#49\">ToppingsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#69\">ToppingsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#82\">ToppingsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ToppingsController.php.html#103\">ToppingsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#16\">UsersController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#29\">UsersController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#39\">UsersController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#49\">UsersController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#69\">UsersController::edit<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#82\">UsersController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UsersController.php.html#108\">UsersController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/ForgotPasswordController.php.html#28\">ForgotPasswordController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/LoginController.php.html#35\">LoginController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/RegisterController.php.html#37\">RegisterController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/RegisterController.php.html#48\">RegisterController::validator<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/RegisterController.php.html#63\">RegisterController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/ResetPasswordController.php.html#35\">ResetPasswordController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/CartController.php.html#10\">CartController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/CartController.php.html#19\">CartController::index<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ContactController.php.html#14\">ContactController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ContactController.php.html#21\">ContactController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ContactController.php.html#31\">ContactController::send<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ContactController.php.html#53\">ContactController::success<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Controller.php.html#16\">Controller::getDateFromRequest<\/a>"],[100,1,"<a href=\"Http\/Controllers\/FaqController.php.html#10\">FaqController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/FaqController.php.html#16\">FaqController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/HomeController.php.html#14\">HomeController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/HomeController.php.html#24\">HomeController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PagesController.php.html#10\">PagesController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PagesController.php.html#13\">PagesController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PagesController.php.html#17\">PagesController::about<\/a>"],[0,1,"<a href=\"Http\/Controllers\/QuoteController.php.html#10\">QuoteController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/QuoteController.php.html#19\">QuoteController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TreatsController.php.html#12\">TreatsController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TreatsController.php.html#15\">TreatsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TreatsController.php.html#20\">TreatsController::show<\/a>"],[0,4,"<a href=\"Http\/Middleware\/AdminMiddleware.php.html#17\">AdminMiddleware::handle<\/a>"],[0,2,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#18\">RedirectIfAuthenticated::handle<\/a>"],[0,1,"<a href=\"Mail\/ContactReceived.php.html#21\">ContactReceived::__construct<\/a>"],[0,1,"<a href=\"Mail\/ContactReceived.php.html#31\">ContactReceived::build<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#16\">AppServiceProvider::boot<\/a>"],[100,2,"<a href=\"Providers\/AppServiceProvider.php.html#26\">AppServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/AuthServiceProvider.php.html#24\">AuthServiceProvider::boot<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#15\">BroadcastServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#26\">EventServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#26\">RouteServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#38\">RouteServiceProvider::map<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#54\">RouteServiceProvider::mapWebRoutes<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#68\">RouteServiceProvider::mapApiRoutes<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#83\">RouteServiceProvider::mapAdminRoutes<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#89\">RouteServiceProvider::anonymous function<\/a>"],[0,2,"<a href=\"helpers.php.html#6\">Columns::__construct<\/a>"],[0,2,"<a href=\"helpers.php.html#14\">Columns::getColumnLine<\/a>"],[0,2,"<a href=\"helpers.php.html#29\">Column::__construct<\/a>"],[0,1,"<a href=\"helpers.php.html#41\">Column::trimQuotes<\/a>"],[0,2,"<a href=\"helpers.php.html#47\">Column::getField<\/a>"],[0,2,"<a href=\"helpers.php.html#51\">Column::getColumn<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

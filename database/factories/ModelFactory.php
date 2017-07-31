@@ -151,6 +151,17 @@ $factory->define(\Martin\Transactions\Payment::class, function(Faker\Generator $
 });
 
 /**
+ * Permissions
+ */
+$factory->define(\Martin\ACL\Permission::class, function (Faker\Generator $faker) {
+    return [
+        'label'  => ucwords($faker->word),
+        'code'  => ucwords($faker->word),
+        'description'  => ucwords($faker->word),
+    ];
+});
+
+/**
  * Pet
  */
 $factory->define(\Martin\Customers\Pet::class, function (Faker\Generator $faker) {

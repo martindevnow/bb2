@@ -23,8 +23,7 @@ class Permission extends Model
      *
      * @param Role $role
      */
-    public function assignToRole(Role $role)
-    {
+    public function assignToRole(Role $role) {
         $this->roles()->attach($role->id);
     }
 
@@ -33,8 +32,7 @@ class Permission extends Model
      *
      * @param Role $role
      */
-    public function removeFromRole(Role $role)
-    {
+    public function removeFromRole(Role $role) {
         $role->permissions()->detach($role->id);
     }
 
@@ -43,8 +41,7 @@ class Permission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
-    {
+    public function roles() {
         return $this->belongsToMany(Role::class);
     }
 }

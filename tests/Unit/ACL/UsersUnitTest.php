@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\ACL;
 
 use Carbon\Carbon;
 use Martin\ACL\User;
-use Martin\Customers\Pet;
-use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -15,9 +13,22 @@ class UsersUnitTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function a_user_has_a_model_factory() {
+    public function users_have_a_model_factory() {
         $user = factory(User::class)->create();
         $this->assertTrue($user instanceof User);
+    }
+
+    /** @test */
+    public function users_can_have_most_fields_mass_assignable() {
+        $user = factory(User::class)->make();
+
+        $userData = $user->toArray();
+
+        // Add the 'hidden' fields
+        $userData['password'] = '12345';
+
+        User::create($userData);
+        $this->assertDatabaseHas('users', $userData);
     }
 
     /** @test */
@@ -55,10 +66,6 @@ class UsersUnitTest extends TestCase
         $user = factory(User::class)->create($userData);
         $this->assertDatabaseHas('users', $userData);
     }
-
-    /**
-     * Relationships
-     */
 
     /** @test */
     public function a_user_has_many_pets_that_belongs_to_the_user() {

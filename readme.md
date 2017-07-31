@@ -21,3 +21,19 @@ benm@barfbento.com. All security vulnerabilities will be promptly addressed.
 ## License
 
 B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wikipedia.org/wiki/Proprietary_software).
+
+## Test Coverage
+
+2017-07-31:
+- Martin
+    - Lines: 40.84%
+    - Functions and Methods: 37.93%
+    - Classes and Traits: 14.29%
+- app
+    - Lines: 63.53%
+    - Functions and Methods: 67.38%
+    - Classes and Traits: 48.65%
+- Overall
+    - Lines: 52.86%
+    - Functions and Methods: 51.11%
+    - Classes and Traits: 31.94%

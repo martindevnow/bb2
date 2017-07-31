@@ -23,9 +23,17 @@ class Role extends Model
      *
      * @param User $user
      */
-    public function assignUser(User $user)
-    {
+    public function assignToUser(User $user) {
         $this->users()->attach($user->id);
+    }
+
+    /**
+     * Attach the given User to $this Role
+     *
+     * @param User $user
+     */
+    public function removeFromUser(User $user) {
+        $this->users()->detach($user->id);
     }
 
     /**
@@ -34,8 +42,7 @@ class Role extends Model
      * @param Permission $permission
      * @return bool
      */
-    public function givePermissionTo(Permission $permission)
-    {
+    public function givePermissionTo(Permission $permission) {
         if ($this->hasPermission($permission))
             return true;
 
@@ -49,8 +56,7 @@ class Role extends Model
      * @param Permission $permission
      * @return bool
      */
-    public function removePermissionTo(Permission $permission)
-    {
+    public function removePermissionTo(Permission $permission) {
         if ( ! $this->hasPermission($permission))
             return true;
 
@@ -64,8 +70,7 @@ class Role extends Model
      * @param Permission|String $permission
      * @return bool
      */
-    public function hasPermission($permission)
-    {
+    public function hasPermission($permission) {
         if (is_string($permission))
             return $this->permissions->contains('code', $permission);
 
@@ -78,8 +83,7 @@ class Role extends Model
      * @param $permission
      * @return bool
      */
-    public function can($permission)
-    {
+    public function can($permission) {
         return !! $this->hasPermission($permission);
     }
 
@@ -88,8 +92,7 @@ class Role extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions()
-    {
+    public function permissions() {
         return $this->belongsToMany(Permission::class);
     }
 
@@ -98,8 +101,7 @@ class Role extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsToMany(User::class);
     }
 }
