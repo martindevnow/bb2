@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Laracasts\Flash\FlashServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
 
     ],
 

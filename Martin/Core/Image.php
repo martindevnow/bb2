@@ -26,8 +26,6 @@ class Image extends Model {
         'thumbnail'
     ];
 
-
-
     public function trash() {
         return $this->delete();
     }

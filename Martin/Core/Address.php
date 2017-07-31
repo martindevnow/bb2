@@ -73,6 +73,11 @@ class Address extends Model
         return $this->morphTo();
     }
 
+    /**
+     * An address will have many orders attached to the order
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function orders() {
         return $this->hasMany(Order::class, 'delivery_address_id');
     }

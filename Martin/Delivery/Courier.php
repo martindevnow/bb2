@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Courier extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'code',
+        'label',
+    ];
 }

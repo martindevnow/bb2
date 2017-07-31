@@ -12,8 +12,7 @@ class CoreModel extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function notes()
-    {
+    public function notes() {
         return $this->morphMany(\Martin\Core\Note::class, 'noteable');
     }
 
@@ -23,8 +22,7 @@ class CoreModel extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function addresses()
-    {
+    public function addresses() {
         return $this->morphMany(\Martin\Core\Address::class, 'addressable');
     }
 
@@ -34,8 +32,7 @@ class CoreModel extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function images()
-    {
+    public function images() {
         return $this->morphMany(\Martin\Core\Image::class, 'imageable');
     }
 
@@ -46,29 +43,7 @@ class CoreModel extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function attachments()
-    {
+    public function attachments() {
         return $this->morphMany(\Martin\Core\Attachment::class, 'attachmentable');
-    }
-
-    /**
-     * Many of the core retailers/providers/clients will have Aliases
-     *  - ie) PurEss, pures, PurEssentiel, 'PurEssentiel Inc.' .. etc, etc
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function aliases()
-    {
-        return $this->morphMany(\Martin\Core\Alias::class, 'aliasable');
-    }
-
-    /**
-     * Many entities can be mentioned in various emails
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function receivedEmails()
-    {
-        return $this->morphToMany(ReceivedEmail::class, 'received_emailables');
     }
 }

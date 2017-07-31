@@ -33,12 +33,9 @@ class Attachment extends Model
      *
      * @var array
      */
-    public $dates = [
+    public $dates = [];
 
-    ];
-
-    public function createEntity($type, $attributes)
-    {
+    public function createEntity($type, $attributes) {
         $model = new $type($attributes);
         $model->save();
         $model->saveEmail($this->attachmentable);
@@ -49,8 +46,7 @@ class Attachment extends Model
      *
      * @return string
      */
-    public function getStoragePathAttribute()
-    {
+    public function getStoragePathAttribute() {
         return '/email/attachments/';
     }
 
@@ -59,31 +55,29 @@ class Attachment extends Model
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function download()
-    {
+    public function download() {
         return response()->download(base_path() . '/' . $this->file_path . '/' . $this->filename(), $this->filename());
     }
 
-    /**
-     * Save the file locally
-     *
-     * @param \PhpMimeMailParser\Attachment $emailAttachment
-     */
-    public function saveFile(\PhpMimeMailParser\Attachment $emailAttachment)
-    {
-        $filesystem = new Filesystem();
-        $filesystem->put(base_path() . $this->file_path .'/' . $this->filename(),
-            $emailAttachment->getContent()
-        );
-    }
+//    /**
+//     * Save the file locally
+//     *
+//     * @param \PhpMimeMailParser\Attachment $emailAttachment
+//     */
+//    public function saveFile(\PhpMimeMailParser\Attachment $emailAttachment)
+//    {
+//        $filesystem = new Filesystem();
+//        $filesystem->put(base_path() . $this->file_path .'/' . $this->filename(),
+//            $emailAttachment->getContent()
+//        );
+//    }
 
     /**
      * Return the filename of this Attachment
      *
      * @return string
      */
-    public function filename()
-    {
+    public function filename() {
         if ($this->file_name == "")
             return 'email-'. $this->attachmentable->id . '_attachment-' . $this->id . '.' . $this->file_extension;
 
@@ -95,8 +89,7 @@ class Attachment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function attachmentable()
-    {
+    public function attachmentable() {
         return $this->morphTo();
     }
 
@@ -105,19 +98,7 @@ class Attachment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 }
-
-
-
-// ./files/[client]/orders/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_po-[PO Number]_due-[date(Y-m-d)]_[attachment_id];
-// ./files/[client]/orders/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_ps-[PS Number]_po-[PO Number]_[attachment_id];
-// ./files/[client]/orders/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_bol-[BOL Number]_po-[PO Number]_[attachment_id];
-// ./files/[client]/orders/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_inv-[INV Number]_po-[PO Number]_[attachment_id];
-// ./files/[client]/orders/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_bol-[BOL Number]_po-[PO Number]_[attachment_id];
-
-
-// ./files/[client]/inbounds/[date(Y-m-d)]_[PO Number]_[retailer]/[client]_bol-[BOL Number]_po-[PO Number]_[attachment_id];

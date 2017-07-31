@@ -13,6 +13,7 @@
         "laravel/tinker": "~1.0",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/message": "^1.6",
+        "spatie/laravel-activitylog": "^1.15",
         "stripe/stripe-php": "^4.3",
         "vinkla/instagram": "^7.0"
     },

@@ -26,8 +26,7 @@ class Note extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function noteable()
-    {
+    public function noteable() {
         return $this->morphTo();
     }
 
@@ -36,8 +35,7 @@ class Note extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('Martin\Users\User');
     }
 }
