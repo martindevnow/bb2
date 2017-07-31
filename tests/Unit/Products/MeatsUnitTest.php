@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Products;
 
 use Illuminate\Support\Facades\DB;
 use Martin\Products\Meal;

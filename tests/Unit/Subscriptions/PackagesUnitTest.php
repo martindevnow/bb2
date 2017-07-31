@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Subscriptions;
 
 use Martin\Customers\Pet;
 use Martin\Products\Meal;

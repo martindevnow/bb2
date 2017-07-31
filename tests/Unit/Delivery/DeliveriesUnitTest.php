@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Delivery;
 
 use Carbon\Carbon;
 use Martin\ACL\User;

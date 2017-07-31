@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Subscriptions;
 
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Core;
 
 use Martin\Core\Faq;
 use Martin\Core\FaqCategory;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Customers;
 
 use Illuminate\Support\Facades\DB;
 use Martin\Customers\Pet;

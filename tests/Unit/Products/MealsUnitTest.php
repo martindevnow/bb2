@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Products;
 
 use Martin\Products\Meal;
 use Martin\Products\Meat;
