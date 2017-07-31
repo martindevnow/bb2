@@ -14,7 +14,6 @@ class ActivityLogTest extends TestCase
 
     /** @test */
     public function activity_log_package_is_enabled() {
-        $this->loginAsAdmin();
         $user = User::create([
             'name'  => 'test222',
             'email'  => 'test222',
@@ -22,7 +21,6 @@ class ActivityLogTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', $user->toArray());
-//        dd (Activity::all());
         $this->assertCount(1, Activity::all());
     }
 }

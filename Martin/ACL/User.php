@@ -8,12 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Martin\ACL\Traits\HasRoles;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Plan;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
     use HasRoles;
     use SoftDeletes;
     use Notifiable;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -24,8 +26,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'first_name',
+        'last_name',
+        'stripe_active',
+        'subscription_end_at',
     ];
 
+    /**
+     * @var array
+     */
     protected $guarded = [
         'stripe_customer_id'
     ];
@@ -38,6 +47,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    /**
+     * @var array
+     */
+    protected static $logAttributes = [
+        'name',
+        'email'
     ];
 
     /**
