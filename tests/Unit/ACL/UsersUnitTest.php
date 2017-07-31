@@ -4,6 +4,8 @@ namespace Tests\Unit\ACL;
 
 use Carbon\Carbon;
 use Martin\ACL\User;
+use Martin\Customers\Pet;
+use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -93,5 +95,28 @@ class UsersUnitTest extends TestCase
         $user[0]->plans()->save($plan[1]);
         $user[0] = $user[0]->fresh(['plans']);
         $this->assertCount(2, $user[0]->plans);
+    }
+
+    /** @test */
+    public function users_can_retrieve_pets_by_id() {
+        $user = factory(User::class)->create();
+        $pets = factory(Pet::class, 3)->create([
+            'owner_id'  => $user->id
+        ]);
+
+        $this->assertCount(3, $user->pets);
+        $this->assertTrue($user->getPetById($pets[0]->id) instanceof Pet);
+    }
+
+    /** @test */
+    public function users_can_retrieve_a_string_with_all_pets_names() {
+        $user = factory(User::class)->create();
+        $pets = factory(Pet::class, 3)->create([
+            'owner_id'  => $user->id
+        ]);
+
+        $this->assertTrue(stripos($user->getPets(), $pets[0]->name) !== false);
+        $this->assertTrue(stripos($user->getPets(), $pets[1]->name) !== false);
+        $this->assertTrue(stripos($user->getPets(), $pets[2]->name) !== false);
     }
 }
