@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 Auth::routes();
 
+Route::get('/version', function () {
+    return 'v1.0.0';
+});
+
 Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@index');
 Route::get('/index', 'PagesController@index');
