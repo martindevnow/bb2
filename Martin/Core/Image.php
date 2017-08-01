@@ -5,7 +5,6 @@ namespace Martin\Core;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
-use Martin\Core\Traits\RecordsActivity;
 use ReflectionClass;
 
 class Image extends Model {

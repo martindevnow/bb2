@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Martin\Customers\Pet;
-use Martin\Subscriptions\ActivityLevel;
-use Martin\Subscriptions\Frequency;
 use Martin\Subscriptions\Package;
 
 class PackagesSeeder extends Seeder

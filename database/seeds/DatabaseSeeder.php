@@ -43,8 +43,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PackagesSeeder::class);
 
         $this->call(PlansTableSeeder::class);
-//        $this->call(ActivityLevelsSeeder::class);
-//        $this->call(FrequenciesSeeder::class);
 //        $this->call(PlansTableSeeder::class);       // Must be after Sub Data
 
         /**
@@ -55,7 +53,6 @@ class DatabaseSeeder extends Seeder
         /**
          * Current Subscriptions
          */
-//        $this->call(SubscriptionsSeeder::class);    // Must be after Plans and Users and Pets
 //        $this->call(DeliveriesTableSeeder::class);
     }
 }
