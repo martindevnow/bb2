@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Log;
 
+Log::info();
 Auth::routes();
 
 Route::get('/', 'PagesController@index');
