@@ -14,14 +14,18 @@ use Illuminate\Support\Facades\Log;
 |
 */
 Route::post('github', function(Request $request) {
+
     Log::info($request->all());
 
-    if ($request->ref === env('GITHUB_REF')) {
-        Log::info(`bash ../Martin/update.sh`);
+    if ($request->ref === env('GITHUB_REF')
+        && $request->repository->full_name === env('GITHUB_FULL_NAME', 'martindevnow/bb2')
+    ) {
+        echo (`bash ../Martin/update.sh`);
+        echo (`echo "v1.0.1" >> version.html`);
+        return 'gotcha';
     }
 
-    echo `echo "v1.0.1" >> version.html`;
-    return 'gotcha';
+    return "This branch for this Repo is not being deployed.";
 
 });
 
