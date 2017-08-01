@@ -197,6 +197,21 @@ $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $f
 });
 
 /**
+ * Products
+ */
+$factory->define(\Martin\Products\Product::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->word,
+        'description_long'=> $faker->word,
+        'size'  => $faker->randomElement(['small', '50g', '10pieces', '100ml']),
+        'sku'   => $faker->word,
+        'ingredients' => $faker->words(5, true),
+        'price' => $faker->numberBetween(300, 600),
+    ];
+});
+
+/**
  * Role
  */
 $factory->define(\Martin\ACL\Role::class, function (Faker\Generator $faker) {
