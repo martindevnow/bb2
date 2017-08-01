@@ -12,7 +12,10 @@
 */
 use Illuminate\Support\Facades\Log;
 
-Log::info();
+Route::get('master', function() {
+    echo 'This is master';
+});
+
 Auth::routes();
 
 Route::get('/', 'PagesController@index');
