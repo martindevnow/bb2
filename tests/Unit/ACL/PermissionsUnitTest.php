@@ -4,6 +4,7 @@ namespace Tests\Unit\ACL;
 
 use Martin\ACL\Permission;
 use Martin\ACL\Role;
+use Martin\ACL\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -66,5 +67,28 @@ class PermissionsUnitTest extends TestCase
             'role_id'   => $role->id,
             'permission_id' => $permission->id,
         ]);
+    }
+
+    /** @test */
+    public function permissions_can_be_queried_on_a_user_by_model_and_code() {
+        $permission[] = factory(Permission::class)->create(['code'=> 'post']);
+        $permission[] = factory(Permission::class)->create(['code'=> 'delete']);
+
+        /** @var Role $role */
+        $role = factory(Role::class)->create();
+
+        $role->givePermissionTo($permission[0]);
+        $role->givePermissionTo($permission[1]);
+
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+
+        $user = $user->fresh(['roles']);
+        $this->assertTrue($user->hasPermission($permission[0]));
+        $this->assertTrue($user->hasPermission('delete'));
+        $this->assertTrue($user->hasPermission(Permission::all()));
+
     }
 }

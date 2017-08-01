@@ -145,4 +145,34 @@ class PetsUnitTest extends TestCase
                 + Container::COST_PER_1000_STICKERS / 1000)),
             $container3->costPerWeek());
     }
+
+    /** @test */
+    public function a_pets_weight_should_be_rounded_to_a_multiple_of_5() {
+        $weight = 15;
+        /** @var Pet $pet */
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals($weight / 5, $pet->getPlanQuantity());
+
+        $weight = 10;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals($weight / 5, $pet->getPlanQuantity());
+
+        $weight = 11;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 12;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 13;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 14;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+    }
+
+    // TODO: Add tests for $pet->plans() function
 }

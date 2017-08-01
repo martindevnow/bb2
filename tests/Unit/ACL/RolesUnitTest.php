@@ -125,4 +125,56 @@ class RolesUnitTest extends TestCase
         $this->assertTrue($role->hasPermission($permission->code));
         $this->assertTrue($role->can($permission->code));
     }
+
+    /** @test */
+    public function roles_can_be_assigned_to_a_user_by_model_and_code() {
+        /** @var Role $role */
+        $role = factory(Role::class)->create(['code'=> 'admin']);
+        $role2 = factory(Role::class)->create(['code'=> 'admin2']);
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+        $user->assignRole($role2->code);
+
+        $user = $user->fresh(['roles']);
+        $this->assertCount(2, $user->roles);
+    }
+
+    /** @test */
+    public function roles_can_be_removed_from_a_user_by_model_and_code() {
+        /** @var Role $role */
+        $role = factory(Role::class)->create(['code'=> 'admin']);
+        $role2 = factory(Role::class)->create(['code'=> 'admin2']);
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+        $user->assignRole($role2->code);
+
+        $user = $user->fresh(['roles']);
+        $this->assertCount(2, $user->roles);
+
+        $user->removeRole($role);
+        $user->removeRole($role2);
+
+        $user = $user->fresh(['roles']);
+        $this->assertCount(0, $user->roles);
+    }
+
+    /** @test */
+    public function roles_can_be_queried_on_a_user_by_model_and_code_and_a_collection() {
+        /** @var Role $role */
+        $role = factory(Role::class)->create(['code'=> 'admin']);
+        $role2 = factory(Role::class)->create(['code'=> 'admin2']);
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+        $user->assignRole($role2->code);
+
+        $user = $user->fresh(['roles']);
+        $this->assertTrue($user->hasRole($role));
+        $this->assertTrue($user->hasRole($role2));
+        $this->assertTrue($user->hasRole(Role::all()));
+    }
 }
