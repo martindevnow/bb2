@@ -21,10 +21,16 @@ class MealPackage extends Model
      * Relationships
      */
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function meal() {
         return $this->belongsTo(Meal::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function package() {
         return $this->belongsTo(Package::class);
     }

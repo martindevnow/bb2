@@ -50,6 +50,10 @@ class Package extends Model
         return $pet->mealSize() * $this->costPerLb() ;
     }
 
+    /**
+     * @param Pet $pet
+     * @return float
+     */
     public function costPetWeek(Pet $pet) {
         return $this->costPerMeal($pet) * 14;
     }
@@ -63,8 +67,8 @@ class Package extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions() {
-        return $this->hasMany(Subscription::class);
+    public function plans() {
+        return $this->hasMany(Plan::class);
     }
 
     /**

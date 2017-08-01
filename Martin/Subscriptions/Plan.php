@@ -110,6 +110,9 @@ class Plan extends Model
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pet() {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
