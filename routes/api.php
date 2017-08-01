@@ -20,7 +20,7 @@ Route::post('github', function(Request $request) {
         Log::info(`bash ../Martin/update.sh`);
     }
 
-    echo `echo "v1.0.0" >> version.html`;
+    echo `echo "v1.0.1" >> version.html`;
     return 'gotcha';
 
 });
