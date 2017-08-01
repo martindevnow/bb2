@@ -13,9 +13,14 @@ use Illuminate\Support\Facades\Log;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('github', function(Response $response) {
-    Log::info($response->toArray());
-    echo `echo "hello" >> info.txt`;
+Route::post('github', function(Request $request) {
+    Log::info($request->all());
+
+    if ($request->ref === env('GITHUB_REF')) {
+        Log::info(`bash ../Martin/update.sh`);
+    }
+
+    echo `echo "v1.0.0" >> version.html`;
     return 'gotcha';
 
 });
