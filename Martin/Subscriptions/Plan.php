@@ -3,6 +3,7 @@
 namespace Martin\Subscriptions;
 
 use App\Http\Controllers\PackagesController;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
@@ -125,6 +126,19 @@ class Plan extends Model
         return $this->orders()
             ->orderBy('deliver_by', 'DESC')
             ->first();
+    }
+
+    public function hasOrders() {
+        return $this->orders()->count();
+    }
+
+    public function getNextOrderDate() {
+        if (! $this->hasOrders())
+            return Carbon::now();
+
+        return $this->getLatestOrder()
+            ->created_at
+            ->addDays(7 * $this->weeks_at_a_time);
     }
 
     /**
