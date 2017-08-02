@@ -9,7 +9,7 @@
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
 						<img src="/smartadmin/img/avatars/sunny.png" alt="me" class="online" />
 						<span>
-							john.doe
+							{{ auth()->user()->name }}
 						</span>
 						<i class="fa fa-angle-down"></i>
 					</a>
@@ -60,6 +60,10 @@
                     <span class="menu-item-parent">Pets</span></a>
             </li>
             <li>
+                <a href="/admin/plans"><i class="fa fa-repeat"></i>
+                    <span class="menu-item-parent">Plans</span></a>
+            </li>
+            <li>
                 <a href="/admin/toppings"><i class="fa fa-tint"></i>
                     <span class="menu-item-parent">Toppings</span></a>
             </li>
@@ -69,10 +73,7 @@
             </li>
 
 
-            <li>
-                <a href="/admin/plans"><i class="fa fa-repeat"></i>
-                    <span class="menu-item-parent">Plans</span></a>
-            </li>
+
             <li>
                 <a href="/admin/bugs"><i class="fa fa-bug"></i>
                     <span class="menu-item-parent">Bugs</span></a>

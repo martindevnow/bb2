@@ -64,6 +64,14 @@ class Address extends Model
         return 0;
     }
 
+    public function toString() {
+        return $this->street_1 . ', '
+            . ($this->street_2 ? $this->street_2 . ', ' : '')
+            . $this->city . ', '
+            . $this->province . ', '
+            . $this->postal_code;
+    }
+
     /**
      * An Address can be attached to Any Entity
      *

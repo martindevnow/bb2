@@ -97,15 +97,23 @@
 
         .schedule-day {
             border: 1px solid dimgrey;
-            /*border-right: 1px solid dimgrey;*/
         }
 
         .schedule-day-title {
             text-align: center;
             font-size: 2rem;
-
-
         }
+        #logo {
+            margin-top: 0;
+        }
+        #logo img {
+            margin-top: 0;
+            height: 48px;
+            width: auto;
+        }
+
+
+
     </style>
 
 </head>

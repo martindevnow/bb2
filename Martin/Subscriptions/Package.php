@@ -54,7 +54,7 @@ class Package extends Model
      * @param Pet $pet
      * @return float
      */
-    public function costPetWeek(Pet $pet) {
+    public function costPerWeek(Pet $pet) {
         return $this->costPerMeal($pet) * 14;
     }
 
