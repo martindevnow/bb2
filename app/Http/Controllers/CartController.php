@@ -7,9 +7,7 @@ class CartController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Show the application dashboard.

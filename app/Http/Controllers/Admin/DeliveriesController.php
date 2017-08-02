@@ -142,6 +142,5 @@ class DeliveriesController extends Controller
         return redirect()->back();
     }
 
-
 }
 
