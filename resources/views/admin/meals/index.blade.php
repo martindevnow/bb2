@@ -47,13 +47,6 @@
         <!-- widget div-->
         <div role="content">
 
-            <!-- widget edit box -->
-            <div class="jarviswidget-editbox">
-                <!-- This area used as dropdown edit box -->
-
-            </div>
-            <!-- end widget edit box -->
-
             <!-- widget content -->
             <div class="widget-body no-padding">
 
@@ -81,7 +74,7 @@
                         @foreach($meals as $meal)
                             <tr>
                                 <td><a href="/admin/meals/{{ $meal->id }}">{{ $meal->code }}</a></td>
-                                <td>{{ $meal->label }}</td>
+                                <td>{{ $meal->label }} ({{ $meal->toppingsToString() }})</td>
                                 <td>{{ $meal->meal_value }}</td>
                                 <td>{{ $meal->costPerLb() }}</td>
                                 <td>
