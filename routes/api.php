@@ -17,8 +17,9 @@ Route::post('github', function(Request $request) {
 
     Log::info($request->all());
 
-    if ($request->ref === env('GITHUB_REF')
-        && $request->repository->full_name === env('GITHUB_FULL_NAME', 'martindevnow/bb2')
+    $requestData = $request->all();
+    if ($requestData['ref'] === env('GITHUB_REF')
+        && $requestData['repository']['full_name'] === env('GITHUB_FULL_NAME', 'martindevnow/bb2')
     ) {
         echo (`bash ../Martin/update.sh`);
         echo (`echo "v1.0.1" >> version.html`);
