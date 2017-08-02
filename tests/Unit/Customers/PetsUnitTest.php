@@ -87,9 +87,10 @@ class PetsUnitTest extends TestCase
 
         $container = Container::selectContainer($pet->mealSizeInGrams());
         $this->assertEquals('8oz', $container->size);
-        $this->assertEquals((
-            Container::COST_PER_500_8OZ_CONTAINER / 500
-                + Container::COST_PER_1000_STICKERS / 1000),
+        $this->assertEquals(
+            round((Container::COST_PER_500_8OZ_CONTAINER / 500
+                + Container::COST_PER_1000_STICKERS / 1000)
+                * Container::MARKUP_PERCENTAGE, 3),
             round($container->cost(), 3));
     }
 
@@ -142,7 +143,8 @@ class PetsUnitTest extends TestCase
         $this->assertEquals(14, $container3->containersPerWeek());
         $this->assertEquals((
             14 * (Container::COST_PER_500_16OZ_CONTAINER / 500
-                + Container::COST_PER_1000_STICKERS / 1000)),
+                + Container::COST_PER_1000_STICKERS / 1000))
+            * Container::MARKUP_PERCENTAGE,
             $container3->costPerWeek());
     }
 
