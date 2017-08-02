@@ -27,7 +27,6 @@ Route::post('github', function(Request $request) {
     }
 
     return "This branch for this Repo is not being deployed.";
-
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
