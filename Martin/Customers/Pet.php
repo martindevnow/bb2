@@ -42,6 +42,10 @@ class Pet extends Model
         return $this->mealSize() * 454;
     }
 
+    public function weeklyConsumption() {
+        return $this->mealSize() * 14;
+    }
+
     /**
      * @param $activity_level
      * @return float|int

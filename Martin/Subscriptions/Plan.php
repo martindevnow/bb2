@@ -14,6 +14,9 @@ use Martin\Transactions\Payment;
 
 class Plan extends Model
 {
+    const HOURLY_RATE_FOR_PACKING_ORDERS = 25;
+    const MINUTES_REQUIRED_TO_PACK_A_WEEK = 20;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -35,6 +38,20 @@ class Plan extends Model
         'active',
     ];
 
+
+    public function costPerWeek() {
+        return $this->package
+            ->costPerWeek($this->pet);
+    }
+
+    public function costPerPoundOfDog() {
+        return $this->weekly_cost / $this->pet_weight;
+    }
+
+    public function profit() {
+        return $this->weekly_cost -
+            ($this->totalPackingCost() + $this->costPerWeek());
+    }
 
     /**
      * Mutators
@@ -192,8 +209,8 @@ class Plan extends Model
 
     public function calculateSubtotal() {
         return $this->weeks_at_a_time *
-            ($this->package->costPetWeek($this->pet)
-                + $this->getPackagingCost());
+            ($this->package->costPerWeek($this->pet)
+                + $this->packagingCost());
     }
 
     /**
@@ -201,9 +218,22 @@ class Plan extends Model
      *
      * @return float
      */
-    public function getPackagingCost() {
+    public function packagingCost() {
         return 4.50;
     }
 
+    /**
+     * TODO: Make this 'smarter'
+     *
+     * @return float
+     */
+    public function packingCost() {
+        return self::HOURLY_RATE_FOR_PACKING_ORDERS
+            * (self::MINUTES_REQUIRED_TO_PACK_A_WEEK / 60);
+    }
+
+    public function totalPackingCost() {
+        return $this->packingCost() + $this->packagingCost();
+    }
 
 }

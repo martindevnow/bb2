@@ -13,6 +13,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * @param Request $request
+     * @param String $key
+     * @return null|static
+     */
     protected function getDateFromRequest(Request $request, String $key) {
         return $request->get($key) ? Carbon::createFromFormat('Y-m-d', $request->get($key)) : null;
     }
