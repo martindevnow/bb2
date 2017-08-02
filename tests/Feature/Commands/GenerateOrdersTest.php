@@ -15,7 +15,9 @@ class GenerateOrdersTest extends TestCase
 
     /** @test */
     public function it_can_be_run() {
-        $plans = factory(Plan::class)->create();
-        dd (`php artisan orders:generate`);
+        $plan = factory(Plan::class)->create();
+        (`php artisan orders:generate`);
+
+        $this->assertTrue($plan->hasOrders());
     }
 }

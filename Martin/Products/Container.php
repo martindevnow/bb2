@@ -11,6 +11,8 @@ class Container {
 
     const COST_PER_1000_STICKERS = 74;
 
+    const MARKUP_PERCENTAGE = 1.15;
+
     public $size;
     public $cost_per_hundred;
     public $capacity_in_grams;
@@ -71,8 +73,9 @@ class Container {
      * @return float|int
      */
     public function cost() {
-        return $this->cost_per_hundred / 100
-            + $this->sticker['cost'];
+        return ($this->cost_per_hundred / 100
+            + $this->sticker['cost'])
+            * self::MARKUP_PERCENTAGE;
     }
 
     /**

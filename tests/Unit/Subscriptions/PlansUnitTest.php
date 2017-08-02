@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Subscriptions;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
@@ -82,12 +83,92 @@ class PlansUnitTest extends TestCase
      */
 
     /** @test */
+    public function a_plan_belongs_to_a_customer() {
+        $plan = factory(Plan::class)->create();
+        $this->assertTrue($plan->customer instanceof User);
+    }
+
+    /** @test */
     public function a_plan_can_have_many_orders() {
         $order = factory(Order::class)->create();
         $plan = $order->plan;
 
         $this->assertTrue($plan instanceof Plan);
         $this->assertCount(1, $plan->orders);
+    }
+
+    /** @test */
+    public function a_plan_knows_if_it_has_orders() {
+        $plan = factory(Plan::class)->create();
+        $this->assertFalse($plan->hasOrders());
+
+        $plan->generateOrder();
+
+        /** @var Plan $plan */
+        $plan = $plan->fresh(['orders']);
+        $this->assertTrue($plan->hasOrders());
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_first_order_should_be_placed() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 1,
+        ]);
+
+        $this->assertEquals(
+            Carbon::now()->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_first_order_should_be_placed_bi_weekly() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $this->assertEquals(
+            Carbon::now()->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_next_order_should_be_generated() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 1,
+        ]);
+        $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(7)->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_next_order_should_be_generated_bi_weekly() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 2,
+        ]);
+        $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(2 * 7)->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_its_packing_cost() {
+        $plan = factory(Plan::class)->create();
+        $this->assertTrue(is_numeric($plan->packingCost()));
+        $this->assertTrue(is_numeric($plan->packagingCost()));
+        $this->assertTrue(is_numeric($plan->totalPackingCost()));
     }
 
 

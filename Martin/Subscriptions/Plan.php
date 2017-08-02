@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
+use Martin\Products\Container;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -138,17 +139,22 @@ class Plan extends Model
     /**
      * @return mixed
      */
-    public function getLatestOrder(): mixed
-    {
+    public function getLatestOrder() {
         return $this->orders()
             ->orderBy('deliver_by', 'DESC')
             ->first();
     }
 
+    /**
+     * @return bool
+     */
     public function hasOrders() {
-        return $this->orders()->count();
+        return !! $this->orders()->count();
     }
 
+    /**
+     * @return Carbon
+     */
     public function getNextOrderDate() {
         if (! $this->hasOrders())
             return Carbon::now();
@@ -207,6 +213,9 @@ class Plan extends Model
         return $this->created_at;
     }
 
+    /**
+     * @return mixed
+     */
     public function calculateSubtotal() {
         return $this->weeks_at_a_time *
             ($this->package->costPerWeek($this->pet)
@@ -219,7 +228,8 @@ class Plan extends Model
      * @return float
      */
     public function packagingCost() {
-        return 4.50;
+        return Container::selectContainer($this->pet->mealSizeInGrams())
+            ->costPerWeek();
     }
 
     /**
@@ -232,6 +242,9 @@ class Plan extends Model
             * (self::MINUTES_REQUIRED_TO_PACK_A_WEEK / 60);
     }
 
+    /**
+     * @return float
+     */
     public function totalPackingCost() {
         return $this->packingCost() + $this->packagingCost();
     }
