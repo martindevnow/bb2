@@ -175,4 +175,14 @@ class MealsUnitTest extends TestCase
         $this->assertTrue($meal->hasTopping($topping->code));
     }
 
+    /** @test */
+    public function a_meal_can_output_its_toppings_as_a_string() {
+        $meal = factory(Meal::class)->create();
+        $toppings = factory(Topping::class, 3)->create();
+        $meal->addTopping($toppings[0]);
+        $meal->addTopping($toppings[1]);
+        $meal->addTopping($toppings[2]);
+
+        $this->assertContains($toppings[0]->label, $meal->toppingsToString());
+    }
 }
