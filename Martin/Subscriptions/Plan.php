@@ -191,10 +191,11 @@ class Plan extends Model
             'delivery_address_id'   => $this->delivery_address_id,
 //            'shipping_cost' => $this->deliveryAddress
 //                ->getShippingCostByMealSize($this->pet->mealSizeInGrams()),
-            'subtotal'  => $subtotal,
-            'tax'   => $tax,
-            'total_cost' => $tax + $subtotal,
-            'deliver_by'   => $delivery_date,
+            'subtotal'      => $subtotal,
+            'tax'           => $tax,
+            'total_cost'    => $tax + $subtotal,
+            'deliver_by'    => $delivery_date,
+            'plan_order'    => true,
         ]);
     }
 

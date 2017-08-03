@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->integer('tax');
             $table->integer('total_cost');
 
+            $table->boolean('plan_order')->default(false);
+
             $table->boolean('paid')->default(false);
             $table->boolean('packed')->default(false);
             $table->boolean('picked')->default(false);

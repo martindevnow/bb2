@@ -19,6 +19,15 @@ class Order extends Model
         'subtotal',
         'tax',
         'total_cost',
+
+        'include_meals',
+
+        'paid',
+        'packed',
+        'picked',
+        'shipped',
+        'delivered',
+
         'deliver_by',
     ];
 

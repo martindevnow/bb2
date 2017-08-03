@@ -64,6 +64,7 @@ class MealsUnitTest extends TestCase
         $this->assertTrue($meal->hasMeat($meat));
         $this->assertTrue($meal->hasMeat($meat->id));
         $this->assertTrue($meal->hasMeat($meat->code));
+        $this->assertFalse($meal->hasMeat(true));
     }
 
     /** @test */
@@ -109,6 +110,44 @@ class MealsUnitTest extends TestCase
         $this->assertEquals(1.5, $meal->costPerLb());
     }
 
+    /** @test */
+    public function it_can_remove_meat() {
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class)->create();
+
+        $meal->addMeat($meat->id);
+        $this->assertDatabaseHas('meal_meat', [
+            'meal_id'   => $meal->id,
+            'meat_id'   => $meat->id,
+        ]);
+
+        $meal = $meal->fresh(['meats']);
+        $meal->removeMeat($meat);
+        $this->assertDatabaseMissing('meal_meat', [
+            'meal_id'   => $meal->id,
+            'meat_id'   => $meat->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_can_remove_meat_by_code() {
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class)->create();
+
+        $meal->addMeat($meat->id);
+        $this->assertDatabaseHas('meal_meat', [
+            'meal_id'   => $meal->id,
+            'meat_id'   => $meat->id,
+        ]);
+
+        $meal = $meal->fresh(['meats']);
+        $meal->removeMeat($meat->code);
+        $this->assertDatabaseMissing('meal_meat', [
+            'meal_id'   => $meal->id,
+            'meat_id'   => $meat->id,
+        ]);
+    }
+
     /**
      * TOPPINGS
      */
@@ -141,6 +180,7 @@ class MealsUnitTest extends TestCase
         $this->assertTrue($meal->hasTopping($topping));
         $this->assertTrue($meal->hasTopping($topping->id));
         $this->assertTrue($meal->hasTopping($topping->code));
+        $this->assertFalse($meal->hasTopping(true));
     }
 
     /** @test */
@@ -184,5 +224,24 @@ class MealsUnitTest extends TestCase
         $meal->addTopping($toppings[2]);
 
         $this->assertContains($toppings[0]->label, $meal->toppingsToString());
+    }
+
+    /** @test */
+    public function a_meal_can_remove_toppings() {
+        $meal = factory(Meal::class)->create();
+        $toppings = factory(Topping::class, 3)->create();
+        $meal->addTopping($toppings[0]);
+        $meal->addTopping($toppings[1]);
+
+        $meal = $meal->fresh(['toppings']);
+        $this->assertCount(2, $meal->toppings);
+
+        $meal->removeTopping($toppings[0]);
+        $meal->removeTopping($toppings[1]);
+
+        $meal = $meal->fresh(['toppings']);
+        $this->assertCount(0, $meal->toppings);
+
+
     }
 }

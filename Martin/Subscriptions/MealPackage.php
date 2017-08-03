@@ -16,22 +16,22 @@ class MealPackage extends Model
         'package_id',
         'calendar_code',
     ];
-
-    /**
-     * Relationships
-     */
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function meal() {
-        return $this->belongsTo(Meal::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function package() {
-        return $this->belongsTo(Package::class);
-    }
+//
+//    /**
+//     * Relationships
+//     */
+//
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+//     */
+//    public function meal() {
+//        return $this->belongsTo(Meal::class);
+//    }
+//
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+//     */
+//    public function package() {
+//        return $this->belongsTo(Package::class);
+//    }
 }
