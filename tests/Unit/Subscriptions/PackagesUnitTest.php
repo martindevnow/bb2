@@ -8,6 +8,7 @@ use Martin\Products\Meat;
 use Martin\Products\Topping;
 use Martin\Subscriptions\MealPackage;
 use Martin\Subscriptions\Package;
+use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -217,5 +218,14 @@ class PackagesUnitTest extends TestCase
         $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2.0]);
 
         $this->assertEquals(($chickenCost * 7 + $turkeyCost * 7) / 14 * 0.5, $package->costPerMeal($pet));
+    }
+
+    /** @test */
+    public function a_plan_has_a_package() {
+        $plan = factory(Plan::class)->create();
+        $package = $plan->package;
+
+        $this->assertTrue($package instanceof Package);
+
     }
 }

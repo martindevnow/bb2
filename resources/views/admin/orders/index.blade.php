@@ -62,7 +62,7 @@
                                     </a>
                                 </td>
                                 <td>{{ $order->customer->name }}</td>
-                                <td>{{ $order->plan->pet->mealSizeInGrams() }}</td>
+                                <td>{{ round($order->plan->pet->mealSizeInGrams()) }} g</td>
                                 <td>{{ $order->plan->package->label }}</td>
                                 <td>{{ $order->deliveryAddress->toString() }}</td>
                                 <td>{{ $order->plan->weeks_at_a_time }}</td>

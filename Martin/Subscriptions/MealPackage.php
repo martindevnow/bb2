@@ -16,6 +16,7 @@ class MealPackage extends Model
         'package_id',
         'calendar_code',
     ];
+    // TODO: Remove this by mid-August if it is still not required...
 //
 //    /**
 //     * Relationships

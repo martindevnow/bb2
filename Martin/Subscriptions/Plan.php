@@ -171,9 +171,9 @@ class Plan extends Model
     /**
      * TOD: Make the deliveryData 'smarter'
      *
-     * @return Model
+     * @return Order
      */
-    public function generateOrder() {
+    public function generateOrder(): Order {
         if (! $this->orders()->count()) {
             $delivery_date = $this->getFirstDeliveryDate();
         } else {

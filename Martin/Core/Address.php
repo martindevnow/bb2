@@ -38,7 +38,7 @@ class Address extends Model
      *
      * @return string
      */
-    protected function getAddressableType() {
+    public function getAddressableType() {
         if ($this->type)
             return $this->type;
 

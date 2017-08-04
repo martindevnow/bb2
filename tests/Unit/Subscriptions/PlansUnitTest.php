@@ -147,6 +147,11 @@ class PlansUnitTest extends TestCase
             Carbon::now()->addDays(7)->format('Y-m-d'),
             $plan->getNextOrderDate()->format('Y-m-d')
         );
+
+        $newOrder = $plan->generateOrder();
+        $this->assertTrue($newOrder instanceof Order);
+//        $newOrder->dlive
+
     }
 
     /** @test */
@@ -169,6 +174,15 @@ class PlansUnitTest extends TestCase
         $this->assertTrue(is_numeric($plan->packingCost()));
         $this->assertTrue(is_numeric($plan->packagingCost()));
         $this->assertTrue(is_numeric($plan->totalPackingCost()));
+    }
+
+    /** @test */
+    public function a_plan_knows_the_internal_cost_per_week() {
+        $plan = factory(Plan::class)->create();
+        $weeklyCost = $plan->costPerWeek();
+
+        // TODO: Work on this test
+        $this->assertFalse(true);
     }
 
 
