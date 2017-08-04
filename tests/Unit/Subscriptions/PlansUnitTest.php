@@ -8,6 +8,7 @@ use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
+use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
@@ -178,11 +179,42 @@ class PlansUnitTest extends TestCase
 
     /** @test */
     public function a_plan_knows_the_internal_cost_per_week() {
-        $plan = factory(Plan::class)->create();
-        $weeklyCost = $plan->costPerWeek();
+        /** @var Pet $pet */
+        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2]);
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create(['pet_id' => $pet->id]);
+        /** @var Package $package */
+        $package = $plan->package;
 
-        // TODO: Work on this test
-        $this->assertFalse(true);
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+
+        $plan = $plan->fresh(['package', 'package.meals']);
+        $this->assertEquals(24.5, $plan->costPerWeek());
     }
 
 
