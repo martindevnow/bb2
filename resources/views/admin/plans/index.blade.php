@@ -44,6 +44,7 @@
                         <thead>
                         <tr>
                             <td>ID</td>
+                            <td>Customer</td>
                             <td>Pet</td>
                             <td>Package</td>
                             <td>Weeks</td>
@@ -59,6 +60,7 @@
                         @foreach($plans as $plan)
                             <tr class="{{ $plan->active ? '' : 'danger' }}">
                                 <td><a href="/admin/plans/{{ $plan->id }}">{{ $plan->id }}</a></td>
+                                <td>{{ $plan->customer->name }}</td>
                                 <td>{{ $plan->pet->name }} ({{ $plan->pet_weight }} lb)</td>
                                 <td>{{ $plan->package->label }}</td>
                                 <td>{{ $plan->weeks_at_a_time }}</td>
