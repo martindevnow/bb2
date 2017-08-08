@@ -67,8 +67,8 @@ class PlansTest extends TestCase
 
         $this->get('/admin/plans/' . $plan->id)     // SHOW method
             ->assertSee($plan->customer->name)
-            ->assertSee($plan->name)
-            ->assertSee($plan->breed);
+            ->assertSee($plan->pet->name)
+            ->assertSee($plan->pet_weight);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ class PlansTest extends TestCase
         unset($request['_token']);
 
         // Adjust for the mutation on activity_level
-        $request['activity_level'] *= 100;
+        $request['pet_activity_level'] *= 100;
         $this->assertDatabaseHas('plans', $request);
     }
 
@@ -107,7 +107,7 @@ class PlansTest extends TestCase
         $this->get('/admin/plans/' . $plan->id . '/edit')   // EDIT method
             ->assertStatus(200)
             ->assertSee('<form')
-            ->assertSee($plan->name);
+            ->assertSee($plan->customer->name);
     }
 
     /** @test */
@@ -120,14 +120,13 @@ class PlansTest extends TestCase
         $post_data = $plan->toArray();
         unset($post_data['id']);
 
-        $post_data['name'] = 'NEW_NAME';
+        $post_data['package_stripe_code'] = 'THIS_IS_NOT_RIGHT';
         $post_data['_method'] = 'PATCH';
 
         $this->post('/admin/plans/'. $id, $post_data)   // UPDATE method
         ->assertStatus(302);
         $this->assertDatabaseHas('plans', [
-            'name' => $post_data['name'],
-            'weight' => $post_data['weight'],
+            'package_stripe_code' => $post_data['package_stripe_code'],
             'id' => $id
         ]);
     }

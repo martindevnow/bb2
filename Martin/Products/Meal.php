@@ -25,7 +25,9 @@ class Meal extends Model
         if ( ! $this->meats()->count() )
             return 0;
 
-        return $this->meats()->sum('cost_per_lb') / $this->meats()->count() / 100;
+        return $this->meats()->sum('cost_per_lb')
+            / $this->meats()->count()
+            / 100;
     }
 
     /**
@@ -38,7 +40,6 @@ class Meal extends Model
         $toppings = $this->toppings->pluck('label');
         return implode(', ', $toppings->all());
     }
-
 
 
     /**
@@ -78,4 +79,17 @@ class Meal extends Model
     public function hasToppings() {
         return !! $this->toppings()->count();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function inventories() {
+        return $this->morphMany(Inventory::class, 'inventoryable');
+    }
+
+
+    // TODO: Maybe include a method here to get the meals of this type,
+    // but group by 'size' and sum the 'current'
+    // so we know exactly how many of this type for each size...
+    // or something....
 }

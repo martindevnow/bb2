@@ -38,4 +38,10 @@ class Product extends Model
         $this->attributes['price'] = round($value * 100);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function inventories() {
+        return $this->morphMany(Inventory::class, 'inventoryable');
+    }
 }

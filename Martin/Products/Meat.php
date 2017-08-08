@@ -46,5 +46,12 @@ class Meat extends Model
     public function meals() {
         return $this->belongsToMany(Meal::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function inventories() {
+        return $this->morphMany(Inventory::class, 'inventoryable');
+    }
 }
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
+use Martin\Products\Inventory;
 use Martin\Subscriptions\Plan;
 
 class Order extends Model
@@ -117,4 +118,10 @@ class Order extends Model
         return $this->morphMany(Payment::class, 'paymentable');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function inventoryChange() {
+        return $this->morphMany(Inventory::class, 'changeable');
+    }
 }

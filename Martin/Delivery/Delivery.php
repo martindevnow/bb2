@@ -5,6 +5,7 @@ namespace Martin\Delivery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
+use Martin\Products\Inventory;
 use Martin\Transactions\Order;
 
 class Delivery extends Model
@@ -75,5 +76,9 @@ class Delivery extends Model
      */
     public function order() {
         return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function inventoryChanges() {
+        return $this->morphMany(Inventory::class, 'changeable');
     }
 }
