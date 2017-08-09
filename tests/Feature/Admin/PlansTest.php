@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use Martin\Customers\Pet;
+use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -81,20 +82,24 @@ class PlansTest extends TestCase
             ->assertSee('<form');
     }
 
-    // TODO: Clean up the POST request.. It doesn't need all the fields right now.
     /** @test */
     public function an_admin_can_submit_a_form_to_add_a_plan() {
         $this->loginAsAdmin();
 
         $pet = factory(Pet::class)->create();
+        $package = factory(Package::class)->create();
 
-        $plan = factory(Plan::class)->make([
+        $planData = [
+            'package_id' => $package->id,
             'customer_id' => $pet->owner_id,
-            'pet_weight'=> $pet->weight,
-            'pet_activity_level' => $pet->activity_level,
-        ]);
+            'pet_id'    => $pet->id,
+            'shipping_cost' => 20,
+            'weekly_cost' => 20,
+            'weeks_at_a_time' => 1,
+            'active'    => 1,
+        ];
 
-        $request = $plan->toArray();
+        $request = $planData;
         $request['_token'] = csrf_token();
 
         $this->post('/admin/plans', $request) // STORE method
@@ -102,7 +107,8 @@ class PlansTest extends TestCase
         unset($request['_token']);
 
         // Adjust for the mutation on activity_level
-        $request['pet_activity_level'] *= 100;
+        $request['weekly_cost'] *= 100;
+        $request['shipping_cost'] *= 100;
         $this->assertDatabaseHas('plans', $request);
     }
 
@@ -115,7 +121,7 @@ class PlansTest extends TestCase
         $this->get('/admin/plans/' . $plan->id . '/edit')   // EDIT method
             ->assertStatus(200)
             ->assertSee('<form')
-            ->assertSee($plan->customer->name);
+            ->assertSee($plan->pet->owner->name);
     }
 
     // TODO: Clean up this POSt request too...

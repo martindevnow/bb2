@@ -59,7 +59,7 @@
                                 >
                                     @foreach($pets as $pet)
                                         <option value="{{ $pet->id }}"
-                                                {{ old('pet_id') === $pet->id ? 'selected="selected"' : '' }}
+                                                {!! old('pet_id') === $pet->id ? 'selected="selected"' : '' !!}
                                         >
                                             {{ $pet->name }} ({{ $pet->owner->name }})
                                         </option>
@@ -84,7 +84,7 @@
                                 >
                                     @foreach($packages as $package)
                                         <option value="{{ $package->id }}"
-                                                {{ old('package_id') === $package->id ? 'selected="selected"' : '' }}
+                                                {!! old('package_id') === $package->id ? 'selected="selected"' : '' !!}
                                         >
                                             {{ $package->label }} ({{ $package->id }})
                                         </option>
@@ -163,7 +163,7 @@
 
                         <section class="col col-6">
                             <label class="label" for="active">Active</label>
-                            <label class="text">
+                            <label class="input">
                                 <input type="text"
                                        name="active"
                                        value="{{ old('active') }}"

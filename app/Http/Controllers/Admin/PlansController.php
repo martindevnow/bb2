@@ -19,7 +19,7 @@ class PlansController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $plans = Plan::with('customer')->get();
+        $plans = Plan::with(['customer', 'pet', 'package'])->get();
 
         return view('admin.plans.index')
             ->with(compact('plans'));
@@ -56,18 +56,10 @@ class PlansController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-//            'customer_id'           => 'required',
-//            'delivery_address_id'   => 'required',
-            'shipping_cost'         => 'required',
-
             'pet_id'                => 'required',
-//            'pet_weight'            => 'required',
-//            'pet_activity_level'    => 'required',
-
             'package_id'            => 'required',
-//            'package_stripe_code'   => 'required',
-//            'package_base'          => 'required',
 
+            'shipping_cost'         => 'required',
             'weekly_cost'           => 'required',
             'weeks_at_a_time'       => 'required',
             'active'                => 'required'
@@ -79,7 +71,8 @@ class PlansController extends Controller
             'package_id',
             'weekly_cost',
             'weeks_at_a_time',
-            'active']);
+            'active'
+        ]);
 
         /** @var Pet $pet */
         $pet = Pet::findOrFail($request->get('pet_id'));
@@ -101,9 +94,10 @@ class PlansController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Plan $plan) {
-        $users = User::all();
+        $pets = Pet::with(['owner'])->get();
+        $packages = Package::all();
         return view('admin.plans.edit')
-            ->with(compact('plan', 'users'));
+            ->with(compact('plan','pets', 'packages'));
 
     }
 

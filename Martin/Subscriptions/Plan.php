@@ -85,7 +85,22 @@ class Plan extends Model
      * @param $value
      */
     public function setShippingCostAttribute($value) {
-        $this->attributes['pet_activity_level'] = round($value * 100);
+        $this->attributes['shipping_cost'] = round($value * 100);
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getWeeklyCostAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setWeeklyCostAttribute($value) {
+        $this->attributes['weekly_cost'] = round($value * 100);
     }
 
     /**
@@ -100,7 +115,7 @@ class Plan extends Model
      * @param $value
      */
     public function setPetActivityLevelAttribute($value) {
-        $this->attributes['shipping_cost'] = round($value * 100);
+        $this->attributes['pet_activity_level'] = round($value * 100);
     }
 
 
