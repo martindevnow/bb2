@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Martin\ACL\User;
+use Martin\Customers\Pet;
+use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 
 class PlansController extends Controller
@@ -40,9 +42,10 @@ class PlansController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        $users = User::all();
+        $pets = Pet::with(['owner'])->get();
+        $packages = Package::all();
         return view('admin.plans.create')
-            ->with(compact('users'));
+            ->with(compact('pets', 'packages'));
     }
 
     /**
@@ -53,19 +56,40 @@ class PlansController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'customer_id'   => 'required|integer',
-            'amount_paid'   => 'required|numeric',
-            'format'        => 'required',
-            'received_at'   => 'required',
+//            'customer_id'           => 'required',
+//            'delivery_address_id'   => 'required',
+            'shipping_cost'         => 'required',
+
+            'pet_id'                => 'required',
+//            'pet_weight'            => 'required',
+//            'pet_activity_level'    => 'required',
+
+            'package_id'            => 'required',
+//            'package_stripe_code'   => 'required',
+//            'package_base'          => 'required',
+
+            'weekly_cost'           => 'required',
+            'weeks_at_a_time'       => 'required',
+            'active'                => 'required'
         ]);
 
-        $planData = $request->only(['customer_id', 'amount_paid', 'format']);
-        $planData['collector_id'] = Auth::id();
-        $planData['received_at'] = Carbon::createFromFormat('Y-m-d', $request->get('received_at'));
+        $planData = $request->only([
+            'shipping_cost',
+            'pet_id',
+            'package_id',
+            'weekly_cost',
+            'weeks_at_a_time',
+            'active']);
+
+        /** @var Pet $pet */
+        $pet = Pet::findOrFail($request->get('pet_id'));
+        $planData['pet_weight'] = $pet->weight;
+        $planData['pet_activity_level'] = $pet->activity_level;
+        $planData['customer_id'] = $pet->owner_id;
 
         $plan = Plan::create($planData);
 
-        flash('The plan of $' . $plan->amount_paid . ' was saved.')->success();
+        flash('The plan for customer' . $plan->customer->name . ' was saved.')->success();
 
         return redirect('/admin/plans');
     }
@@ -92,16 +116,39 @@ class PlansController extends Controller
      */
     public function update(Plan $plan, Request $request) {
         $this->validate($request, [
-            'customer_id'   => 'required|integer',
-            'amount_paid'   => 'required|numeric',
-            'format'        => 'required',
-            'received_at'   => 'required',
+            'customer_id'           => 'required',
+            'delivery_address_id'   => 'required',
+            'shipping_cost'         => 'required',
+
+            'pet_id'                => 'required',
+            'pet_weight'            => 'required',
+            'pet_activity_level'    => 'required',
+
+            'package_id'            => 'required',
+            'package_stripe_code'   => 'required',
+            'package_base'          => 'required',
+
+            'weekly_cost'           => 'required',
+            'weeks_at_a_time'       => 'required',
         ]);
 
-        $planData = $request->only(['customer_id', 'amount_paid', 'format']);
-//        $planData['collector_id'] = Auth::id();
-        $planData['received_at'] = Carbon::createFromFormat('Y-m-d', $request->get('received_at'));
+        $planData = $request->only([
+            'customer_id',
+            'delivery_address_id',
+            'shipping_cost',
 
+            'pet_id',
+            'pet_weight',
+            'pet_activity_level',
+
+            'package_id',
+            'package_stripe_code',
+            'package_base',
+
+            'weekly_cost',
+
+            'weeks_at_a_time',
+            'active']);
 
         $plan->fill($planData);
         $plan->save();

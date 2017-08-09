@@ -19,7 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('inventoryable_id'); // this is the product, or meat.. raw materials
             $table->string('inventoryable_type'); // this can also be the packed version of the meals ... (but requires a size parameter)
 
-            $table->integer('size')->nullable();
+            $table->string('size')->nullable();
 
             $table->integer('change');
 
