@@ -69,6 +69,13 @@ class PackagesUnitTest extends TestCase
     }
 
     /** @test */
+    public function it_cant_remove_meals_that_are_not_attached() {
+        $package = factory(Package::class)->create();
+
+        $this->assertFalse($package->removeMeal('1-B'));
+    }
+
+    /** @test */
     public function it_can_add_a_meal_by_object() {
         $package = factory(Package::class)->create();
         $meal = factory(Meal::class)->create();
@@ -114,6 +121,12 @@ class PackagesUnitTest extends TestCase
 
         $this->assertTrue($package->hasMeal($meal));
         $this->assertTrue($package->hasMeal($meal->id));
+    }
+
+    /** @test */
+    public function hasMeal_fails_when_bad_param_passed() {
+        $package = factory(Package::class)->create();
+        $this->assertFalse($package->hasMeal(true));
     }
 
     /** @test */
@@ -221,11 +234,12 @@ class PackagesUnitTest extends TestCase
     }
 
     /** @test */
-    public function a_plan_has_a_package() {
+    public function a_plan_has_a_package_and_vice_versa() {
         $plan = factory(Plan::class)->create();
         $package = $plan->package;
 
         $this->assertTrue($package instanceof Package);
+        $this->assertCount(1, $package->plans);
 
     }
 }
