@@ -45,7 +45,7 @@
                                 <select class="form-control"
                                         id="owner_id"
                                         name="owner_id"
-                                        aria-describedby="nameHelp"
+                                        aria-describedby="owner_idHelp"
                                 >
                                     @foreach($customers as $customer)
                                     <option value="{{ $customer->id }}"
@@ -56,12 +56,12 @@
                                     @endforeach
                                 </select>
                             </label>
-                            @if ($errors->has('name'))
+                            @if ($errors->has('owner_id'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('owner_id') }}</strong>
                         </span>
                             @endif
-                            <small id="nameHelp" class="form-text text-muted">The owner of this pet.</small>
+                            <small id="owner_idHelp" class="form-text text-muted">The owner of this pet.</small>
                         </section>
 
                         <section class="col col-6">

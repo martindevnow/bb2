@@ -43,6 +43,4 @@ Route::resource('/toppings', 'ToppingsController');
 // Users
 Route::resource('/users', 'UsersController');
 
-// Deprecated
-//Route::resource('/subscriptions',   'SubscriptionsController');
-//Route::resource('/subpackages',     'SubpackagesController');
+

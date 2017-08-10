@@ -2,6 +2,8 @@
 
 namespace Tests\Smoke;
 
+use Martin\Products\Product;
+use Martin\Subscriptions\Package;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -14,49 +16,51 @@ class AllLoadingTest extends TestCase
 
     /** @test */
     public function it_loads_the_home_page() {
-        $response = $this->get('/');
-        $response->assertStatus(200);
+        $this->get('/')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_about_page() {
-        $response = $this->get('/about');
-        $response->assertStatus(200);
+        $this->get('/about')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_contact_page() {
-        $response = $this->get('/contact');
-        $response->assertStatus(200);
+        $this->get('/contact')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_treats_page() {
-        $response = $this->get('/treats');
-        $response->assertStatus(200);
+        $product = factory(Product::class)->create();
+        $this->get('/treats')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_packages_page() {
-        $response = $this->get('/packages');
-        $response->assertStatus(200);
+        $package = factory(Package::class)->create();
+        $this->get('/packages')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_quote_page() {
-        $response = $this->get('/quote');
-        $response->assertStatus(200);
+        $this->get('/quote')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_login_page() {
-        $response = $this->get('/login');
-        $response->assertStatus(200);
+        $this->get('/login')
+            ->assertStatus(200);
     }
 
     /** @test */
     public function it_loads_the_register_page() {
-        $response = $this->get('/register');
-        $response->assertStatus(200);
+        $this->get('/register')
+            ->assertStatus(200);
     }
 }

@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Log;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('github', function(Response $response) {
-    Log::info($response->toArray());
-    echo `echo "hello" >> info.txt`;
-    return 'gotcha';
+Route::post('github', function(Request $request) {
 
+    Log::info($request->all());
+
+    $requestData = $request->all();
+    if ($requestData['ref'] === env('GITHUB_REF')
+        && $requestData['repository']['full_name'] === env('GITHUB_FULL_NAME', 'martindevnow/bb2')
+    ) {
+        echo (`bash ../Martin/update.sh`);
+        echo (`echo "v1.0.1" >> version.html`);
+        return 'gotcha';
+    }
+
+    return "This branch for this Repo is not being deployed.";
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

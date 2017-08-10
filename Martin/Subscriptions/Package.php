@@ -50,11 +50,32 @@ class Package extends Model
         return $pet->mealSize() * $this->costPerLb() ;
     }
 
-    public function costPetWeek(Pet $pet) {
+    /**
+     * @param Pet $pet
+     * @return float
+     */
+    public function costPerWeek(Pet $pet) {
         return $this->costPerMeal($pet) * 14;
     }
 
+    /**
+     * @return $this
+     */
+    public function mealCounts($meal = null) {
+        $grouped =  $this->meals->groupBy('id')
+            ->map(function($group, $key) {
+                $item = $group->first();
+                $item->count = $group->count();
+                return $item;
+            });
 
+        if (! $meal)
+            return $grouped;
+
+        return $grouped->where('label', $meal->label)
+            ->first()
+            ->count;
+    }
 
     /**
      * Relationships
@@ -63,8 +84,8 @@ class Package extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions() {
-        return $this->hasMany(Subscription::class);
+    public function plans() {
+        return $this->hasMany(Plan::class);
     }
 
     /**

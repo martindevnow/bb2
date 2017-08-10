@@ -5,7 +5,7 @@ namespace Martin\Customers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
-use Martin\Subscriptions\Subscription;
+use Martin\Subscriptions\Plan;
 
 class Pet extends Model
 {
@@ -42,6 +42,10 @@ class Pet extends Model
         return $this->mealSize() * 454;
     }
 
+    public function weeklyConsumption() {
+        return $this->mealSize() * 14;
+    }
+
     /**
      * @param $activity_level
      * @return float|int
@@ -64,7 +68,6 @@ class Pet extends Model
 
 
 
-
     /**
      * Relationships
      */
@@ -79,7 +82,7 @@ class Pet extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions() {
-        return $this->hasMany(Subscription::class);
+    public function plans() {
+        return $this->hasMany(Plan::class);
     }
 }

@@ -37,3 +37,17 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
     - Lines: 52.86%
     - Functions and Methods: 51.11%
     - Classes and Traits: 31.94%
+
+2017-08-01:
+- Martin
+    - Lines: 65.35% (+24.5%)
+    - Functions and Methods: 58.70% (+21.2%)
+    - Classes and Traits: 25.00% (+10.5%)
+- app
+    - Lines: 63.53% (NC)
+    - Functions and Methods: 67.38% (NC)
+    - Classes and Traits: 48.65% (NC)
+- Overall
+    - Lines: 64.28% (+11.5%)
+    - Functions and Methods: 63.08% (+12.0%)
+    - Classes and Traits: 48.65% (+16.5%)

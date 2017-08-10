@@ -9,7 +9,7 @@
 @section('content')
 
 
-    <div class="ms-hero-page ms-hero-img-city2 ms-hero-bg-info mb-6">
+    <div class="ms-hero-page ms-hero-img-city2 ms-hero-bg-info mb-6" style="background-image: url('/barfbento/img/trade-show.jpg')">
         <div class="text-center color-white mt-6 mb-6 index-1">
             <h1>B.A.R.F.-tastic Treats</h1>
             <p class="lead lead-lg">Add any of these to your order to give your pooch a little something special!</p>
@@ -27,7 +27,7 @@
                 <div class="row" id="Container">
 
                     @foreach($treats as $treat)
-                    <div class="col-lg-3 col-md-6 col-xs-12 mix laptop apple" data-price="{{ $treat->toDollars() }}" data-date="20170901" style="display: inline-block;" data-bound="">
+                    <div class="col-lg-3 col-md-6 col-xs-12 mix laptop apple" data-price="{{ $treat->price }}" data-date="20170901" style="display: inline-block;" data-bound="">
                         <div class="card ms-feature">
                             <div class="card-block text-center">
                                 <a href="/treats/{{ $treat->sku }}">
@@ -43,7 +43,7 @@
                         <i class="zmdi zmdi-star color-warning"></i>
                         <i class="zmdi zmdi-star"></i>
                       </span>
-                                    <span class="ms-tag ms-tag-success">$ {{ $treat->toDollars() }}</span>
+                                    <span class="ms-tag ms-tag-success">$ {{ $treat->price }}</span>
                                 </div>
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block btn-raised mt-2 no-mb">
                                     <i class="zmdi zmdi-shopping-cart-plus"></i> Add to Cart</a>

@@ -10,13 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Support\Facades\Log;
-
-Route::get('master', function() {
-    echo 'This is master';
-});
 
 Auth::routes();
+
+Route::get('/version', function () {
+    return 'v1.0.0';
+});
 
 Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@index');

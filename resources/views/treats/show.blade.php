@@ -52,7 +52,7 @@
                       </span>
                                 </div>
                                 <div class="col-sm-6 text-center">
-                                    <h2 class="color-success no-m text-normal">$ {{ $treat->toDollars() }}</h2>
+                                    <h2 class="color-success no-m text-normal">$ {{ $treat->price }}</h2>
                                 </div>
                             </div>
                         </div>

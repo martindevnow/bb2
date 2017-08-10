@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
+use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -43,11 +44,16 @@ class PetsUnitTest extends TestCase
      */
 
     /** @test */
-    public function it_can_determine_the_meal_weight() {
-        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2]);
+    public function it_can_determine_the_meal_weight_and_weekly_consumption() {
+        $WEIGHT_IN_POUNDS = 50;
+        $ACTIVITY_LEVEL = 2;
+        $pet = factory(Pet::class)->create(['weight' => $WEIGHT_IN_POUNDS, 'activity_level' => $ACTIVITY_LEVEL]);
+        $MEALS_PER_DAY = 2;
+        $GRAMS_PER_POUND = 454;
 
-        $this->assertEquals(50 * .02 * 7 / 14, $pet->mealSize());
-        $this->assertEquals(50 * .02 * 7 / 14 * 454, $pet->mealSizeInGrams());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 / $MEALS_PER_DAY, $pet->mealSize());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 * 7, $pet->weeklyConsumption());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 / $MEALS_PER_DAY * $GRAMS_PER_POUND, $pet->mealSizeInGrams());
     }
 
     /**
@@ -87,9 +93,10 @@ class PetsUnitTest extends TestCase
 
         $container = Container::selectContainer($pet->mealSizeInGrams());
         $this->assertEquals('8oz', $container->size);
-        $this->assertEquals((
-            Container::COST_PER_500_8OZ_CONTAINER / 500
-                + Container::COST_PER_1000_STICKERS / 1000),
+        $this->assertEquals(
+            round((Container::COST_PER_500_8OZ_CONTAINER / 500
+                + Container::COST_PER_1000_STICKERS / 1000)
+                * Container::MARKUP_PERCENTAGE, 3),
             round($container->cost(), 3));
     }
 
@@ -142,7 +149,49 @@ class PetsUnitTest extends TestCase
         $this->assertEquals(14, $container3->containersPerWeek());
         $this->assertEquals((
             14 * (Container::COST_PER_500_16OZ_CONTAINER / 500
-                + Container::COST_PER_1000_STICKERS / 1000)),
+                + Container::COST_PER_1000_STICKERS / 1000))
+            * Container::MARKUP_PERCENTAGE,
             $container3->costPerWeek());
+    }
+
+    /** @test */
+    public function a_pets_weight_should_be_rounded_to_a_multiple_of_5() {
+        $weight = 15;
+        /** @var Pet $pet */
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals($weight / 5, $pet->getPlanQuantity());
+
+        $weight = 10;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals($weight / 5, $pet->getPlanQuantity());
+
+        $weight = 11;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 12;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 13;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+
+        $weight = 14;
+        $pet = factory(Pet::class)->create(['weight' => $weight]);
+        $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
+    }
+
+    /** @test */
+    public function a_pet_has_plans() {
+        $pet = factory(Pet::class)->create();
+        $plan = factory(Plan::class)->create([
+            'pet_id'    => $pet->id,
+            'pet_weight'    => $pet->weight,
+            'pet_activity_level'    => $pet->activity_level,
+        ]);
+
+        $pet = $pet->fresh(['plans']);
+        $this->assertCount(1, $pet->plans);
     }
 }

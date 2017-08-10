@@ -90,10 +90,12 @@ class PaymentsUnitTest extends TestCase
         $plan->payments()->save($payment);
         $plan = $plan->fresh(['payments']);
 
-        $payment = $payment->fresh();
+        $payment = $payment->fresh(['paymentable']);
 
         $this->assertEquals(Plan::class, $payment->paymentable_type);
         $this->assertEquals($plan->id, $payment->paymentable_id);
 
+        $plan_clone = $payment->paymentable;
+        $this->assertTrue($plan_clone instanceof Plan);
     }
 }

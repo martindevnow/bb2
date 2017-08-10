@@ -17,7 +17,7 @@ class CreatePlansTable extends Migration
             $table->increments('id');
 
             $table->integer('customer_id');
-            $table->integer('delivery_address_id');
+            $table->integer('delivery_address_id')->nullable();
             $table->integer('shipping_cost');
 
             $table->integer('pet_id');

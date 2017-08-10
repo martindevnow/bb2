@@ -70,18 +70,20 @@ trait HasRoles {
     public function hasRole($role)
     {
         if (is_string($role))
-            return $this->roles->contains('code', $role);
+            return !! $this->roles->contains('code', $role);
 
         if ($role instanceof Role)
-            return $this->roles()->whereCode($role->code)->count();
+            return !! $this->roles()->whereCode($role->code)->count();
 
         if ($role instanceof Collection)
         {
             foreach ($role as $r)
-                if ( $this->hasRole($r) )
-                    return true;
+                return $this->hasRole($r);
+
             return false;
         }
+
+        return false;
     }
 
     /**
@@ -93,27 +95,25 @@ trait HasRoles {
     public function hasPermission($permission)
     {
         if (is_string($permission)) {
-//            Log::info('testing if user has permission to '. $permission->code);
             return $this->hasRole(Permission::whereCode($permission)->firstOrFail()->roles);
         }
 
         if ($permission instanceof Permission) {
-//            Log::info('testing if user has any roles of '. $permission->roles);
             return $this->hasRole($permission->roles);
         }
 
         if ($permission instanceof Collection) {
-//            Log::info('testing if user has any permissions of '. $permission);
             foreach ($permission as $p)
-                if ( $this->hasPermission($p) )
-                    return true;
+                return $this->hasPermission($p);
             return false;
         }
 
-        Log::error('trait HasRoles->hasPermission was passed something that is not string, Permission or Collection');
         return false;
     }
 
+    /**
+     * @return Collection|static[]
+     */
     public function permissions() {
         return Permission::whereHas('roles', function ($query) {
             $query->whereIn('id', $this->roles->pluck('id'));

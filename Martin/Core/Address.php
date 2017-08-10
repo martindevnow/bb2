@@ -38,7 +38,7 @@ class Address extends Model
      *
      * @return string
      */
-    protected function getAddressableType() {
+    public function getAddressableType() {
         if ($this->type)
             return $this->type;
 
@@ -62,6 +62,14 @@ class Address extends Model
      */
     public function getTax() {
         return 0;
+    }
+
+    public function toString() {
+        return $this->street_1 . ', '
+            . ($this->street_2 ? $this->street_2 . ', ' : '')
+            . $this->city . ', '
+            . $this->province . ', '
+            . $this->postal_code;
     }
 
     /**

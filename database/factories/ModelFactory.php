@@ -13,6 +13,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Carbon\Carbon;
+use Martin\Transactions\Order;
 
 /**
  * Address
@@ -81,6 +82,29 @@ $factory->define(\Martin\Core\FaqCategory::class, function(Faker\Generator $fake
     return [
         'code'  => $faker->word,
         'label' => ucfirst($faker->word),
+    ];
+});
+
+/**
+ * Inventory
+ */
+$factory->define(\Martin\Products\Inventory::class, function(Faker\Generator $faker) {
+    $changeable = rand(0,1) >= 0 ? factory(Order::class)->create(): null;
+    $inventoryable = rand(0,1) >= 0.5
+        ? factory(\Martin\Products\Meat::class)->create()
+        : factory(\Martin\Products\Product::class)->create();
+    return [
+        'changeable_id'  => $changeable->id,
+        'changeable_type'  => get_class($changeable),
+        'size'  => $inventoryable instanceof \Martin\Products\Meat
+            ? null
+            : $inventoryable instanceof \Martin\Products\Product
+                ? $inventoryable->size
+                : $faker->numberBetween(150, 400),
+        'inventoryable_id'  => $inventoryable->id,
+        'inventoryable_type'  => get_class($inventoryable),
+        'change' => $faker->numberBetween(1,500) * -1,
+        'current'   => $faker->numberBetween(200,500),
     ];
 });
 
@@ -193,6 +217,21 @@ $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $f
         'weekly_cost' => $faker->numberBetween(2000,4000),
         'weeks_at_a_time' => $faker->numberBetween(1,4),
         'active' => 1,
+    ];
+});
+
+/**
+ * Products
+ */
+$factory->define(\Martin\Products\Product::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->word,
+        'description_long'=> $faker->word,
+        'size'  => $faker->randomElement(['small', '50g', '10pieces', '100ml']),
+        'sku'   => $faker->word,
+        'ingredients' => $faker->words(5, true),
+        'price' => $faker->numberBetween(300, 600),
     ];
 });
 

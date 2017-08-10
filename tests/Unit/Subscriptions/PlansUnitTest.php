@@ -2,11 +2,13 @@
 
 namespace Tests\Unit\Subscriptions;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
+use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
@@ -82,12 +84,137 @@ class PlansUnitTest extends TestCase
      */
 
     /** @test */
+    public function a_plan_belongs_to_a_customer() {
+        $plan = factory(Plan::class)->create();
+        $this->assertTrue($plan->customer instanceof User);
+    }
+
+    /** @test */
     public function a_plan_can_have_many_orders() {
         $order = factory(Order::class)->create();
         $plan = $order->plan;
 
         $this->assertTrue($plan instanceof Plan);
         $this->assertCount(1, $plan->orders);
+    }
+
+    /** @test */
+    public function a_plan_knows_if_it_has_orders() {
+        $plan = factory(Plan::class)->create();
+        $this->assertFalse($plan->hasOrders());
+
+        $plan->generateOrder();
+
+        /** @var Plan $plan */
+        $plan = $plan->fresh(['orders']);
+        $this->assertTrue($plan->hasOrders());
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_first_order_should_be_placed() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 1,
+        ]);
+
+        $this->assertEquals(
+            Carbon::now()->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_first_order_should_be_placed_bi_weekly() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $this->assertEquals(
+            Carbon::now()->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_next_order_should_be_generated() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 1,
+        ]);
+        $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(7)->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+
+        $newOrder = $plan->generateOrder();
+        $this->assertTrue($newOrder instanceof Order);
+//        $newOrder->dlive
+
+    }
+
+    /** @test */
+    public function a_plan_knows_when_the_next_order_should_be_generated_bi_weekly() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_at_a_time'   => 2,
+        ]);
+        $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(2 * 7)->format('Y-m-d'),
+            $plan->getNextOrderDate()->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_knows_its_packing_cost() {
+        $plan = factory(Plan::class)->create();
+        $this->assertTrue(is_numeric($plan->packingCost()));
+        $this->assertTrue(is_numeric($plan->packagingCost()));
+        $this->assertTrue(is_numeric($plan->totalPackingCost()));
+    }
+
+    /** @test */
+    public function a_plan_knows_the_internal_cost_per_week() {
+        /** @var Pet $pet */
+        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2]);
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create(['pet_id' => $pet->id]);
+        /** @var Package $package */
+        $package = $plan->package;
+
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+
+        $plan = $plan->fresh(['package', 'package.meals']);
+        $this->assertEquals(24.5, $plan->costPerWeek());
     }
 
 

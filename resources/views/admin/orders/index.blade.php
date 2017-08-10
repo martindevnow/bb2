@@ -21,19 +21,7 @@
 @section('content')
 
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">
-        <!-- widget options:
-        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
-        data-widget-colorbutton="false"
-        data-widget-editbutton="false"
-        data-widget-togglebutton="false"
-        data-widget-deletebutton="false"
-        data-widget-fullscreenbutton="false"
-        data-widget-custombutton="false"
-        data-widget-collapsed="true"
-        data-widget-sortable="false"
-
-        -->
         <header role="heading">
             <div class="jarviswidget-ctrls" role="menu">
                 <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"><i class="fa fa-minus "></i></a>
@@ -50,24 +38,19 @@
             <!-- widget content -->
             <div class="widget-body no-padding">
 
-                {{--<div class="alert alert-info no-margin fade in">--}}
-                {{--<button class="close" data-dismiss="alert">--}}
-                {{--×--}}
-                {{--</button>--}}
-                {{--<i class="fa-fw fa fa-info"></i>--}}
-                {{--Adds zebra-striping to table row within <code>&lt;table&gt;</code> by adding the <code>.table-striped</code> with the base class--}}
-                {{--</div>--}}
-
                 <div class="table-responsive">
 
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <td>ID</td>
+                            <td>Order Date</td>
                             <td>Customer</td>
-                            <td>Plan</td>
+                            <td>Meal Size</td>
+                            <td>Package</td>
                             <td>Address</td>
+                            <td># of Weeks</td>
                             <td>Total</td>
+                            <td>Action</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -75,12 +58,15 @@
                             <tr>
                                 <td>
                                     <a href="/admin/orders/{{ $order->id }}">
-                                        {{ $order->id }}
+                                        {{ $order->created_at->format('Y-m-d') }}
                                     </a>
                                 </td>
                                 <td>{{ $order->customer->name }}</td>
-                                <td>{{ $order->plan->id }}</td>
-                                <td>{{ $order->total_cost }}</td>
+                                <td>{{ round($order->plan->pet->mealSizeInGrams()) }} g</td>
+                                <td>{{ $order->plan->package->label }}</td>
+                                <td>{{ $order->deliveryAddress->toString() }}</td>
+                                <td>{{ $order->plan->weeks_at_a_time }}</td>
+                                <td>${{ $order->total_cost }}</td>
                                 <td>
                                     <a href="/admin/orders/{{ $order->id }}/edit">
                                         <button class="btn btn-primary btn-xs">

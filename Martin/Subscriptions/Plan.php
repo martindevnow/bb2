@@ -3,16 +3,21 @@
 namespace Martin\Subscriptions;
 
 use App\Http\Controllers\PackagesController;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
+use Martin\Products\Container;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
 class Plan extends Model
 {
+    const HOURLY_RATE_FOR_PACKING_ORDERS = 25;
+    const MINUTES_REQUIRED_TO_PACK_A_WEEK = 20;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -34,6 +39,20 @@ class Plan extends Model
         'active',
     ];
 
+
+    public function costPerWeek() {
+        return $this->package
+            ->costPerWeek($this->pet);
+    }
+
+    public function costPerPoundOfDog() {
+        return $this->weekly_cost / $this->pet_weight;
+    }
+
+    public function profit() {
+        return $this->weekly_cost -
+            ($this->totalPackingCost() + $this->costPerWeek());
+    }
 
     /**
      * Mutators
@@ -67,6 +86,36 @@ class Plan extends Model
      */
     public function setShippingCostAttribute($value) {
         $this->attributes['shipping_cost'] = round($value * 100);
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getWeeklyCostAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setWeeklyCostAttribute($value) {
+        $this->attributes['weekly_cost'] = round($value * 100);
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    public function getPetActivityLevelAttribute($value) {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPetActivityLevelAttribute($value) {
+        $this->attributes['pet_activity_level'] = round($value * 100);
     }
 
 
@@ -110,6 +159,9 @@ class Plan extends Model
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pet() {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
@@ -117,11 +169,29 @@ class Plan extends Model
     /**
      * @return mixed
      */
-    public function getLatestOrder(): mixed
-    {
+    public function getLatestOrder() {
         return $this->orders()
             ->orderBy('deliver_by', 'DESC')
             ->first();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOrders() {
+        return !! $this->orders()->count();
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getNextOrderDate() {
+        if (! $this->hasOrders())
+            return Carbon::now();
+
+        return $this->getLatestOrder()
+            ->created_at
+            ->addDays(7 * $this->weeks_at_a_time);
     }
 
     /**
@@ -131,9 +201,9 @@ class Plan extends Model
     /**
      * TOD: Make the deliveryData 'smarter'
      *
-     * @return Model
+     * @return Order
      */
-    public function generateOrder() {
+    public function generateOrder(): Order {
         if (! $this->orders()->count()) {
             $delivery_date = $this->getFirstDeliveryDate();
         } else {
@@ -151,10 +221,11 @@ class Plan extends Model
             'delivery_address_id'   => $this->delivery_address_id,
 //            'shipping_cost' => $this->deliveryAddress
 //                ->getShippingCostByMealSize($this->pet->mealSizeInGrams()),
-            'subtotal'  => $subtotal,
-            'tax'   => $tax,
-            'total_cost' => $tax + $subtotal,
-            'deliver_by'   => $delivery_date,
+            'subtotal'      => $subtotal,
+            'tax'           => $tax,
+            'total_cost'    => $tax + $subtotal,
+            'deliver_by'    => $delivery_date,
+            'plan_order'    => true,
         ]);
     }
 
@@ -173,10 +244,13 @@ class Plan extends Model
         return $this->created_at;
     }
 
+    /**
+     * @return mixed
+     */
     public function calculateSubtotal() {
         return $this->weeks_at_a_time *
-            ($this->package->costPetWeek($this->pet)
-                + $this->getPackagingCost());
+            ($this->package->costPerWeek($this->pet)
+                + $this->packagingCost());
     }
 
     /**
@@ -184,9 +258,26 @@ class Plan extends Model
      *
      * @return float
      */
-    public function getPackagingCost() {
-        return 4.50;
+    public function packagingCost() {
+        return Container::selectContainer($this->pet->mealSizeInGrams())
+            ->costPerWeek();
     }
 
+    /**
+     * TODO: Make this 'smarter'
+     *
+     * @return float
+     */
+    public function packingCost() {
+        return self::HOURLY_RATE_FOR_PACKING_ORDERS
+            * (self::MINUTES_REQUIRED_TO_PACK_A_WEEK / 60);
+    }
+
+    /**
+     * @return float
+     */
+    public function totalPackingCost() {
+        return $this->packingCost() + $this->packagingCost();
+    }
 
 }
