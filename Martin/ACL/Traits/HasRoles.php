@@ -78,8 +78,8 @@ trait HasRoles {
         if ($role instanceof Collection)
         {
             foreach ($role as $r)
-                if ( $this->hasRole($r) )
-                    return true;
+                return $this->hasRole($r);
+
             return false;
         }
 
@@ -104,14 +104,16 @@ trait HasRoles {
 
         if ($permission instanceof Collection) {
             foreach ($permission as $p)
-                if ( $this->hasPermission($p) )
-                    return true;
+                return $this->hasPermission($p);
             return false;
         }
 
         return false;
     }
 
+    /**
+     * @return Collection|static[]
+     */
     public function permissions() {
         return Permission::whereHas('roles', function ($query) {
             $query->whereIn('id', $this->roles->pluck('id'));

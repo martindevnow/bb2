@@ -89,6 +89,8 @@ class PermissionsUnitTest extends TestCase
         $this->assertTrue($user->hasPermission($permission[0]));
         $this->assertTrue($user->hasPermission('delete'));
         $this->assertTrue($user->hasPermission(Permission::all()));
+        $this->assertFalse($user->hasPermission(true));
 
+        $this->assertCount(2, $user->permissions());
     }
 }

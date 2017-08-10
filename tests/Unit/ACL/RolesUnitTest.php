@@ -155,7 +155,7 @@ class RolesUnitTest extends TestCase
         $this->assertCount(2, $user->roles);
 
         $user->removeRole($role);
-        $user->removeRole($role2);
+        $user->removeRole($role2->code);
 
         $user = $user->fresh(['roles']);
         $this->assertCount(0, $user->roles);
@@ -176,5 +176,7 @@ class RolesUnitTest extends TestCase
         $this->assertTrue($user->hasRole($role));
         $this->assertTrue($user->hasRole($role2));
         $this->assertTrue($user->hasRole(Role::all()));
+        $this->assertFalse($user->hasRole(true));
     }
+
 }
