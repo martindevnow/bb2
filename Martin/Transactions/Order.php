@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Products\Inventory;
+use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 
 class Order extends Model
@@ -32,6 +33,9 @@ class Order extends Model
         'deliver_by',
     ];
 
+    /**
+     * @var array
+     */
     protected $dates = [
         'deliver_by'
     ];
@@ -85,6 +89,26 @@ class Order extends Model
         $this->attributes['total_cost'] = round($value * 100);
     }
 
+    /**
+     * @param Meal|null $meal
+     * @return mixed
+     */
+    public function mealCounts(Meal $meal = null) {
+        $plan = $this->plan;
+        $grouped =  $this->plan->package->meals->groupBy('id')
+            ->map(function($group, $key) use ($plan) {
+                $item = $group->first();
+                $item->count = $group->count() * $plan->weeks_at_a_time;
+                return $item;
+            });
+
+        if (! $meal)
+            return $grouped;
+
+        return $grouped->where('label', $meal->label)
+            ->first()
+            ->count;
+    }
 
     /**
      * Relationships

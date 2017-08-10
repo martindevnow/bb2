@@ -27,8 +27,9 @@ class OrdersController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Order $order) {
+        $meals = $order->mealCounts();
         return view('admin.orders.show')
-            ->with(compact('order'));
+            ->with(compact('order', 'meals'));
     }
 
     /**

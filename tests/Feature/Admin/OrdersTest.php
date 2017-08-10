@@ -3,6 +3,9 @@
 namespace Tests\Feature\Admin;
 
 use Martin\Products\Meal;
+use Martin\Products\Meat;
+use Martin\Subscriptions\Package;
+use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -103,5 +106,60 @@ class OrdersTest extends TestCase
         $this->seeIsSoftDeletedInDatabase('orders', [
             'id' => $id
         ]);
+    }
+
+    /** @test */
+    public function an_admin_can_see_the_meal_counts_on_show_page() {
+        $this->loginAsAdmin();
+
+        $package = factory(Package::class)->create();
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+        $package = $package->fresh(['meals']);
+
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'package_id'    => $package->id,
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $plan->generateOrder();
+        $order = $plan->orders->first();
+
+        $meals = $order->mealCounts();
+        $firstMeal = $meals->where('label', $chkMeal->label)
+            ->first();
+
+        $secondMeal = $meals->where('label', $turkMeal->label)
+            ->first();
+
+        $this->get('/admin/orders/' . $order->id) // SHOW method
+            ->assertSee($firstMeal->label . ' x ' . $firstMeal->count)
+            ->assertSee($secondMeal . ' x ' . $secondMeal->count);
     }
 }

@@ -240,6 +240,43 @@ class PackagesUnitTest extends TestCase
 
         $this->assertTrue($package instanceof Package);
         $this->assertCount(1, $package->plans);
+    }
 
+    /** @test */
+    public function a_package_can_get_the_meals_count() {
+        $package = factory(Package::class)->create();
+
+        $chkMeal = factory(Meal::class)->create();
+        $turkMeal = factory(Meal::class)->create();
+
+        $chickenCost = 1;
+        $turkeyCost = 6;
+
+        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
+        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+
+        $chkMeal->addMeat($chicken);
+        $turkMeal->addMeat($turkey);
+
+        $package->addMeal($chkMeal, '1B');
+        $package->addMeal($chkMeal, '2B');
+        $package->addMeal($chkMeal, '3B');
+        $package->addMeal($chkMeal, '4B');
+        $package->addMeal($chkMeal, '5B');
+        $package->addMeal($chkMeal, '6B');
+        $package->addMeal($chkMeal, '7B');
+        $package->addMeal($turkMeal, '1B');
+        $package->addMeal($turkMeal, '2B');
+        $package->addMeal($turkMeal, '3B');
+        $package->addMeal($turkMeal, '4B');
+        $package->addMeal($turkMeal, '5B');
+        $package->addMeal($turkMeal, '6B');
+        $package->addMeal($turkMeal, '7B');
+        $package = $package->fresh(['meals']);
+
+        $this->assertCount(2, $package->mealCounts());
+
+        $this->assertEquals(7, $package->mealCounts($chkMeal));
+        $this->assertEquals(7, $package->mealCounts($turkMeal));
     }
 }

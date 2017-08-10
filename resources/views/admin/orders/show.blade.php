@@ -21,19 +21,7 @@
 @section('content')
 
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">
-        <!-- widget options:
-        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
-        data-widget-colorbutton="false"
-        data-widget-editbutton="false"
-        data-widget-togglebutton="false"
-        data-widget-deletebutton="false"
-        data-widget-fullscreenbutton="false"
-        data-widget-custombutton="false"
-        data-widget-collapsed="true"
-        data-widget-sortable="false"
-
-        -->
         <header role="heading">
             <div class="jarviswidget-ctrls" role="menu">
                 <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"><i class="fa fa-minus "></i></a>
@@ -47,23 +35,8 @@
         <!-- widget div-->
         <div role="content">
 
-            <!-- widget edit box -->
-            <div class="jarviswidget-editbox">
-                <!-- This area used as dropdown edit box -->
-
-            </div>
-            <!-- end widget edit box -->
-
             <!-- widget content -->
-            <div class="widget-body no-padding">
-
-                {{--<div class="alert alert-info no-margin fade in">--}}
-                {{--<button class="close" data-dismiss="alert">--}}
-                {{--×--}}
-                {{--</button>--}}
-                {{--<i class="fa-fw fa fa-info"></i>--}}
-                {{--Adds zebra-striping to table row within <code>&lt;table&gt;</code> by adding the <code>.table-striped</code> with the base class--}}
-                {{--</div>--}}
+            <div class="widget-body">
 
                 <div class="table-responsive">
 
@@ -72,9 +45,10 @@
                         <tr>
                             <td>ID</td>
                             <td>Customer</td>
-                            <td>Plan</td>
+                            <td>Plan (Package)</td>
                             <td>Address</td>
                             <td>Total</td>
+                            <td>Action</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -85,8 +59,11 @@
                                 </a>
                             </td>
                             <td>{{ $order->customer->name }}</td>
-                            <td>{{ $order->plan->id }}</td>
-                            <td>{{ $order->total_cost }}</td>
+                            <td>{{ $order->plan->id }} ({{ $order->plan->package->label }})</td>
+                            <td>{{ $order->deliveryAddress
+                                ? $order->deliveryAddress->toString()
+                                : '' }}</td>
+                            <td>$ {{ $order->total_cost }}</td>
                             <td>
                                 <a href="/admin/orders/{{ $order->id }}/edit">
                                     <button class="btn btn-primary btn-xs">
@@ -104,6 +81,22 @@
                                 </form>
                             </td>
                         </tr>
+                        </tbody>
+                    </table>
+
+
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>Meals to Pack ({{ $order->plan->pet->mealSizeInGrams() }} g)</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($meals as $meal)
+                            <tr>
+                                <td>{{ $meal->label }} x {{ $meal->count }}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
 

@@ -58,7 +58,24 @@ class Package extends Model
         return $this->costPerMeal($pet) * 14;
     }
 
+    /**
+     * @return $this
+     */
+    public function mealCounts($meal = null) {
+        $grouped =  $this->meals->groupBy('id')
+            ->map(function($group, $key) {
+                $item = $group->first();
+                $item->count = $group->count();
+                return $item;
+            });
 
+        if (! $meal)
+            return $grouped;
+
+        return $grouped->where('label', $meal->label)
+            ->first()
+            ->count;
+    }
 
     /**
      * Relationships
