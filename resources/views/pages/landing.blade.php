@@ -6,8 +6,8 @@
 
 @section('content')
 
-    <div class="intro-fixed ms-hero-img-barfhome ms-hero-bg-primary color-white" id="home">
-        <div class="intro-fixed-content index-1">
+    <div class="intro-fixed ms-hero-img-barfhome color-white" id="home">
+        <div class="intro-fixed-content index-1 ms-hero-bg-primary">
             <div class="container">
                 <div class="text-center mb-4">
                     <span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>
@@ -51,7 +51,6 @@
                 </span>
                     <h4 class="color-info">Protein</h4>
                     <p class="">This is the bulk of the diet. This is the meat and fish in the Bento. Depending on the Bento package, we supply a variety of meats for your pet.</p>
-                    <a href="javascript:void(0)" class="btn btn-info btn-raised">Action here</a>
                 </div>
             </div>
             <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-8" style="visibility: visible; animation-name: flipInX;">
@@ -61,7 +60,6 @@
                 </span>
                     <h4 class="color-warning">Calcium</h4>
                     <p class="">The primary source of calcium is from eating bones. This can be ground up in the meat, or whole bones gnawed on by your pet. (Never feed cooked bones to your pet!)</p>
-                    <a href="javascript:void(0)" class="btn btn-warning btn-raised">Action here</a>
                 </div>
             </div>
             <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-10" style="visibility: visible; animation-name: flipInX;">
@@ -71,7 +69,6 @@
                 </span>
                     <h4 class="color-success">Minerals</h4>
                     <p class="">Organ meat (such as liver, lung, heart, kidney, etc) provides many nutrients and minerals for a health pet.</p>
-                    <a href="javascript:void(0)" class="btn btn-success btn-raised">Action here</a>
                 </div>
             </div>
             <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-6" style="visibility: visible; animation-name: flipInX;">
@@ -81,7 +78,13 @@
                 </span>
                     <h4 class="color-danger">Vitamins</h4>
                     <p class="">Wolves get vitamins from the undigested contents of their prey's stomach. At BARFBento, we include unprocessed tripe and other superfoods and veggies.</p>
-                    <a href="javascript:void(0)" class="btn btn-danger btn-raised">Action here</a>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 wow flipInX animation-delay-6" style="visibility: visible; animation-name: flipInX;">
+                <div class="col-md-12">
+                    <a href="/quote" class="btn btn-info btn-raised btn-xl btn-block"
+                       style="height: 20rem; padding: 4rem; font-size: 8rem;"
+                    >Start Today<div class="ripple-container"></div></a>
                 </div>
             </div>
         </div>
