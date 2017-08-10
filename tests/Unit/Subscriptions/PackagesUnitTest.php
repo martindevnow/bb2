@@ -144,6 +144,43 @@ class PackagesUnitTest extends TestCase
     }
 
     /** @test */
+    public function it_cannot_remove_a_meal_by_meal_or_id() {
+        $package = factory(Package::class)->create();
+        $meal = factory(Meal::class)->create();
+
+        $package->addMeal($meal->id, '2-B');
+        $package = $package->fresh(['meals']);
+
+        $this->assertFalse($package->removeMeal($meal));
+        $this->assertFalse($package->removeMeal($meal->id));
+    }
+
+    /** @test */
+    public function it_can_get_a_meal_by_calendar_code() {
+        $package = factory(Package::class)->create();
+        $meal = factory(Meal::class)->create();
+
+        $package->addMeal($meal->id, '2-B');
+        $package = $package->fresh(['meals']);
+
+        $meal1 = $package->getMeal('2-B');
+        $this->assertTrue($meal1 instanceof Meal);
+        $this->assertEquals($meal->label, $meal1->label);
+    }
+
+    /** @test */
+    public function it_cannot_get_a_meal_by_id_or_meal() {
+        $package = factory(Package::class)->create();
+        $meal = factory(Meal::class)->create();
+
+        $package->addMeal($meal->id, '2-B');
+        $package = $package->fresh(['meals']);
+
+        $this->assertFalse($package->getMeal($meal));
+        $this->assertFalse($package->getMeal($meal->id));
+    }
+
+    /** @test */
     public function adding_a_meal_with_same_calendar_code_replaces_old() {
         $package = factory(Package::class)->create(['code' => 'package']);
         $meal = factory(Meal::class, 2)->create(['code' => 'meal']);
