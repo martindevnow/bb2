@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
+use Martin\Subscriptions\Plan;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -43,11 +44,16 @@ class PetsUnitTest extends TestCase
      */
 
     /** @test */
-    public function it_can_determine_the_meal_weight() {
-        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level' => 2]);
+    public function it_can_determine_the_meal_weight_and_weekly_consumption() {
+        $WEIGHT_IN_POUNDS = 50;
+        $ACTIVITY_LEVEL = 2;
+        $pet = factory(Pet::class)->create(['weight' => $WEIGHT_IN_POUNDS, 'activity_level' => $ACTIVITY_LEVEL]);
+        $MEALS_PER_DAY = 2;
+        $GRAMS_PER_POUND = 454;
 
-        $this->assertEquals(50 * .02 * 7 / 14, $pet->mealSize());
-        $this->assertEquals(50 * .02 * 7 / 14 * 454, $pet->mealSizeInGrams());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 / $MEALS_PER_DAY, $pet->mealSize());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 * 7, $pet->weeklyConsumption());
+        $this->assertEquals($WEIGHT_IN_POUNDS * $ACTIVITY_LEVEL / 100 / $MEALS_PER_DAY * $GRAMS_PER_POUND, $pet->mealSizeInGrams());
     }
 
     /**
@@ -176,5 +182,16 @@ class PetsUnitTest extends TestCase
         $this->assertEquals(round($weight / 5), $pet->getPlanQuantity());
     }
 
-    // TODO: Add tests for $pet->plans() function
+    /** @test */
+    public function a_pet_has_plans() {
+        $pet = factory(Pet::class)->create();
+        $plan = factory(Plan::class)->create([
+            'pet_id'    => $pet->id,
+            'pet_weight'    => $pet->weight,
+            'pet_activity_level'    => $pet->activity_level,
+        ]);
+
+        $pet = $pet->fresh(['plans']);
+        $this->assertCount(1, $pet->plans);
+    }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="ms-hero-page-override ms-hero-img-team ms-hero-bg-primary">
+    <div class="ms-hero-page-override ms-hero-img-team ms-hero-bg-primary" style="background-image: url('/barfbento/img/lie-down.jpg')">
         <div class="container">
             <div class="text-center">
                 <h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">Contact Us</h1>

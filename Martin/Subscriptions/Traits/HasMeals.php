@@ -77,11 +77,7 @@ trait HasMeals {
             return $pivot->delete();
         }
 
-        if ($meal instanceof Meal)
-            return $this->meals()->detach($meal->id);
-
-        if (is_integer($meal))
-            return $this->meals()->detach($meal);
+        return false;
     }
 
     public function getMeal($meal) {
