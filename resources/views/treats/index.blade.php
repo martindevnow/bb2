@@ -9,7 +9,7 @@
 @section('content')
 
 
-    <div class="ms-hero-page ms-hero-img-city2 ms-hero-bg-info mb-6">
+    <div class="ms-hero-page ms-hero-img-city2 ms-hero-bg-info mb-6" style="background-image: url('/barfbento/img/trade-show.jpg')">
         <div class="text-center color-white mt-6 mb-6 index-1">
             <h1>B.A.R.F.-tastic Treats</h1>
             <p class="lead lead-lg">Add any of these to your order to give your pooch a little something special!</p>

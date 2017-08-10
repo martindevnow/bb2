@@ -87,7 +87,7 @@
         </div>
 
 
-        <div class="wrap wrap-mountain mt-6">
+        <div class="wrap wrap-mountain mt-6" style="background-image: url('/material/img/skyline2.jpg')">
             <div class="container">
                 <h2 class="text-center text-light mb-6 wow fadeInDown animation-delay-5" style="visibility: visible; animation-name: fadeInDown;">What are "<strong>Kibbles</strong>"?</h2>
                 <div class="row">
