@@ -58,6 +58,11 @@
             background-color: #7f7f7f;
         }
 
+        @media screen and (max-width: 992px) {
+            .price-table > h3 {
+                padding-top: 2rem;
+            }
+        }
 
 
     </style>
