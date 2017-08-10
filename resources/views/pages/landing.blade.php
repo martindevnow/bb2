@@ -10,15 +10,15 @@
         <div class="intro-fixed-content index-1 ms-hero-bg-primary">
             <div class="container">
                 <div class="text-center mb-4">
-                    <span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>
+                    <span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2">BB</span>
                     <h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">B.A.R.F.
                         <span>Bento</span>
                     </h1>
-                    <p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">
+                    <p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300">
                         Discover what your pet's <span class="color-warning">nutritional needs</span> are and how you can give them the <span class="color-warning">healthy lifestyle</span> they deserve.</p>
                 </div>
                 <div class="text-center mb-2">
-                    <a id="go-intro-fixed-next" href="#what-is-barf" class="btn-circle btn-circle-raised btn-circle-white animated zoomInUp animation-delay-12">
+                    <a id="go-intro-fixed-next" href="#what-is-barf" class="btn-circle btn-circle-raised btn-circle-white">
                         <i class="zmdi zmdi-long-arrow-down"></i>
                     </a>
                 </div>
@@ -35,16 +35,16 @@
     <div class="bg-light index-1 intro-fixed-next pt-6" style="margin-top: 950px;" id="what-is-barf">
         <div class="container mt-4">
             <a name="what-is-barf"></a>
-            <h2 class="text-center color-primary mb-2 wow fadeInDown animation-delay-4" style="visibility: visible; animation-name: fadeInDown;">What is B.A.R.F?</h2>
-            <p class="lead text-center aco wow fadeInDown animation-delay-5 mw-800 center-block mb-4" style="visibility: visible; animation-name: fadeInDown;">
+            <h2 class="text-center color-primary mb-2 wow">What is B.A.R.F?</h2>
+            <p class="lead text-center aco wow mw-800 center-block mb-4">
                 B.A.R.F. stands for
                 <span class="color-primary">Biologically Appropriate Raw Food</span>. B.A.R.F. is a diet that replicates the eating habits of what dogs and cats would have eaten in the wild.</p>
-            <p class="lead text-center aco wow fadeInDown animation-delay-5 mw-800 center-block mb-4" style="visibility: visible; animation-name: fadeInDown;">
+            <p class="lead text-center aco wow mw-800 center-block mb-4">
                 The whole point of "Biologically Appropriate" is to feed dogs and cats food that their bodies are
                 <span class="color-primary">biologically</span> and
                 <span class="color-primary">evolutionarily</span> predisposed to.
                 B.A.R.F. for dogs and cats breaks down into the following categories.</p>
-            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-4" style="visibility: visible; animation-name: flipInX;">
+            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow">
                 <div class="text-center card-block">
                 <span class="ms-icon ms-icon-circle ms-icon-xxlg color-info">
                   80%
@@ -53,7 +53,7 @@
                     <p class="">This is the bulk of the diet. This is the meat and fish in the Bento. Depending on the Bento package, we supply a variety of meats for your pet.</p>
                 </div>
             </div>
-            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-8" style="visibility: visible; animation-name: flipInX;">
+            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow">
                 <div class="text-center card-block">
                 <span class="ms-icon ms-icon-circle ms-icon-xxlg color-warning">
                   10%
@@ -62,7 +62,7 @@
                     <p class="">The primary source of calcium is from eating bones. This can be ground up in the meat, or whole bones gnawed on by your pet. (Never feed cooked bones to your pet!)</p>
                 </div>
             </div>
-            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-10" style="visibility: visible; animation-name: flipInX;">
+            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow">
                 <div class="text-center card-block">
                 <span class="ms-icon ms-icon-circle ms-icon-xxlg color-success">
                   5%
@@ -71,7 +71,7 @@
                     <p class="">Organ meat (such as liver, lung, heart, kidney, etc) provides many nutrients and minerals for a health pet.</p>
                 </div>
             </div>
-            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow flipInX animation-delay-6" style="visibility: visible; animation-name: flipInX;">
+            <div class="ms-feature col-lg-3 col-md-6 col-sm-6 card wow">
                 <div class="text-center card-block">
                 <span class="ms-icon ms-icon-circle ms-icon-xxlg  color-danger">
                   5%
@@ -80,11 +80,11 @@
                     <p class="">Wolves get vitamins from the undigested contents of their prey's stomach. At BARFBento, we include unprocessed tripe and other superfoods and veggies.</p>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 wow flipInX animation-delay-6" style="visibility: visible; animation-name: flipInX;">
+            <div class="col-lg-12 col-md-12 col-sm-12 wow">
                 <div class="col-md-12">
                     <a href="/quote" class="btn btn-info btn-raised btn-xl btn-block"
-                       style="height: 20rem; padding: 4rem; font-size: 8rem;"
-                    >Start Today<div class="ripple-container"></div></a>
+                       style="height: 15rem; padding: 3rem; font-size: 6rem;"
+                    >Signup<div class="ripple-container"></div></a>
                 </div>
             </div>
         </div>
@@ -92,27 +92,26 @@
 
         <div class="wrap wrap-mountain mt-6" style="background-image: url('/material/img/skyline2.jpg')">
             <div class="container">
-                <h2 class="text-center text-light mb-6 wow fadeInDown animation-delay-5" style="visibility: visible; animation-name: fadeInDown;">What are "<strong>Kibbles</strong>"?</h2>
+                <h2 class="text-center text-light mb-6 wow">What are "<strong>Kibbles</strong>"?</h2>
                 <div class="row">
                     <div class="col-md-6 col-md-push-6 mb-4  center-block">
-                        <img src="/barfbento/img/kibbles.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow zoomIn animation-delay-12"
-                             style="visibility: visible; animation-name: zoomIn;"> </div>
+                        <img src="/barfbento/img/kibbles.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow "> </div>
                     <div class="col-md-6 col-md-pull-6 pr-6">
                         <h3 style="text-align: center;">Kibbles are primarily left over meat "by-products" made out of meat unfit for human consumption.</h3>
-                        <p class="wow fadeInLeft animation-delay-6" style="visibility: visible; animation-name: fadeInLeft;">
+                        <p class="wow">
                             In the pet food manufacturing industry, the ingredients and definition of "meat" are loosely defined. Their guidelines include </p>
-                        <p class="wow fadeInLeft animation-delay-7" style="visibility: visible; animation-name: fadeInLeft;">
+                        <p class="wow">
                             Kibbles also often include large amounts of corn, wheat and soy, which dogs and cats do not have the proper enzymes and natural gut flora to breakdown and digest.
                             Additionally, these cause dental issues with pets and the carbohydrates lead to tartar, bad breath and even tooth decay..</p>
-                        <p class="wow fadeInLeft animation-delay-8" style="visibility: visible; animation-name: fadeInLeft;">
+                        <p class="wow">
                             Deceptive labels have been causing an uproar and lead to a decline in consumer confidence.
                             Things like "all-beef" should be just that, but pet food manufacturers are allowed to add water,
                             preservatives and even "seasonings" to their product.
                         3</p>
                         <div class="text-center">
-                            <a href="/faq" class="btn btn-warning btn-raised mr-1 wow flipInX animation-delay-14" style="visibility: visible; animation-name: flipInX;">
+                            <a href="/faq" class="btn btn-warning btn-raised mr-1 wow">
                                 <i class="zmdi zmdi-chart-donut"></i> Learn More </a>
-                            <a href="/quote" class="btn btn-info btn-raised wow flipInX animation-delay-16" style="visibility: visible; animation-name: flipInX;">
+                            <a href="/quote" class="btn btn-info btn-raised wow">
                                 <i class="zmdi zmdi-case"></i> Get a Quote</a>
                         </div>
                     </div>
@@ -124,7 +123,7 @@
 
 
         <div class="container">
-            <div class="card wow fadeInUp mt-6" style="visibility: visible; animation-name: fadeInUp;">
+            <div class="card wow">
                 <div class="card-block card-block-big">
                     <h2 class="text-center fw-500">Benefits of B.A.R.F.</h2>
                     <p class="lead text-center center-block mw-800">Give your pet the healthy, balanced diet they deserve.</p>
@@ -162,13 +161,12 @@
             <div class="wrap ms-hero-img-farm ms-hero-bg-dark-light color-white ms-bg-fixed">
                 <div class="container">
                     <div class="text-center mb-4">
-                        <h1 class="color-warning wow zoomInDown" style="visibility: visible; animation-name: zoomInDown;">Sourcing</h1>
-                        <h3 class="wow zoomInDown" style="visibility: visible; animation-name: zoomInDown;">Where does the
+                        <h1 class="color-warning wow">Sourcing</h1>
+                        <h3 class="wow">Where does the
                             <span class="text-normal">Meat</span> come from?</h3>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            {{--<h3 class="wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Description</h3>--}}
                             <p>Providing high quality ingredients is our top priority, and so, all of our meat is sourced
                                 locally from Ontario approved farms and butchered at Ontario approved meat packers. This enables us to
                                 hold our sources accountable and make sure they adhere to the high standards set for human grade meat packers.
@@ -178,17 +176,9 @@
                                 Many of our customers tell us that they feed their pets better than themselves!</p>
                             <p>All of that being said, please don't eat the meat yourself. It is prepared with ground bones and not intended for human consumption.
                                 Let's just say, it's not biologically appropriate for humans!</p>
-
-                            {{--<p class="wow fadeInUp animation-delay-3" style="visibility: visible; animation-name: fadeInUp;">Lorem ipsum dolor sit amet,--}}
-                                {{--<strong>consectetur adipisicing elit</strong>. Repellat cum laudantium quos tempora magnam voluptas sint perspiciatis nulla ipsa itaque atque quod incidunt maiores iusto, laborum, magni aliquam. Aut eligendi nesciunt nobis eum dolorum maxime--}}
-                                {{--corporis dicta, repudiandae eveniet ab laboriosam minima voluptate quaerat sequi modi suscipit cumque unde rerum.</p>--}}
-                            {{--<p class="wow fadeInUp animation-delay-4" style="visibility: visible; animation-name: fadeInUp;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis porro, magni obcaecati cupiditate nulla rem quae, eveniet corrupti reprehenderit maiores nobis doloribus expedita non quasi itaque. Incidunt, delectus quidem vitae laudantium,--}}
-                                {{--natus--}}
-                                {{--<a href="#" class="color-warning">quibusdam odio eius eligendi</a> tenetur! Ea, repudiandae eveniet ab minima laboriosam minima voluptate quaerat sequi harum.</p>--}}
                         </div>
                         <div class="col-md-6 mb-4 center-block">
-                            <img src="/barfbento/img/cow.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow zoomIn animation-delay-12"
-                                 style="visibility: visible; animation-name: zoomIn;"> </div>
+                            <img src="/barfbento/img/cow.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow"> </div>
                     </div>
                 </div>
             </div>
@@ -200,11 +190,11 @@
 
         <section id="team">
             <div class="container pt-6 ">
-                <h1 class="color-primary text-center wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Who We Are</h1>
+                <h1 class="color-primary text-center wow">Who We Are</h1>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-danger wow zoomInUp animation-delay-7" style="visibility: visible; animation-name: zoomInUp;">
+                        <div class="card mt-4 card-danger wow">
                             <div class="ms-hero-bg-danger ms-hero-img-city">
                                 <img src="/barfbento/img/profile/halley.jpg" alt="..." class="img-avatar-circle"> </div>
                             <div class="card-block pt-6 text-center">
@@ -223,7 +213,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-royal wow zoomInUp animation-delay-7" style="visibility: visible; animation-name: zoomInUp;">
+                        <div class="card mt-4 card-royal wow">
                             <div class="ms-hero-bg-royal ms-hero-img-city">
                                 <img src="/barfbento/img/profile/nova.jpg" alt="..." class="img-avatar-circle"> </div>
                             <div class="card-block pt-6 text-center">
@@ -246,7 +236,7 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-primary wow zoomInUp animation-delay-7" style="visibility: visible; animation-name: zoomInUp;">
+                        <div class="card mt-4 card-primary wow">
                             <div class="ms-hero-bg-primary ms-hero-img-city">
                                 <img src="/barfbento/img/profile/vivian.jpg" alt="..." class="img-avatar-circle"> </div>
                             <div class="card-block pt-6 text-center">
@@ -265,7 +255,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-warning wow zoomInUp animation-delay-7" style="visibility: visible; animation-name: zoomInUp;">
+                        <div class="card mt-4 card-warning wow">
                             <div class="ms-hero-bg-warning ms-hero-img-city">
                                 <img src="/barfbento/img/profile/ben.jpg" alt="..." class="img-avatar-circle"> </div>
                             <div class="card-block pt-6 text-center">
@@ -292,10 +282,10 @@
         <section class="shipping">
 
             <div class="container pt-6">
-                <h1 class="color-primary text-center wow fadeInUp animation-delay-2" style="visibility: visible; animation-name: fadeInUp;">Our Service Area</h1>
+                <h1 class="color-primary text-center wow">Our Service Area</h1>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card card-primary animated fadeInUp animation-delay-7">
+                        <div class="card card-primary">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="zmdi zmdi-map"></i>Shipping Area</h3>
