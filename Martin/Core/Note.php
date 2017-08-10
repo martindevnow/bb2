@@ -4,15 +4,15 @@ namespace Martin\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Note extends Model
 {
     use SoftDeletes;
-
-    protected static $recordEvents = ['created'];
+    use LogsActivity;
 
     protected $fillable = [
-        'user_id',
+        'author_id',
         'content',
         'noteable_id',
         'noteable_type'
@@ -32,7 +32,7 @@ class Note extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
-        return $this->belongsTo('Martin\Users\User');
+    public function author() {
+        return $this->belongsTo('Martin\Users\User', 'author_id');
     }
 }

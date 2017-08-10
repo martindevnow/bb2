@@ -16,6 +16,17 @@ class CoreModel extends Model {
         return $this->morphMany(\Martin\Core\Note::class, 'noteable');
     }
 
+    /**
+     * Easy method to save a note to a child of 'CoreModel'
+     *
+     * @param $content
+     * @return Model
+     */
+    public function attachNote($content) {
+        $author_id = auth()->user()->id;
+        return $this->notes()->create(compact('content', 'author_id'));
+    }
+
 
     /**
      * Many models require an address

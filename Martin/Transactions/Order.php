@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
+use Martin\Core\CoreModel;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 
-class Order extends Model
+class Order extends CoreModel
 {
     use SoftDeletes;
 

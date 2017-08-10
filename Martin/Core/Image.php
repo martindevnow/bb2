@@ -25,31 +25,24 @@ class Image extends Model {
         'thumbnail'
     ];
 
-    public function trash() {
-        return $this->delete();
-    }
-
-    protected function getImageableType()
-    {
+    /**
+     * @return mixed|string
+     */
+    protected function getImageableType() {
         if ($this->type)
             return $this->type;
 
         return $this->type = strtolower((new ReflectionClass($this->imageable))->getShortName());
     }
 
-    public function getUrlToImageable()
-    {
+    /**
+     * @return string
+     */
+    public function getUrlToImageable() {
         $model = $this->imageable;
         $type = $this->getImageableType();
 
-        switch ($type) {
-            case "payment":
-                $type .= "s";
-                break;
-            default:
-                break;
-        }
-        return "/admins/{$type}/{$model->id}";
+        return "/admin/{$type}/{$model->id}";
     }
 
     /**
@@ -57,8 +50,7 @@ class Image extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function imageable()
-    {
+    public function imageable() {
         return $this->morphTo();
     }
 
@@ -67,8 +59,7 @@ class Image extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 } 

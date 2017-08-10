@@ -51,14 +51,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * @var array
-     */
-    protected static $logAttributes = [
-        'name',
-        'email'
-    ];
-
-    /**
      * @param $id
      * @return mixed
      */
