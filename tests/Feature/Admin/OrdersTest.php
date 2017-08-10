@@ -160,6 +160,6 @@ class OrdersTest extends TestCase
 
         $this->get('/admin/orders/' . $order->id) // SHOW method
             ->assertSee($firstMeal->label . ' x ' . $firstMeal->count)
-            ->assertSee($secondMeal . ' x ' . $secondMeal->count);
+            ->assertSee($secondMeal->label . ' x ' . $secondMeal->count);
     }
 }
