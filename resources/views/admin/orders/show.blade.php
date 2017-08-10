@@ -88,7 +88,7 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <td>Meals to Pack ({{ $order->plan->pet->mealSizeInGrams() }} g)</td>
+                            <td>Meals to Pack ({{ $order->plan->pet->mealSizeInGrams() }} g) (Total Meals: {{ $order->plan->weeks_at_a_time * 14 }})</td>
                         </tr>
                         </thead>
                         <tbody>

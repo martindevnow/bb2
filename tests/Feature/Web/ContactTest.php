@@ -31,8 +31,10 @@ class ContactTest extends TestCase
             'body'  => 'This is the body of the message.'
         ];
 
+        // TODO: FInd how to test that the redirect went through.
         $this->post('/contact/send', $request)
-            ->assertStatus(302);
+            ->assertStatus(302)             // PASSES
+            ->assertSee('Thank you.');       // FAILS
 
 
         Mail::assertSent(ContactReceived::class, function ($mail) use ($request) {
