@@ -17,11 +17,6 @@
                     <p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300">
                         Discover what your pet's <span class="color-warning">nutritional needs</span> are and how you can give them the <span class="color-warning">healthy lifestyle</span> they deserve.</p>
                 </div>
-                <div class="text-center mb-2">
-                    <a id="go-intro-fixed-next" href="#what-is-barf" class="btn-circle btn-circle-raised btn-circle-white">
-                        <i class="zmdi zmdi-long-arrow-down"></i>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -32,7 +27,7 @@
         </a>
     </div>
 
-    <div class="bg-light index-1 intro-fixed-next pt-6" style="margin-top: 950px;" id="what-is-barf">
+    <div class="bg-light index-1 intro-fixed-next pt-6" style="margin-top: 650px;" id="what-is-barf">
         <div class="container mt-4">
             <a name="what-is-barf"></a>
             <h2 class="text-center color-primary mb-2 wow">What is B.A.R.F?</h2>

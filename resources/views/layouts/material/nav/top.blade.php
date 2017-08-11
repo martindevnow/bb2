@@ -1,4 +1,4 @@
-<nav class="navbar navbar-static-top yamm ms-navbar ms-navbar-primary navbar-mode">
+<nav class="navbar yamm ms-navbar ms-navbar-primary navbar-mode shrink navbar-fixed-top">
     <div class="container container-full" style="display: flex;">
 
         <div id="navbar" class="navbar-collapse collapse navbar-left" style="position: absolute; left: 1rem;">
