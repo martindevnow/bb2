@@ -22,6 +22,18 @@ benm@barfbento.com. All security vulnerabilities will be promptly addressed.
 
 B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wikipedia.org/wiki/Proprietary_software).
 
+## Future Features
+
+(Example: Today is Sunday, 1st of Month)
+* Nightly order generation based on orders to be delivered by the following **friday** (13th)
+  * This **wednesday** (4th), we need to know how much meat we will need to order to pickup this weekend (6th-8th)
+  * Said *meat* will then be packed into *meals* on the weekend or week of (6th-8th)
+  * Those *meals* will then be delivered by the friday (13th), and we repeat this process **wednesday** (11th) for the **friday** (20th)
+* Ability to export orders for **meat ordering**
+* Ability to export orders for **packing**
+* Ability to export orders for **picking**
+* Ability to export orders for **delivery**
+
 ## Test Coverage
 
 2017-07-31:
