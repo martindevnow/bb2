@@ -237,7 +237,7 @@ class MealsUnitTest extends TestCase
         $this->assertCount(2, $meal->toppings);
 
         $meal->removeTopping($toppings[0]);
-        $meal->removeTopping($toppings[1]);
+        $meal->removeTopping($toppings[1]->code);
 
         $meal = $meal->fresh(['toppings']);
         $this->assertCount(0, $meal->toppings);

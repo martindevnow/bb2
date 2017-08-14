@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Martin\Core\Note;
 use Martin\Transactions\Order;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -10,6 +11,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class NotesUnitTest extends TestCase
 {
     use DatabaseMigrations;
+
+    /** @test */
+    public function a_note_has_a_model_factory() {
+        $note = factory(Note::class)->create();
+        $this->assertTrue($note instanceof Note);
+    }
+
+    /** @test */
+    public function a_note_has_its_content_mass_assignable() {
+        $noteData = factory(Note::class)
+            ->make(['content' => 'This is the body of the note']);
+
+        $note = Note::create($noteData->toArray());
+        $this->assertDatabaseHas('notes', $noteData->toArray());
+    }
 
     /** @test */
     public function an_order_can_have_notes_attached() {
@@ -43,5 +59,11 @@ class NotesUnitTest extends TestCase
         $orderClone = $note->noteable;
         $this->assertTrue($orderClone instanceof Order);
         $this->assertEquals($order->id, $orderClone->id);
+    }
+
+    /** @test */
+    public function a_note_has_an_author() {
+
+
     }
 }

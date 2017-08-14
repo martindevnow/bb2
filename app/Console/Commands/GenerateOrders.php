@@ -52,19 +52,19 @@ class GenerateOrders extends Command
         $this->line('There are '. $plans->count() . ' active plans...');
 
         // Check if a new order needs to be generated
-        $pendingPlans = $plans->filter(function(Plan $plan) use ($weekFromToday) {
+        $plansNeedingNewOrders = $plans->filter(function(Plan $plan) use ($weekFromToday) {
              if (! $plan->hasOrders())
                  return true;
 
-            /** @var Carbon $nextOrderDate */
-            $nextOrderDate = $plan->getNextOrderDate();
-            return $nextOrderDate->lessThanOrEqualTo($weekFromToday);
+            /** @var Carbon $nextDeliveryDate */
+            $nextDeliveryDate = $plan->getNextOrderDate();
+            return $nextDeliveryDate->lessThanOrEqualTo($weekFromToday);
         });
-        $this->line('There are '. $pendingPlans->count() . ' orders to be made...');
+        $this->line('There are '. $plansNeedingNewOrders->count() . ' orders to be made...');
 
         // Generate the orders for the plans needing one.
         $orders = [];
-        foreach ($pendingPlans as $plan) {
+        foreach ($plansNeedingNewOrders as $plan) {
             /** @var Plan $plan */
             $orders[] = $plan->generateOrder();
         }

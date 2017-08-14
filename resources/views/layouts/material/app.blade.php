@@ -82,17 +82,6 @@
 
     @yield('content')
 
-{{--    @include('layouts.material.hero-carousel')--}}
-    <!-- ms-hero ms-hero-black -->
-{{--    @include('layouts.material.features')--}}
-    <!-- container -->
-{{--    @include('layouts.material.graphic-panel')--}}
-    {{--@include('layouts.material.tabbed-panel')--}}
-    <!-- container -->
-{{--    @include('layouts.material.plans-panel')--}}
-    <!--container -->
-{{--    @include('layouts.material.testimonial-panel')--}}
-    {{--@include('layouts.material.gallery-panel')--}}
     @include('layouts.material.footbar')
     @include('layouts.material.copyright')
     <div class="btn-back-top">
@@ -104,11 +93,6 @@
 <!-- sb-site-container -->
 @include('layouts.material.nav.left')
 <script src="/material/js/plugins.min.js"></script>
-{{--<script--}}
-        {{--src="https://code.jquery.com/jquery-3.2.1.js"--}}
-        {{--integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="--}}
-        {{--crossorigin="anonymous"></script>--}}
-{{--<script src="/js/app.js"></script>--}}
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
 </body>

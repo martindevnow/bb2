@@ -13,6 +13,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Carbon\Carbon;
+use Martin\ACL\User;
+use Martin\Customers\Pet;
+use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 
 /**
@@ -128,6 +131,24 @@ $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker)
         'type'  => $faker->word,
         'variety'   => $faker->word,
         'cost_per_lb'   => $faker->numberBetween(99, 300) / 100,
+    ];
+});
+
+/**
+ * Note
+ */
+$factory->define(\Martin\Core\Note::class, function (Faker\Generator $faker) {
+    $noteable = $faker->randomElement([
+        factory(Plan::class)->create(),
+        factory(Pet::class)->create(),
+        factory(User::class)->create(),
+    ]);
+
+    return [
+        'author_id'  => factory(User::class)->create()->id,
+        'content'  => $faker->sentence(15),
+        'noteable_id'   => $noteable->id,
+        'noteable_type'   => get_class($noteable),
     ];
 });
 
