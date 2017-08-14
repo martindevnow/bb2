@@ -20,6 +20,7 @@ class ContactTest extends TestCase
             ->assertStatus(200);
     }
 
+    // EXAMPLE: Testing Mailables, Testing Mail
     /** @test */
     public function a_guest_can_fill_in_the_form_to_email_staff() {
         Mail::fake();
@@ -31,10 +32,13 @@ class ContactTest extends TestCase
             'body'  => 'This is the body of the message.'
         ];
 
-        // TODO: FInd how to test that the redirect went through.
-        $this->post('/contact/send', $request)
+        // EXAMPLE: This is how we can test redirects will work as expected
+        $response = $this->post('/contact/send', $request)
             ->assertStatus(302)             // PASSES
-            ->assertSee('Thank you.');       // FAILS
+            ->assertRedirect('/contact/success');
+
+        $this->followRedirects($response)
+            ->assertSee('Thank you.');
 
 
         Mail::assertSent(ContactReceived::class, function ($mail) use ($request) {
