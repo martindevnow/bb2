@@ -34,6 +34,7 @@ class CreatePlansTable extends Migration
 
             $table->integer('weekly_cost');
             $table->integer('weeks_at_a_time');
+            $table->dateTime('last_delivery_at');
 
             $table->boolean('active')->default(true);
 

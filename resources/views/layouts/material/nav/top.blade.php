@@ -3,8 +3,8 @@
 
         <div id="navbar" class="navbar-collapse collapse navbar-left" style="position: absolute; left: 1rem;">
             <ul class="nav navbar-nav">
-                <li class="{{ app('request')->is('/') ? 'active' : '' }}">
-                    <a href="/" data-name="home">Home</a>
+                <li class="{{ app('request')->is('/faq') ? 'active' : '' }}">
+                    <a href="/faq" data-name="faq">FAQ</a>
                 </li>
                 <li class="{{ app('request')->is('quote') ? 'active' : '' }}">
                     <a href="/quote" data-name="quote">Quote

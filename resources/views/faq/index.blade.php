@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div id="collapse-{{ $index }}-{{ $faqIndex }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ $index }}-{{ $faqIndex }}">
                                                     <div class="panel-body">
-                                                        {{ $faq->answer }}
+                                                        {!! $faq->answer !!}
                                                     </div>
                                                 </div>
                                             </div>
