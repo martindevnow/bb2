@@ -63,4 +63,10 @@ class AllLoadingTest extends TestCase
         $this->get('/register')
             ->assertStatus(200);
     }
+
+    /** @test */
+    public function it_loads_the_shipping_page() {
+        $this->get('/shipping')
+            ->assertStatus(200);
+    }
 }

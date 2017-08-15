@@ -235,4 +235,108 @@ class PlansUnitTest extends TestCase
         $this->assertDatabaseHas('orders', $orderData);
     }
 
+
+    /**
+     * Scopes
+     */
+
+    /** @test */
+    public function it_fetches_a_weekly_plan_with_pending_orders() {
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(1, $pendingPlans);
+    }
+
+    /** @test */
+    public function it_fetches_bi_weekly_plans_with_pending_orders() {
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+
+        $bi_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(2, $pendingPlans);
+    }
+
+    /** @test */
+    public function it_ignores_plans_that_are_not_pending() {
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+
+        $bi_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $tri_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 3,
+        ]);
+
+        $monthly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 4,
+        ]);
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(2, $pendingPlans);
+    }
+
+    /** @test */
+    public function it_fetches_tri_weekly_orders_that_are_pending() {
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+
+        $bi_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $tri_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now()->subDays(8),
+            'weeks_at_a_time'   => 3,
+        ]);
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(3, $pendingPlans);
+    }
+
+    /** @test */
+    public function it_fetches_monthly_orders_that_are_pending() {
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+
+        $bi_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now(),
+            'weeks_at_a_time'   => 2,
+        ]);
+
+        $tri_weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now()->subDays(8),
+            'weeks_at_a_time'   => 3,
+        ]);
+
+        $monthly_plan = factory(Plan::class)->create([
+            'last_delivery_at'  => Carbon::now()->subDays(16),
+            'weeks_at_a_time'   => 4,
+        ]);
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(4, $pendingPlans);
+    }
 }

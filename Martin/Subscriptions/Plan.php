@@ -6,6 +6,7 @@ use App\Http\Controllers\PackagesController;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
@@ -35,6 +36,7 @@ class Plan extends Model
 
         'weekly_cost',
 
+        'last_delivery_at',
         'weeks_at_a_time',
         'active',
     ];
@@ -53,6 +55,32 @@ class Plan extends Model
         return $this->weekly_cost -
             ($this->totalPackingCost() + $this->costPerWeek());
     }
+
+    /**
+     * Scopes
+     */
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNeedsOrder(Builder $query) {
+        // 1 week at a time, will be all orders, as long as there isn't an order already made for that day
+        // 2 weeks at a time, will be all orders, as long as there isn't an order already made for that day
+        // 3 weeks at a time will be if the last_delivery_at is older than 1 week
+        // 4 weeks at a time will be if the last delivery_at is older than 2 weeks
+        return $query->where(function ($subQ) {
+            $subQ->where('last_delivery_at', '<=', Carbon::now())
+                ->where('weeks_at_a_time', '<=', 2);
+        })->orWhere(function ($subQ) {
+            $subQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
+                ->where('weeks_at_a_time', '=', 3);
+        })->orWhere(function ($subQ) {
+            $subQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
+                ->where('weeks_at_a_time', '=', 4);
+        });
+    }
+
 
     /**
      * Mutators

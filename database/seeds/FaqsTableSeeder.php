@@ -80,17 +80,51 @@ class FaqsTableSeeder extends Seeder
             'question'  => 'Where is your meat sourced from?',
             'answer'    => 'All of the livestock used for B.A.R.F.Bento meals are raised without the use of anti-biotics or hormones to ensure our pets are only eating what nature intended.'
         ]);
+        $meat->faqs()->create([
+            'code'  => 'meat-enough-food',
+            'question'  => 'How do I know my dog is getting enough food?',
+            'answer'    => 'It is very important for you to let us know your dog\'s current weight as it changes. 
+            We advise you to monitor your dogs weight and update us as to any changes on a monthly basis so that we can properly portion and cater to your dog\'s needs. 
+            The amount of food a dog needs to consume is largely based on their weight. However, their activity level plays a role as well. 
+            For example, when a dog doesn\'t get enough exercise, it is important to adjust their portions accordingly to avoid overfeeding.'
+        ]);
+        $meat->faqs()->create([
+            'code'  => 'meat-not-eating-dinner',
+            'question'  => 'Help! My dog didn\' eat his dinner! What do I do??',
+            'answer'    => 'First, relax. There are many reasons why a dog might not eat their meal. 
+            In fact, as a part of the B.A.R.F. diet, it is not uncommon to fast your dog from time to time. It could simply be that the dog is not hungy at that point in time. We advise our customers to 
+            give the dog time to eat and when they no longer seem interested in the meal, take it away and refigerate it. At the time for the next meal, bring it back out and offer it to your dog again.
+            With a hopefully renewed appetite your dog will be more likely to finish their meal. 
+            
+            Another possible cause is over-feeding with treats. Watch how much or how often you give your pet treats as this may be the cluprit.
+            
+            If your dog still refuses to eat a particular meal, take note of what was in the meal based on the stickers on the packaging. 
+            If the same meal is a repeat offender (meaning your dog repeatedly refuses this meal) then let us know about it! 
+            After consulting with us, we can make adjustments to the meal plan for your pet to better cater to their likes and dislikes for a minimal surcharge.
+            .'
+        ]);
 
 
         /*
          * Transitioning
          */
         $trans->faqs()->create([
+            'code'  => 'trans-what-to-expect',
+            'question'  => 'What can I expect during transitioning?',
+            'answer'    => 'In the first couple of days, you may see no poop simply because your dog is absorbing all of the nutrients that are found in our high quality raw dog food.
+            After 3 days, the bowel movements should be back to normal. However, raw-fed dogs generally do not poop as much or as frequently. Sometimes you will also notice
+            that your dog will drink less water. That is because raw dog food has a much higher moisture content compared to kibbles. Generally, there is a rule of thumb. 
+            If something doesn\'t last more than 3 days, there is no need to be concerned.
+            You can always reach out to us and our knowledgeable pet nutritionists will be able to assist you with any questions you may have.'
+        ]);
+
+        $trans->faqs()->create([
             'code'  => 'trans-age',
             'question'  => 'At what age should I transition my pet?',
             'answer'    => 'Now<br>But seriously, similar to quitting smoking, there\'s no better time than the present. Nature and biology are truly astounding in their ability to regenerate and
 switching from kibbles to B.A.R.F. sooner allows your pet to have more time to regenerate from the effects caused by kibbles and help restore their natural balance.'
         ]);
+
         $trans->faqs()->create([
             'code'  => 'trans-how',
             'question'  => 'How do we transition from kibbles to raw?',
@@ -107,14 +141,27 @@ contains only chicken and turkey and is easier on your pet\'s stomach.'
          * Shipping
          */
         $shipping->faqs()->create([
-            'code'  => 'where-ship-to',
+            'code'  => 'ship-where-to',
             'question'  => 'Where do you ship to?',
-            'answer'    => 'Currently, shipping is available to areas located within Toronto. For more information, please visit our /shipping page.'
+            'answer'    => 'Currently, shipping is available to areas located within Toronto and across the GTA.
+            This includes Mississauga, Toronto, Markham, Scarborough, Etobicoke...
+            For more information, please visit our <a href="/shipping">shipping page</a>.'
         ]);
+
         $shipping->faqs()->create([
-            'code'  => 'where-o',
-            'question'  => 'This is another question',
-            'answer'    => 'Currently, shipping is available to areas located within Toronto. For more information, please visit our /shipping page.'
+            'code'  => 'ship-how-much',
+            'question'  => 'How much is shipping?',
+            'answer'    => 'All of the prices listed include monthly shipping. 
+            If you do not have enough space to store 1 months of food, 
+            then the weekly price is slightly adjusted to include bi-weekly shipping.'
+        ]);
+
+        $shipping->faqs()->create([
+            'code'  => 'ship-how-are_they_shipped',
+            'question'  => 'How are the products shipped?',
+            'answer'    => 'All shipments are sent via same-day courier to ensure your package arrives frozen or semi-frozen.
+            Do not be concerned if there is condensation on the outside of the meal packages. This is normal. 
+            The meals are packaged to prevent leaks..'
         ]);
 
 
