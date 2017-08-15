@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Martin\ACL\User;
 use Martin\Core\Note;
 use Martin\Transactions\Order;
 use Tests\TestCase;
@@ -40,6 +41,7 @@ class NotesUnitTest extends TestCase
         $order = $order->fresh(['notes']);
 
         $this->assertCount(1, $order->notes);
+        $this->assertEquals($this->user->id, $order->notes->first()->author_id);
         $this->assertEquals($content, $order->notes->first()->content);
     }
 
@@ -63,7 +65,19 @@ class NotesUnitTest extends TestCase
 
     /** @test */
     public function a_note_has_an_author() {
+        $this->loginAsAdmin();
+        $order = factory(Order::class)->create();
 
+        $this->assertCount(0, $order->notes);
 
+        $content = 'This order will be delayed.. call the customer.';
+        $order->attachNote($content);
+
+        $order = $order->fresh(['notes.noteable']);
+        $note = $order->notes->first();
+
+        $author = $note->author;
+        $this->assertTrue($author instanceof User);
+        $this->assertEquals($order->author_id, $author->id);
     }
 }

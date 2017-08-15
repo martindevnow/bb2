@@ -5,6 +5,7 @@ namespace Tests\Unit\Transactions;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
+use Martin\Core\Attachment;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -112,49 +113,26 @@ class OrdersUnitTest extends TestCase
 
     /** @test */
     public function an_order_can_get_the_meal_counts() {
-        $package = factory(Package::class)->create();
-
-        $chkMeal = factory(Meal::class)->create();
-        $turkMeal = factory(Meal::class)->create();
-
-        $chickenCost = 1;
-        $turkeyCost = 6;
-
-        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
-        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
-
-        $chkMeal->addMeat($chicken);
-        $turkMeal->addMeat($turkey);
-
-        $package->addMeal($chkMeal, '1B');
-        $package->addMeal($chkMeal, '2B');
-        $package->addMeal($chkMeal, '3B');
-        $package->addMeal($chkMeal, '4B');
-        $package->addMeal($chkMeal, '5B');
-        $package->addMeal($chkMeal, '6B');
-        $package->addMeal($chkMeal, '7B');
-        $package->addMeal($turkMeal, '1B');
-        $package->addMeal($turkMeal, '2B');
-        $package->addMeal($turkMeal, '3B');
-        $package->addMeal($turkMeal, '4B');
-        $package->addMeal($turkMeal, '5B');
-        $package->addMeal($turkMeal, '6B');
-        $package->addMeal($turkMeal, '7B');
-        $package = $package->fresh(['meals']);
-
-        /** @var Plan $plan */
-        $plan = factory(Plan::class)->create([
-            'package_id'    => $package->id,
-            'weeks_at_a_time'   => 2,
-        ]);
-
-        $plan->generateOrder();
-        $order = $plan->orders->first();
+        $order = $this->createOrderForBasicPlan();
+        $meals = $order->mealCounts();
 
         $this->assertCount(2, $order->mealCounts());
-        $this->assertEquals(14, $order->mealCounts($chkMeal));
-        $this->assertEquals(14, $order->mealCounts($turkMeal));
 
+        foreach ($meals as $meal)
+            $this->assertEquals(14, $order->mealCounts($meal));
+    }
+
+
+    /**
+     * Order Packing Workflow
+     */
+
+    /** @test */
+    public function marking_an_order_as_packed_affects_the_inventory() {
+        $order = factory(Order::class)->create();
+        $this->assertFalse($order->packed);
+
+        $this->order->markAsPacked();
     }
 
     /**
@@ -193,5 +171,16 @@ class OrdersUnitTest extends TestCase
         $order = $order->fresh(['plan']);
 
         $this->assertEquals($plan->id, $order->plan_id);
+    }
+
+    /** @test */
+    public function an_order_can_have_attachments() {
+        $plan = factory(Plan::class)->create();
+        $plan->generateOrder();
+        $order = $plan->orders()->first();
+
+        $order->attachments()->save(factory(Attachment::class)->create());
+
+        $this->assertCount(1, $order->attachments);
     }
 }

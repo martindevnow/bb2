@@ -15,6 +15,7 @@
 use Carbon\Carbon;
 use Martin\ACL\User;
 use Martin\Customers\Pet;
+use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 
@@ -36,6 +37,29 @@ $factory->define(\Martin\Core\Address::class, function (Faker\Generator $faker) 
 
         'phone' => $faker->phoneNumber,
         'buzzer' => $faker->numberBetween(1000,5000),
+    ];
+});
+
+/**
+ * Attachment
+ */
+$factory->define(\Martin\Core\Attachment::class, function (Faker\Generator $faker) {
+    $attachmentable = $faker->randomElement([
+        factory(Pet::class)->create(),
+        factory(Order::class)->create(),
+        factory(User::class)->create(),
+    ]);
+
+    return [
+        'user_id'  => factory(User::class)->create()->id,
+        'original_file_name'  => $faker->word,
+        'file_name'  => $faker->word,
+        'file_path'  => $faker->word,
+        'file_extension'  => $faker->word,
+        'description'  => $faker->word,
+        'type'  => $faker->word,
+        'attachmentable_id'   => $attachmentable->id,
+        'attachmentable_type'   => get_class($attachmentable),
     ];
 });
 
@@ -85,6 +109,28 @@ $factory->define(\Martin\Core\FaqCategory::class, function(Faker\Generator $fake
     return [
         'code'  => $faker->word,
         'label' => ucfirst($faker->word),
+    ];
+});
+
+/**
+ * Image
+ */
+$factory->define(\Martin\Core\Image::class, function (Faker\Generator $faker) {
+    $imageable = $faker->randomElement([
+        factory(Product::class)->create(),
+        factory(Pet::class)->create(),
+        factory(User::class)->create(),
+    ]);
+
+    return [
+        'user_id'  => factory(User::class)->create()->id,
+        'content'  => $faker->sentence(15),
+        'height'  => $faker->numberBetween(150,500),
+        'width'  => $faker->numberBetween(150,500),
+        'path'  => $faker->sentence(3),
+        'name'  => $faker->word,
+        'imageable_id'   => $imageable->id,
+        'imageable_type'   => get_class($imageable),
     ];
 });
 

@@ -22,7 +22,9 @@ class Image extends Model {
         'height',
         'width',
         'path',
-        'thumbnail'
+        'name',
+        'imageable_id',
+        'imageable_type',
     ];
 
     /**

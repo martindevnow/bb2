@@ -252,6 +252,20 @@ class PlansUnitTest extends TestCase
     }
 
     /** @test */
+    public function it_ignores_a_weekly_plan_with_pending_orders_already_generated() {
+        /** @var Plan $weekly_plan */
+        $weekly_plan = factory(Plan::class)->create([
+            'last_delivery_at' => Carbon::now(),
+            'weeks_at_a_time'   => 1,
+        ]);     // IS pending
+        $weekly_plan->generateOrder();  // No longer pending...
+
+        $pendingPlans = Plan::needsOrder()->get();
+        $this->assertCount(0, $pendingPlans);
+        $this->assertCount(1, Order::all());
+    }
+
+    /** @test */
     public function it_fetches_bi_weekly_plans_with_pending_orders() {
         $weekly_plan = factory(Plan::class)->create([
             'last_delivery_at' => Carbon::now(),

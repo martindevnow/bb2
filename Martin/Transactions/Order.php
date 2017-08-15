@@ -112,6 +112,15 @@ class Order extends CoreModel
     }
 
     /**
+     * Order Packing etc Workflow
+     */
+
+    public function markAsPacked() {
+
+    }
+
+
+    /**
      * Relationships
      */
 

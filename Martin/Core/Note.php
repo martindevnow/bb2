@@ -4,6 +4,7 @@ namespace Martin\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Martin\ACL\User;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Note extends Model
@@ -33,6 +34,6 @@ class Note extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function author() {
-        return $this->belongsTo('Martin\Users\User', 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 }

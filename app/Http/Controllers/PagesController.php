@@ -25,4 +25,11 @@ class PagesController extends Controller
 
         return view('pages.about')->with(compact('pics'));
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function shipping() {
+        return view('pages.shipping');
+    }
 }

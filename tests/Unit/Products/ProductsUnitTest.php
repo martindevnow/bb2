@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Illuminate\Support\Facades\DB;
+use Martin\Core\Image;
 use Martin\Products\Product;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -61,5 +62,13 @@ class ProductsUnitTest extends TestCase
         DB::table('products')->insert($product->toArray());
         $product_clone = Product::where('name', 'THISMEAT')->firstOrFail();
         $this->assertEquals($priceInDollars, $product_clone->price);
+    }
+
+    /** @test */
+    public function a_product_can_have_many_images_attached_to_it() {
+        $product = factory(Product::class)->create();
+        $product->images()->save(factory(Image::class)->make());
+
+        $this->assertCount(1, $product->images);
     }
 }

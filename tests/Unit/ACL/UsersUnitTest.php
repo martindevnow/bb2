@@ -4,6 +4,7 @@ namespace Tests\Unit\ACL;
 
 use Carbon\Carbon;
 use Martin\ACL\User;
+use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
@@ -118,5 +119,18 @@ class UsersUnitTest extends TestCase
         $this->assertTrue(stripos($user->getPets(), $pets[0]->name) !== false);
         $this->assertTrue(stripos($user->getPets(), $pets[1]->name) !== false);
         $this->assertTrue(stripos($user->getPets(), $pets[2]->name) !== false);
+    }
+
+    /**
+     * Addresses
+     */
+
+    /** @test */
+    public function a_user_can_have_many_addresses_to_assign_to_a_plan() {
+        $user = factory(User::class)->create();
+        $user->addresses()->save(factory(Address::class)->make());
+
+        $user = $user->fresh(['addresses']);
+        $this->assertCount(1, $user->addresses);
     }
 }

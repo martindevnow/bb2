@@ -41,16 +41,30 @@ class Plan extends Model
         'active',
     ];
 
-
+    /**
+     * Return the internal cost per week for this Pet
+     *
+     * @return mixed
+     */
     public function costPerWeek() {
         return $this->package
             ->costPerWeek($this->pet);
     }
 
+    /**
+     * Return the Cost as a function of the weight of the Pet for this plan
+     *
+     * @return float|int
+     */
     public function costPerPoundOfDog() {
         return $this->weekly_cost / $this->pet_weight;
     }
 
+    /**
+     * Return the profit earned for this Plan
+     *
+     * @return mixed
+     */
     public function profit() {
         return $this->weekly_cost -
             ($this->totalPackingCost() + $this->costPerWeek());
@@ -65,19 +79,31 @@ class Plan extends Model
      * @return mixed
      */
     public function scopeNeedsOrder(Builder $query) {
-        // 1 week at a time, will be all orders, as long as there isn't an order already made for that day
+        // 1 week at a time, will be all orders
+        //      as long as there are no orders with....
+        //          deliver_by is within the next two weeks
         // 2 weeks at a time, will be all orders, as long as there isn't an order already made for that day
         // 3 weeks at a time will be if the last_delivery_at is older than 1 week
         // 4 weeks at a time will be if the last delivery_at is older than 2 weeks
-        return $query->where(function ($subQ) {
-            $subQ->where('last_delivery_at', '<=', Carbon::now())
-                ->where('weeks_at_a_time', '<=', 2);
-        })->orWhere(function ($subQ) {
-            $subQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
-                ->where('weeks_at_a_time', '=', 3);
-        })->orWhere(function ($subQ) {
-            $subQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
-                ->where('weeks_at_a_time', '=', 4);
+        return $query->where(function (Builder $sQ) {
+            $sQ->where('last_delivery_at', '<=', Carbon::now())
+                ->where('weeks_at_a_time', '<=', 2)
+                ->whereDoesntHave('orders', function (Builder $ssQ) {
+                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
+                });
+            ;
+        })->orWhere(function (Builder $sQ) {
+            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
+                ->where('weeks_at_a_time', '=', 3)
+                ->whereDoesntHave('orders', function (Builder $ssQ) {
+                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
+                });
+        })->orWhere(function (Builder $sQ) {
+            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
+                ->where('weeks_at_a_time', '=', 4)
+                ->whereDoesntHave('orders', function (Builder $ssQ) {
+                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
+                });
         });
     }
 
@@ -195,6 +221,10 @@ class Plan extends Model
     }
 
     /**
+     * Orders
+     */
+
+    /**
      * @return mixed
      */
     public function getLatestOrder() {
@@ -232,14 +262,7 @@ class Plan extends Model
      * @return Order
      */
     public function generateOrder(): Order {
-        if (! $this->orders()->count()) {
-            $delivery_date = $this->getFirstDeliveryDate();
-        } else {
-            $delivery_date = $this->getLatestOrder()
-                ->deliver_by
-                ->addDays(7)
-            ;
-        }
+        $delivery_date = $this->getNextDeliveryDate();
 
         $subtotal = $this->calculateSubtotal();
         $tax = $this->deliveryAddress->getTax();
@@ -262,6 +285,25 @@ class Plan extends Model
     /**
      * Other
      */
+
+    /**
+     * @return mixed
+     */
+    public function getNextDeliveryDate() {
+        if (! $this->last_delivery_at)
+            return $this->created_at
+                ->addDays(4);
+
+        return $this->last_delivery_at
+            ->addDays($this->weeks_at_a_time * 7);
+
+        if (! $this->orders()->count())
+            return $this->getFirstDeliveryDate();
+
+        return $this->getLatestOrder()
+            ->deliver_by
+            ->addDays($this->weeks_at_a_time * 7);
+    }
 
     /**
      * TODO: Make this 'smarter'
