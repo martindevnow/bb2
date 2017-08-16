@@ -117,17 +117,24 @@ class Order extends CoreModel
      * Order Packing etc Workflow
      */
 
+    /**
+     * Marks this Order as packed and adjusts inventory as appropriate..
+     *
+     * @return $this
+     */
     public function markAsPacked() {
         $this->reduceMeatInventory();
         $this->increaseMealInventory();
 
         $this->packed = true;
-
         $this->save();
 
         return $this;
     }
 
+    /**
+     * TODO: Move to Plan
+     */
     private function reduceMeatInventory() {
         $pet_meal_size = $this->plan->pet->mealSize();
 
@@ -148,6 +155,9 @@ class Order extends CoreModel
         }
     }
 
+    /**
+     * TODO: Make it public and simply reference the plan.. these methods should be on Plan
+     */
     private function increaseMealInventory() {
         $meals = $this->mealCounts();
 
