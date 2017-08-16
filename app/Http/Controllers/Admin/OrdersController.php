@@ -133,5 +133,14 @@ class OrdersController extends Controller
 
         return redirect()->back();
     }
+
+    public function packed(Order $order) {
+        $order->markAsPacked();
+        $order->save();
+
+        flash('Thank you for packing that order.');
+
+        return redirect()->back();
+    }
 }
 

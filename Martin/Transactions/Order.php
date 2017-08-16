@@ -95,6 +95,8 @@ class Order extends CoreModel
      * @return mixed
      */
     public function mealCounts(Meal $meal = null) {
+
+        // TODO: Reactor this.. this should be on the Plan model... not here
         $plan = $this->plan;
         $grouped =  $this->plan->package->meals->groupBy('id')
             ->map(function($group, $key) use ($plan) {
@@ -116,6 +118,21 @@ class Order extends CoreModel
      */
 
     public function markAsPacked() {
+        $this->reduceMeatInventory();
+
+        $this->packed = true;
+
+        return $this;
+    }
+
+    private function reduceMeatInventory() {
+        $pet_meal_size = $this->plan->pet->mealSize();
+
+        // TODO: This should be on the Plan model too.. no reason for it to be here....
+        $meals = $this->mealCounts()->map(function($meal, $key) use ($pet_meal_size){
+            $meal->total_weight = $meal->count * $pet_meal_size;
+            return $meal;
+        });
 
     }
 

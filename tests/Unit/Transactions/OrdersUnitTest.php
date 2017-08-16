@@ -129,10 +129,9 @@ class OrdersUnitTest extends TestCase
 
     /** @test */
     public function marking_an_order_as_packed_affects_the_inventory() {
-        $order = factory(Order::class)->create();
-        $this->assertFalse($order->packed);
+        $order = $this->createOrderForBasicPlan();
 
-        $this->order->markAsPacked();
+        $order->markAsPacked();
     }
 
     /**

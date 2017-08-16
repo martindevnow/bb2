@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\Role;
 use Martin\ACL\User;
+use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -80,10 +81,16 @@ abstract class TestCase extends BaseTestCase
         $package->addMeal($turkMeal, '7B');
         $package = $package->fresh(['meals']);
 
+        $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level'=> 2]);
+
         /** @var Plan $plan */
         $plan = factory(Plan::class)->create([
             'package_id'    => $package->id,
             'weeks_at_a_time'   => 2,
+            'pet_weight'    => $pet->weight,
+            'pet_id'    => $pet->id,
+            'pet_activity_level'    => $pet->activity_level,
+
         ]);
 
         $plan->generateOrder();

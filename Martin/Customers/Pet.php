@@ -65,6 +65,11 @@ class Pet extends Model
      * Mutators
      */
     // TODO: Add a mutator for birthday so it removes the time portion of carbon... ?
+    // I can use the Trait I made to remove the time from the Carbon instance..
+    // It makes life easier as I can assume that it is coming as a date string in a
+    // predictable format....
+    // OR
+    // Is a Carbon instance easier....?
 
 
 
