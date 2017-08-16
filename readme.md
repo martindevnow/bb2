@@ -36,6 +36,17 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 
 ## Test Coverage
 
+**Martin**
+
+| Date | Area | Lines | Fnct | Classes |
+| ---- | ---- | ----- | ---- | ------- |
+| July 31 | Overall | 52.86% | 51.11% | 31.94% |
+| July 31 | Martin | 63.53% | 67.38% | 48.65% |
+| July 31 | app | 40.84% | 97.93% | 14.29% |
+|
+
+
+
 2017-07-31:
 - Martin
     - Lines: 40.84%
@@ -77,3 +88,17 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
     - Lines: 76.27% (+11.5%)
     - Functions and Methods: 74.50% 
     - Classes and Traits: 44.93% 
+
+2017-08-16:
+- Martin
+    - Lines: 92.49%
+    - Functions and Methods: 87.58%
+    - Classes and Traits: 46.43%
+- app
+    - Lines: 71.78%
+    - Functions and Methods: 75.00%
+    - Classes and Traits: 51.35%
+- Overall
+    - Lines: 80.80%
+    - Functions and Methods: 81.57% 
+    - Classes and Traits: 49.23% 
