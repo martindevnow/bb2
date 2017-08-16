@@ -18,37 +18,12 @@ class Attachment extends Model
      */
     public $fillable = [
         'user_id',
-        'original_file_name',
-        'file_name',
-        'file_path',
-        'file_extension',
-        'description',
-        'type',
+        'original_filename',
+        'filename',
+        'extension',
         'attachmentable_id',
         'attachmentable_type',
     ];
-
-    /**
-     * Fields to format as Carbon
-     *
-     * @var array
-     */
-    public $dates = [];
-
-    public function createEntity($type, $attributes) {
-        $model = new $type($attributes);
-        $model->save();
-        $model->saveEmail($this->attachmentable);
-    }
-
-    /**
-     * StoragePath
-     *
-     * @return string
-     */
-    public function getStoragePathAttribute() {
-        return '/email/attachments/';
-    }
 
     /**
      * Returns a download response to the file location
@@ -56,32 +31,21 @@ class Attachment extends Model
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download() {
-        return response()->download(base_path() . '/' . $this->file_path . '/' . $this->filename(), $this->filename());
+        return response()->download($this->fullpath(), $this->original());
     }
 
-//    /**
-//     * Save the file locally
-//     *
-//     * @param \PhpMimeMailParser\Attachment $emailAttachment
-//     */
-//    public function saveFile(\PhpMimeMailParser\Attachment $emailAttachment)
-//    {
-//        $filesystem = new Filesystem();
-//        $filesystem->put(base_path() . $this->file_path .'/' . $this->filename(),
-//            $emailAttachment->getContent()
-//        );
-//    }
-
     /**
-     * Return the filename of this Attachment
-     *
      * @return string
      */
-    public function filename() {
-        if ($this->file_name == "")
-            return 'email-'. $this->attachmentable->id . '_attachment-' . $this->id . '.' . $this->file_extension;
+    public function fullpath() {
+        return base_path() . '/' . $this->filename . '.' . $this->extension;
+    }
 
-        return $this->file_name . '.' . $this->file_extension;
+    /**
+     * @return string
+     */
+    public function original() {
+        return $this->original_filename . '.' . $this->extension;
     }
 
     /**

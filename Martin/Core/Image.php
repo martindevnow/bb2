@@ -21,7 +21,7 @@ class Image extends Model {
         'content',
         'height',
         'width',
-        'path',
+        'extension',
         'name',
         'imageable_id',
         'imageable_type',
@@ -30,21 +30,15 @@ class Image extends Model {
     /**
      * @return mixed|string
      */
-    protected function getImageableType() {
-        if ($this->type)
-            return $this->type;
-
-        return $this->type = strtolower((new ReflectionClass($this->imageable))->getShortName());
+    public function type() {
+        return strtolower((new ReflectionClass($this->imageable))->getShortName());
     }
 
     /**
      * @return string
      */
-    public function getUrlToImageable() {
-        $model = $this->imageable;
-        $type = $this->getImageableType();
-
-        return "/admin/{$type}/{$model->id}";
+    public function url() {
+        return "/images/{$this->type()}/{$this->imageable_id}-{$this->id}.{$this->extension}";
     }
 
     /**

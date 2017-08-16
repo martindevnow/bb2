@@ -52,12 +52,9 @@ $factory->define(\Martin\Core\Attachment::class, function (Faker\Generator $fake
 
     return [
         'user_id'  => factory(User::class)->create()->id,
-        'original_file_name'  => $faker->word,
-        'file_name'  => $faker->word,
-        'file_path'  => $faker->word,
-        'file_extension'  => $faker->word,
-        'description'  => $faker->word,
-        'type'  => $faker->word,
+        'original_filename'  => $faker->word,
+        'filename'  => $faker->word,
+        'extension'  => $faker->word,
         'attachmentable_id'   => $attachmentable->id,
         'attachmentable_type'   => get_class($attachmentable),
     ];
@@ -127,7 +124,7 @@ $factory->define(\Martin\Core\Image::class, function (Faker\Generator $faker) {
         'content'  => $faker->sentence(15),
         'height'  => $faker->numberBetween(150,500),
         'width'  => $faker->numberBetween(150,500),
-        'path'  => $faker->sentence(3),
+        'extension'  => $faker->word,
         'name'  => $faker->word,
         'imageable_id'   => $imageable->id,
         'imageable_type'   => get_class($imageable),
