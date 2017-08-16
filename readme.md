@@ -41,64 +41,15 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 | Date | Area | Lines | Fnct | Classes |
 | ---- | ---- | ----- | ---- | ------- |
 | July 31 | Overall | 52.86% | 51.11% | 31.94% |
-| July 31 | Martin | 63.53% | 67.38% | 48.65% |
-| July 31 | app | 40.84% | 97.93% | 14.29% |
+| July 31 | Martin | 40.84% | 37.93% | 14.29% |
+| July 31 | app | 63.53% | 67.38% | 48.65% |
+| Aug 1 | Overall | 64.28% | 63.08% | 48.65% |
+| Aug 1 | Martin | 65.35% | 58.70% | 25.00% |
+| Aug 1 | app | 63.53% | 67.38% | 48.65% |
+| Aug 10 | Overall | 76.27% | 74.50% | 44.93% |
+| Aug 10 | Martin | 83.25% | 75.61% | 37.50% |
+| Aug 10 | app | 70.75% | 73.19% | 51.35% |
+| Aug 16 | Overall | 80.80% | 81.57% | 49.23% |
+| Aug 16 | Martin | 92.49% | 87.58% | 46.43% |
+| Aug 16 | app | 71.78% | 75.00% | 51.35% |
 |
-
-
-
-2017-07-31:
-- Martin
-    - Lines: 40.84%
-    - Functions and Methods: 37.93%
-    - Classes and Traits: 14.29%
-- app
-    - Lines: 63.53%
-    - Functions and Methods: 67.38%
-    - Classes and Traits: 48.65%
-- Overall
-    - Lines: 52.86%
-    - Functions and Methods: 51.11%
-    - Classes and Traits: 31.94%
-
-2017-08-01:
-- Martin
-    - Lines: 65.35% (+24.5%)
-    - Functions and Methods: 58.70% (+21.2%)
-    - Classes and Traits: 25.00% (+10.5%)
-- app
-    - Lines: 63.53% (NC)
-    - Functions and Methods: 67.38% (NC)
-    - Classes and Traits: 48.65% (NC)
-- Overall
-    - Lines: 64.28% (+11.5%)
-    - Functions and Methods: 63.08% (+12.0%)
-    - Classes and Traits: 48.65% (+16.5%)
-
-2017-08-10:
-- Martin
-    - Lines: 83.25%
-    - Functions and Methods: 75.61%
-    - Classes and Traits: 37.50%
-- app
-    - Lines: 70.75% (NC)
-    - Functions and Methods: 73.19%
-    - Classes and Traits: 51.35%
-- Overall
-    - Lines: 76.27% (+11.5%)
-    - Functions and Methods: 74.50% 
-    - Classes and Traits: 44.93% 
-
-2017-08-16:
-- Martin
-    - Lines: 92.49%
-    - Functions and Methods: 87.58%
-    - Classes and Traits: 46.43%
-- app
-    - Lines: 71.78%
-    - Functions and Methods: 75.00%
-    - Classes and Traits: 51.35%
-- Overall
-    - Lines: 80.80%
-    - Functions and Methods: 81.57% 
-    - Classes and Traits: 49.23% 
