@@ -43,7 +43,6 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 | Overall | 52.86% | 51.11% | 31.94% |
 | Martin | 40.84% | 37.93% | 14.29% |
 | app | 63.53% | 67.38% | 48.65% |
-|
 
 **2017-08-01**
 
@@ -52,7 +51,6 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 | Overall | 64.28% | 63.08% | 48.65% |
 | Martin | 65.35% | 58.70% | 25.00% |
 | app | 63.53% | 67.38% | 48.65% |
-|
 
 **2017-08-10**
 
@@ -61,7 +59,6 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 | Overall | 76.27% | 74.50% | 44.93% |
 | Martin | 83.25% | 75.61% | 37.50% |
 | app | 70.75% | 73.19% | 51.35% |
-|
 
 **2017-08-16**
 
@@ -70,4 +67,3 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 | Overall | 80.80% | 81.57% | 49.23% |
 | Martin | 92.49% | 87.58% | 46.43% |
 | app | 71.78% | 75.00% | 51.35% |
-|
