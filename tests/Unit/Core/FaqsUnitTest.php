@@ -62,6 +62,7 @@ class FaqsUnitTest extends TestCase
 
     /** @test */
     public function faqs_can_change_their_category_by_code() {
+        /** @var Faq $faq */
         $faq = factory(Faq::class)->create();
         $faq_category = factory(FaqCategory::class, 2)->create();
 

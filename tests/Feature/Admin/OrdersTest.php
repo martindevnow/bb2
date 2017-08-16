@@ -112,54 +112,30 @@ class OrdersTest extends TestCase
     public function an_admin_can_see_the_meal_counts_on_show_page() {
         $this->loginAsAdmin();
 
-        $package = factory(Package::class)->create();
+        $order = $this->createOrderForBasicPlan();
 
-        $chkMeal = factory(Meal::class)->create();
-        $turkMeal = factory(Meal::class)->create();
+        $meals = $order->mealCounts()
+            ->toArray();
 
-        $chickenCost = 1;
-        $turkeyCost = 6;
-
-        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
-        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
-
-        $chkMeal->addMeat($chicken);
-        $turkMeal->addMeat($turkey);
-
-        $package->addMeal($chkMeal, '1B');
-        $package->addMeal($chkMeal, '2B');
-        $package->addMeal($chkMeal, '3B');
-        $package->addMeal($chkMeal, '4B');
-        $package->addMeal($chkMeal, '5B');
-        $package->addMeal($chkMeal, '6B');
-        $package->addMeal($chkMeal, '7B');
-        $package->addMeal($turkMeal, '1B');
-        $package->addMeal($turkMeal, '2B');
-        $package->addMeal($turkMeal, '3B');
-        $package->addMeal($turkMeal, '4B');
-        $package->addMeal($turkMeal, '5B');
-        $package->addMeal($turkMeal, '6B');
-        $package->addMeal($turkMeal, '7B');
-        $package = $package->fresh(['meals']);
-
-        /** @var Plan $plan */
-        $plan = factory(Plan::class)->create([
-            'package_id'    => $package->id,
-            'weeks_at_a_time'   => 2,
-        ]);
-
-        $plan->generateOrder();
-        $order = $plan->orders->first();
-
-        $meals = $order->mealCounts();
-        $firstMeal = $meals->where('label', $chkMeal->label)
-            ->first();
-
-        $secondMeal = $meals->where('label', $turkMeal->label)
-            ->first();
+        $firstMeal = $meals[1];
+        $secondMeal = $meals[2];
 
         $this->get('/admin/orders/' . $order->id) // SHOW method
-            ->assertSee($firstMeal->label . ' x ' . $firstMeal->count)
-            ->assertSee($secondMeal->label . ' x ' . $secondMeal->count);
+            ->assertSee($firstMeal['label'] . ' x ' . $firstMeal['count'])
+            ->assertSee($secondMeal['label'] . ' x ' . $secondMeal['count']);
+    }
+
+    /** @test */
+    public function an_admin_can_mark_the_order_as_packed() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+
+        $this->post('/admin/orders/' . $order->id . '/packed')
+            ->assertStatus(302);
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'packed'    => true,
+        ]);
     }
 }

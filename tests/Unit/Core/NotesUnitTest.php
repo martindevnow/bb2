@@ -78,6 +78,6 @@ class NotesUnitTest extends TestCase
 
         $author = $note->author;
         $this->assertTrue($author instanceof User);
-        $this->assertEquals($order->author_id, $author->id);
+        $this->assertEquals($note->author_id, $author->id);
     }
 }
