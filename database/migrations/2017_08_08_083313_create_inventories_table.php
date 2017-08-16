@@ -26,7 +26,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('changeable_id'); // when change is - , then this is Order->id....
             $table->string('changeable_type'); // when change is + , then this is .. User->id (the purchaser)
 
-            $table->integer('current');
+            $table->integer('current')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

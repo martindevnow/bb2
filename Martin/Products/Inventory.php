@@ -20,6 +20,39 @@ class Inventory extends Model
     ];
 
 
+    /**
+     * @param $change
+     * @return float|int
+     */
+    public function getChangeAttribute($change) {
+        return $change / 100;
+    }
+
+    /**
+     * @param $change
+     */
+    public function setChangeAttribute($change) {
+        $this->attributes['change'] = round($change * 100);
+    }
+
+    /**
+     * @param $current
+     * @return float|int
+     */
+    public function getCurrentAttribute($current) {
+        return $current / 100;
+    }
+
+    /**
+     * @param $current
+     */
+    public function setCurrentAttribute($current) {
+        $this->attributes['current'] = round($current * 100);
+    }
+
+
+
+
 
     /**
      * Relationships

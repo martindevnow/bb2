@@ -119,8 +119,11 @@ class Order extends CoreModel
 
     public function markAsPacked() {
         $this->reduceMeatInventory();
+        $this->increaseMealInventory();
 
         $this->packed = true;
+
+        $this->save();
 
         return $this;
     }
@@ -134,6 +137,27 @@ class Order extends CoreModel
             return $meal;
         });
 
+        foreach($meals as $meal) {
+            foreach ($meal->meats as $meat) {
+                $this->inventoryChange()->create([
+                    'inventoryable_id'      => $meat->id,
+                    'inventoryable_type'    => get_class($meat),
+                    'change'    => -1 * $meal->total_weight / $meal->meats()->count(),
+                ]);
+            }
+        }
+    }
+
+    private function increaseMealInventory() {
+        $meals = $this->mealCounts();
+
+        foreach($meals as $meal) {
+            $this->inventoryChange()->create([
+                'inventoryable_id'  => $meal->id,
+                'inventoryable_type'=> get_class($meal),
+                'change'    => $meal->count,
+            ]);
+        }
     }
 
 
