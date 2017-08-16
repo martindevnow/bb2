@@ -2,19 +2,21 @@
 
 @section('content')
 
-    <div class="ms-hero-page-override ms-hero-img-team ms-hero-bg-primary" style="background-image: url('/barfbento/img/lie-down.jpg')">
+    <div class="ms-hero-page-override ms-hero-img-team" style="background-image: url('/barfbento/img/lie-down.jpg')">
         <div class="container">
             <div class="text-center">
-                <h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">Contact Us</h1>
-                <p class="lead lead-lg color-light text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">
-                    Whether you're new to raw, or a seasoned veteran, we'd love to hear from you! We can answer any questions you have about our program and the diet that we feed to our customers.</p>
+                <h1>&nbsp;</h1>
+                {{--<h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">Contact Us</h1>--}}
+                {{--<p class="lead lead-lg color-light text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">--}}
+                    {{--Whether you're new to raw, or a seasoned veteran, we'd love to hear from you! We can answer any questions you have about our program and the diet that we feed to our customers.</p>--}}
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="card card-hero animated fadeInUp animation-delay-7">
-            <div class="card-block">
+    <div class="container container-full">
+        <div class="card card-hero">
+            <div class="card-block-big">
+                <h2 class="color-primary">Contact Us</h2>
                 <form class="form-horizontal" action="/contact/send" method="POST">
                     {!! csrf_field() !!}
                     <fieldset>

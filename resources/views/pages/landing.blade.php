@@ -76,81 +76,13 @@
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 wow">
-                <div class="col-md-12">
+                <div class="col-md-12 mt-6">
                     <a href="/quote" class="btn btn-info btn-raised btn-xl btn-block"
                        style="height: 15rem; padding: 3rem; font-size: 6rem;"
                     >Signup<div class="ripple-container"></div></a>
                 </div>
             </div>
         </div>
-
-
-        <div class="wrap wrap-mountain mt-6" style="background-image: url('/material/img/skyline2.jpg')">
-            <div class="container">
-                <h2 class="text-center text-light mb-6 wow">What are "<strong>Kibbles</strong>"?</h2>
-                <div class="row">
-                    <div class="col-md-6 col-md-push-6 mb-4  center-block">
-                        <img src="/barfbento/img/kibbles.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow "> </div>
-                    <div class="col-md-6 col-md-pull-6 pr-6">
-                        <h3 style="text-align: center;">Kibbles are primarily left over meat "by-products" made out of meat unfit for human consumption.</h3>
-                        <p class="wow">
-                            In the pet food manufacturing industry, the ingredients and definition of "meat" are loosely defined. Their guidelines include </p>
-                        <p class="wow">
-                            Kibbles also often include large amounts of corn, wheat and soy, which dogs and cats do not have the proper enzymes and natural gut flora to breakdown and digest.
-                            Additionally, these cause dental issues with pets and the carbohydrates lead to tartar, bad breath and even tooth decay..</p>
-                        <p class="wow">
-                            Deceptive labels have been causing an uproar and lead to a decline in consumer confidence.
-                            Things like "all-beef" should be just that, but pet food manufacturers are allowed to add water,
-                            preservatives and even "seasonings" to their product.
-                        3</p>
-                        <div class="text-center">
-                            <a href="/faq" class="btn btn-warning btn-raised mr-1 wow">
-                                <i class="zmdi zmdi-chart-donut"></i> Learn More </a>
-                            <a href="/quote" class="btn btn-info btn-raised wow">
-                                <i class="zmdi zmdi-case"></i> Get a Quote</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="container">
-            <div class="card wow">
-                <div class="card-block card-block-big">
-                    <h2 class="text-center fw-500">Benefits of B.A.R.F.</h2>
-                    <p class="lead text-center center-block mw-800">Give your pet the healthy, balanced diet they deserve.</p>
-                    <div class="row mt-4">
-                        <div class="col-md-6 col-md-push-6 text-justify">
-                            <h3 class="color-primary">In Summary</h3>
-                            <p class="dropcaps">Maintaining a healthy diet is something we take for granted as humans.</p>
-                            <p>Explicabo numquam quam amet vel laboriosam odio eaque quos esse cumque, nam deserunt ducimus odit libero asperiores necessitatibus, soluta corporis dignissimos. Delectus temporibus iusto debitis obcaecati accusantium, dolorum ad doloremque
-                                maiores optio ut magni praesentium cupiditate dolore.</p>
-                            <p>Nulla delectus tempora ab ipsum molestias dolorem explicabo nihil. Officia quia iusto sint, iure nemo vitae aperiam, corrupti aliquid fugit, qui dolore voluptatibus eos quisquam obcaecati, omnis iste illum optio. Maxime atque hic vero.
-                                Doloribus eius sit laborum fugiat necessitatibus tempora facilis facere cumque, ipsum nam, temporibus, perferendis non ratione!</p>
-                        </div>
-                        <div class="col-md-6 col-md-pull-6">
-                            <h3 class="color-primary">Our Principles</h3>
-                            <ol class="service-list list-unstyled">
-                                <li>Lorem ipsum dolor sit amet,
-                                    <strong>consectetur adipisicing elit</strong>. Nihil suscipit cupiditate expedita hic earum vero sint, recusandae itaque, rem distinctio.</li>
-                                <li>Totam porro sit, obcaecati quos quae iure tenetur, soluta voluptatem sapiente rerum ipsam delectus corporis voluptates voluptate, nulla mollitia pariatur.</li>
-                                <li>Enim quas nesciunt sequi odit, ut
-                                    <a href="#">quisquam vitae commodi</a> animi placeat nihil saepe magnam aliquam, vero harum quae doloribus aut nostrum veniam alias!</li>
-                                <li>Lorem ipsum dolor sit amet,
-                                    <strong>consectetur adipisicing elit</strong>. Nihil suscipit cupiditate expedita hic earum vero sint, recusandae itaque, rem distinctio.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
 
         <section id="services" class="mt-6">
             <div class="wrap ms-hero-img-farm ms-hero-bg-dark-light color-white ms-bg-fixed">
@@ -179,104 +111,37 @@
             </div>
         </section>
 
-
-
-
-
-        <section id="team">
-            <div class="container pt-6 ">
-                <h1 class="color-primary text-center wow">Who We Are</h1>
+        <div class="wrap wrap-mountain" style="background-image: url('/material/img/skyline2.jpg')">
+            <div class="container">
+                <h2 class="text-center text-light mb-6 wow">What are "<strong>Kibbles</strong>"?</h2>
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-danger wow">
-                            <div class="ms-hero-bg-danger ms-hero-img-city">
-                                <img src="/barfbento/img/profile/halley.jpg" alt="..." class="img-avatar-circle"> </div>
-                            <div class="card-block pt-6 text-center">
-                                <h3 class="color-danger">Halley's Comet</h3>
-                                <p>Born Feb 1 2016 in Nippising, ON, I love winter! I am the CEO of B.A.R.F. Bento and don't give me a ball if you ever want it back! My favorite food is lamb and chicken feet for dessert!</p>
-                                <a href="https://www.facebook.com/doggiebento/" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-facebook">
-                                    <i class="zmdi zmdi-facebook"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-twitter">
-                                    <i class="zmdi zmdi-twitter"></i>
-                                </a>
-                                <a href="https://www.instagram.com/explore/tags/halleyslife/?hl=en" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-instagram">
-                                    <i class="zmdi zmdi-instagram"></i>
-                                </a>
-                            </div>
+                    <div class="col-md-6 col-md-push-6 mb-4  center-block">
+                        <img src="/barfbento/img/kibbles.jpg" alt="" class="img-responsive img-rounded img-thumbnail center-block wow "> </div>
+                    <div class="col-md-6 col-md-pull-6 pr-6">
+                        <h3 style="text-align: center;">Kibbles are primarily left over meat "by-products" made out of meat unfit for human consumption.</h3>
+                        <p class="wow">
+                            In the pet food manufacturing industry, the ingredients and definition of "meat" are loosely defined. Their guidelines include </p>
+                        <p class="wow">
+                            Kibbles also often include large amounts of corn, wheat and soy, which dogs and cats do not have the proper enzymes and natural gut flora to breakdown and digest.
+                            Additionally, these cause dental issues with pets and the carbohydrates lead to tartar, bad breath and even tooth decay..</p>
+                        <p class="wow">
+                            Deceptive labels have been causing an uproar and lead to a decline in consumer confidence.
+                            Things like "all-beef" should be just that, but pet food manufacturers are allowed to add water,
+                            preservatives and even "seasonings" to their product.
+                        3</p>
+                        <div class="text-center">
+                            <a href="/faq" class="btn btn-warning btn-raised mr-1 wow">
+                                <i class="zmdi zmdi-chart-donut"></i> Learn More </a>
+                            <a href="/quote" class="btn btn-info btn-raised wow">
+                                <i class="zmdi zmdi-case"></i> Get a Quote</a>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-royal wow">
-                            <div class="ms-hero-bg-royal ms-hero-img-city">
-                                <img src="/barfbento/img/profile/nova.jpg" alt="..." class="img-avatar-circle"> </div>
-                            <div class="card-block pt-6 text-center">
-                                <h3 class="color-info">Super Nova</h3>
-                                <p>My parents adopted me on Dec 16 2016. I LOVE the food my family feeds me! I can be pretty lazy... but I have a BIG appetite! My favorite food is ANYTHING! Don't leave your food unattended! </p>
-                                <a href="https://www.facebook.com/doggiebento/" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-facebook">
-                                    <i class="zmdi zmdi-facebook"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-twitter">
-                                    <i class="zmdi zmdi-twitter"></i>
-                                </a>
-                                <a href="https://www.instagram.com/explore/tags/supernovahusky/?hl=en" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-instagram">
-                                    <i class="zmdi zmdi-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-primary wow">
-                            <div class="ms-hero-bg-primary ms-hero-img-city">
-                                <img src="/barfbento/img/profile/vivian.jpg" alt="..." class="img-avatar-circle"> </div>
-                            <div class="card-block pt-6 text-center">
-                                <h3 class="color-warning">Vivian Wong</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur alter adipisicing elit. Facilis, natuse inse voluptates officia repudiandae beatae magni es magnam autem molestias.</p>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-facebook">
-                                    <i class="zmdi zmdi-facebook"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-twitter">
-                                    <i class="zmdi zmdi-twitter"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-instagram">
-                                    <i class="zmdi zmdi-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card mt-4 card-warning wow">
-                            <div class="ms-hero-bg-warning ms-hero-img-city">
-                                <img src="/barfbento/img/profile/ben.jpg" alt="..." class="img-avatar-circle"> </div>
-                            <div class="card-block pt-6 text-center">
-                                <h3 class="color-royal">Ben Martin</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur alter adipisicing elit. Facilis, natuse inse voluptates officia repudiandae beatae magni es magnam autem molestias.</p>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-facebook">
-                                    <i class="zmdi zmdi-facebook"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-twitter">
-                                    <i class="zmdi zmdi-twitter"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="btn-circle btn-circle-raised btn-circle-xs mt-1 mr-1 no-mr-md btn-instagram">
-                                    <i class="zmdi zmdi-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-
-        <section class="shipping">
-
-            <div class="container pt-6">
+        <div class="container mt-2 shipping">
+            <div class="container pt-2">
                 <h1 class="color-primary text-center wow">Our Service Area</h1>
                 <div class="row">
                     <div class="col-md-12">
@@ -290,8 +155,6 @@
                     </div>
                 </div>
             </div>
-
-
-        </section>
+        </div>
     </div>
 @endsection

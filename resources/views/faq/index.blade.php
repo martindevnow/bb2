@@ -2,23 +2,24 @@
 
 @section('content')
 
-    <div class="ms-hero-page-override ms-hero-img-city ms-hero-bg-primary">
+    <div class="ms-hero-page-override ms-hero-img-city" style="background-image: url('/barfbento/img/boiled-tripe.jpg')">
         <div class="container">
             <div class="text-center">
-                <span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>
-                <h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">B.A.R.F.
-                    <span>Bento</span>
-                </h1>
-                <p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">Enter the compelling
-                    <span class="color-warning">motto</span> of B.A.R.F. Bento here!</p>
+                <h1>&nbsp;</h1>
+                {{--<span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>--}}
+                {{--<h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">B.A.R.F.--}}
+                    {{--<span>Bento</span>--}}
+                {{--</h1>--}}
+                {{--<p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">Enter the compelling--}}
+                    {{--<span class="color-warning">motto</span> of B.A.R.F. Bento here!</p>--}}
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -100px;">
+    <div class="container container-full">
+        <div class="card" style="position: relative; top: -100px;">
             <div class="card-block-big">
-                <h1 class="color-primary">Frequenty Asked Questions</h1>
+                <h1 class="color-primary">Frequently Asked Questions</h1>
                 <p>Deciding to change your pet's diet is not an easy decision to come to. There are a lot of questions
                     that pet owners commonly ask us. We've done our best to gather the knowledge and information you
                     need to decide the best path for you and your pte. </p>

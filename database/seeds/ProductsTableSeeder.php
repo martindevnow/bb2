@@ -20,7 +20,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated pork liver',
             'size'          => '60g',
             'sku'           => 'DH-PORKLIVER-60G',
-            'price'         => 500,
+            'price'         => 5.00,
         ]);
 
         Product::create([
@@ -28,7 +28,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated chicken feet',
             'size'          => '8pc',
             'sku'           => 'DH-CHICKFT-8PC',
-            'price'         => 500,
+            'price'         => 5.00,
         ]);
 
         Product::create([
@@ -36,7 +36,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Dehydrated pig ear treat (Small)',
             'size'          => 'small',
             'sku'           => 'DH-PIGEAR-SM',
-            'price'         => 300,
+            'price'         => 3.00,
         ]);
 
         Product::create([
@@ -44,7 +44,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Dehydrated pig ear treat (Large)',
             'size'          => 'large',
             'sku'           => 'DH-PIGEAR-LG',
-            'price'         => 400,
+            'price'         => 4.00,
         ]);
 
 
@@ -56,7 +56,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated apple chips',
             'size'          => '30g',
             'sku'           => 'DH-APPLE-30G',
-            'price'         => 300,
+            'price'         => 3.00,
         ]);
 
         Product::create([
@@ -64,7 +64,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated carrot chips',
             'size'          => 'XXg',
             'sku'           => 'DH-CARROT-40G',
-            'price'         => 300,
+            'price'         => 3.00,
         ]);
 
         Product::create([
@@ -72,7 +72,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated yam treats',
             'size'          => '40g',
             'sku'           => 'DH-YAMYL-40G',
-            'price'         => 300,
+            'price'         => 3.00,
         ]);
 
         Product::create([
@@ -80,7 +80,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated purple yam',
             'size'          => '40g',
             'sku'           => 'DH-YAMPURP-40G',
-            'price'         => 400,
+            'price'         => 4.00,
         ]);
 
         Product::create([
@@ -88,7 +88,7 @@ class ProductsTableSeeder extends Seeder
             'description'   => 'Bag of dehydrated sweet potato',
             'size'          => '40g',
             'sku'           => 'DH-SWPOTATO-40G',
-            'price'         => 300,
+            'price'         => 3.00,
         ]);
     }
 }

@@ -2,21 +2,22 @@
 
 @section('content')
 
-    <div class="ms-hero-page-override ms-hero-img-city ms-hero-bg-primary" style="background-image: url('/barfbento/img/yoghurt.jpg')">
+    <div class="ms-hero-page-override ms-hero-img-city" style="background-image: url('/barfbento/img/yoghurt.jpg')">
         <div class="container">
             <div class="text-center">
-                <span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>
-                <h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">B.A.R.F.
-                    <span>Bento</span>
-                </h1>
-                <p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">Enter the compelling
-                    <span class="color-warning">motto</span> of B.A.R.F. Bento here!</p>
+                <h1>&nbsp;</h1>
+                {{--<span class="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2 animated zoomInDown animation-delay-5">BB</span>--}}
+                {{--<h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">B.A.R.F.--}}
+                    {{--<span>Bento</span>--}}
+                {{--</h1>--}}
+                {{--<p class="lead lead-lg color-white text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">Enter the compelling--}}
+                    {{--<span class="color-warning">motto</span> of B.A.R.F. Bento here!</p>--}}
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -100px;">
+    <div class="container container-full">
+        <div class="card wow slideInUp" style="visibility: visible; animation-name: slideInUp; position: relative; top: -80px;">
             <div class="card-block-big">
                 <h1 class="color-primary">About Us</h1>
                 <p>We're just like you. We're pet owners who became concerned with what we've been feeding our pets. We recognize our pets as a part of our family and we came to realize that we need to take the same time, care and effort to ensure that
@@ -24,7 +25,7 @@
                     what exactly these foods contain, we set out to find the right path.</p>
 
             </div>
-            <img src="/material/img/demo/team.jpg" alt="" class="img-responsive">
+            {{--<img src="/material/img/demo/team.jpg" alt="" class="img-responsive">--}}
             <div class="card-block-big">
                 <h2 class="color-primary">Vision</h2>
                 <p>Learning about the <strong>B.A.R.F. Diet</strong> truely opened our eyes as to what is important in your pet's diet. It points you in the most natural and addative-free direction by bringing their diet in alignment with their biology.
@@ -40,7 +41,7 @@
     </div>
 
 
-    <section class="mt-6">
+    <section class="">
         <div class="container card">
             <div class="text-center">
                 <h1 class="color-primary">Dogs of B.A.R.F. Bento</h1>
