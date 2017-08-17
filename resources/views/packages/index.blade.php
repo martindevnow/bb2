@@ -19,10 +19,13 @@
                 <div class="card" style="box-shadow: none;">
                     <img src="/barfbento/img/basic.jpg" alt="" class="img-responsive" width="100%">
                     <div class="card-block text-center">
-                        <h4 class="color-primary">Starting at: $12 /week</h4>
-                        <p>Includes two basic protein: chicken & turkey. Recommended for those new to the raw diet or those with sensitive stomachs. Example of meals may include: ground chicken/turkey, ground bone in chicken/turkey; with added coconut and Golgi berries. Customization/substitution is $2 extra per week.</p>
-                        <a href="javascript:void(0)" class="btn btn-primary">
-                            <i class="zmdi zmdi-star"></i> Learn More</a>
+                        <h4 class="color-primary">Basic Bento</h4>
+                        <p>Includes two basic protein: <span class="color-primary">chicken & turkey</span>.
+                            Recommended for those new to the raw diet or those with sensitive stomachs.
+                            Example of meals may include: ground chicken/turkey, ground bone in chicken/turkey; with added coconut and Golgi berries.
+                            Customization/substitution is $3 extra per week.</p>
+                        {{--<a href="javascript:void(0)" class="btn btn-primary">--}}
+                            {{--<i class="zmdi zmdi-star"></i> Learn More</a>--}}
                         <a href="javascript:void(0)" class="btn btn-primary btn-raised">
                             <i class="zmdi zmdi-flower"></i> Subscribe!</a>
                     </div>
@@ -33,11 +36,14 @@
                 <div class="card" style="box-shadow: none;">
                     <img src="/barfbento/img/classic.jpg" alt="" class="img-responsive" width="100%">
                     <div class="card-block text-center">
-                        <h4 class="color-primary">Starting at: $14 /week</h4>
+                        <h4 class="color-primary">Classic Bento</h4>
 
-                        <p>Includes everything in the Basic Bento + 3 extra proteins: pork, beef and fish. This is the most popular plan. Example of meals may include: ground pork, ground beef, salmon sashimi; with added Chia seeds, parsley, and Golgi Berries. Customization/substitution is $3 extra per week.</p>
-                        <a href="javascript:void(0)" class="btn btn-primary">
-                            <i class="zmdi zmdi-star"></i> Learn More</a>
+                        <p>Includes everything in the <span class="color-primary">Basic Bento + 3 extra proteins: pork, beef and fish</span>.
+                            This is the most popular plan.
+                            Example of meals may include: ground pork, ground beef, salmon sashimi; with added Chia seeds, parsley, and Golgi Berries.
+                            Customization/substitution is $3 extra per week.</p>
+                        {{--<a href="javascript:void(0)" class="btn btn-primary">--}}
+                            {{--<i class="zmdi zmdi-star"></i> Learn More</a>--}}
                         <a href="javascript:void(0)" class="btn btn-primary btn-raised">
                             <i class="zmdi zmdi-flower"></i> Subscribe</a>
                     </div>
@@ -48,10 +54,14 @@
                 <div class="card" style="box-shadow: none;">
                     <img src="/barfbento/img/premium.jpg" alt="" class="img-responsive" width="100%">
                     <div class="card-block text-center">
-                        <h4 class="color-primary">Starting at: $16 /week</h4>
-                        <p>Includes everything in the Classic Bento + whole prey menu and some exotic meat. This plan is recommended for bigger dogs who loves to chew on whole preys including bones. This plan will include occasional fasting. Examples of meals may include: stuffed beef trachea, pig's head, emu necks; with green lipped mussel, turmeric paste. Customization/substitution is $4 extra per week.</p>
-                        <a href="javascript:void(0)" class="btn btn-primary">
-                            <i class="zmdi zmdi-star"></i> Learn More</a>
+                        <h4 class="color-primary">Premium Bento</h4>
+                        <p>Includes everything in the <span class="color-primary">Classic Bento + whole prey menu and some exotic meat</span>.
+                            This plan is recommended for bigger dogs who loves to chew on whole preys including bones.
+                            This plan will include occasional fasting.
+                            Examples of meals may include: stuffed beef trachea, pig's head, emu necks; with green lipped mussel, turmeric paste.
+                            Customization/substitution is $4 extra per week.</p>
+                        {{--<a href="javascript:void(0)" class="btn btn-primary">--}}
+                            {{--<i class="zmdi zmdi-star"></i> Learn More</a>--}}
                         <a href="javascript:void(0)" class="btn btn-primary btn-raised">
                             <i class="zmdi zmdi-flower"></i> Subscribe</a>
                     </div>
