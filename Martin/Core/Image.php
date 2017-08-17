@@ -17,7 +17,7 @@ class Image extends Model {
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'uploader_id',
         'content',
         'height',
         'width',
@@ -55,7 +55,7 @@ class Image extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function uploader() {
+        return $this->belongsTo(User::class, 'uploader_id');
     }
 } 

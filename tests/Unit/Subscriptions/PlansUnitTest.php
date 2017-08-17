@@ -353,4 +353,16 @@ class PlansUnitTest extends TestCase
         $pendingPlans = Plan::needsOrder()->get();
         $this->assertCount(4, $pendingPlans);
     }
+
+    /** @test */
+    public function a_plan_can_get_meals_by_count() {
+        $order = $this->createOrderForBasicPlan();
+
+        $plan = $order->plan;
+
+        $meals = $plan->mealCounts();
+        foreach($meals as $meal) {
+            $this->assertEquals(14, $meal->count);
+        }
+    }
 }

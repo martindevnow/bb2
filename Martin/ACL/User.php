@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Martin\ACL\Traits\HasRoles;
 use Martin\Core\Address;
+use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Plan;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -17,6 +18,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use Notifiable;
     use LogsActivity;
+    use CoreRelations;
 
     /**
      * The attributes that are mass assignable.
@@ -87,12 +89,5 @@ class User extends Authenticatable
      */
     public function plans() {
         return $this->hasMany(Plan::class, 'customer_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function addresses() {
-        return $this->morphMany(Address::class, 'addressable');
     }
 }

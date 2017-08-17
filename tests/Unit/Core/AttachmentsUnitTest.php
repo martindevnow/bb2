@@ -57,4 +57,23 @@ class AttachmentsUnitTest extends TestCase
         $this->assertTrue($orderClone instanceof Order);
         $this->assertEquals($order->id, $orderClone->id);
     }
+
+    /** @test */
+    public function an_attachment_has_an_uploader() {
+        $this->loginAsAdmin();
+        $order = factory(Order::class)->create();
+
+        $this->assertCount(0, $order->attachments);
+
+        $attachmentData = factory(Attachment::class)->make();
+        $attachmentData['uploader_id']  = $this->user->id;
+        $order->attachments()->save($attachmentData);
+
+        $order = $order->fresh(['attachments.uploader']);
+        $attachment = $order->attachments->first();
+
+        $uploader = $attachment->uploader;
+        $this->assertTrue($uploader instanceof User);
+        $this->assertEquals($this->user->id, $uploader->id);
+    }
 }

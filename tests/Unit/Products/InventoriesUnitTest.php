@@ -34,6 +34,8 @@ class InventoriesUnitTest extends TestCase
             'current' => 150,
         ];
         $inventory = factory(Inventory::class)->create($inventoryData);
+        $inventoryData['change'] *= 100;
+        $inventoryData['current'] *= 100;
         $this->assertDatabaseHas('inventories', $inventoryData);
     }
 }

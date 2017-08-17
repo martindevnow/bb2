@@ -51,7 +51,7 @@ $factory->define(\Martin\Core\Attachment::class, function (Faker\Generator $fake
     ]);
 
     return [
-        'user_id'  => factory(User::class)->create()->id,
+        'uploader_id'  => factory(User::class)->create()->id,
         'original_filename'  => $faker->word,
         'filename'  => $faker->word,
         'extension'  => $faker->word,
@@ -120,7 +120,7 @@ $factory->define(\Martin\Core\Image::class, function (Faker\Generator $faker) {
     ]);
 
     return [
-        'user_id'  => factory(User::class)->create()->id,
+        'uploader_id'  => factory(User::class)->create()->id,
         'content'  => $faker->sentence(15),
         'height'  => $faker->numberBetween(150,500),
         'width'  => $faker->numberBetween(150,500),

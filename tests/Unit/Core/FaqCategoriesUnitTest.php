@@ -55,6 +55,8 @@ class FaqCategoriesUnitTest extends TestCase
         $faq_category->addFaq($faq[1]->id);
         $faq_category->addFaq($faq[2]->code);
 
+        $this->assertFalse($faq_category->addFaq(true));
+
         $faq_category = $faq_category->fresh(['faqs']);
 
         $this->assertCount(3, $faq_category->faqs);

@@ -51,7 +51,9 @@ class DeliveriesUnitTest extends TestCase
         $this->assertTrue($delivery->delivered_at instanceof Carbon);
     }
 
-
+    // TODO: Think about how to implement the Delivery model with the order.....
+    // When should the delivery model be created, and who owns it....
+    //
     /**
      * Relationships
      */
