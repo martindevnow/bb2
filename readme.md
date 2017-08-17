@@ -36,44 +36,34 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 
 ## Test Coverage
 
-2017-07-31:
-- Martin
-    - Lines: 40.84%
-    - Functions and Methods: 37.93%
-    - Classes and Traits: 14.29%
-- app
-    - Lines: 63.53%
-    - Functions and Methods: 67.38%
-    - Classes and Traits: 48.65%
-- Overall
-    - Lines: 52.86%
-    - Functions and Methods: 51.11%
-    - Classes and Traits: 31.94%
+**2017-07-31**
 
-2017-08-01:
-- Martin
-    - Lines: 65.35% (+24.5%)
-    - Functions and Methods: 58.70% (+21.2%)
-    - Classes and Traits: 25.00% (+10.5%)
-- app
-    - Lines: 63.53% (NC)
-    - Functions and Methods: 67.38% (NC)
-    - Classes and Traits: 48.65% (NC)
-- Overall
-    - Lines: 64.28% (+11.5%)
-    - Functions and Methods: 63.08% (+12.0%)
-    - Classes and Traits: 48.65% (+16.5%)
+| Area | Lines | Fnct | Classes |
+| ---- | ----- | ---- | ------- |
+| Overall | 52.86% | 51.11% | 31.94% |
+| Martin | 40.84% | 37.93% | 14.29% |
+| app | 63.53% | 67.38% | 48.65% |
 
-2017-08-10:
-- Martin
-    - Lines: 83.25%
-    - Functions and Methods: 75.61%
-    - Classes and Traits: 37.50%
-- app
-    - Lines: 70.75% (NC)
-    - Functions and Methods: 73.19%
-    - Classes and Traits: 51.35%
-- Overall
-    - Lines: 76.27% (+11.5%)
-    - Functions and Methods: 74.50% 
-    - Classes and Traits: 44.93% 
+**2017-08-01**
+
+| Area | Lines | Fnct | Classes |
+| ---- | ----- | ---- | ------- |
+| Overall | 64.28% | 63.08% | 48.65% |
+| Martin | 65.35% | 58.70% | 25.00% |
+| app | 63.53% | 67.38% | 48.65% |
+
+**2017-08-10**
+
+| Area | Lines | Fnct | Classes |
+| ---- | ----- | ---- | ------- |
+| Overall | 76.27% | 74.50% | 44.93% |
+| Martin | 83.25% | 75.61% | 37.50% |
+| app | 70.75% | 73.19% | 51.35% |
+
+**2017-08-16**
+
+| Area | Lines | Fnct | Classes |
+| ---- | ----- | ---- | ------- |
+| Overall | 80.80% | 81.57% | 49.23% |
+| Martin | 92.49% | 87.58% | 46.43% |
+| app | 71.78% | 75.00% | 51.35% |

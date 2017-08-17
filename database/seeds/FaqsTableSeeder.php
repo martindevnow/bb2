@@ -17,15 +17,14 @@ class FaqsTableSeeder extends Seeder
         /**
          * FAQ Categories
          */
+        $meat = \Martin\Core\FaqCategory::create([
+            'code'  => 'meat',
+            'label' => 'Meat',
+        ]);
 
         $barf = \Martin\Core\FaqCategory::create([
             'code'  => 'barf',
             'label' => 'B.A.R.F.',
-        ]);
-
-        $meat = \Martin\Core\FaqCategory::create([
-            'code'  => 'meat',
-            'label' => 'Meat',
         ]);
 
         $trans = \Martin\Core\FaqCategory::create([
@@ -58,12 +57,24 @@ class FaqsTableSeeder extends Seeder
         $barf->faqs()->create([
             'code'  => 'barf-what-is-it',
             'question'  => 'What is B.A.R.F.?',
-            'answer'    => 'BARF stands for Biologically Approved Raw Food.<br>',
+            'answer'    => 'B.A.R.F. stands for <b>B</b>iologically <b>A</b>pproved <b>R</b>aw <b>F</b>ood.<br>
+It is a diet that mimics the diet of wild canine. Dogs are not meant to eat corn, wheat or soy. And the meat "by-products" that are often found in 
+\'off-the-shelf\' pet food brands just don\'t provide the nutrients that dogs need. And what\'s worse is these addatives and synthetic preservatives are
+often the source of many of our furry friends\' allergies.
+',
         ]);
         $barf->faqs()->create([
             'code'  => 'barf-is-it-you',
             'question'  => 'Did you come up with B.A.R.F.?',
-            'answer'    => 'No. BARF is not unique to BARFBento. However, we have been the first to bring the knowledge of this nutritional diet for dogs to consumers in the GTA.<br>',
+            'answer'    => 'No. B.A.R.F. is bigger than we are. It\'s what we\'ve modeled ourselves after. However, we have been the first to bring the knowledge of this nutritional diet for dogs to consumers in the GTA.
+What we wanted to do was provide access to a nutritional and convenient meal plan for our friends and family to give them more time to spend with their dogs. This means less time worrying about
+what to feed them, less time portioning out their meat, less time at the vet, and more years on your dog\'s life.
+<br>',
+        ]);
+        $barf->faqs()->create([
+            'code'  => 'barf-what-superfood',
+            'question'  => 'What superfoods and suppliments do you add?',
+            'answer'    => '...',
         ]);
 
 
@@ -71,14 +82,10 @@ class FaqsTableSeeder extends Seeder
          * Meat
          */
         $meat->faqs()->create([
-            'code'  => 'meat-where-sourced',
-            'question'  => 'Where is your meat sourced from?',
-            'answer'    => 'Our meat is sourced from happy places with great animals that live free and eat only the good stuff!'
-        ]);
-        $meat->faqs()->create([
             'code'  => 'meat-raising',
             'question'  => 'Where is your meat sourced from?',
-            'answer'    => 'All of the livestock used for B.A.R.F.Bento meals are raised without the use of anti-biotics or hormones to ensure our pets are only eating what nature intended.'
+            'answer'    => 'All of the livestock used for B.A.R.F.Bento meals are raised without the use of anti-biotics or 
+            hormones to ensure our pets are only eating what nature intended. As such, our meals are packed with frozen meat to order to offer meat that is free of preservatives.'
         ]);
         $meat->faqs()->create([
             'code'  => 'meat-enough-food',
@@ -90,7 +97,7 @@ class FaqsTableSeeder extends Seeder
         ]);
         $meat->faqs()->create([
             'code'  => 'meat-not-eating-dinner',
-            'question'  => 'Help! My dog didn\' eat his dinner! What do I do??',
+            'question'  => 'Help! My dog didn\'t eat his dinner! What do I do??',
             'answer'    => 'First, relax. There are many reasons why a dog might not eat their meal. 
             In fact, as a part of the B.A.R.F. diet, it is not uncommon to fast your dog from time to time. It could simply be that the dog is not hungy at that point in time. We advise our customers to 
             give the dog time to eat and when they no longer seem interested in the meal, take it away and refigerate it. At the time for the next meal, bring it back out and offer it to your dog again.
@@ -101,7 +108,18 @@ class FaqsTableSeeder extends Seeder
             If your dog still refuses to eat a particular meal, take note of what was in the meal based on the stickers on the packaging. 
             If the same meal is a repeat offender (meaning your dog repeatedly refuses this meal) then let us know about it! 
             After consulting with us, we can make adjustments to the meal plan for your pet to better cater to their likes and dislikes for a minimal surcharge.
-            .'
+            '
+        ]);
+        $meat->faqs()->create([
+            'code'  => 'meat-eating-bones',
+            'question'  => 'Are bones safe to eat?',
+            'answer'    => 'Simply put: <br>"<b>Raw:</b> Fine. Just be careful with small bones like those found in pork chops from the supermarket. 
+Raw chicken bones are perfectly fine as well.
+<br><b>Cooked:</b> Not safe! Cooked bones will <em>splinter</em>, not <em>break</em> like raw bones do. When a cooked bone splinters, 
+it can easily scratch your dog\'s throat or lead to choking.
+<br>
+It\'s is always best to supervise dogs when he\'s eating bones.
+            '
         ]);
 
 

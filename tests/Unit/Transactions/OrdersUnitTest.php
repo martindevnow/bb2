@@ -129,9 +129,33 @@ class OrdersUnitTest extends TestCase
 
     /** @test */
     public function marking_an_order_as_packed_affects_the_inventory() {
+        /** @var Order $order */
         $order = $this->createOrderForBasicPlan();
-
         $order->markAsPacked();
+
+        $this->assertDatabaseHas('orders', [
+            'id'        => $order->id,
+            'packed'    => 1,
+        ]);
+
+        foreach($order->mealCounts() as $meal) {
+            foreach($meal->meats as $meat) {
+                $this->assertDatabaseHas('inventories', [
+                    'changeable_id'         => $order->id,
+                    'changeable_type'       => get_class($order),
+                    'inventoryable_id'      => $meat->id,
+                    'inventoryable_type'    => get_class($meat),
+                    'change'    => -700 // this is LBS * 100
+                ]);
+            }
+            $this->assertDatabaseHas('inventories', [
+                'changeable_id'         => $order->id,
+                'changeable_type'       => get_class($order),
+                'inventoryable_id'      => $meal->id,
+                'inventoryable_type'    => get_class($meal),
+                'change'    => 1400 // this is 14 meals * 100
+            ]);
+        }
     }
 
     /**
