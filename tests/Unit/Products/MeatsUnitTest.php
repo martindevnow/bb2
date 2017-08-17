@@ -5,6 +5,7 @@ namespace Tests\Unit\Products;
 use Illuminate\Support\Facades\DB;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
+use Martin\Transactions\Order;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -77,5 +78,18 @@ class MeatsUnitTest extends TestCase
         $meat[0]->meals()->attach($meal[1]);
         $meat[0] = $meat[0]->fresh(['meals']);
         $this->assertCount(2, $meat[0]->meals);
+    }
+
+    /** @test */
+    public function a_meat_can_see_the_change_history_in_inventories() {
+        /** @var Order $order */
+        $order = $this->createOrderForBasicPlan();
+        $order->markAsPacked();
+
+        foreach($order->plan->package->meals as $meal) {
+            foreach($meal->meats as $meat) {
+                $this->assertCount(1, $meat->inventories);
+            }
+        }
     }
 }

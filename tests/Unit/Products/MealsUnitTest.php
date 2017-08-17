@@ -5,6 +5,7 @@ namespace Tests\Unit\Products;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Products\Topping;
+use Martin\Transactions\Order;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -217,6 +218,7 @@ class MealsUnitTest extends TestCase
 
     /** @test */
     public function a_meal_can_output_its_toppings_as_a_string() {
+        /** @var Meal $meal */
         $meal = factory(Meal::class)->create();
         $toppings = factory(Topping::class, 3)->create();
         $meal->addTopping($toppings[0]);
@@ -228,6 +230,7 @@ class MealsUnitTest extends TestCase
 
     /** @test */
     public function a_meal_can_remove_toppings() {
+        /** @var Meal $meal */
         $meal = factory(Meal::class)->create();
         $toppings = factory(Topping::class, 3)->create();
         $meal->addTopping($toppings[0]);
@@ -241,7 +244,16 @@ class MealsUnitTest extends TestCase
 
         $meal = $meal->fresh(['toppings']);
         $this->assertCount(0, $meal->toppings);
+    }
 
+    /** @test */
+    public function a_meal_can_see_the_change_history_in_inventories() {
+        /** @var Order $order */
+        $order = $this->createOrderForBasicPlan();
+        $order->markAsPacked();
 
+        foreach($order->plan->package->meals as $meal) {
+            $this->assertCount(1, $meal->inventories);
+        }
     }
 }

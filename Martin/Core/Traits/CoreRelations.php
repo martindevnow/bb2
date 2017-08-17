@@ -1,11 +1,10 @@
 <?php
 
-namespace Martin\Core;
+namespace Martin\Core\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Martin\Mail\ReceivedEmail;
 
-class CoreModel extends Model {
+trait CoreRelations {
 
     /**
      * A CoreModel may have many notes associated

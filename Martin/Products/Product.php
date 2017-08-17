@@ -4,11 +4,12 @@ namespace Martin\Products;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Martin\Core\CoreModel;
+use Martin\Core\Traits\CoreRelations;
 
-class Product extends CoreModel
+class Product extends Model
 {
     use SoftDeletes;
+    use CoreRelations;
 
     protected $fillable = [
         'name',

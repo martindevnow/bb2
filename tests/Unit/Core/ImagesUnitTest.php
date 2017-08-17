@@ -59,6 +59,25 @@ class ImagesUnitTest extends TestCase
     }
 
     /** @test */
+    public function an_image_belongs_to_a_user() {
+        $this->loginAsAdmin();
+        $order = factory(Order::class)->create();
+
+        $this->assertCount(0, $order->images);
+
+        $imageData = factory(Image::class)->make();
+        $imageData['uploader_id']  = $this->user->id;
+        $order->images()->save($imageData);
+
+        $order = $order->fresh(['images.uploader']);
+        $image = $order->images->first();
+
+        $uploader = $image->uploader;
+        $this->assertTrue($uploader instanceof User);
+        $this->assertEquals($this->user->id, $uploader->id);
+    }
+
+    /** @test */
     public function an_image_knows_where_it_is_stored() {
         $this->loginAsAdmin();
         $order = factory(Order::class)->create();

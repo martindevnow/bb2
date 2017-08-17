@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
-use Martin\Core\CoreModel;
+use Martin\Core\Traits\CoreRelations;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 
-class Order extends CoreModel
+class Order extends Model
 {
     use SoftDeletes;
+    use CoreRelations;
 
     protected $fillable = [
         'plan_id',
@@ -95,22 +96,7 @@ class Order extends CoreModel
      * @return mixed
      */
     public function mealCounts(Meal $meal = null) {
-
-        // TODO: Reactor this.. this should be on the Plan model... not here
-        $plan = $this->plan;
-        $grouped =  $this->plan->package->meals->groupBy('id')
-            ->map(function($group, $key) use ($plan) {
-                $item = $group->first();
-                $item->count = $group->count() * $plan->weeks_at_a_time;
-                return $item;
-            });
-
-        if (! $meal)
-            return $grouped;
-
-        return $grouped->where('label', $meal->label)
-            ->first()
-            ->count;
+        return $this->plan->mealCounts($meal);
     }
 
     /**
@@ -127,6 +113,18 @@ class Order extends CoreModel
         $this->increaseMealInventory();
 
         $this->packed = true;
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function markAsPicked() {
+        $this->reduceMealInventory();
+
+        $this->picked = true;
         $this->save();
 
         return $this;
@@ -165,7 +163,24 @@ class Order extends CoreModel
             $this->inventoryChange()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
+                'size'      => $this->plan->pet->mealSize(),
                 'change'    => $meal->count,
+            ]);
+        }
+    }
+
+    /**
+     * TODO: Make it public and simply reference the plan.. these methods should be on Plan
+     */
+    private function reduceMealInventory() {
+        $meals = $this->mealCounts();
+
+        foreach($meals as $meal) {
+            $this->inventoryChange()->create([
+                'inventoryable_id'  => $meal->id,
+                'inventoryable_type'=> get_class($meal),
+                'size'      => $this->plan->pet->mealSize(),
+                'change'    => -1 * $meal->count,
             ]);
         }
     }

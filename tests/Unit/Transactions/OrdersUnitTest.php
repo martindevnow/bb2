@@ -145,7 +145,8 @@ class OrdersUnitTest extends TestCase
                     'changeable_type'       => get_class($order),
                     'inventoryable_id'      => $meat->id,
                     'inventoryable_type'    => get_class($meat),
-                    'change'    => -700 // this is LBS * 100
+                    'change'                => -700,     // this is LBS * 100
+                    'size'                  => null
                 ]);
             }
             $this->assertDatabaseHas('inventories', [
@@ -153,7 +154,31 @@ class OrdersUnitTest extends TestCase
                 'changeable_type'       => get_class($order),
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
-                'change'    => 1400 // this is 14 meals * 100
+                'change'                => 1400,         // this is 14 meals * 100
+                'size'                  => $order->plan->pet->mealSize(),
+            ]);
+        }
+    }
+
+    /** @test */
+    public function marking_an_order_as_picked_affects_the_inventory() {
+        /** @var Order $order */
+        $order = $this->createOrderForBasicPlan();
+        $order->markAsPicked();
+
+        $this->assertDatabaseHas('orders', [
+            'id'        => $order->id,
+            'picked'    => 1,
+        ]);
+
+        foreach($order->mealCounts() as $meal) {
+            $this->assertDatabaseHas('inventories', [
+                'changeable_id'         => $order->id,
+                'changeable_type'       => get_class($order),
+                'inventoryable_id'      => $meal->id,
+                'inventoryable_type'    => get_class($meal),
+                'change'                => -1400,         // this is 14 meals * 100
+                'size'                  => $order->plan->pet->mealSize(),
             ]);
         }
     }

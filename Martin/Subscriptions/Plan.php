@@ -11,6 +11,7 @@ use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
+use Martin\Products\Meal;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -250,6 +251,27 @@ class Plan extends Model
         return $this->getLatestOrder()
             ->created_at
             ->addDays(7 * $this->weeks_at_a_time);
+    }
+
+    /**
+     * @param Meal|null $meal
+     * @return mixed
+     */
+    public function mealCounts(Meal $meal = null) {
+        $weeks_at_a_time = $this->weeks_at_a_time;
+        $grouped =  $this->package->meals->groupBy('id')
+            ->map(function($group, $key) use ($weeks_at_a_time) {
+                $item = $group->first();
+                $item->count = $group->count() * $weeks_at_a_time;
+                return $item;
+            });
+
+        if (! $meal)
+            return $grouped;
+
+        return $grouped->where('label', $meal->label)
+            ->first()
+            ->count;
     }
 
     /**
