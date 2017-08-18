@@ -21,6 +21,9 @@ class CreatePackagesTable extends Migration
             $table->boolean('active')->default(1);
             $table->boolean('public')->default(1);
 
+            $table->boolean('customization')->default(false);
+            $table->tinyInteger('level');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -27,6 +27,8 @@
                                 <fieldset>
                                     <h2 class="section-title">Fill in all fields</h2>
                                     Coming soon.
+
+                                    <plan-builder></plan-builder>
                                 </fieldset>
                             </form>
                         </section>

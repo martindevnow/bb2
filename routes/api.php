@@ -40,3 +40,12 @@ Route::get('meats', function() {
 Route::get('meals', function() {
     return \Martin\Products\Meal::all();
 });
+
+
+Route::get('packages', function() {
+    return \Martin\Subscriptions\Package::all()->map(function($pkg, $index) {
+        /** @var \Martin\Subscriptions\Package $pkg */
+        $pkg->costPerLb = round($pkg->costPerLb() * 1.2, 2);
+        return $pkg;
+    });
+});

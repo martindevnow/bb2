@@ -93,4 +93,27 @@ class PermissionsUnitTest extends TestCase
 
         $this->assertCount(2, $user->permissions());
     }
+
+    /** @test */
+    public function permissions_can_be_queried_on_a_user_by_model_and_code_and_collection() {
+        $permission[] = factory(Permission::class)->create(['code'=> 'post']);
+        $permission[] = factory(Permission::class)->create(['code'=> 'delete']);
+
+        /** @var Role $role */
+        $role = factory(Role::class)->create();
+
+        $role->givePermissionTo($permission[0]);
+
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+
+        $user = $user->fresh(['roles']);
+        $this->assertTrue($user->hasPermission($permission[0]));
+        $this->assertFalse($user->hasPermission('delete'));
+        $this->assertFalse($user->hasPermission(Permission::all()));
+        $this->assertFalse($user->hasPermission(true));
+        $this->assertCount(1, $user->permissions());
+    }
 }

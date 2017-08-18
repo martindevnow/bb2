@@ -21,6 +21,14 @@ $.ajaxSetup({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
+
+
+
+
+
+
+
 Vue.component(
     'admin-meats-navigator',
     require('./components/Admin/Meats/Navigator.vue')

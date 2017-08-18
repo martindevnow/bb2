@@ -95,5 +95,6 @@
 <script src="/material/js/plugins.min.js"></script>
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>

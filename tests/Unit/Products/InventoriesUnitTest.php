@@ -37,5 +37,20 @@ class InventoriesUnitTest extends TestCase
         $inventoryData['change'] *= 100;
         $inventoryData['current'] *= 100;
         $this->assertDatabaseHas('inventories', $inventoryData);
+
+        $inventory = $inventory->fresh(['changeable', 'inventoryable']);
+
+        $this->assertEquals(-14, $inventory->change);
+        $this->assertEquals(150, $inventory->current);
+
+        $changeable = $inventory->changeable;
+        $inventoryable = $inventory->inventoryable;
+
+        $this->assertTrue($changeable instanceof Order);
+        $this->assertTrue($inventoryable instanceof Meat);
+
+        $this->assertEquals($order->id, $changeable->id);
+        $this->assertEquals($meat->id, $inventoryable->id);
+
     }
 }
