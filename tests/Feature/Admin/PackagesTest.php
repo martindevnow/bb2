@@ -94,7 +94,10 @@ class PackagesTest extends TestCase
 
         $package = factory(Package::class)->make();
 
-        $this->post('/admin/packages', $package->toArray());  // STORE method
+        $packageData = $package->toArray();
+        $packageData['customization'] = $packageData['customization'] ? 'on' : null;
+
+        $this->post('/admin/packages', $packageData);  // STORE method
         $this->assertDatabaseHas('packages', $package->toArray());
     }
 

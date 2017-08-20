@@ -217,6 +217,8 @@ $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator
     return [
         'code'  => ucwords($faker->word),
         'label'  => $faker->word,
+        'customization' => $faker->randomElement([0,1]),
+        'level' => $faker->randomElement([0,1,2]),
     ];
 });
 

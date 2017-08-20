@@ -34,13 +34,16 @@ class PackagesController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'code'  => 'required|unique:packages',
-            'label' => 'required'
+            'label' => 'required',
+            'level' => 'required|integer',  // TODO: Make sure single digit only... less than 10 levels, lol
         ]);
 
-        $package = Package::create($request->only(['code', 'label']));
+        $requestData = $request->only(['code', 'label', 'level']);
+        $requestData['customization'] = $request->customization == 'on' ? 1 : 0;
+
+        $package = Package::create($requestData);
 
         flash('The package ' . $package->label . ' has been saved.')->success();
-
         return redirect()->back();
     }
 
@@ -53,13 +56,15 @@ class PackagesController extends Controller
         $this->validate($request, [
             'code'  => 'required',
             'label' => 'required',
+            'level' => 'required|integer',  // TODO: Make sure single digit only... less than 10 levels, lol
         ]);
 
-        $package->fill($request->only(['code', 'label']))
+        $requestData = $request->only(['code', 'label', 'level']);
+        $requestData['customization'] = $request->customization == 'on' ? 1 : 0;
+        $package->fill($requestData)
             ->save();
 
         flash('The package ' . $package->label . ' has been updated.')->success();
-
         return redirect('/admin/packages');
     }
 
@@ -67,7 +72,6 @@ class PackagesController extends Controller
         $package->delete();
 
         flash('The package ' . $package->label . ' has been deleted.')->success();
-
         return redirect()->back();
     }
 
@@ -122,7 +126,6 @@ class PackagesController extends Controller
         }
 
         flash('The calendar has been updated as shown below.')->success();
-
         return redirect()->back();
     }
 
