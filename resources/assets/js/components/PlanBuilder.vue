@@ -3,70 +3,104 @@
         <h1>Plan Builder</h1>
 
         <div class="form-group">
-            <div class="input-group">
-                <label for="name">Name:</label>
+            <label for="name"
+                   class="col-md-2 control-label">Name</label>
+            <div class="col-md-10">
                 <input type="text"
                        v-model="name"
-                       name="name"
                        class="form-control"
                        id="name"
+                       name="name"
+                       placeholder="Name"
+                       autocomplete="off"
                        aria-describedby="nameHelp"
-                       placeholder="name"
-                       autocomplete="off">
-
-                    <span class="help-block" v-if="hasError('name')">
-                        <strong>{{ getError('name') }}</strong>
-                    </span>
+                       style="cursor: auto;"
+                >
+                <span class="help-block" v-if="hasError('name')">
+                    <strong>{{ getError('name') }}</strong>
+                </span>
             </div>
-            <small id="nameHelp" class="form-text text-muted">What is your pet's name?</small>
         </div>
 
+
         <div class="form-group">
-            <div class="input-group">
-                <label for="weight">Weight:</label>
+            <label for="weight"
+                   class="col-md-2 control-label">Weight</label>
+            <div class="col-md-10">
                 <input type="text"
                        v-model="weight"
-                       name="weight"
                        class="form-control"
                        id="weight"
+                       name="weight"
+                       placeholder="Weight"
+                       autocomplete="off"
                        aria-describedby="weightHelp"
-                       placeholder=""
-                       autocomplete="off">
-                    <span class="help-block" v-if="hasError('weight')">
-                        <strong>{{ getError('weight') }}</strong>
-                    </span>
+                       style="cursor: auto;"
+                >
+                <span class="help-block" v-if="hasError('weight')">
+                    <strong>{{ getError('weight') }}</strong>
+                </span>
             </div>
-            <small id="weightHelp" class="form-text text-muted">Your pet's weight in pounds</small>
         </div>
 
         <div class="form-group">
-            <div class="input-group">
-                <label for="package">Package:</label>
-                <select v-model="pkg"
-                       name="package"
-                       class="form-control"
-                       id="package"
-                       aria-describedby="packageHelp"
-                       autocomplete="off">
-                    <option v-for="pkg in packages"
-                            :value="pkg"
-                    >
-                        {{ pkg.label }}
-                    </option>
-                </select>
+            <label class="col-md-2 control-label">Package</label>
+            <div class="col-md-10">
+                <div class="col-md-4" v-for="pkg_i in packages">
+                    <button class="btn btn-raised btn-block"
+                            :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
+                            @click="pkg = pkg_i">
+                        {{ pkg_i.label }}
+                    </button>
+
+                </div>
+                <span class="help-block" v-if="hasError('weight')">
+                    <strong>{{ getError('weight') }}</strong>
+                </span>
             </div>
-            <small id="packageHelp" class="form-text text-muted">Your pet's package in pounds</small>
         </div>
 
-        Shipping
-        <select v-model="shipping_modifier">
-            <option selected value="0">Monthly</option>
-            <option value="1">Bi-Weekly</option>
-        </select><br />
-        Cost: {{ cost }} <br />
-        <button type="submit" class="btn btn-xl btn-primary">Subscribe</button>
 
-        {{ getSize() ? getSize().base : 'No size...' }}
+        <div class="form-group">
+            <label class="col-md-2 control-label">Shipping</label>
+            <div class="col-md-10">
+                <div class="col-md-3">
+                    <button class="btn btn-raised btn-block"
+                            :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
+                            @click="shipping_modifier = 0">
+                        Monthly
+                    </button>
+                </div>
+                <div class="col-md-3">
+                <button class="btn btn-raised btn-block"
+                            :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
+                            @click="shipping_modifier = 1">
+                        Bi-Weekly
+                    </button>
+
+                </div>
+                <span class="help-block" v-if="hasError('shipping_modifier')">
+                    <strong>{{ getError('shipping_modifier') }}</strong>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <div class="col-md-6">
+                    <button class="btn btn-block btn-success">
+                        $ {{ cost.toFixed(2)}}
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-raised btn-success">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -75,8 +109,10 @@ export default {
     props: [],
     data() {
         return {
+            selectedClass: 'btn-primary',
+            defaultClass: 'btn-default',
             packages: [],
-            pkg: {},
+            pkg: {id: 1},
             weight: null,
             shipping_modifier: 0,
             name: '',
@@ -137,7 +173,9 @@ export default {
                 return null;
             }
             return size[0];
-
+        },
+        isSelected(pkg) {
+            return this.pkg && this.pkg.id === pkg.id;
         }
 
     },

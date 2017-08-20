@@ -34,90 +34,38 @@
                                 <i class="zmdi zmdi-help"></i> FAQ</a>
                         </li>
                         <li>
-                            <a href="/login">
-                                <i class="zmdi zmdi-lock"></i> Login</a>
+                            <a href="/shipping">
+                                <i class="zmdi zmdi-truck"></i> Shipping</a>
                         </li>
+                        @if (Auth::guest())
+                        <li>
+                            <a href="/login">
+                                <i class="zmdi zmdi-lock color-danger"></i> Login</a>
+                        </li>
+                        @endif
+                        @if (Auth::user() && Auth::user()->isAdmin())
+                        <li>
+                            <a href="/admin">
+                                <i class="zmdi zmdi-account-circle color-danger"></i> Admin</a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
-                <div class="ms-footbar-block">
-                    <h3 class="ms-footbar-title">Subscribe</h3>
-                    <p class="">Stay up to date with the latest offerings from BARFBento by filling in your email below and joining our mailing list.
-                        You can opt out at anytime.</p>
-                    <form>
-                        <div class="form-group label-floating mt-2 mb-1">
-                            <div class="input-group ms-input-subscribe">
-                                <label class="control-label" for="ms-subscribe">
-                                    <i class="zmdi zmdi-email"></i> Email Address</label>
-                                <input type="email" id="ms-subscribe" class="form-control"> </div>
-                        </div>
-                        <button class="ms-subscribre-btn" type="button">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-            {{--<div class="col-md-5 col-sm-7 ms-footer-col ms-footer-alt-color">--}}
                 {{--<div class="ms-footbar-block">--}}
-                    {{--<h3 class="ms-footbar-title text-center mb-2">Last Articles</h3>--}}
-                    {{--<div class="ms-footer-media">--}}
-                        {{--<div class="media">--}}
-                            {{--<div class="media-left media-middle">--}}
-                                {{--<a href="javascript:void(0)">--}}
-                                    {{--<img class="media-object media-object-circle" src="/material/img/demo/p75.jpg" alt="..."> </a>--}}
-                            {{--</div>--}}
-                            {{--<div class="media-body">--}}
-                                {{--<h4 class="media-heading">--}}
-                                    {{--<a href="javascript:void(0)">Lorem ipsum dolor sit expedita cumque amet consectetur adipisicing repellat</a>--}}
-                                {{--</h4>--}}
-                                {{--<div class="media-footer">--}}
-                        {{--<span>--}}
-                          {{--<i class="zmdi zmdi-time color-info-light"></i> August 18, 2016</span>--}}
-                                    {{--<span>--}}
-                          {{--<i class="zmdi zmdi-folder-outline color-warning-light"></i>--}}
-                          {{--<a href="javascript:void(0)">Design</a>--}}
-                        {{--</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
+                    {{--<h3 class="ms-footbar-title">Subscribe</h3>--}}
+                    {{--<p class="">Stay up to date with the latest offerings from BARFBento by filling in your email below and joining our mailing list.--}}
+                        {{--You can opt out at anytime.</p>--}}
+                    {{--<form>--}}
+                        {{--<div class="form-group label-floating mt-2 mb-1">--}}
+                            {{--<div class="input-group ms-input-subscribe">--}}
+                                {{--<label class="control-label" for="ms-subscribe">--}}
+                                    {{--<i class="zmdi zmdi-email"></i> Email Address</label>--}}
+                                {{--<input type="email" id="ms-subscribe" class="form-control"> </div>--}}
                         {{--</div>--}}
-                        {{--<div class="media">--}}
-                            {{--<div class="media-left media-middle">--}}
-                                {{--<a href="javascript:void(0)">--}}
-                                    {{--<img class="media-object media-object-circle" src="/material/img/demo/p75.jpg" alt="..."> </a>--}}
-                            {{--</div>--}}
-                            {{--<div class="media-body">--}}
-                                {{--<h4 class="media-heading">--}}
-                                    {{--<a href="javascript:void(0)">Labore ut esse Duis consectetur expedita cumque ullamco ad dolor veniam velit</a>--}}
-                                {{--</h4>--}}
-                                {{--<div class="media-footer">--}}
-                        {{--<span>--}}
-                          {{--<i class="zmdi zmdi-time color-info-light"></i> August 18, 2016</span>--}}
-                                    {{--<span>--}}
-                          {{--<i class="zmdi zmdi-folder-outline color-warning-light"></i>--}}
-                          {{--<a href="javascript:void(0)">News</a>--}}
-                        {{--</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<div class="media">--}}
-                            {{--<div class="media-left media-middle">--}}
-                                {{--<a href="javascript:void(0)">--}}
-                                    {{--<img class="media-object media-object-circle" src="/material/img/demo/p75.jpg" alt="..."> </a>--}}
-                            {{--</div>--}}
-                            {{--<div class="media-body">--}}
-                                {{--<h4 class="media-heading">--}}
-                                    {{--<a href="javascript:void(0)">voluptates deserunt ducimus expedita cumque quaerat molestiae labore</a>--}}
-                                {{--</h4>--}}
-                                {{--<div class="media-footer">--}}
-                        {{--<span>--}}
-                          {{--<i class="zmdi zmdi-time color-info-light"></i> August 18, 2016</span>--}}
-                                    {{--<span>--}}
-                          {{--<i class="zmdi zmdi-folder-outline color-warning-light"></i>--}}
-                          {{--<a href="javascript:void(0)">Productivity</a>--}}
-                        {{--</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
+                        {{--<button class="ms-subscribre-btn" type="button">Subscribe</button>--}}
+                    {{--</form>--}}
                 {{--</div>--}}
-            {{--</div>--}}
+            </div>
             <div class="col-md-4 col-sm-4 ms-footer-col ms-footer-text-right ms-footer-alt-color">
                 <div class="ms-footbar-block">
                     <div class="ms-footbar-title">
@@ -148,19 +96,9 @@
                         <a href="https://twitter.com/barfbento" class="btn-circle btn-twitter">
                             <i class="zmdi zmdi-twitter"></i>
                         </a>
-                        {{--<a href="javascript:void(0)" class="btn-circle btn-youtube">--}}
-                            {{--<i class="zmdi zmdi-youtube"></i>--}}
-                        {{--</a>--}}
-                        {{--<br>--}}
-                        {{--<a href="javascript:void(0)" class="btn-circle btn-google">--}}
-                            {{--<i class="zmdi zmdi-google"></i>--}}
-                        {{--</a>--}}
                         <a href="https://www.instagram.com/b.a.r.f.bento/" class="btn-circle btn-instagram">
                             <i class="zmdi zmdi-instagram"></i>
                         </a>
-                        {{--<a href="javascript:void(0)" class="btn-circle btn-github">--}}
-                            {{--<i class="zmdi zmdi-github"></i>--}}
-                        {{--</a>--}}
                     </div>
                 </div>
             </div>

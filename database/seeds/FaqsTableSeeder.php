@@ -74,7 +74,10 @@ what to feed them, less time portioning out their meat, less time at the vet, an
         $barf->faqs()->create([
             'code'  => 'barf-what-superfood',
             'question'  => 'What superfoods and suppliments do you add?',
-            'answer'    => '...',
+            'answer'    => 'There are almost too many to list, but they include: <ul>
+<li></li>
+
+</ul>',
         ]);
 
 

@@ -37,13 +37,6 @@
                                 <h4 class="text-normal text-center">{{ $treat->name }} ({{ $treat->size }})</h4>
                                 <p>{{ $treat->description }}</p>
                                 <div class="mt-2">
-                      {{--<span class="mr-2">--}}
-                        {{--<i class="zmdi zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-star"></i>--}}
-                      {{--</span>--}}
                                     <span class="ms-tag ms-tag-success ms-xl">$ {{ $treat->price }}</span>
                                 </div>
                                 {{--<a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block btn-raised mt-2 no-mb">--}}

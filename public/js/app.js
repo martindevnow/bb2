@@ -2419,13 +2419,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
     data: function data() {
         return {
+            selectedClass: 'btn-primary',
+            defaultClass: 'btn-default',
             packages: [],
-            pkg: {},
+            pkg: { id: 1 },
             weight: null,
             shipping_modifier: 0,
             name: '',
@@ -2479,6 +2515,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return null;
             }
             return size[0];
+        },
+        isSelected: function isSelected(pkg) {
+            return this.pkg && this.pkg.id === pkg.id;
         }
     },
     mounted: function mounted() {
@@ -2639,7 +2678,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 40 */
@@ -19758,7 +19797,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meals/SelectBox.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meals\\SelectBox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SelectBox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19796,7 +19835,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meats/Navigator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meats\\Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19830,7 +19869,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19868,7 +19907,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/PlanBuilder.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\PlanBuilder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlanBuilder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19906,7 +19945,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Calculator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Calculator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Calculator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20097,13 +20136,14 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('h1', [_vm._v("Plan Builder")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "input-group"
   }, [_c('label', {
+    staticClass: "col-md-2 control-label",
     attrs: {
       "for": "name"
     }
-  }, [_vm._v("Name:")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -20111,13 +20151,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "name"
     }],
     staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
     attrs: {
       "type": "text",
-      "name": "name",
       "id": "name",
-      "aria-describedby": "nameHelp",
-      "placeholder": "name",
-      "autocomplete": "off"
+      "name": "name",
+      "placeholder": "Name",
+      "autocomplete": "off",
+      "aria-describedby": "nameHelp"
     },
     domProps: {
       "value": (_vm.name)
@@ -20130,20 +20173,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), (_vm.hasError('name')) ? _c('span', {
     staticClass: "help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('name')))])]) : _vm._e()]), _vm._v(" "), _c('small', {
-    staticClass: "form-text text-muted",
-    attrs: {
-      "id": "nameHelp"
-    }
-  }, [_vm._v("What is your pet's name?")])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('name')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "input-group"
   }, [_c('label', {
+    staticClass: "col-md-2 control-label",
     attrs: {
       "for": "weight"
     }
-  }, [_vm._v("Weight:")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Weight")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -20151,13 +20190,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "weight"
     }],
     staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
     attrs: {
       "type": "text",
-      "name": "weight",
       "id": "weight",
-      "aria-describedby": "weightHelp",
-      "placeholder": "",
-      "autocomplete": "off"
+      "name": "weight",
+      "placeholder": "Weight",
+      "autocomplete": "off",
+      "aria-describedby": "weightHelp"
     },
     domProps: {
       "value": (_vm.weight)
@@ -20170,89 +20212,72 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), (_vm.hasError('weight')) ? _c('span', {
     staticClass: "help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()]), _vm._v(" "), _c('small', {
-    staticClass: "form-text text-muted",
-    attrs: {
-      "id": "weightHelp"
-    }
-  }, [_vm._v("Your pet's weight in pounds")])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "input-group"
   }, [_c('label', {
-    attrs: {
-      "for": "package"
-    }
-  }, [_vm._v("Package:")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.pkg),
-      expression: "pkg"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "package",
-      "id": "package",
-      "aria-describedby": "packageHelp",
-      "autocomplete": "off"
-    },
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Package")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_vm._l((_vm.packages), function(pkg_i) {
+    return _c('div', {
+      staticClass: "col-md-4"
+    }, [_c('button', {
+      staticClass: "btn btn-raised btn-block",
+      class: [_vm.isSelected(pkg_i) ? _vm.selectedClass : _vm.defaultClass],
+      on: {
+        "click": function($event) {
+          _vm.pkg = pkg_i
+        }
+      }
+    }, [_vm._v("\n                    " + _vm._s(pkg_i.label) + "\n                ")])])
+  }), _vm._v(" "), (_vm.hasError('weight')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Shipping")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-md-3"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-block",
+    class: [_vm.shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
     on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.pkg = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      "click": function($event) {
+        _vm.shipping_modifier = 0
       }
     }
-  }, _vm._l((_vm.packages), function(pkg) {
-    return _c('option', {
-      domProps: {
-        "value": pkg
-      }
-    }, [_vm._v("\n                    " + _vm._s(pkg.label) + "\n                ")])
-  }))]), _vm._v(" "), _c('small', {
-    staticClass: "form-text text-muted",
-    attrs: {
-      "id": "packageHelp"
-    }
-  }, [_vm._v("Your pet's package in pounds")])]), _vm._v("\n\n    Shipping\n    "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.shipping_modifier),
-      expression: "shipping_modifier"
-    }],
+  }, [_vm._v("\n                    Monthly\n                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-block",
+    class: [_vm.shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
     on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.shipping_modifier = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      "click": function($event) {
+        _vm.shipping_modifier = 1
       }
     }
-  }, [_c('option', {
-    attrs: {
-      "selected": "",
-      "value": "0"
-    }
-  }, [_vm._v("Monthly")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "1"
-    }
-  }, [_vm._v("Bi-Weekly")])]), _c('br'), _vm._v("\n    Cost: " + _vm._s(_vm.cost) + " "), _c('br'), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-xl btn-primary",
-    attrs: {
-      "type": "submit"
-    }
-  }, [_vm._v("Subscribe")]), _vm._v("\n\n    " + _vm._s(_vm.getSize() ? _vm.getSize().base : 'No size...') + "\n")])
-},staticRenderFns: []}
+  }, [_vm._v("\n                    Bi-Weekly\n                ")])]), _vm._v(" "), (_vm.hasError('shipping_modifier')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('shipping_modifier')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-md-6"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-success"
+  }, [_vm._v("\n                    $ " + _vm._s(_vm.cost.toFixed(2)) + "\n                ")])]), _vm._v(" "), _vm._m(0)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-success"
+  }, [_vm._v("\n                    Subscribe\n                ")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

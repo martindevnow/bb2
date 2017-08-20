@@ -10,7 +10,7 @@
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
                             <div class="item active">
-                                <img src="/barfbento/img/treats/{{ $treat->sku }}.jpg" alt="..."> </div>
+                                <img src="/barfbento/img/treats/square/{{ $treat->sku }}.jpg" alt="..."> </div>
                             <div class="item">
                                 <img src="/material/img/demo/products/2.jpg" alt="..."> </div>
                             <div class="item">
@@ -44,11 +44,6 @@
                             <div class="row">
                                 <div class="col-sm-6">
                       <span class="mr-2">
-                        {{--<i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>--}}
-                        {{--<i class="zmdi zmdi-hc-lg zmdi-star"></i>--}}
                       </span>
                                 </div>
                                 <div class="col-sm-6 text-center">
