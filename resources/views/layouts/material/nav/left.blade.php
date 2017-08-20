@@ -1,12 +1,29 @@
 <div class="ms-slidebar sb-slidebar sb-left sb-style-overlay" id="ms-slidebar">
     <div class="sb-slidebar-container">
         <header class="ms-slidebar-header">
+            @if (Auth::guest())
             <div class="ms-slidebar-login">
                 <a href="/login" class="withripple">
                     <i class="zmdi zmdi-account"></i> Login</a>
-                <a href="/register" class="withripple">
-                    <i class="zmdi zmdi-account-add"></i> Register</a>
+                {{--<a href="/register" class="withripple">--}}
+                    {{--<i class="zmdi zmdi-account-add"></i> Register</a>--}}
             </div>
+            @else
+            <div class="ms-slidebar-login">
+                <a href="{{ route('logout') }}"
+                   class="withripple"
+                   onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    <i class="zmdi zmdi-account"></i>
+                    Logout
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </div>
+            @endif
+
             <div class="ms-slidebar-title">
                 <form class="search-form">
                     <input id="search-box-slidebar" type="text" class="search-input" placeholder="Search..." name="q" />
@@ -51,6 +68,12 @@
                 <a class="link" href="/faq">
                     <i class="fa fa-question"></i> FAQ</a>
             </li>
+            @if (Auth::user() && Auth::user()->isAdmin())
+            <li>
+                <a class="link" href="/admin">
+                    <i class="fa fa-user-circle"></i> Admin</a>
+            </li>
+            @endif
 
         </ul>
         <div class="ms-slidebar-social ms-slidebar-block">

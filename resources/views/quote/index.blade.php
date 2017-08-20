@@ -17,18 +17,21 @@
                     <div class="ms-paper-content">
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
-                            <div class="alert alert-info">
-                                <p>
-                                    <i class="zmdi zmdi-info-outline"></i> Simply fill out the fields below to get your
-                                    <strong>quote</strong> to being the B.A.R.F. diet</p>
-                            </div>
+                            {{--<div class="alert alert-info">--}}
+                                {{--<p>--}}
+                                    {{--<i class="zmdi zmdi-info-outline"></i> Simply fill out the fields below to get your--}}
+                                    {{--<strong>quote</strong> to being the B.A.R.F. diet</p>--}}
+                            {{--</div>--}}
+                            {{--<plan-builder></plan-builder>--}}
 
-                            <form class="form-horizontal">
-                                <fieldset>
-                                    <h2 class="section-title">Fill in all fields</h2>
-                                    Coming soon.
-                                </fieldset>
-                            </form>
+                            <h1>We are still working on it ... </h1>
+                            <p>Our goal is to bring the BARF diet to as many people as we can.</p>
+                            <p>To accomplish this, we need time to ensure our online systems are up to the highest standard of quality.
+                                As such, we are not able to offer online ordering at this time.</p>
+                            <p>If you wish to <b>signup</b> with us, please <a href="/contact">contact us</a> by sending us an email
+                            or giving us a call!</p>
+                            <p>We look forward to hearing from you!</p>
+                            <p>- Vivian Wong</p>
                         </section>
 
                     </div>

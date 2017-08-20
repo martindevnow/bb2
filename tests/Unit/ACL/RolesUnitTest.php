@@ -179,4 +179,21 @@ class RolesUnitTest extends TestCase
         $this->assertFalse($user->hasRole(true));
     }
 
+    /** @test */
+    public function roles_can_be_queried_on_a_user_by_model_and_code_and_a_collection_to_fail() {
+        /** @var Role $role */
+        $role = factory(Role::class)->create(['code'=> 'admin']);
+        $role2 = factory(Role::class)->create(['code'=> 'admin2']);
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole($role);
+
+        $user = $user->fresh(['roles']);
+        $this->assertTrue($user->hasRole($role));
+        $this->assertFalse($user->hasRole($role2));
+        $this->assertTrue($user->hasRole(Role::all()));
+        $this->assertFalse($user->hasRole(true));
+    }
+
 }

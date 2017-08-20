@@ -19,6 +19,8 @@ class Package extends Model
         'code',
         'public',
         'active',
+        'customization',
+        'level',
     ];
 
     /**

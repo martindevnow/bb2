@@ -14,8 +14,7 @@ trait HasRoles {
      *
      * @return bool
      */
-    public function isAdmin()
-    {
+    public function isAdmin() {
         return !! $this->hasRole('admin');
     }
 
@@ -24,8 +23,7 @@ trait HasRoles {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
-    {
+    public function roles() {
         return $this->belongsToMany(Role::class);
     }
 
@@ -35,8 +33,7 @@ trait HasRoles {
      * @param  string $role
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function assignRole($role)
-    {
+    public function assignRole($role) {
         if (is_string($role))
             return $this->roles()->save(
                 Role::whereCode($role)->firstOrFail()
@@ -51,8 +48,7 @@ trait HasRoles {
      * @param  string $role
      * @return mixed
      */
-    public function removeRole($role)
-    {
+    public function removeRole($role) {
         if (is_string($role))
             return $this->roles()->detach(
                 Role::whereCode($role)->firstOrFail()->id
@@ -67,20 +63,20 @@ trait HasRoles {
      * @param  mixed $role
      * @return boolean
      */
-    public function hasRole($role)
-    {
+    public function hasRole($role) {
         if (is_string($role))
             return !! $this->roles->contains('code', $role);
 
         if ($role instanceof Role)
             return !! $this->roles()->whereCode($role->code)->count();
 
-        if ($role instanceof Collection)
-        {
-            foreach ($role as $r)
-                return $this->hasRole($r);
+        if ($role instanceof Collection) {
+            $hasARole = false;
 
-            return false;
+            foreach ($role as $r)
+                $hasARole = $hasARole || $this->hasRole($r);
+
+            return $hasARole;
         }
 
         return false;
@@ -92,8 +88,7 @@ trait HasRoles {
      * @param  Permission $permission
      * @return boolean
      */
-    public function hasPermission($permission)
-    {
+    public function hasPermission($permission) {
         if (is_string($permission)) {
             return $this->hasRole(Permission::whereCode($permission)->firstOrFail()->roles);
         }
@@ -103,9 +98,12 @@ trait HasRoles {
         }
 
         if ($permission instanceof Collection) {
+            $hasAllPermissions = true;
+
             foreach ($permission as $p)
-                return $this->hasPermission($p);
-            return false;
+                $hasAllPermissions = $hasAllPermissions && $this->hasPermission($p);
+
+            return $hasAllPermissions;
         }
 
         return false;
