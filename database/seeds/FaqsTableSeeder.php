@@ -75,8 +75,15 @@ what to feed them, less time portioning out their meat, less time at the vet, an
             'code'  => 'barf-what-superfood',
             'question'  => 'What superfoods and suppliments do you add?',
             'answer'    => 'There are almost too many to list, but they include: <ul>
-<li></li>
-
+<li>Bone Dust</li>
+<li>Carrot Chips</li>
+<li>Golji Berries</li>
+<li>Hemp Seed</li>
+<li>Chia Seed</li>
+<li>Shredded Coconut</li>
+<li>Turmeric</li>
+<li>Green Lipped Muscle</li>
+<li>and more..</li>
 </ul>',
         ]);
 
