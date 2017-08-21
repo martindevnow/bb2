@@ -16,10 +16,12 @@ class CreatePurchaseOrderDetailsTable extends Migration
         Schema::create('purchase_order_details', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->integer('purchase_order_id');
+
             $table->integer('purchasable_id');
             $table->string('purchasable_type');
 
-            $table->integer('quantity');
+            $table->integer('quantity');    // this is * 100 in the DB
 
             $table->timestamps();
             $table->softDeletes();

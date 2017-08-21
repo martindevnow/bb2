@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use Illuminate\Support\Facades\DB;
 use Martin\Core\Image;
 use Martin\Vendors\PurchaseOrder;
+use Martin\Vendors\PurchaseOrderDetail;
+use Martin\Vendors\Vendor;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -68,5 +70,26 @@ class PurchaseOrdersUnitTest extends TestCase
         $purchase_order->images()->save(factory(Image::class)->make());
 
         $this->assertCount(1, $purchase_order->images);
+    }
+
+    /** @test */
+    public function a_purchase_order_belongs_to_one_vendor() {
+        $purchaseOrder = factory(PurchaseOrder::class)->create();
+        $vendor = $purchaseOrder->vendor;
+
+        $this->assertTrue($vendor instanceof Vendor);
+    }
+
+    /** @test */
+    public function a_purchase_order_has_many_details_to_it() {
+        $po = factory(PurchaseOrder::class)->create();
+        $details = factory(PurchaseOrderDetail::class, 4)->make();
+
+        foreach ($details as $item) {
+            $po->details()->save($item);
+        }
+
+        $po = $po->fresh(['details']);
+        $this->assertCount(4, $po->details);
     }
 }

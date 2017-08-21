@@ -10,4 +10,16 @@ class Vendor extends Model
 {
     use CoreRelations;
     use SoftDeletes;
+
+    protected $fillable = [
+        'code',
+        'label',
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function purchaseOrder() {
+        return $this->hasMany(PurchaseOrder::class);
+    }
 }

@@ -20,7 +20,6 @@ class PurchaseOrder extends Model
         'received_at',
     ];
 
-
     /**
      * @param $total
      * @return float|int
@@ -41,6 +40,13 @@ class PurchaseOrder extends Model
      */
     public function details() {
         return $this->morphMany(PurchaseOrderDetail::class, 'purchasable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function vendor() {
+        return $this->belongsTo(Vendor::class);
     }
 
 }

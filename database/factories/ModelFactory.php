@@ -15,6 +15,7 @@
 use Carbon\Carbon;
 use Martin\ACL\User;
 use Martin\Customers\Pet;
+use Martin\Products\Meat;
 use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
@@ -319,13 +320,15 @@ $factory->define(\Martin\Vendors\PurchaseOrder::class, function (Faker\Generator
  * PurchaseOrderDetail
  */
 $factory->define(\Martin\Vendors\PurchaseOrderDetail::class, function (Faker\Generator $faker) {
+    $purchasable = $faker->randomElement([
+        factory(Meat::class)->create(),
+    ]);
+
     return [
-        'vendor_id' => factory(Martin\Vendors\Vendor::class)->create()->id,
-        'received' => false,
-        'received_at'=> null,
-        'ordered'  => true,
-        'ordered_at'   => Carbon::now()->subDays(4),
-        'total' => $faker->numberBetween(150,300),
+        'purchase_order_id' => factory(Martin\Vendors\PurchaseOrder::class)->create()->id,
+        'purchasable_type' => get_class($purchasable),
+        'purchasable_id' => $purchasable->id,
+        'quantity' => $faker->numberBetween(15,50),
     ];
 });
 

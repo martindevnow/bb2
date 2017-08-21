@@ -13,6 +13,7 @@ class PurchaseOrderDetail extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'purchase_order_id',
         'purchasable_id',
         'purchasable_type',
         'quantity',
@@ -38,5 +39,12 @@ class PurchaseOrderDetail extends Model
      */
     public function purchasable() {
         return $this->morphTo();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function purchaseOrder() {
+        return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');
     }
 }
