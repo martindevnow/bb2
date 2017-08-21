@@ -46,7 +46,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Package</label>
             <div class="col-md-10">
-                <div class="col-md-4" v-for="pkg_i in packages">
+                <div class="col-sm-4" v-for="pkg_i in packages">
                     <button class="btn btn-raised btn-block"
                             :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
                             @click="pkg = pkg_i">
@@ -64,14 +64,14 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Shipping</label>
             <div class="col-md-10">
-                <div class="col-md-3">
+                <div class="col-sm-3">
                     <button class="btn btn-raised btn-block"
                             :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
                             @click="shipping_modifier = 0">
                         Monthly
                     </button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-sm-3">
                 <button class="btn btn-raised btn-block"
                             :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
                             @click="shipping_modifier = 1">
@@ -101,6 +101,7 @@
                 </div>
             </div>
         </div>
+        {{ roundedWeight() }}
     </div>
 </template>
 
@@ -133,6 +134,7 @@ export default {
                     vm.packages = response.data.filter(function(pkg) {
                         return pkg.customization == 0;
                     });
+                    vm.pkg = vm.packages[0];
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -176,8 +178,13 @@ export default {
         },
         isSelected(pkg) {
             return this.pkg && this.pkg.id === pkg.id;
+        },
+        roundedWeight() {
+            if (! this.weight) {
+                return 0;
+            }
+            return Math.round(this.weight / 5) * 5;
         }
-
     },
     mounted() {
         this.getPackages();
@@ -190,7 +197,7 @@ export default {
             let size = this.getSize();
 
             return size.base
-                + (this.weight - size.min) * size.inc
+                + (this.roundedWeight() - size.min) * size.inc
                 + this.pkg.level * 5
                 + this.pkg.customization * 3
                 + this.shippingCost();

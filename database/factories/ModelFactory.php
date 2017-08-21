@@ -302,6 +302,34 @@ $factory->define(\Martin\Products\Product::class, function (Faker\Generator $fak
 });
 
 /**
+ * PurchaseOrder
+ */
+$factory->define(\Martin\Vendors\PurchaseOrder::class, function (Faker\Generator $faker) {
+    return [
+        'vendor_id' => factory(Martin\Vendors\Vendor::class)->create()->id,
+        'received' => false,
+        'received_at'=> null,
+        'ordered'  => true,
+        'ordered_at'   => Carbon::now()->subDays(4),
+        'total' => $faker->numberBetween(150,300),
+    ];
+});
+
+/**
+ * PurchaseOrderDetail
+ */
+$factory->define(\Martin\Vendors\PurchaseOrderDetail::class, function (Faker\Generator $faker) {
+    return [
+        'vendor_id' => factory(Martin\Vendors\Vendor::class)->create()->id,
+        'received' => false,
+        'received_at'=> null,
+        'ordered'  => true,
+        'ordered_at'   => Carbon::now()->subDays(4),
+        'total' => $faker->numberBetween(150,300),
+    ];
+});
+
+/**
  * Role
  */
 $factory->define(\Martin\ACL\Role::class, function (Faker\Generator $faker) {
@@ -334,6 +362,16 @@ $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+/**
+ * Vendor
+ */
+$factory->define(Martin\Vendors\Vendor::class, function (Faker\Generator $faker) {
+    return [
+        'label' => ucfirst($faker->word),
+        'code' => ($faker->word),
     ];
 });
 
