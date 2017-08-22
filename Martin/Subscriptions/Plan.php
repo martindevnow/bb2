@@ -24,6 +24,11 @@ class Plan extends Model
     use SoftDeletes;
     use CoreRelations;
 
+    /**
+     * Fields which are "mass-assignable"
+     *
+     * @var array
+     */
     protected $fillable = [
         'customer_id',
         'delivery_address_id',
@@ -45,38 +50,14 @@ class Plan extends Model
         'payment_method',
     ];
 
+    /**
+     * Fields which are cast to type of Carbon/Carbon
+     *
+     * @var array
+     */
     protected $dates = [
         'last_delivery_at',
     ];
-
-    /**
-     * Return the internal cost per week for this Pet
-     *
-     * @return mixed
-     */
-    public function costPerWeek() {
-        return $this->package
-            ->costPerWeek($this->pet);
-    }
-
-    /**
-     * Return the Cost as a function of the weight of the Pet for this plan
-     *
-     * @return float|int
-     */
-    public function costPerPoundOfDog() {
-        return $this->weekly_cost / $this->pet_weight;
-    }
-
-    /**
-     * Return the profit earned for this Plan
-     *
-     * @return mixed
-     */
-    public function profit() {
-        return $this->weekly_cost -
-            ($this->totalPackingCost() + $this->costPerWeek());
-    }
 
     /**
      * Scopes
@@ -185,7 +166,6 @@ class Plan extends Model
      * Relationships
      */
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -286,7 +266,7 @@ class Plan extends Model
      */
 
     /**
-     * TOD: Make the deliveryData 'smarter'
+     * TOD: Make the deliveryDate 'smarter'
      *
      * @return Order
      */
@@ -377,6 +357,36 @@ class Plan extends Model
      */
     public function totalPackingCost() {
         return $this->packingCost() + $this->packagingCost();
+    }
+
+
+    /**
+     * Return the internal cost per week for this Pet
+     *
+     * @return mixed
+     */
+    public function costPerWeek() {
+        return $this->package
+            ->costPerWeek($this->pet);
+    }
+
+    /**
+     * Return the Cost as a function of the weight of the Pet for this plan
+     *
+     * @return float|int
+     */
+    public function costPerPoundOfDog() {
+        return $this->weekly_cost / $this->pet_weight;
+    }
+
+    /**
+     * Return the profit earned for this Plan
+     *
+     * @return mixed
+     */
+    public function profit() {
+        return $this->weekly_cost -
+            ($this->totalPackingCost() + $this->costPerWeek());
     }
 
 }
