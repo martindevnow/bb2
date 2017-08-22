@@ -20,6 +20,29 @@ class PurchaseOrderDetail extends Model
     ];
 
     /**
+     * Static constructor.. does NOT persist to DB
+     *
+     * @param $model
+     * @param $quantity
+     * @return Model
+     */
+    public static function byPurchasable($model, $quantity) {
+        return PurchaseOrderDetail::make([
+            'purchasable_type'  => get_class($model),
+            'purchasable_id'    => $model->id,
+            'quantity'          => $quantity,
+        ]);
+    }
+
+    /**
+     * @param $quantity
+     */
+    public function updateQuantity($quantity) {
+        $this->quantity = $quantity;
+        $this->save();
+    }
+
+    /**
      * @param $quantity
      * @return float|int
      */

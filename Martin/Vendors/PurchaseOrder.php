@@ -36,10 +36,34 @@ class PurchaseOrder extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @param Model $model
+     * @param $quantity
+     * @return Model
+     */
+    public function addItem(Model $model, $quantity) {
+        $details = PurchaseOrderDetail::byPurchasable($model, $quantity);
+        return $this->details()->save($details);
+    }
+
+    /**
+     * @param PurchaseOrderDetail $detail
+     * @return bool
+     */
+    public function removeDetail(PurchaseOrderDetail $detail) {
+        if ($detail->purchase_order_id == $this->id) {
+            $detail->delete();
+        }
+
+        // TODO: Throw error here
+        // This detail doesn't belong to this Purchase Order
+        return false;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function details() {
-        return $this->morphMany(PurchaseOrderDetail::class, 'purchasable');
+        return $this->hasMany(PurchaseOrderDetail::class, 'purchase_order_id');
     }
 
     /**

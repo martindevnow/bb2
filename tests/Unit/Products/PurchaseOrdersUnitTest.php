@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Illuminate\Support\Facades\DB;
 use Martin\Core\Image;
+use Martin\Products\Meat;
 use Martin\Vendors\PurchaseOrder;
 use Martin\Vendors\PurchaseOrderDetail;
 use Martin\Vendors\Vendor;
@@ -91,5 +92,45 @@ class PurchaseOrdersUnitTest extends TestCase
 
         $po = $po->fresh(['details']);
         $this->assertCount(4, $po->details);
+    }
+
+    /** @test */
+    public function a_purchase_order_can_have_details_added_to_it() {
+        $po = factory(PurchaseOrder::class)->create();
+        $po->addItem(factory(Meat::class)->create(), 5);
+
+        $po = $po->fresh(['details']);
+        $this->assertCount(1, $po->details);
+
+        $detail = $po->details()->first();
+        $this->assertTrue($detail instanceof PurchaseOrderDetail);
+        $this->assertTrue($detail->purchasable instanceof Meat);
+        $this->assertEquals(5, $detail->quantity);
+    }
+
+    /** @test */
+    public function a_po_can_have_details_removed() {
+        $po = factory(PurchaseOrder::class)->create();
+
+        $po->addItem(factory(Meat::class)->create(), 10);
+        $detail = $po->details()->first();
+
+        $po->removeDetail($detail);
+        $po = $po->fresh(['details']);
+
+        $this->assertCount(0, $po->details);
+    }
+
+    /** @test */
+    public function a_po_detail_can_have_its_quantity_updated() {
+        $po = factory(PurchaseOrder::class)->create();
+
+        $po->addItem(factory(Meat::class)->create(), 10);
+        $detail = $po->details()->first();
+
+        $detail->updateQuantity(50);
+        $detail = $detail->fresh();
+
+        $this->assertEquals(50, $detail->quantity);
     }
 }
