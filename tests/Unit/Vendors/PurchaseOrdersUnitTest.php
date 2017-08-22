@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Vendors;
 
 use Illuminate\Support\Facades\DB;
 use Martin\Core\Image;
@@ -132,5 +132,18 @@ class PurchaseOrdersUnitTest extends TestCase
         $detail = $detail->fresh();
 
         $this->assertEquals(50, $detail->quantity);
+    }
+
+    /** @test */
+    public function a_po_detail_get_its_po() {
+        $po = factory(PurchaseOrder::class)->create();
+
+        $po->addItem(factory(Meat::class)->create(), 10);
+        $detail = $po->details()->first();
+
+        $detail->updateQuantity(50);
+        $detail = $detail->fresh(['purchaseOrder']);
+
+        $this->assertEquals($detail->purchaseOrder->id, $po->id);
     }
 }
