@@ -24,11 +24,11 @@ class CreatePaymentsTable extends Migration
 
             $table->dateTime('received_at');
             $table->enum('format', [
-                'stripe',
                 'cash',
+                'interac',
+                'e-transfer',
+                'stripe',
                 'paypal',
-                'eTransfer',
-                'other',
             ]);
             $table->integer('amount_paid');
 

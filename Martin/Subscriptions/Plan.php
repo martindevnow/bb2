@@ -42,6 +42,7 @@ class Plan extends Model
         'last_delivery_at',
         'weeks_at_a_time',
         'active',
+        'payment_method',
     ];
 
     protected $dates = [

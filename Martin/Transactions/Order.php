@@ -105,6 +105,17 @@ class Order extends Model
      */
 
     /**
+     * @param Payment $payment
+     * @return $this
+     */
+    public function markAsPaid(Payment $payment) {
+        $this->paid = true;
+        $this->payments()->save($payment);
+        $this->save();
+        return $this;
+    }
+
+    /**
      * Marks this Order as packed and adjusts inventory as appropriate..
      *
      * @return $this
