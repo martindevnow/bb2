@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Martin\Transactions\Order;
+use mikehaertl\wkhtmlto\Pdf;
 
 class OrdersController extends Controller
 {
@@ -134,6 +135,10 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param Order $order
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function packed(Order $order) {
         $order->markAsPacked();
         $order->save();
@@ -141,6 +146,43 @@ class OrdersController extends Controller
         flash('Thank you for packing that order.');
 
         return redirect()->back();
+    }
+
+    public function export() {
+        $orders = Order::needsPacking()->get();
+        $html =  view('admin.orders.export')
+            ->with(compact('orders'))
+            ->render();
+
+        $time = time();
+        $path = base_path() .'/pdfs/'. $time .'.pdf';
+
+        $options = [
+            'orientation'  => 'Landscape',
+            'no-outline',         // Make Chrome not complain
+            'margin-top'    => 5,
+            'margin-right'  => 5,
+            'margin-bottom' => 5,
+            'margin-left'   => 5,
+        ];
+
+        $pdf = new Pdf($options);
+        $pdf->addPage($html);
+
+        if ($pdf->saveAs($path)) {
+            return response()->download($path);
+
+        }
+        return 'There was an error saving...' . $pdf->getError();
+    }
+
+    /**
+     * @return $this
+     */
+    public function exportView() {
+        $orders = Order::needsPacking()->get();
+        return view('admin.orders.export')
+            ->with(compact('orders'));
     }
 }
 

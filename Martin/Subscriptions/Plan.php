@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Martin\ACL\User;
 use Martin\Core\Address;
+use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
@@ -21,6 +22,7 @@ class Plan extends Model
     const MINUTES_REQUIRED_TO_PACK_A_WEEK = 20;
 
     use SoftDeletes;
+    use CoreRelations;
 
     protected $fillable = [
         'customer_id',
@@ -40,6 +42,10 @@ class Plan extends Model
         'last_delivery_at',
         'weeks_at_a_time',
         'active',
+    ];
+
+    protected $dates = [
+        'last_delivery_at',
     ];
 
     /**

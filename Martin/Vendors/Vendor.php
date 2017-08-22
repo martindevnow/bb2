@@ -19,7 +19,7 @@ class Vendor extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function purchaseOrder() {
+    public function purchaseOrders() {
         return $this->hasMany(PurchaseOrder::class);
     }
 }

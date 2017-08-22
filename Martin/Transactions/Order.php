@@ -2,6 +2,7 @@
 
 namespace Martin\Transactions;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
@@ -183,6 +184,19 @@ class Order extends Model
                 'change'    => -1 * $meal->count,
             ]);
         }
+    }
+
+
+    /**
+     * Scopes
+     */
+
+    /**
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeNeedsPacking(Builder $query) {
+        return $query->where('packed', '=', 0);
     }
 
 
