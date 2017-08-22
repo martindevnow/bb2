@@ -2,16 +2,21 @@
 
 @section('header')
     <style>
+        @if ($perPage == 2)
+            html { font-size: 90%; }
+        @endif
         .order-pick-sheet {
             border: 1px solid black;
-            margin-left: 1%;
-            margin-right: 1%;
-            width: 47%;
             padding-top: 1rem;
             display: inline-block;
-            margin-top: 0;
-            margin-bottom: auto;
             height: 100%;
+        @if ($perPage == 2)
+            width: 98%;
+            margin: 0 1%;
+        @else
+            width: 48%;
+            margin: 0 1%;
+        @endif
         }
 
         .header {
@@ -32,7 +37,7 @@
         .customer-name {
             display: inline-block;
             /*border: 1px dashed grey;*/
-            width: 28%;
+            width: 24%;
             margin-left: 1%;
             color: darkred;
         }
@@ -47,7 +52,7 @@
         .delivery-date {
             display: inline-block;
             /*border: 1px dashed grey;*/
-            width: 48%;
+            width: 54%;
             margin-right: 1%;
             color: darkorange;
         }
@@ -58,6 +63,7 @@
             position: relative;
             top: -10px;
             left: -10px;
+            font-size: 1.2rem;
         }
 
         .label-top {
@@ -90,10 +96,12 @@
         }
 
         .table > tbody > tr > td {
-            padding: 2px;
+            padding: 0.5rem;
+            font-size: 1.5rem;
         }
         .table > thead > tr > td {
-            padding: 4px;
+            padding: 0.75rem;
+            font-size: 1.7rem;
         }
 
     </style>
@@ -101,10 +109,10 @@
 
 
 @section('content')
-    @foreach($orders->chunk(2) as $orderRow)
+    @foreach($orders->chunk($perPage / 2) as $orderRow)
         <div class="row">
             @foreach($orderRow as $order)
-            <div class="col-sm-6 order-pick-sheet">
+            <div class="col-sm-{{ 24 / $perPage }} order-pick-sheet">
                 <div class="row header">
                     <div class="customer-name col-sm-4">
                         <div class="label label-top">Name</div>
@@ -126,9 +134,9 @@
                         <thead>
                         <tr>
                             <td><span class="package-name">{{ $order->plan->package->label }}</span> <i>Toppings</i></td>
-                            <td># of Meals</td>
-                            <td>Meat</td>
-                            <td>Topp</td>
+                            <td>#</td>
+                            <td>M</td>
+                            <td>T</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -148,11 +156,13 @@
 
                         <div class="label label-top">Notes</div>
                         <div class="value value-sm">
+                            <ul>
                             @forelse($order->plan->notes as $note)
-                            <em>{{ $note->content }}</em><br/>
+                            <li><em>{{ $note->content }}</em></li>
                             @empty
-                            <em>None</em>
+                            <li><em>None</em></li>
                             @endforelse
+                            </ul>
                         </div>
                     </div>
 

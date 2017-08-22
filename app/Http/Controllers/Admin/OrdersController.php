@@ -148,23 +148,26 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
-    public function export() {
+    public function export($perPage = 4) {
         $orders = Order::needsPacking()->get();
-        $html =  view('admin.orders.export')
-            ->with(compact('orders'))
-            ->render();
 
         $time = time();
         $path = base_path() .'/pdfs/'. $time .'.pdf';
 
+        $orientation = $perPage == 4 ? 'Landscape' : 'Portrait';
+
         $options = [
-            'orientation'  => 'Landscape',
+            'orientation'  => $orientation,
             'no-outline',         // Make Chrome not complain
             'margin-top'    => 5,
             'margin-right'  => 5,
             'margin-bottom' => 5,
             'margin-left'   => 5,
         ];
+
+        $html =  view('admin.orders.export')
+            ->with(compact('orders', 'perPage'))
+            ->render();
 
         $pdf = new Pdf($options);
         $pdf->addPage($html);
@@ -179,10 +182,10 @@ class OrdersController extends Controller
     /**
      * @return $this
      */
-    public function exportView() {
+    public function exportView($perPage = 4) {
         $orders = Order::needsPacking()->get();
         return view('admin.orders.export')
-            ->with(compact('orders'));
+            ->with(compact('orders', 'perPage'));
     }
 }
 
