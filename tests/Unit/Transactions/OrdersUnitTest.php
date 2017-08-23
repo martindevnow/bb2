@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Attachment;
+use Martin\Delivery\Courier;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -268,5 +269,22 @@ class OrdersUnitTest extends TestCase
 
         $order = $order->fresh();
         $this->assertEquals(1, $order->paid);
+    }
+
+    /** @test */
+    public function an_order_can_be_marked_as_shipped() {
+        $courier = factory(Courier::class)->create();
+
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create();
+        $plan->generateOrder();
+
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+        $order->markAsShipped($courier, '1208801231');
+
+        $order = $order->fresh();
+        $this->assertTrue($order->delivery instanceof Delivery);
+        $this->assertEquals(1, $order->shipped);
     }
 }

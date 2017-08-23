@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Martin\Delivery\Delivery;
 use Martin\Transactions\Order;
+use Martin\Transactions\Payment;
 use mikehaertl\wkhtmlto\Pdf;
 
 class OrdersController extends Controller
@@ -186,6 +189,87 @@ class OrdersController extends Controller
         $orders = Order::needsPacking()->get();
         return view('admin.orders.export')
             ->with(compact('orders', 'perPage'));
+    }
+
+    /**
+     * Show the form to log a payment on this Order
+     *
+     * @param Order $order
+     * @return $this
+     */
+    public function createPayment(Order $order) {
+        return view('admin.orders.payment')
+            ->with(compact('order'));
+    }
+
+    /**
+     * @param Order $order
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function storePayment(Order $order, Request $request) {
+        $this->validate($request, [
+            'format'        => 'required',
+            'amount_paid'   => 'required',
+            'received_at'   => 'required',
+        ]);
+        $paymentData = $request->only(['format', 'amount_paid', 'received_at']);
+        $paymentData['customer_id'] = $order->customer_id;
+        $paymentData['collector_id'] = Auth::user()->id;
+
+        $payment = Payment::make($paymentData);
+        if ($order->markAsPaid($payment)) {
+            flash('Thank you.');
+            return redirect('/admin/orders');
+        }
+
+        flash('There was an unexpected error...')->error();
+        return redirect()->back()->withInput()->withErrors();
+    }
+
+    /**
+     * @param Order $order
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function markAsPacked(Order $order) {
+        $order->markAsPacked();
+
+        flash('Packed.');
+        return redirect('/admin/orders/');
+    }
+
+    /**
+     * @param Order $order
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function markAsPicked(Order $order) {
+        $order->markAsPicked();
+
+        flash('Picked.');
+        return redirect('/admin/orders');
+    }
+
+    public function createShipment(Order $order) {
+        return view('admin.orders.shipment')
+            ->with(compact('order'));
+    }
+
+    public function storeShipment(Order $order, Request $request) {
+        $this->validate($request, [
+            'courier_id'    => 'required',
+            'shipped_at'    => 'required',
+        ]);
+
+        $deliveryData = $request->only([
+            'courier_id',
+            'shipped_at',
+            'tracking_number',
+            'instructions'
+        ]);
+
+        $delivery = Delivery::make($deliveryData);
+
+        $order->markAsShipped($delivery);
     }
 }
 

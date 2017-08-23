@@ -76,8 +76,8 @@
                                     <option {{ old('format') === 'cash' ? 'selected="selected"' : '' }} value="cash">Cash</option>
                                     <option {{ old('format') === 'stripe' ? 'selected="selected"' : '' }} value="stripe">Stripe</option>
                                     <option {{ old('format') === 'paypal' ? 'selected="selected"' : '' }} value="paypal">Paypal</option>
-                                    <option {{ old('format') === 'eTransfer' ? 'selected="selected"' : '' }} value="eTransfer">eTransfer</option>
-                                    <option {{ old('format') === 'other' ? 'selected="selected"' : '' }} value="other">Other</option>
+                                    <option {{ old('format') === 'e-transfer' ? 'selected="selected"' : '' }} value="e-transfer">eTransfer</option>
+                                    <option {{ old('format') === 'interac' ? 'selected="selected"' : '' }} value="interac">Interac</option>
                                 </select>
                             </label>
                             @if ($errors->has('format'))
