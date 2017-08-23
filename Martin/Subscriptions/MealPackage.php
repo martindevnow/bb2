@@ -9,30 +9,21 @@ use Martin\Products\Meal;
 
 class MealPackage extends Model
 {
+    /**
+     * The SQL Table to store this data
+     *
+     * @var string
+     */
     protected $table = 'meal_package';
 
+    /**
+     * Fields which are "mass-assignable"
+     *
+     * @var array
+     */
     protected $fillable = [
         'meal_id',
         'package_id',
         'calendar_code',
     ];
-    // TODO: Remove this by mid-August if it is still not required...
-//
-//    /**
-//     * Relationships
-//     */
-//
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function meal() {
-//        return $this->belongsTo(Meal::class);
-//    }
-//
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function package() {
-//        return $this->belongsTo(Package::class);
-//    }
 }
