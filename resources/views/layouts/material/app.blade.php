@@ -39,6 +39,9 @@
 .ms-footbar {
     margin-top: 0;
 }
+.help-block {
+    color: red;
+}
 
 @media screen and (max-width: 767px) {
 

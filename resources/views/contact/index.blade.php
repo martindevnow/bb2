@@ -6,9 +6,6 @@
         <div class="container">
             <div class="text-center">
                 <h1>&nbsp;</h1>
-                {{--<h1 class="no-m ms-site-title color-white center-block ms-site-title-lg mt-2 animated zoomInDown animation-delay-5">Contact Us</h1>--}}
-                {{--<p class="lead lead-lg color-light text-center center-block mt-2 mw-800 text-uppercase fw-300 animated fadeInUp animation-delay-7">--}}
-                    {{--Whether you're new to raw, or a seasoned veteran, we'd love to hear from you! We can answer any questions you have about our program and the diet that we feed to our customers.</p>--}}
             </div>
         </div>
     </div>
@@ -23,24 +20,69 @@
                         <div class="form-group is-empty">
                             <label for="inputName" class="col-md-2 control-label">Name</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" id="inputName" placeholder="Name" name="name"> </div>
+                                <input type="text"
+                                       class="form-control"
+                                       id="inputName"
+                                       placeholder="Name"
+                                       name="name"
+                                       value="{{ old('name') }}"
+                                > </div>
                         </div>
+                        @if ($errors->has('name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
                         <div class="form-group is-empty">
                             <label for="inputEmail" class="col-md-2 control-label">Email</label>
                             <div class="col-md-9">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email"> </div>
+                                <input type="email"
+                                       class="form-control"
+                                       id="inputEmail"
+                                       placeholder="Email"
+                                       name="email"
+                                       value="{{ old('email') }}"
+                                > </div>
                         </div>
+                        @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
                         <div class="form-group is-empty">
                             <label for="inputSubject" class="col-md-2 control-label">Subject</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" id="inputSubject" placeholder="Subject" name="subject"> </div>
+                                <input type="text"
+                                       class="form-control"
+                                       id="inputSubject"
+                                       placeholder="Subject"
+                                       name="subject"
+                                       value="{{ old('subject') }}"
+                                > </div>
                         </div>
+                        @if ($errors->has('subject'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('subject') }}</strong>
+                            </span>
+                        @endif
                         <div class="form-group is-empty">
                             <label for="textArea" class="col-md-2 control-label">Message</label>
                             <div class="col-md-9">
-                                <textarea class="form-control" rows="5" id="textArea" placeholder="Your message..." name="body"></textarea>
+                                <textarea class="form-control"
+                                          rows="5"
+                                          id="textArea"
+                                          placeholder="Your message..."
+                                          name="body"
+                                >
+                                    {{ old('body') }}
+                                </textarea>
                             </div>
                         </div>
+                        @if ($errors->has('body'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('body') }}</strong>
+                            </span>
+                        @endif
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-2">
                                 <button type="submit" class="btn btn-raised btn-primary">Submit</button>
@@ -72,8 +114,6 @@
                             </p>
                             <p>
                                 <i class="color-royal-light zmdi zmdi-phone mr-1"></i>+1 647 202 0692 </p>
-                            {{--<p>--}}
-                                {{--<i class="color-success-light fa fa-fax mr-1"></i>+34 123 456 7890 </p>--}}
                         </address>
                     </div>
                 </div>
