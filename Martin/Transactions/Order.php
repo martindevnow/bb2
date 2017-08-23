@@ -46,6 +46,26 @@ class Order extends Model
     ];
 
     /**
+     * @param $crudAction
+     * @return string
+     */
+    public function adminUrl($crudAction) {
+        switch ($crudAction) {
+            case 'index':
+            case 'store':
+                return "/admin/orders";
+            case 'show':
+            case 'update':
+            case 'destroy':
+                return "/admin/orders/$this->id";
+            case 'create':
+                return "/admin/orders/create";
+            case 'edit':
+                return "/admin/orders/$this->id/edit";
+        }
+    }
+
+    /**
      * Mutators
      */
 

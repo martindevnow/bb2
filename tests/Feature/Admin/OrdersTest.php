@@ -254,7 +254,7 @@ class OrdersTest extends TestCase
         $this->loginAsAdmin();
         $order = $this->createOrderForBasicPlan();
         $courier = factory(Courier::class)->create();
-        $this->post('/admin/orders/' . $order->id . '/shipped', [
+        $this->post($order->adminUrl('show') . '/shipped', [
             'courier_id'    => $courier->id,
             'tracking_number'   => 1532153425,
             'shipped_at'   => Carbon::now()->format('Y-m-d'),
