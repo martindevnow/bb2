@@ -20,10 +20,7 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-
-        $malicious_code = "<?php passthru(id) ?>";
-
-        return view('contact.index')->with(compact('malicious_code'));
+        return view('contact.index');
     }
 
     /**
