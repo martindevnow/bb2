@@ -13,7 +13,7 @@ class ToppingsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        echo "Loading \"Toppings\"...\r\n";
         DB::table('toppings')->truncate();
         $this->seedFromGoogle('toppings',
             \Martin\Products\Topping::class);

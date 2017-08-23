@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(ACLTableSeeder::class);
         $this->call(VendorsTableSeeder::class);
+        $this->call(CouriersTableSeeder::class);
 
         $this->call(FaqsTableSeeder::class);
         $this->call(AddressesTableSeeder::class);
@@ -42,9 +43,7 @@ class DatabaseSeeder extends Seeder
          * Subscription Models (Plans, Activity, Frequency, and Package)
          */
         $this->call(PackagesSeeder::class);
-
         $this->call(PlansTableSeeder::class);
-//        $this->call(PlansTableSeeder::class);       // Must be after Sub Data
 
         /**
          * Pickup Locations and Appointment Times

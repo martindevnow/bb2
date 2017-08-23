@@ -13,9 +13,8 @@ class CouriersTableSeeder extends Seeder
      */
     public function run()
     {
-        echo "Loading \"Couriers\"...";
+        echo "Loading \"Couriers\"...\r\n";
         DB::table('couriers')->truncate();
         $this->seedFromGoogle('couriers', Courier::class);
-
     }
 }

@@ -13,7 +13,7 @@ class PlansTableSeeder extends Seeder
      * @return void
      */
     public function run() {
-        echo "Loading \"Plans\"...";
+        echo "Loading \"Plans\"...\r\n";
         DB::table('plans')->truncate();
         $this->seedFromGoogle('plans', Plan::class);
     }

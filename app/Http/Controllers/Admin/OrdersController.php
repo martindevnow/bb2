@@ -270,8 +270,27 @@ class OrdersController extends Controller
         ]);
 
         $delivery = Delivery::make($deliveryData);
-
         $order->markAsShipped($delivery);
+
+        flash('Shipped.');
+        return redirect('/admin/orders');
+    }
+    public function createDelivery(Order $order) {
+        return view('admin.orders.delivery')
+            ->with(compact('order'));
+    }
+
+    public function storeDelivery(Order $order, Request $request) {
+        $this->validate($request, [
+            'delivered_at'    => 'required|date_format:Y-m-d',
+        ]);
+
+        $order->delivery->delivered_at = $request->get('delivered_at');
+        $order->delivery->save();
+        $order->markAsDelivered();
+
+        flash('Delivered.');
+        return redirect('/admin/orders');
     }
 }
 

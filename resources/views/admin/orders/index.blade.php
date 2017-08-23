@@ -119,23 +119,6 @@
                                         </a>
                                     @endif
 
-
-
-
-                                    <a href="/admin/orders/{{ $order->id }}/edit">
-                                        <button class="btn btn-primary btn-xs">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                    </a>
-
-                                    <form action="/admin/orders/{{ $order->id }}" method="POST">
-                                        <?= csrf_field() ?>
-                                        <input name="_method" type="hidden" value="DELETE">
-                                        <input name="order_id" type="hidden" value="{{ $order->id }}">
-                                        <button class="btn btn-xs btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach

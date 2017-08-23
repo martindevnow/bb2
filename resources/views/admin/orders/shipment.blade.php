@@ -14,9 +14,9 @@
 
             <div class="widget-body no-padding smart-form">
 
-                <form action="/admin/orders/{{ $order->id }}/paid" method="POST">
+                <form action="/admin/orders/{{ $order->id }}/shipped" method="POST">
                     <header>
-                        Log a Payment against this order:
+                        Log a Shipment against this order:
                     </header>
                     <?= csrf_field() ?>
 
@@ -36,8 +36,8 @@
                             </label>
                             @if ($errors->has('courier_id'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('courier_id') }}</strong>
-                        </span>
+                                    <strong>{{ $errors->first('courier_id') }}</strong>
+                                </span>
                             @endif
                             <small id="courier_idHelp" class="form-text text-muted">Who shipped it?</small>
                         </section>
@@ -57,8 +57,8 @@
                             </label>
                             @if ($errors->has('tracking_number'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('tracking_number') }}</strong>
-                        </span>
+                                    <strong>{{ $errors->first('tracking_number') }}</strong>
+                                </span>
                             @endif
                             <small id="tracking_numberHelp" class="form-text text-muted">Tracking?</small>
                         </section>
@@ -78,8 +78,8 @@
                             </label>
                             @if ($errors->has('instructions'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('instructions') }}</strong>
-                        </span>
+                                    <strong>{{ $errors->first('instructions') }}</strong>
+                                </span>
                             @endif
                             <small id="instructionsHelp" class="form-text text-muted">Anything special?</small>
                         </section>
@@ -99,8 +99,8 @@
                             </label>
                             @if ($errors->has('shipped_at'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('shipped_at') }}</strong>
-                        </span>
+                                    <strong>{{ $errors->first('shipped_at') }}</strong>
+                                </span>
                             @endif
                             <small id="shipped_atHelp" class="form-text text-muted">When?</small>
                         </section>

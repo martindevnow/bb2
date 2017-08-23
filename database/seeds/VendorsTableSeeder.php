@@ -13,7 +13,7 @@ class VendorsTableSeeder extends Seeder
      */
     public function run()
     {
-        echo "Loading \"Vendors\"...";
+        echo "Loading \"Vendors\"...\r\n";
         DB::table('vendors')->truncate();
         $this->seedFromGoogle('vendors', Vendor::class);
 

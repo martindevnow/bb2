@@ -21,10 +21,10 @@ class CreateDeliveriesTable extends Migration
             $table->integer('courier_id');
 
             $table->dateTime('shipped_at');
-            $table->dateTime('delivered_at');
+            $table->dateTime('delivered_at')->nullable();
 
-            $table->string('tracking_number');
-            $table->string('instructions');
+            $table->string('tracking_number')->nullable();
+            $table->string('instructions')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

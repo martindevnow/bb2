@@ -29,6 +29,9 @@ Route::get('/orders/{order}/picked', 'OrdersController@markAsPicked');
 Route::get('/orders/{order}/shipped', 'OrdersController@createShipment');
 Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 
+Route::get('/orders/{order}/delivered', 'OrdersController@createDelivery');
+Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+
 Route::get('/orders/export/{perPage}', 'OrdersController@export');
 Route::get('/orders/export/view/{perPage}', 'OrdersController@exportView');
 Route::post('/orders/{order}/packed', 'OrdersController@packed');
