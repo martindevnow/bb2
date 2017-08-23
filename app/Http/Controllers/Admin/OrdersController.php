@@ -220,7 +220,7 @@ class OrdersController extends Controller
 
         $payment = Payment::make($paymentData);
         if ($order->markAsPaid($payment)) {
-            flash('Thank you.');
+            flash('That order was marked as paid.');
             return redirect('/admin/orders');
         }
 
@@ -235,7 +235,7 @@ class OrdersController extends Controller
     public function markAsPacked(Order $order) {
         $order->markAsPacked();
 
-        flash('Packed.');
+        flash('That order was marked as packed.');
         return redirect('/admin/orders/');
     }
 
@@ -246,7 +246,7 @@ class OrdersController extends Controller
     public function markAsPicked(Order $order) {
         $order->markAsPicked();
 
-        flash('Picked.');
+        flash('That order was marked as picked.');
         return redirect('/admin/orders');
     }
 
@@ -272,7 +272,7 @@ class OrdersController extends Controller
         $delivery = Delivery::make($deliveryData);
         $order->markAsShipped($delivery);
 
-        flash('Shipped.');
+        flash('That order was marked as shipped.');
         return redirect('/admin/orders');
     }
     public function createDelivery(Order $order) {
@@ -285,11 +285,12 @@ class OrdersController extends Controller
             'delivered_at'    => 'required|date_format:Y-m-d',
         ]);
 
-        $order->delivery->delivered_at = $request->get('delivered_at');
-        $order->delivery->save();
+        $delivery = $order->delivery;
+        $delivery->delivered_at = $request->get('delivered_at');
+        $delivery->save();
         $order->markAsDelivered();
 
-        flash('Delivered.');
+        flash('That order was marked as delivered.');
         return redirect('/admin/orders');
     }
 }

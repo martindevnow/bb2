@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Admin;
 
+use Carbon\Carbon;
+use Martin\Delivery\Courier;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -137,5 +139,139 @@ class OrdersTest extends TestCase
             'id'    => $order->id,
             'packed'    => true,
         ]);
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_form_to_mark_an_order_as_paid() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+        $this->get('/admin/orders/'. $order->id . '/paid')
+            ->assertSee('<form action="/admin/orders/'. $order->id .'/paid"');
+    }
+
+    /** @test */
+    public function an_admin_can_submit_a_payment_form_for_an_order() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+
+        $response = $this->post('/admin/orders/' . $order->id . '/paid', [
+            'format'    => 'cash',
+            'amount_paid'   => 15,
+            'received_at'   => Carbon::now()->format('Y-m-d'),
+        ])
+            ->assertStatus(302)
+            ->assertRedirect('/admin/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'paid'  => 1,
+        ]);
+
+        $this->followRedirects($response)
+            ->assertSee('That order was marked as paid.');
+    }
+
+    /** @test */
+    public function an_admin_can_mark_an_order_as_packed() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+
+        $response = $this->get('/admin/orders/' . $order->id .'/packed')
+            ->assertStatus(302)
+            ->assertRedirect('/admin/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'packed'  => 1,
+        ]);
+
+        $this->followRedirects($response)
+            ->assertSee('That order was marked as packed.');
+    }
+
+    /** @test */
+    public function an_admin_can_mark_an_order_as_picked() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+
+        $response = $this->get('/admin/orders/' . $order->id .'/picked')
+            ->assertStatus(302)
+            ->assertRedirect('/admin/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'picked'  => 1,
+        ]);
+
+        $this->followRedirects($response)
+            ->assertSee('That order was marked as picked.');
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_form_to_mark_an_order_as_shipped() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+        $this->get('/admin/orders/'. $order->id . '/shipped')
+            ->assertSee('<form action="/admin/orders/'. $order->id .'/shipped"');
+    }
+
+
+    /** @test */
+    public function an_admin_can_submit_a_shipment_form_for_an_order() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+        $courier = factory(Courier::class)->create();
+
+
+        $response = $this->post('/admin/orders/' . $order->id . '/shipped', [
+            'courier_id'    => $courier->id,
+            'tracking_number'   => 1532153425,
+            'shipped_at'   => Carbon::now()->format('Y-m-d'),
+        ])
+            ->assertStatus(302)
+            ->assertRedirect('/admin/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'shipped'  => 1,
+        ]);
+
+        $this->followRedirects($response)
+            ->assertSee('That order was marked as shipped.');
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_form_to_mark_an_order_as_delivered() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+        $this->get('/admin/orders/'. $order->id . '/delivered')
+            ->assertSee('<form action="/admin/orders/'. $order->id .'/delivered"');
+    }
+
+
+    /** @test */
+    public function an_admin_can_submit_a_delivery_form_for_an_order() {
+        $this->loginAsAdmin();
+        $order = $this->createOrderForBasicPlan();
+        $courier = factory(Courier::class)->create();
+        $this->post('/admin/orders/' . $order->id . '/shipped', [
+            'courier_id'    => $courier->id,
+            'tracking_number'   => 1532153425,
+            'shipped_at'   => Carbon::now()->format('Y-m-d'),
+        ]);
+
+        $response = $this->post('/admin/orders/' . $order->id . '/delivered', [
+            'delivered_at'   => Carbon::now()->format('Y-m-d'),
+        ])
+            ->assertStatus(302)
+            ->assertRedirect('/admin/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+            'delivered'  => 1,
+        ]);
+
+        $this->followRedirects($response)
+            ->assertSee('That order was marked as delivered.');
     }
 }
