@@ -7,6 +7,7 @@ use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Attachment;
 use Martin\Delivery\Courier;
+use Martin\Delivery\Delivery;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -281,7 +282,8 @@ class OrdersUnitTest extends TestCase
 
         /** @var Order $order */
         $order = $plan->orders()->first();
-        $order->markAsShipped($courier, '1208801231');
+        $delivery = factory(Delivery::class)->create();
+        $order->markAsShipped($delivery);
 
         $order = $order->fresh();
         $this->assertTrue($order->delivery instanceof Delivery);

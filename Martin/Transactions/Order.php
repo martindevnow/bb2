@@ -147,7 +147,7 @@ class Order extends Model
      */
     public function markAsShipped(Delivery $delivery) {
         $delivery->recipient_id = $this->customer_id;
-        $this->delivery->save($delivery);
+        $this->delivery()->save($delivery);
 
         $this->shipped = true;
         $this->save();

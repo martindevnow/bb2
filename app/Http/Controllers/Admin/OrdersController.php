@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Martin\Delivery\Courier;
 use Martin\Delivery\Delivery;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
@@ -250,8 +251,9 @@ class OrdersController extends Controller
     }
 
     public function createShipment(Order $order) {
+        $couriers = Courier::all();
         return view('admin.orders.shipment')
-            ->with(compact('order'));
+            ->with(compact('order', 'couriers'));
     }
 
     public function storeShipment(Order $order, Request $request) {
