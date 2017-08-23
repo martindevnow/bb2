@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\GenerateOrders::class
+        \App\Console\Commands\GenerateOrders::class,
+        \App\Console\Commands\EnsureQueueListenerIsRunning::class
     ];
 
     /**
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('queue:checkup')->everyFiveMinutes();
         // $schedule->command('inspire')
         //          ->hourly();
     }
