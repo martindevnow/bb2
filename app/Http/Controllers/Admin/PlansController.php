@@ -56,12 +56,12 @@ class PlansController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'pet_id'                => 'required',
-            'package_id'            => 'required',
+            'pet_id'                => 'required|exists:pets,id',
+            'package_id'            => 'required|exists:packages,id',
 
-            'shipping_cost'         => 'required',
-            'weekly_cost'           => 'required',
-            'weeks_at_a_time'       => 'required',
+            'shipping_cost'         => 'required|numeric',
+            'weekly_cost'           => 'required|numeric',
+            'weeks_at_a_time'       => 'required|integer',
             'active'                => 'required'
         ]);
 
@@ -110,20 +110,20 @@ class PlansController extends Controller
      */
     public function update(Plan $plan, Request $request) {
         $this->validate($request, [
-            'customer_id'           => 'required',
-            'delivery_address_id'   => 'required',
-            'shipping_cost'         => 'required',
+            'customer_id'           => 'required|exists:users,id',
+            'delivery_address_id'   => 'required|exists:addresses,id',
+            'shipping_cost'         => 'required|integer',
 
-            'pet_id'                => 'required',
-            'pet_weight'            => 'required',
-            'pet_activity_level'    => 'required',
+            'pet_id'                => 'required|exists:pets,id',
+            'pet_weight'            => 'required|integer',
+            'pet_activity_level'    => 'required|numeric',
 
-            'package_id'            => 'required',
+            'package_id'            => 'required|exists:packages,id',
             'package_stripe_code'   => 'required',
-            'package_base'          => 'required',
+            'package_base'          => 'required|numeric',
 
-            'weekly_cost'           => 'required',
-            'weeks_at_a_time'       => 'required',
+            'weekly_cost'           => 'required|numeric',
+            'weeks_at_a_time'       => 'required|integer',
         ]);
 
         $planData = $request->only([

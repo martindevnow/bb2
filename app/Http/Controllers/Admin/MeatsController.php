@@ -30,7 +30,7 @@ class MeatsController extends Controller
             'code'          => 'required|unique:meats',
             'type'          => 'required',
             'variety'       => 'required',
-            'cost_per_lb'   => 'required',
+            'cost_per_lb'   => 'required|numeric',
         ]);
 
 
@@ -49,10 +49,10 @@ class MeatsController extends Controller
 
     public function update(Meat $meat, Request $request) {
         $this->validate($request, [
-            'code'      => 'required',
-            'type'      => 'required',
-            'variety'   => 'required',
-            'cost_per_lb'   => 'required',
+            'code'          => 'required',
+            'type'          => 'required',
+            'variety'       => 'required',
+            'cost_per_lb'   => 'required|numeric',
         ]);
 
         $meat->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']));

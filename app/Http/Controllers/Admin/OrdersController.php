@@ -57,9 +57,9 @@ class OrdersController extends Controller
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
             'delivery_address_id'   => 'required|exists:addresses,id',
-            'subtotal'      => 'required|numeric',
-            'tax'           => 'required|numeric',
-            'total_cost'    => 'required|numeric',
+            'subtotal'              => 'required|numeric',
+            'tax'                   => 'required|numeric',
+            'total_cost'            => 'required|numeric',
         ]);
 
         if ($request->get('subtotal') + $request->get('tax') !== $request->get('total_cost')) {
@@ -105,9 +105,9 @@ class OrdersController extends Controller
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
             'delivery_address_id'   => 'required|exists:addresses,id',
-            'subtotal'      => 'required|numeric',
-            'tax'           => 'required|numeric',
-            'total_cost'    => 'required|numeric',
+            'subtotal'              => 'required|numeric',
+            'tax'                   => 'required|numeric',
+            'total_cost'            => 'required|numeric',
         ]);
 
         $order->fill($request->only([
@@ -211,8 +211,8 @@ class OrdersController extends Controller
     public function storePayment(Order $order, Request $request) {
         $this->validate($request, [
             'format'        => 'required',
-            'amount_paid'   => 'required',
-            'received_at'   => 'required',
+            'amount_paid'   => 'required|numeric',
+            'received_at'   => 'required|date_format:Y-m-d',
         ]);
         $paymentData = $request->only(['format', 'amount_paid', 'received_at']);
         $paymentData['customer_id'] = $order->customer_id;
@@ -258,8 +258,8 @@ class OrdersController extends Controller
 
     public function storeShipment(Order $order, Request $request) {
         $this->validate($request, [
-            'courier_id'    => 'required',
-            'shipped_at'    => 'required',
+            'courier_id'    => 'required|exists:couriers,id',
+            'shipped_at'    => 'required|date_format:Y-m-d',
         ]);
 
         $deliveryData = $request->only([
