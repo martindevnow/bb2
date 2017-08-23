@@ -13,15 +13,19 @@ use Illuminate\Support\Facades\Mail;
 class SendContactUsEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    /**
+     * @var
+     */
+    private $contactUsData;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($contactUsData)
     {
-        //
+        $this->contactUsData = $contactUsData;
     }
 
     /**
@@ -29,11 +33,11 @@ class SendContactUsEmail implements ShouldQueue
      *
      * @return void
      */
-    public function handle($contactUsData)
+    public function handle()
     {
         Mail::to('info@barfbento.com')
             ->cc('benm@barfbento.com')
-            ->send(new ContactReceived($contactUsData));
+            ->send(new ContactReceived($this->contactUsData));
 
     }
 }
