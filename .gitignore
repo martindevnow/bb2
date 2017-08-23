@@ -14,3 +14,4 @@ seeds.zip
 /public/js/app.js
 /coverage
 /pdfs
+app/Console/Commands/queue.pid

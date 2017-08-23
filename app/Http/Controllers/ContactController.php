@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendContactUsEmail;
 use App\Mail\ContactReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -36,12 +37,12 @@ class ContactController extends Controller
             'body'      => 'required',
         ]);
 
-        Mail::to('info@barfbento.com')
-            ->cc('benm@barfbento.com')
-            ->send(new ContactReceived($request->only(['name', 'email', 'subject', 'body'])));
+        $contactUsData = $request->only([
+            'name', 'email', 'subject', 'body'
+        ]);
+        $this->dispatch(new SendContactUsEmail($contactUsData));
 
         flash('Your message has been sent.');
-
         return redirect('/contact/success');
     }
 
