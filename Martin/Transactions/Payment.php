@@ -21,7 +21,7 @@ class Payment extends Model
         'paymentable_id',
         'paymentable_type',
         'received_at',
-        'format',
+        'format',               // CASH, STRIPE, etc...
         'amount_paid',
     ];
 

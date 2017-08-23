@@ -38,6 +38,14 @@ class CreatePlansTable extends Migration
 
             $table->boolean('active')->default(true);
 
+            $table->enum('payment_method', [
+                'cash',
+                'interac',
+                'e-transfer',
+                'stripe',
+                'paypal',
+            ])->default('stripe');
+
             $table->timestamps();
             $table->softDeletes();
         });

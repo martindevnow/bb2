@@ -2,11 +2,14 @@
 
 namespace Martin\Transactions;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Traits\CoreRelations;
+use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
@@ -91,20 +94,26 @@ class Order extends Model
         $this->attributes['total_cost'] = round($value * 100);
     }
 
-    /**
-     * @param Meal|null $meal
-     * @return mixed
-     */
-    public function mealCounts(Meal $meal = null) {
-        return $this->plan->mealCounts($meal);
-    }
 
     /**
      * Order Packing etc Workflow
      */
 
     /**
-     * Marks this Order as packed and adjusts inventory as appropriate..
+     * Mark this order as "paid"
+     *
+     * @param Payment $payment
+     * @return $this
+     */
+    public function markAsPaid(Payment $payment) {
+        $this->paid = true;
+        $this->payments()->save($payment);
+        $this->save();
+        return $this;
+    }
+
+    /**
+     * Marks this Order as "packed" and adjusts inventory as appropriate..
      *
      * @return $this
      */
@@ -119,6 +128,8 @@ class Order extends Model
     }
 
     /**
+     * Mark this order as picked...
+     *
      * @return $this
      */
     public function markAsPicked() {
@@ -128,6 +139,39 @@ class Order extends Model
         $this->save();
 
         return $this;
+    }
+
+    /**
+     * @param Delivery $delivery
+     * @return $this
+     */
+    public function markAsShipped(Delivery $delivery) {
+        $delivery->recipient_id = $this->customer_id;
+        $this->delivery->save($delivery);
+
+        $this->shipped = true;
+        $this->save();
+        return $this;
+    }
+
+    /**
+     * Mark this order as "delivered"
+     *
+     * @return $this
+     */
+    public function markAsDelivered() {
+        $this->delivered = true;
+
+        $this->save();
+        return $this;
+    }
+
+    /**
+     * @param Meal|null $meal
+     * @return mixed
+     */
+    public function mealCounts(Meal $meal = null) {
+        return $this->plan->mealCounts($meal);
     }
 
     /**
@@ -187,6 +231,19 @@ class Order extends Model
 
 
     /**
+     * Scopes
+     */
+
+    /**
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeNeedsPacking(Builder $query) {
+        return $query->where('packed', '=', 0);
+    }
+
+
+    /**
      * Relationships
      */
 
@@ -223,5 +280,12 @@ class Order extends Model
      */
     public function inventoryChange() {
         return $this->morphMany(Inventory::class, 'changeable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function delivery() {
+        return $this->hasOne(Delivery::class, 'order_id');
     }
 }

@@ -40,6 +40,17 @@ class Meal extends Model
         $toppings = $this->toppings->pluck('label');
         return implode(', ', $toppings->all());
     }
+    /**
+     * @return string
+     */
+    public function meatsToString() {
+        $meats = $this->meats
+            ->sortBy('variety')
+            ->map(function($meat) {
+            return $meat->type . ' [' . $meat->variety . ']';
+        });
+        return implode(', ', $meats->all());
+    }
 
 
     /**
