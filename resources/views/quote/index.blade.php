@@ -22,16 +22,8 @@
                                     {{--<i class="zmdi zmdi-info-outline"></i> Simply fill out the fields below to get your--}}
                                     {{--<strong>quote</strong> to being the B.A.R.F. diet</p>--}}
                             {{--</div>--}}
-                            {{--<plan-builder></plan-builder>--}}
+                            <plan-builder></plan-builder>
 
-                            <h1>We are still working on it ... </h1>
-                            <p>Our goal is to bring the BARF diet to as many people as we can.</p>
-                            <p>To accomplish this, we need time to ensure our online systems are up to the highest standard of quality.
-                                As such, we are not able to offer online ordering at this time.</p>
-                            <p>If you wish to <b>signup</b> with us, please <a href="/contact">contact us</a> by sending us an email
-                            or giving us a call!</p>
-                            <p>We look forward to hearing from you!</p>
-                            <p>- Vivian Wong</p>
                         </section>
 
                     </div>

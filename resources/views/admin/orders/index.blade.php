@@ -68,6 +68,60 @@
                                 <td>{{ $order->plan->weeks_at_a_time }}</td>
                                 <td>${{ $order->total_cost }}</td>
                                 <td>
+                                    @if($order->paid)
+                                        <a href="/admin/payments/{{ $order->payments->first()->id }}">
+                                            <button class="btn btn-success btn-xs">Paid</button>
+                                        </a>
+                                    @else
+                                        {{--# TODO: make this open a modal... ?--}}
+                                        <a href="/admin/orders/{{$order->id}}/paid">
+                                            <button class="btn btn-danger btn-xs">Paid</button>
+                                        </a>
+                                    @endif
+
+                                    @if($order->packed)
+                                        <a href="#">
+                                            <button class="btn btn-success btn-xs">Packed</button>
+                                        </a>
+                                    @else
+                                        <a href="/admin/orders/{{ $order->id }}/packed">
+                                            <button class="btn btn-danger btn-xs">Packed</button>
+                                        </a>
+                                    @endif
+
+                                    @if($order->picked)
+                                        <a href="#">
+                                            <button class="btn btn-success btn-xs">Picked</button>
+                                        </a>
+                                    @else
+                                        <a href="/admin/orders/{{ $order->id }}/picked">
+                                            <button class="btn btn-danger btn-xs">Picked</button>
+                                        </a>
+                                    @endif
+
+                                    @if($order->shipped)
+                                        <a href="#">
+                                            <button class="btn btn-success btn-xs">Shipped</button>
+                                        </a>
+                                    @else
+                                        <a href="/admin/orders/{{ $order->id }}/shipped">
+                                            <button class="btn btn-danger btn-xs">Shipped</button>
+                                        </a>
+                                    @endif
+
+                                    @if($order->delivered)
+                                        <a href="#">
+                                            <button class="btn btn-success btn-xs">Delivered</button>
+                                        </a>
+                                    @else
+                                        <a href="/admin/orders/{{ $order->id }}/delivered">
+                                            <button class="btn btn-danger btn-xs">Delivered</button>
+                                        </a>
+                                    @endif
+
+
+
+
                                     <a href="/admin/orders/{{ $order->id }}/edit">
                                         <button class="btn btn-primary btn-xs">
                                             <i class="fa fa-pencil"></i>

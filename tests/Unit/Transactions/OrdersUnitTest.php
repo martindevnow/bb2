@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Attachment;
+use Martin\Delivery\Courier;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
+use Martin\Transactions\Payment;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -230,5 +232,59 @@ class OrdersUnitTest extends TestCase
         $order->attachments()->save(factory(Attachment::class)->create());
 
         $this->assertCount(1, $order->attachments);
+    }
+
+    /**
+     * Query Scope
+     */
+
+    /** @test */
+    public function orders_that_need_packing_can_be_fetched() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create();
+        $plan->generateOrder();
+
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+        $order->markAsPacked();
+
+        $ordersNeedingPacking = Order::needsPacking()->get();
+        $this->assertCount(0, $ordersNeedingPacking);
+    }
+
+    /** @test */
+    public function an_order_can_be_marked_as_paid() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create();
+        $plan->generateOrder();
+
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+
+        $payment = factory(Payment::class)->make([
+            'paymentable_id'    => null,
+            'paymentable_type'    => null,
+        ]);
+        $order->markAsPaid($payment);
+
+        $order = $order->fresh();
+        $this->assertEquals(1, $order->paid);
+    }
+
+    /** @test */
+    public function an_order_can_be_marked_as_shipped() {
+        $courier = factory(Courier::class)->create();
+
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create();
+        $plan->generateOrder();
+
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+        $order->markAsShipped($courier, '1208801231');
+
+        $order = $order->fresh();
+        $this->assertTrue($order->delivery instanceof Delivery);
+        $this->assertEquals(1, $order->shipped);
     }
 }

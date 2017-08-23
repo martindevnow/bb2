@@ -24,11 +24,6 @@ class Package extends Model
     ];
 
     /**
-     * Mutators
-     */
-
-
-    /**
      * Get the average cost per pound of food for this package
      *
      * @return float|int
@@ -41,6 +36,29 @@ class Package extends Model
                 return $carry + $meal->costPerLb();
             }) / $this->meals()->count();
     }
+
+    /**
+     * Relationships
+     */
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function plans() {
+        return $this->hasMany(Plan::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function meals() {
+        return $this->belongsToMany(Meal::class)
+            ->withPivot('calendar_code');
+    }
+
+    /**
+     * Other
+     */
 
     /**
      * Get the cost per meal for the pet on this plan
@@ -77,24 +95,5 @@ class Package extends Model
         return $grouped->where('label', $meal->label)
             ->first()
             ->count;
-    }
-
-    /**
-     * Relationships
-     */
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function plans() {
-        return $this->hasMany(Plan::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function meals() {
-        return $this->belongsToMany(Meal::class)
-            ->withPivot('calendar_code');
     }
 }

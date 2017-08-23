@@ -2453,6 +2453,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -2476,6 +2477,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.packages = response.data.filter(function (pkg) {
                     return pkg.customization == 0;
                 });
+                vm.pkg = vm.packages[0];
             }).catch(function (error) {
                 console.log(error);
             });
@@ -2518,6 +2520,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         isSelected: function isSelected(pkg) {
             return this.pkg && this.pkg.id === pkg.id;
+        },
+        roundedWeight: function roundedWeight() {
+            if (!this.weight) {
+                return 0;
+            }
+            return Math.round(this.weight / 5) * 5;
         }
     },
     mounted: function mounted() {
@@ -2531,7 +2539,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var size = this.getSize();
 
-            return size.base + (this.weight - size.min) * size.inc + this.pkg.level * 5 + this.pkg.customization * 3 + this.shippingCost();
+            return size.base + (this.roundedWeight() - size.min) * size.inc + this.pkg.level * 5 + this.pkg.customization * 3 + this.shippingCost();
         }
     }
 
@@ -2678,7 +2686,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 40 */
@@ -19797,7 +19805,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meals\\SelectBox.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meals/SelectBox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SelectBox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19835,7 +19843,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meats\\Navigator.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meats/Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19869,7 +19877,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19907,7 +19915,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\PlanBuilder.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/PlanBuilder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlanBuilder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19945,7 +19953,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Calculator.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Calculator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Calculator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20220,7 +20228,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-10"
   }, [_vm._l((_vm.packages), function(pkg_i) {
     return _c('div', {
-      staticClass: "col-md-4"
+      staticClass: "col-sm-4"
     }, [_c('button', {
       staticClass: "btn btn-raised btn-block",
       class: [_vm.isSelected(pkg_i) ? _vm.selectedClass : _vm.defaultClass],
@@ -20239,7 +20247,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Shipping")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('div', {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block",
     class: [_vm.shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
@@ -20249,7 +20257,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("\n                    Monthly\n                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block",
     class: [_vm.shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
@@ -20270,7 +20278,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-6"
   }, [_c('button', {
     staticClass: "btn btn-block btn-success"
-  }, [_vm._v("\n                    $ " + _vm._s(_vm.cost.toFixed(2)) + "\n                ")])]), _vm._v(" "), _vm._m(0)])])])
+  }, [_vm._v("\n                    $ " + _vm._s(_vm.cost.toFixed(2)) + "\n                ")])]), _vm._v(" "), _vm._m(0)])]), _vm._v("\n    " + _vm._s(_vm.roundedWeight()) + "\n")])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-md-6"

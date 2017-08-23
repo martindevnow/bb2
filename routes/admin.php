@@ -21,6 +21,16 @@ Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 Route::resource('/meats', 'MeatsController');
 
 // Orders
+Route::get('/orders/{order}/paid', 'OrdersController@createPayment');
+Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
+Route::get('/orders/{order}/packed', 'OrdersController@markAsPacked');
+Route::get('/orders/{order}/picked', 'OrdersController@markAsPicked');
+
+Route::get('/orders/{order}/shipped', 'OrdersController@createShipment');
+Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
+
+Route::get('/orders/export/{perPage}', 'OrdersController@export');
+Route::get('/orders/export/view/{perPage}', 'OrdersController@exportView');
 Route::post('/orders/{order}/packed', 'OrdersController@packed');
 Route::resource('/orders', 'OrdersController');
 

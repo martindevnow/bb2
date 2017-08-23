@@ -15,6 +15,7 @@
 use Carbon\Carbon;
 use Martin\ACL\User;
 use Martin\Customers\Pet;
+use Martin\Products\Meat;
 use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
@@ -226,16 +227,19 @@ $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator
  * Payment
  */
 $factory->define(\Martin\Transactions\Payment::class, function(Faker\Generator $faker) {
+    $types = [
+        'cash',
+        'interac',
+        'e-transfer',
+        'stripe',
+        'paypal',
+    ];
+
     return [
         'customer_id'  => factory(\Martin\ACL\User::class)->create()->id,
         'collector_id' => factory(\Martin\ACL\User::class)->create()->id,
         'received_at' => $faker->dateTime,
-        'format'  => $faker->randomElement([
-            'stripe',
-            'cash',
-            'paypal',
-            'other'
-        ]),
+        'format'  => $faker->randomElement($types),
         'amount_paid' => $faker->numberBetween(1000,5000),
     ];
 });
@@ -270,6 +274,14 @@ $factory->define(\Martin\Customers\Pet::class, function (Faker\Generator $faker)
  * Plan
  */
 $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $faker) {
+    $types = [
+        'cash',
+        'interac',
+        'e-transfer',
+        'stripe',
+        'paypal',
+    ];
+
     return [
         'customer_id' => factory(\Martin\ACL\User::class)->create()->id,
         'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
@@ -283,6 +295,7 @@ $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $f
         'weekly_cost' => $faker->numberBetween(2000,4000),
         'weeks_at_a_time' => $faker->numberBetween(1,4),
         'active' => 1,
+        'payment_method'    => $faker->randomElement($types),
     ];
 });
 
@@ -298,6 +311,36 @@ $factory->define(\Martin\Products\Product::class, function (Faker\Generator $fak
         'sku'   => $faker->word,
         'ingredients' => $faker->words(5, true),
         'price' => $faker->numberBetween(300, 600),
+    ];
+});
+
+/**
+ * PurchaseOrder
+ */
+$factory->define(\Martin\Vendors\PurchaseOrder::class, function (Faker\Generator $faker) {
+    return [
+        'vendor_id' => factory(Martin\Vendors\Vendor::class)->create()->id,
+        'received' => false,
+        'received_at'=> null,
+        'ordered'  => true,
+        'ordered_at'   => Carbon::now()->subDays(4),
+        'total' => $faker->numberBetween(150,300),
+    ];
+});
+
+/**
+ * PurchaseOrderDetail
+ */
+$factory->define(\Martin\Vendors\PurchaseOrderDetail::class, function (Faker\Generator $faker) {
+    $purchasable = $faker->randomElement([
+        factory(Meat::class)->create(),
+    ]);
+
+    return [
+        'purchase_order_id' => factory(Martin\Vendors\PurchaseOrder::class)->create()->id,
+        'purchasable_type' => get_class($purchasable),
+        'purchasable_id' => $purchasable->id,
+        'quantity' => $faker->numberBetween(15,50),
     ];
 });
 
@@ -334,6 +377,16 @@ $factory->define(Martin\ACL\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+/**
+ * Vendor
+ */
+$factory->define(Martin\Vendors\Vendor::class, function (Faker\Generator $faker) {
+    return [
+        'label' => ucfirst($faker->word),
+        'code' => ($faker->word),
     ];
 });
 
