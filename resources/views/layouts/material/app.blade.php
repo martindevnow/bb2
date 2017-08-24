@@ -7,8 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#333">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>B.A.R.F. Bento</title>
-    <meta name="description" content="Raw Dog Food Delivery Service">
+    <title>BARF Bento - Raw dog food delivery service</title>
+    <meta name="description" content="BARF Bento raw dog food is a Toronto based company specializing in high-quality catered, portioned and delivered meals for your dog. Our nutritional raw dog food meals focus on the BARF diet and biologically appropriate raw food guidelines.">
+    <meta property="og:description" content="BARF Bento - Raw dog food delivery service">
+    <meta property="og:description" content="BARF Bento raw dog food is a Toronto based company specializing in high-quality catered, portioned and delivered meals for your dog. Our nutritional raw dog food meals focus on the BARF diet and biologically appropriate raw food guidelines.">
+
+    <meta property="og:url" content="http://barfbento.com/">
+    <meta property="og:site_name" content="BARFBento - Raw Dog Food Delivery Service">
+
     <link rel="shortcut icon" href="/material/img/favicon.png?v=3">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/material/css/preload.min.css" />
