@@ -24,6 +24,26 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="breed"
+                       class="col-md-2 control-label">Breed</label>
+                <div class="col-md-10">
+                    <input type="text"
+                           v-model="breed"
+                           class="form-control"
+                           id="breed"
+                           name="breed"
+                           placeholder="Breed"
+                           autocomplete="off"
+                           aria-describedby="breedHelp"
+                           style="cursor: auto;"
+                    >
+                    <span class="help-block" v-if="hasError('breed')">
+                        <strong>{{ getError('breed') }}</strong>
+                    </span>
+                </div>
+            </div>
+
 
             <div class="form-group">
                 <label for="weight"
@@ -56,8 +76,8 @@
                         </button>
 
                     </div>
-                    <span class="help-block" v-if="hasError('weight')">
-                        <strong>{{ getError('weight') }}</strong>
+                    <span class="help-block" v-if="hasError('package_id')">
+                        <strong>{{ getError('package_id') }}</strong>
                     </span>
                 </div>
             </div>
@@ -107,6 +127,8 @@
                 </div>
             </div>
 
+            <p class="help is-danger" v-show="status" v-text="status"></p>
+
             <input type="hidden" name="stripeToken" v-model="formData.stripeToken">
             <input type="hidden" name="stripeEmail" v-model="formData.stripeEmail">
 
@@ -138,7 +160,10 @@ export default {
                 stripeToken: '',
                 weight: 0,
                 package_id: 0,
-            }
+                name: '',
+                breed: ''
+            },
+            status: ''
         };
     },
     methods: {

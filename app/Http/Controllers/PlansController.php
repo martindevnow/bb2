@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PlanBuilderForm;
+use Exception;
 use Stripe\{Charge, Customer};
 
 class PlansController extends Controller
@@ -21,17 +23,18 @@ class PlansController extends Controller
     }
 
 
-    public function subscribe() {
+    public function subscribe(PlanBuilderForm $form) {
 
-        $customer = Customer::create([
-            'email'     => request('stripeEmail'),
-            'source'    => request('stripeToken'),
-        ]);
+        try {
+            $form->save();
 
-        Charge::create([
-            'customer'  => $customer->id,
-            'amount'    => 2500,
-            'currency'  => 'cad',
-        ]);
+        } catch (Exception $e) {
+            return response()->json(
+                ['status' => $e->getMessage()], 422
+            );
+        }
+
+
+
     }
 }

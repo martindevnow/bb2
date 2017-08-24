@@ -2463,6 +2463,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -2480,8 +2502,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 stripeEmail: '',
                 stripeToken: '',
                 weight: 0,
-                package_id: 0
-            }
+                package_id: 0,
+                name: '',
+                breed: ''
+            },
+            status: ''
         };
     },
 
@@ -2730,7 +2755,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 40 */
@@ -20237,6 +20262,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "col-md-2 control-label",
     attrs: {
+      "for": "breed"
+    }
+  }, [_vm._v("Breed")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.breed),
+      expression: "breed"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
+    attrs: {
+      "type": "text",
+      "id": "breed",
+      "name": "breed",
+      "placeholder": "Breed",
+      "autocomplete": "off",
+      "aria-describedby": "breedHelp"
+    },
+    domProps: {
+      "value": (_vm.breed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.breed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.hasError('breed')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('breed')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label",
+    attrs: {
       "for": "weight"
     }
   }, [_vm._v("Weight")]), _vm._v(" "), _c('div', {
@@ -20289,9 +20353,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n                        " + _vm._s(pkg_i.label) + "\n                    ")])])
-  }), _vm._v(" "), (_vm.hasError('weight')) ? _c('span', {
+  }), _vm._v(" "), (_vm.hasError('package_id')) ? _c('span', {
     staticClass: "help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('package_id')))])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-md-2 control-label"
@@ -20342,7 +20406,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.subscribe($event)
       }
     }
-  }, [_vm._v("\n                        Subscribe\n                    ")])])])]), _vm._v(" "), _c('input', {
+  }, [_vm._v("\n                        Subscribe\n                    ")])])])]), _vm._v(" "), _c('p', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.status),
+      expression: "status"
+    }],
+    staticClass: "help is-danger",
+    domProps: {
+      "textContent": _vm._s(_vm.status)
+    }
+  }), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
