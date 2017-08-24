@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WebhooksControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_maps_a_stripe_event_to_a_method() {

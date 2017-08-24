@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AllLoadingTest extends TestCase
 {
-    use DatabaseMigrations;
     use DatabaseTransactions;
 
     /** @test */

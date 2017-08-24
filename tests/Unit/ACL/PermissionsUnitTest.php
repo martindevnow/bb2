@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PermissionsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function permissions_have_a_model_factory() {
@@ -62,6 +62,7 @@ class PermissionsUnitTest extends TestCase
 
         $permission = $permission->fresh(['roles']);
 
+        // TODO: This seems to have broken somehow....
         $this->assertCount(0, $permission->roles);
         $this->assertDatabaseMissing('permission_role', [
             'role_id'   => $role->id,

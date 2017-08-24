@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddressesUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function addresses_have_a_model_factory() {

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PaymentsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_payments_page() {

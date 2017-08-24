@@ -4,11 +4,13 @@ namespace App\Http\Requests;
 
 use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\InvoiceItem;
+use Stripe\Subscription;
 
 class PlanBuilderForm extends FormRequest
 {
@@ -35,8 +37,8 @@ class PlanBuilderForm extends FormRequest
             'pet_weight'        => 'required|integer',
             'pet_name'          => 'required',
             'pet_breed'         => 'required',
-            'package_id'        => 'required',
-            'weeks_at_a_time'   => 'required'
+            'package_id'        => 'required|exists:packages,id',
+            'shipping_modifier' => 'required',
         ];
     }
 
@@ -48,16 +50,31 @@ class PlanBuilderForm extends FormRequest
 
         $package = Package::find($this->package_id);
 
-        $cost = round(Plan::getPrice($this->weight, $package, $this->weeks_at_a_time)
+        $cost = round(Plan::getPrice($this->pet_weight, $package, $this->shipping_modifier)
             * 100,
             0);
 
         $invoiceItem = InvoiceItem::create([
-            'customer'  => $customer->id,
-            'amount'    => $cost,
-            'currency'  => 'cad'
+            'description'   => $package->label . ' B.A.R.F.Bento for ' . $this->pet_name,
+            'customer'      => $customer->id,
+            'amount'        => $cost,
+            'currency'      => 'cad'
         ]);
 
+        $subscription = Subscription::create([
+            'customer'  => $customer->id,
+            'items' => [
+                ['plan'  => 'barfbento-master',]
+            ]
+        ]);
 
+        Log::info('[Customer]');
+        Log::info($customer);
+
+        Log::info('[InvoiceItem]');
+        Log::info($invoiceItem);
+
+        Log::info('[Subscription]');
+        Log::info($subscription);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VendorsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_vendor_has_a_model_factory() {

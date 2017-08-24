@@ -70,7 +70,7 @@ class Plan extends Model
         'last_delivery_at',
     ];
 
-    public static function getPrice($pet_weight, $package, $shipping_modifier) {
+    public static function getPrice($pet_weight, Package $package, $shipping_modifier) {
         /** @var Collection $sizes */
         $sizes = collect(self::PRICING_BY_SIZE);
 

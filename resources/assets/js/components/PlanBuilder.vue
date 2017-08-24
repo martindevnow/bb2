@@ -230,6 +230,7 @@ export default {
                 pet_name: '',
                 pet_breed: '',
                 pet_weight: 0,
+                shipping_modifier: 0,
             },
             status: ''
         };
@@ -308,7 +309,7 @@ export default {
                 this.formData.stripeToken = token.id;
                 this.formData.stripeEmail = token.email;
                 this.formData.package_id = this.pkg.id;
-                this.formData.weeks_at_a_time = this.shipping_modifier === 0 ? 4 : 2;
+                this.formData.shipping_modifier = this.shipping_modifier;
                 axios.post('/plans/subscribe', this.formData)
                     .then(
                         response => alert('Complete! Thanks for your payment!'),

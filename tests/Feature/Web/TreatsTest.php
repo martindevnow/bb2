@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class TreatsTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_guest_can_see_treats() {

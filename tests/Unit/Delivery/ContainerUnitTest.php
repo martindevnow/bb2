@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContainerUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_can_select_a_container_based_on_meal_weight() {

@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function users_have_a_model_factory() {

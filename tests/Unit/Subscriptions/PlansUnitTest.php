@@ -18,7 +18,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlansUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_has_a_model_factory() {
@@ -364,5 +364,16 @@ class PlansUnitTest extends TestCase
         foreach($meals as $meal) {
             $this->assertEquals(14, $meal->count);
         }
+    }
+
+    /** @test */
+    public function it_can_calculate_the_subtotal() {
+        $package = factory(Package::class)->create([
+            'customization' => 0,
+            'level' => 0,
+        ]);
+        $this->assertEquals(6500,
+            round(Plan::getPrice(50, $package, 0) * 100, 0)
+            );
     }
 }

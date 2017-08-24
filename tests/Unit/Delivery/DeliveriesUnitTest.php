@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DeliveriesUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_delivery_has_a_model_factory() {

@@ -20,7 +20,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class OrdersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_order_has_a_factory() {

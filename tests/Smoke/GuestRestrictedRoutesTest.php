@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GuestRestrictedRoutesTest extends TestCase
 {
-    use DatabaseMigrations;
+
     use DatabaseTransactions;
 
     /** @test */

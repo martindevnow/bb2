@@ -16,7 +16,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class OrdersTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_orders_page() {

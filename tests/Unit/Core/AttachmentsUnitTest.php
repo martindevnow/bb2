@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AttachmentsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @test */
     public function an_attachment_has_a_model_factory() {
