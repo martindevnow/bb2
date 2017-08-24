@@ -36,3 +36,5 @@ Route::get('/quote', 'QuoteController@index');
 Route::resource('/treats', 'TreatsController');
 
 Route::post('/stripe/webhook', 'WebhooksController@handle');
+
+Route::post('/plans/subscribe', 'PlansController@subscribe');

@@ -4,66 +4,136 @@
 
             <h1>Plan Builder</h1>
 
-            <div class="form-group">
-                <label for="name"
-                       class="col-md-2 control-label">Name</label>
-                <div class="col-md-10">
-                    <input type="text"
-                           v-model="name"
-                           class="form-control"
-                           id="name"
-                           name="name"
-                           placeholder="Name"
-                           autocomplete="off"
-                           aria-describedby="nameHelp"
-                           style="cursor: auto;"
-                    >
-                    <span class="help-block" v-if="hasError('name')">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>You</h2>
+                    <div class="form-group">
+                        <label for="username"
+                               class="col-md-2 control-label">Username</label>
+                        <div class="col-md-10">
+                            <input type="text"
+                                   v-model="formData.username"
+                                   class="form-control"
+                                   id="username"
+                                   name="Username"
+                                   placeholder="username"
+                                   autocomplete="off"
+                                   aria-describedby="usernameHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('username')">
+                                <strong>{{ getError('username') }}</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"
+                               class="col-md-2 control-label">Email</label>
+                        <div class="col-md-10">
+                            <input type="email"
+                                   v-model="formData.email"
+                                   class="form-control"
+                                   id="email"
+                                   name="email"
+                                   placeholder="e-mail"
+                                   autocomplete="off"
+                                   aria-describedby="emailHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('email')">
+                                <strong>{{ getError('email') }}</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"
+                               class="col-md-2 control-label">password</label>
+                        <div class="col-md-10">
+                            <input type="password"
+                                   v-model="formData.password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   autocomplete="off"
+                                   aria-describedby="passwordHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('password')">
+                                <strong>{{ getError('password') }}</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <h2>Your Dog</h2>
+                    <div class="form-group">
+                        <label for="name"
+                               class="col-md-2 control-label">Name</label>
+                        <div class="col-md-10">
+                            <input type="text"
+                                   v-model="formData.pet_name"
+                                   class="form-control"
+                                   id="name"
+                                   name="name"
+                                   placeholder="Name"
+                                   autocomplete="off"
+                                   aria-describedby="nameHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('name')">
                         <strong>{{ getError('name') }}</strong>
                     </span>
-                </div>
-            </div>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label for="breed"
-                       class="col-md-2 control-label">Breed</label>
-                <div class="col-md-10">
-                    <input type="text"
-                           v-model="breed"
-                           class="form-control"
-                           id="breed"
-                           name="breed"
-                           placeholder="Breed"
-                           autocomplete="off"
-                           aria-describedby="breedHelp"
-                           style="cursor: auto;"
-                    >
-                    <span class="help-block" v-if="hasError('breed')">
+                    <div class="form-group">
+                        <label for="breed"
+                               class="col-md-2 control-label">Breed</label>
+                        <div class="col-md-10">
+                            <input type="text"
+                                   v-model="formData.pet_breed"
+                                   class="form-control"
+                                   id="breed"
+                                   name="breed"
+                                   placeholder="Breed"
+                                   autocomplete="off"
+                                   aria-describedby="breedHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('breed')">
                         <strong>{{ getError('breed') }}</strong>
                     </span>
-                </div>
-            </div>
+                        </div>
+                    </div>
 
 
-            <div class="form-group">
-                <label for="weight"
-                       class="col-md-2 control-label">Weight</label>
-                <div class="col-md-10">
-                    <input type="text"
-                           v-model="weight"
-                           class="form-control"
-                           id="weight"
-                           name="weight"
-                           placeholder="Weight"
-                           autocomplete="off"
-                           aria-describedby="weightHelp"
-                           style="cursor: auto;"
-                    >
-                    <span class="help-block" v-if="hasError('weight')">
+                    <div class="form-group">
+                        <label for="weight"
+                               class="col-md-2 control-label">Weight</label>
+                        <div class="col-md-10">
+                            <input type="text"
+                                   v-model="formData.pet_weight"
+                                   class="form-control"
+                                   id="weight"
+                                   name="weight"
+                                   placeholder="Weight"
+                                   autocomplete="off"
+                                   aria-describedby="weightHelp"
+                                   style="cursor: auto;"
+                            >
+                            <span class="help-block" v-if="hasError('weight')">
                         <strong>{{ getError('weight') }}</strong>
                     </span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
 
             <div class="form-group">
                 <label class="col-md-2 control-label">Package</label>
@@ -71,7 +141,7 @@
                     <div class="col-sm-4" v-for="pkg_i in packages">
                         <button class="btn btn-raised btn-block"
                                 :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
-                                @click="pkg = pkg_i">
+                                @click.prevent="pkg = pkg_i">
                             {{ pkg_i.label }}
                         </button>
 
@@ -89,14 +159,14 @@
                     <div class="col-sm-3">
                         <button class="btn btn-raised btn-block"
                                 :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
-                                @click="shipping_modifier = 0">
+                                @click.prevent="shipping_modifier = 0">
                             Monthly
                         </button>
                     </div>
                     <div class="col-sm-3">
                     <button class="btn btn-raised btn-block"
                                 :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
-                                @click="shipping_modifier = 1">
+                                @click.prevent="shipping_modifier = 1">
                             Bi-Weekly
                         </button>
 
@@ -145,9 +215,7 @@ export default {
             defaultClass: 'btn-default',
             packages: [],
             pkg: {id: 1},
-            weight: null,
             shipping_modifier: 0,
-            name: '',
             sizes: [
                 {label: 'S', min: 5, max: 14, base: 39, inc: 1.95},
                 {label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625},
@@ -158,10 +226,10 @@ export default {
             formData: {
                 stripeEmail: '',
                 stripeToken: '',
-                weight: 0,
                 package_id: 0,
-                name: '',
-                breed: ''
+                pet_name: '',
+                pet_breed: '',
+                pet_weight: 0,
             },
             status: ''
         };
@@ -187,29 +255,20 @@ export default {
             return this.getError(field) === null;
         },
         getError(field) {
-            if (field === 'name') {
-                return this.validateName();
-            }
             if (field === 'weight') {
                 return this.validateWeight();
             }
         },
         validateWeight() {
-            if (this.weight < 0) {
+            if (this.formData.pet_weight < 0) {
                 return 'The weight must be positive.';
-            }
-            return null;
-        },
-        validateName() {
-            if (this.name.length > 20) {
-                return 'Max length is 20 characters.';
             }
             return null;
         },
         getSize() {
             let vm = this;
             let size = this.sizes.filter(function(size) {
-                return vm.weight >= size.min && vm.weight <= size.max;
+                return vm.formData.pet_weight >= size.min && vm.formData.pet_weight <= size.max;
             });
             if (! size.length) {
                 return null;
@@ -220,15 +279,17 @@ export default {
             return this.pkg && this.pkg.id === pkg.id;
         },
         roundedWeight() {
-            if (! this.weight) {
+            if (! this.formData.pet_weight) {
                 return 0;
             }
-            return Math.round(this.weight / 5) * 5;
+            return Math.round(this.formData.pet_weight / 5) * 5;
         },
         subscribe() {
             this.stripe.open({
                 name: this.pkg.label,
-                description: this.pkg.label + ' Bento for ' + this.name + ' (' + this.weight + ' lbs)',
+                description: this.pkg.label + ' Bento for '
+                    + this.formData.pet_name
+                    + ' (' + this.formData.pet_weight + ' lbs)',
                 zipCode: true,
                 amount: this.cost * 100
             });
@@ -237,28 +298,32 @@ export default {
     mounted() {
         this.getPackages();
 
+        let vm = this;
         this.stripe = StripeCheckout.configure({
             key: BarfBento.stripeKey,
             image: "https://stripe.com/img/documentation/checkout/marketplace.png",
             locale: "auto",
             panelLabel: "Subscribe For",
-//            email: BarfBento.user.email,
             token: (token) => {
                 this.formData.stripeToken = token.id;
                 this.formData.stripeEmail = token.email;
                 this.formData.package_id = this.pkg.id;
-                this.formData.weight = this.weight;
+                this.formData.weeks_at_a_time = this.shipping_modifier === 0 ? 4 : 2;
                 axios.post('/plans/subscribe', this.formData)
                     .then(
                         response => alert('Complete! Thanks for your payment!'),
-                        response => this.status = response.body.status
+                    )
+                    .catch(
+                        response => {
+                            console.log({'response': response});
+                        }
                     )
             }
         });
     },
     computed: {
         cost() {
-            if (! this.weight || ! this.pkg) {
+            if (! this.formData.pet_weight || ! this.pkg) {
                 return 1;
             }
             let size = this.getSize();

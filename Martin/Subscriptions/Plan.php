@@ -70,6 +70,27 @@ class Plan extends Model
         'last_delivery_at',
     ];
 
+    public static function getPrice($pet_weight, $package, $shipping_modifier) {
+        /** @var Collection $sizes */
+        $sizes = collect(self::PRICING_BY_SIZE);
+
+        $size = $sizes->filter(function($size) use ($pet_weight) {
+            return $pet_weight >= $size['min'] && $pet_weight <= $size['max'];
+        });
+        if (! $size->count()) {
+            // TODO: Throw error here
+            return false;
+        }
+        $size = $size->first();
+
+        $weight = round($pet_weight / 5, 0) * 5;
+        return $size['base']
+            + ($weight - $size['min']) / 5 * $size['inc']
+            + $package->level * 5
+            + $package->customization * 3
+            + 5 * ($shipping_modifier) ;
+    }
+
     /**
      * Scopes
      */
@@ -338,26 +359,7 @@ class Plan extends Model
      * @return mixed
      */
     public function calculateSubtotal() {
-        $pet = $this->pet;
-        /** @var Collection $sizes */
-        $sizes = collect(self::PRICING_BY_SIZE);
-
-        $size = $sizes->filter(function($size) use ($pet) {
-            return $pet->weight >= $size['min'] && $pet->weight <= $size['max'];
-        });
-        if (! $size->count()) {
-            // TODO: Throw error here
-            return false;
-        }
-        $size = $size->first();
-
-        $weight = round($this->pet_weight / 5, 0) * 5;
-        return $size['base']
-            + ($weight - $size['min']) / 5 * $size['inc']
-            + $this->package->level * 5
-            + $this->customization * 3
-            + self::SHIPPING_COST / ($this->weeks_at_a_time || 1) ;
-
+        return self::getPrice($this->pet_weight, $this->package, $this->weeks_at_a_time === 4 ? 0 : 1);
     }
 
     /**

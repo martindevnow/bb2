@@ -2485,6 +2485,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -2494,17 +2564,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             defaultClass: 'btn-default',
             packages: [],
             pkg: { id: 1 },
-            weight: null,
             shipping_modifier: 0,
-            name: '',
             sizes: [{ label: 'S', min: 5, max: 14, base: 39, inc: 1.95 }, { label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625 }, { label: 'L', min: 50, max: 94, base: 65, inc: 1.755 }, { label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95 }, { label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145 }],
             formData: {
                 stripeEmail: '',
                 stripeToken: '',
-                weight: 0,
                 package_id: 0,
-                name: '',
-                breed: ''
+                pet_name: '',
+                pet_breed: '',
+                pet_weight: 0
             },
             status: ''
         };
@@ -2529,29 +2597,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.getError(field) === null;
         },
         getError: function getError(field) {
-            if (field === 'name') {
-                return this.validateName();
-            }
             if (field === 'weight') {
                 return this.validateWeight();
             }
         },
         validateWeight: function validateWeight() {
-            if (this.weight < 0) {
+            if (this.formData.pet_weight < 0) {
                 return 'The weight must be positive.';
-            }
-            return null;
-        },
-        validateName: function validateName() {
-            if (this.name.length > 20) {
-                return 'Max length is 20 characters.';
             }
             return null;
         },
         getSize: function getSize() {
             var vm = this;
             var size = this.sizes.filter(function (size) {
-                return vm.weight >= size.min && vm.weight <= size.max;
+                return vm.formData.pet_weight >= size.min && vm.formData.pet_weight <= size.max;
             });
             if (!size.length) {
                 return null;
@@ -2562,15 +2621,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.pkg && this.pkg.id === pkg.id;
         },
         roundedWeight: function roundedWeight() {
-            if (!this.weight) {
+            if (!this.formData.pet_weight) {
                 return 0;
             }
-            return Math.round(this.weight / 5) * 5;
+            return Math.round(this.formData.pet_weight / 5) * 5;
         },
         subscribe: function subscribe() {
             this.stripe.open({
                 name: this.pkg.label,
-                description: this.pkg.label + ' Bento for ' + this.name + ' (' + this.weight + ' lbs)',
+                description: this.pkg.label + ' Bento for ' + this.formData.pet_name + ' (' + this.formData.pet_weight + ' lbs)',
                 zipCode: true,
                 amount: this.cost * 100
             });
@@ -2581,21 +2640,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.getPackages();
 
+        var vm = this;
         this.stripe = StripeCheckout.configure({
             key: BarfBento.stripeKey,
             image: "https://stripe.com/img/documentation/checkout/marketplace.png",
             locale: "auto",
             panelLabel: "Subscribe For",
-            //            email: BarfBento.user.email,
             token: function token(_token) {
                 _this.formData.stripeToken = _token.id;
                 _this.formData.stripeEmail = _token.email;
                 _this.formData.package_id = _this.pkg.id;
-                _this.formData.weight = _this.weight;
+                _this.formData.weeks_at_a_time = _this.shipping_modifier === 0 ? 4 : 2;
                 axios.post('/plans/subscribe', _this.formData).then(function (response) {
                     return alert('Complete! Thanks for your payment!');
-                }, function (response) {
-                    return _this.status = response.body.status;
+                }).catch(function (response) {
+                    console.log({ 'response': response });
                 });
             }
         });
@@ -2603,7 +2662,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         cost: function cost() {
-            if (!this.weight || !this.pkg) {
+            if (!this.formData.pet_weight || !this.pkg) {
                 return 1;
             }
             var size = this.getSize();
@@ -2755,7 +2814,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 40 */
@@ -20219,6 +20278,128 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "method": "POST"
     }
   }, [_c('h1', [_vm._v("Plan Builder")]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h2', [_vm._v("You")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "username"
+    }
+  }, [_vm._v("Username")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.formData.username),
+      expression: "formData.username"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
+    attrs: {
+      "type": "text",
+      "id": "username",
+      "name": "Username",
+      "placeholder": "username",
+      "autocomplete": "off",
+      "aria-describedby": "usernameHelp"
+    },
+    domProps: {
+      "value": (_vm.formData.username)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.formData.username = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.hasError('username')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('username')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "email"
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.formData.email),
+      expression: "formData.email"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
+    attrs: {
+      "type": "email",
+      "id": "email",
+      "name": "email",
+      "placeholder": "e-mail",
+      "autocomplete": "off",
+      "aria-describedby": "emailHelp"
+    },
+    domProps: {
+      "value": (_vm.formData.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.formData.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.hasError('email')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('email')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "password"
+    }
+  }, [_vm._v("password")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.formData.password),
+      expression: "formData.password"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "cursor": "auto"
+    },
+    attrs: {
+      "type": "password",
+      "id": "password",
+      "name": "password",
+      "autocomplete": "off",
+      "aria-describedby": "passwordHelp"
+    },
+    domProps: {
+      "value": (_vm.formData.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.formData.password = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.hasError('password')) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('password')))])]) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h2', [_vm._v("Your Dog")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-md-2 control-label",
@@ -20231,8 +20412,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.name),
-      expression: "name"
+      value: (_vm.formData.pet_name),
+      expression: "formData.pet_name"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -20247,12 +20428,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "aria-describedby": "nameHelp"
     },
     domProps: {
-      "value": (_vm.name)
+      "value": (_vm.formData.pet_name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.name = $event.target.value
+        _vm.formData.pet_name = $event.target.value
       }
     }
   }), _vm._v(" "), (_vm.hasError('name')) ? _c('span', {
@@ -20270,8 +20451,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.breed),
-      expression: "breed"
+      value: (_vm.formData.pet_breed),
+      expression: "formData.pet_breed"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -20286,12 +20467,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "aria-describedby": "breedHelp"
     },
     domProps: {
-      "value": (_vm.breed)
+      "value": (_vm.formData.pet_breed)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.breed = $event.target.value
+        _vm.formData.pet_breed = $event.target.value
       }
     }
   }), _vm._v(" "), (_vm.hasError('breed')) ? _c('span', {
@@ -20309,8 +20490,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.weight),
-      expression: "weight"
+      value: (_vm.formData.pet_weight),
+      expression: "formData.pet_weight"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -20325,17 +20506,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "aria-describedby": "weightHelp"
     },
     domProps: {
-      "value": (_vm.weight)
+      "value": (_vm.formData.pet_weight)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.weight = $event.target.value
+        _vm.formData.pet_weight = $event.target.value
       }
     }
   }), _vm._v(" "), (_vm.hasError('weight')) ? _c('span', {
     staticClass: "help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-md-2 control-label"
@@ -20349,6 +20530,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: [_vm.isSelected(pkg_i) ? _vm.selectedClass : _vm.defaultClass],
       on: {
         "click": function($event) {
+          $event.preventDefault();
           _vm.pkg = pkg_i
         }
       }
@@ -20368,6 +20550,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: [_vm.shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
     on: {
       "click": function($event) {
+        $event.preventDefault();
         _vm.shipping_modifier = 0
       }
     }
@@ -20378,6 +20561,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: [_vm.shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
     on: {
       "click": function($event) {
+        $event.preventDefault();
         _vm.shipping_modifier = 1
       }
     }

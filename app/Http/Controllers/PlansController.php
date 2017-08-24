@@ -33,8 +33,5 @@ class PlansController extends Controller
                 ['status' => $e->getMessage()], 422
             );
         }
-
-
-
     }
 }

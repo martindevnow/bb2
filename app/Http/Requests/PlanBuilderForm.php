@@ -4,8 +4,11 @@ namespace App\Http\Requests;
 
 use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Martin\Subscriptions\Package;
+use Martin\Subscriptions\Plan;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\InvoiceItem;
 
 class PlanBuilderForm extends FormRequest
 {
@@ -16,7 +19,7 @@ class PlanBuilderForm extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,11 +30,13 @@ class PlanBuilderForm extends FormRequest
     public function rules()
     {
         return [
-            'stripeEmail'   => 'required|email',
-            'stripeToken'   => 'required',
-            'weight'        => 'required|integer',
-            'name'          => 'required',
-            'breed'         => 'required',
+            'stripeEmail'       => 'required|email',
+            'stripeToken'       => 'required',
+            'pet_weight'        => 'required|integer',
+            'pet_name'          => 'required',
+            'pet_breed'         => 'required',
+            'package_id'        => 'required',
+            'weeks_at_a_time'   => 'required'
         ];
     }
 
@@ -41,12 +46,18 @@ class PlanBuilderForm extends FormRequest
             'source'    => $this->stripeToken,
         ]);
 
-        $customer = Charge::create([
+        $package = Package::find($this->package_id);
+
+        $cost = round(Plan::getPrice($this->weight, $package, $this->weeks_at_a_time)
+            * 100,
+            0);
+
+        $invoiceItem = InvoiceItem::create([
             'customer'  => $customer->id,
-            'amount'    => 2500,
-            'currency'  => 'cad',
+            'amount'    => $cost,
+            'currency'  => 'cad'
         ]);
 
-        $this->user()->activate($customer->id);
+
     }
 }
