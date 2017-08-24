@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Traits\CoreRelations;
@@ -20,6 +21,16 @@ class Plan extends Model
 {
     const HOURLY_RATE_FOR_PACKING_ORDERS = 25;
     const MINUTES_REQUIRED_TO_PACK_A_WEEK = 20;
+
+    const PRICING_BY_SIZE = [
+        ['label' => 'S', 'min' => 5, 'max' => 14, 'base' => 39, 'inc' => 1.95],
+        ['label' => 'M', 'min' => 15, 'max' => 49, 'base' => 44.85, 'inc' => 1.625],
+        ['label' => 'L', 'min' => 50, 'max' => 94, 'base' => 65, 'inc' => 1.755],
+        ['label' => 'XL', 'min' => 95, 'max' => 139, 'base' => 87.1, 'inc' => 1.95],
+        ['label' => 'XXL', 'min' => 140, 'max' => 220, 'base' => 104, 'inc' => 2.145],
+    ];
+
+    const SHIPPING_COST = 20;
 
     use SoftDeletes;
     use CoreRelations;
@@ -327,9 +338,26 @@ class Plan extends Model
      * @return mixed
      */
     public function calculateSubtotal() {
-        return $this->weeks_at_a_time *
-            ($this->package->costPerWeek($this->pet)
-                + $this->packagingCost());
+        $pet = $this->pet;
+        /** @var Collection $sizes */
+        $sizes = collect(self::PRICING_BY_SIZE);
+
+        $size = $sizes->filter(function($size) use ($pet) {
+            return $pet->weight >= $size['min'] && $pet->weight <= $size['max'];
+        });
+        if (! $size->count()) {
+            // TODO: Throw error here
+            return false;
+        }
+        $size = $size->first();
+
+        $weight = round($this->pet_weight / 5, 0) * 5;
+        return $size['base']
+            + ($weight - $size['min']) / 5 * $size['inc']
+            + $this->package->level * 5
+            + $this->customization * 3
+            + self::SHIPPING_COST / ($this->weeks_at_a_time || 1) ;
+
     }
 
     /**

@@ -1,107 +1,116 @@
 <template>
-    <div>
-        <h1>Plan Builder</h1>
+    <div class="row">
+        <form action="/purchases" method="POST">
 
-        <div class="form-group">
-            <label for="name"
-                   class="col-md-2 control-label">Name</label>
-            <div class="col-md-10">
-                <input type="text"
-                       v-model="name"
-                       class="form-control"
-                       id="name"
-                       name="name"
-                       placeholder="Name"
-                       autocomplete="off"
-                       aria-describedby="nameHelp"
-                       style="cursor: auto;"
-                >
-                <span class="help-block" v-if="hasError('name')">
-                    <strong>{{ getError('name') }}</strong>
-                </span>
+            <h1>Plan Builder</h1>
+
+            <div class="form-group">
+                <label for="name"
+                       class="col-md-2 control-label">Name</label>
+                <div class="col-md-10">
+                    <input type="text"
+                           v-model="name"
+                           class="form-control"
+                           id="name"
+                           name="name"
+                           placeholder="Name"
+                           autocomplete="off"
+                           aria-describedby="nameHelp"
+                           style="cursor: auto;"
+                    >
+                    <span class="help-block" v-if="hasError('name')">
+                        <strong>{{ getError('name') }}</strong>
+                    </span>
+                </div>
             </div>
-        </div>
 
 
-        <div class="form-group">
-            <label for="weight"
-                   class="col-md-2 control-label">Weight</label>
-            <div class="col-md-10">
-                <input type="text"
-                       v-model="weight"
-                       class="form-control"
-                       id="weight"
-                       name="weight"
-                       placeholder="Weight"
-                       autocomplete="off"
-                       aria-describedby="weightHelp"
-                       style="cursor: auto;"
-                >
-                <span class="help-block" v-if="hasError('weight')">
-                    <strong>{{ getError('weight') }}</strong>
-                </span>
+            <div class="form-group">
+                <label for="weight"
+                       class="col-md-2 control-label">Weight</label>
+                <div class="col-md-10">
+                    <input type="text"
+                           v-model="weight"
+                           class="form-control"
+                           id="weight"
+                           name="weight"
+                           placeholder="Weight"
+                           autocomplete="off"
+                           aria-describedby="weightHelp"
+                           style="cursor: auto;"
+                    >
+                    <span class="help-block" v-if="hasError('weight')">
+                        <strong>{{ getError('weight') }}</strong>
+                    </span>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-md-2 control-label">Package</label>
-            <div class="col-md-10">
-                <div class="col-sm-4" v-for="pkg_i in packages">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Package</label>
+                <div class="col-md-10">
+                    <div class="col-sm-4" v-for="pkg_i in packages">
+                        <button class="btn btn-raised btn-block"
+                                :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
+                                @click="pkg = pkg_i">
+                            {{ pkg_i.label }}
+                        </button>
+
+                    </div>
+                    <span class="help-block" v-if="hasError('weight')">
+                        <strong>{{ getError('weight') }}</strong>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Shipping</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-raised btn-block"
+                                :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
+                                @click="shipping_modifier = 0">
+                            Monthly
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
                     <button class="btn btn-raised btn-block"
-                            :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
-                            @click="pkg = pkg_i">
-                        {{ pkg_i.label }}
-                    </button>
+                                :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
+                                @click="shipping_modifier = 1">
+                            Bi-Weekly
+                        </button>
 
-                </div>
-                <span class="help-block" v-if="hasError('weight')">
-                    <strong>{{ getError('weight') }}</strong>
-                </span>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">Shipping</label>
-            <div class="col-md-10">
-                <div class="col-sm-3">
-                    <button class="btn btn-raised btn-block"
-                            :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
-                            @click="shipping_modifier = 0">
-                        Monthly
-                    </button>
-                </div>
-                <div class="col-sm-3">
-                <button class="btn btn-raised btn-block"
-                            :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
-                            @click="shipping_modifier = 1">
-                        Bi-Weekly
-                    </button>
-
-                </div>
-                <span class="help-block" v-if="hasError('shipping_modifier')">
-                    <strong>{{ getError('shipping_modifier') }}</strong>
-                </span>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <div class="col-md-6">
-                    <button class="btn btn-block btn-success">
-                        $ {{ cost.toFixed(2)}}
-                    </button>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-raised btn-success">
-                        Subscribe
-                    </button>
+                    </div>
+                    <span class="help-block" v-if="hasError('shipping_modifier')">
+                        <strong>{{ getError('shipping_modifier') }}</strong>
+                    </span>
                 </div>
             </div>
-        </div>
-        {{ roundedWeight() }}
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <div class="col-md-6">
+                        <button class="btn btn-block btn-success">
+                            $ {{ cost.toFixed(2)}}
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-raised btn-success"
+                                type="submit"
+                                @click.prevent="subscribe"
+                        >
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="stripeToken" v-model="formData.stripeToken">
+            <input type="hidden" name="stripeEmail" v-model="formData.stripeEmail">
+
+        </form>
     </div>
 </template>
 
@@ -123,7 +132,13 @@ export default {
                 {label: 'L', min: 50, max: 94, base: 65, inc: 1.755},
                 {label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95},
                 {label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145},
-            ]
+            ],
+            formData: {
+                stripeEmail: '',
+                stripeToken: '',
+                weight: 0,
+                package_id: 0,
+            }
         };
     },
     methods: {
@@ -184,15 +199,42 @@ export default {
                 return 0;
             }
             return Math.round(this.weight / 5) * 5;
+        },
+        subscribe() {
+            this.stripe.open({
+                name: this.pkg.label,
+                description: this.pkg.label + ' Bento for ' + this.name + ' (' + this.weight + ' lbs)',
+                zipCode: true,
+                amount: this.cost * 100
+            });
         }
     },
     mounted() {
         this.getPackages();
+
+        this.stripe = StripeCheckout.configure({
+            key: BarfBento.stripeKey,
+            image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+            locale: "auto",
+            panelLabel: "Subscribe For",
+//            email: BarfBento.user.email,
+            token: (token) => {
+                this.formData.stripeToken = token.id;
+                this.formData.stripeEmail = token.email;
+                this.formData.package_id = this.pkg.id;
+                this.formData.weight = this.weight;
+                axios.post('/plans/subscribe', this.formData)
+                    .then(
+                        response => alert('Complete! Thanks for your payment!'),
+                        response => this.status = response.body.status
+                    )
+            }
+        });
     },
     computed: {
         cost() {
             if (! this.weight || ! this.pkg) {
-                return 0;
+                return 1;
             }
             let size = this.getSize();
 

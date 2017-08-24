@@ -14,6 +14,20 @@
                 </button>
             </a>
         </li>
+        <li class="sparks-info">
+            <a href="/admin/orders/export/packing/2">
+                <button class="btn btn-block btn-primary btn-lg">
+                    <i class="fa fa-wrench"></i> Export Packing (Big)
+                </button>
+            </a>
+        </li>
+        <li class="sparks-info">
+            <a href="/admin/orders/export/packing/4">
+                <button class="btn btn-block btn-primary btn-sm">
+                    <i class="fa fa-wrench"></i> Export Packing (Small)
+                </button>
+            </a>
+        </li>
     </ul>
 
 @endsection
@@ -61,7 +75,7 @@
                                         {{ $order->created_at->format('Y-m-d') }}
                                     </a>
                                 </td>
-                                <td>{{ $order->customer->name }}</td>
+                                <td>({{ $order->plan->pet->name }}) {{ $order->customer->name }}</td>
                                 <td>{{ round($order->plan->pet->mealSizeInGrams()) }} g</td>
                                 <td>{{ $order->plan->package->label }}</td>
                                 <td>{{ $order->deliveryAddress->toString() }}</td>
@@ -119,6 +133,14 @@
                                         </a>
                                     @endif
 
+                                        <form action="/admin/orders/{{ $order->id }}" method="POST">
+                                            <?= csrf_field() ?>
+                                            <input name="_method" type="hidden" value="DELETE">
+                                            <input name="order_id" type="hidden" value="{{ $order->id }}">
+                                            <button class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
                                 </td>
                             </tr>
                         @endforeach

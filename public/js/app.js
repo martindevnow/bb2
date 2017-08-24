@@ -2454,6 +2454,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -2466,7 +2475,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             weight: null,
             shipping_modifier: 0,
             name: '',
-            sizes: [{ label: 'S', min: 5, max: 14, base: 39, inc: 1.95 }, { label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625 }, { label: 'L', min: 50, max: 94, base: 65, inc: 1.755 }, { label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95 }, { label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145 }]
+            sizes: [{ label: 'S', min: 5, max: 14, base: 39, inc: 1.95 }, { label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625 }, { label: 'L', min: 50, max: 94, base: 65, inc: 1.755 }, { label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95 }, { label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145 }],
+            formData: {
+                stripeEmail: '',
+                stripeToken: '',
+                weight: 0,
+                package_id: 0
+            }
         };
     },
 
@@ -2526,16 +2541,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 0;
             }
             return Math.round(this.weight / 5) * 5;
+        },
+        subscribe: function subscribe() {
+            this.stripe.open({
+                name: this.pkg.label,
+                description: this.pkg.label + ' Bento for ' + this.name + ' (' + this.weight + ' lbs)',
+                zipCode: true,
+                amount: this.cost * 100
+            });
         }
     },
     mounted: function mounted() {
+        var _this = this;
+
         this.getPackages();
+
+        this.stripe = StripeCheckout.configure({
+            key: BarfBento.stripeKey,
+            image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+            locale: "auto",
+            panelLabel: "Subscribe For",
+            //            email: BarfBento.user.email,
+            token: function token(_token) {
+                _this.formData.stripeToken = _token.id;
+                _this.formData.stripeEmail = _token.email;
+                _this.formData.package_id = _this.pkg.id;
+                _this.formData.weight = _this.weight;
+                axios.post('/plans/subscribe', _this.formData).then(function (response) {
+                    return alert('Complete! Thanks for your payment!');
+                }, function (response) {
+                    return _this.status = response.body.status;
+                });
+            }
+        });
     },
 
     computed: {
         cost: function cost() {
             if (!this.weight || !this.pkg) {
-                return 0;
+                return 1;
             }
             var size = this.getSize();
 
@@ -2686,7 +2730,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 40 */
@@ -19805,7 +19849,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meals/SelectBox.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meals\\SelectBox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SelectBox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19843,7 +19887,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meats/Navigator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meats\\Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19877,7 +19921,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19915,7 +19959,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/PlanBuilder.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\PlanBuilder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlanBuilder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19953,7 +19997,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Calculator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Calculator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Calculator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20142,7 +20186,14 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h1', [_vm._v("Plan Builder")]), _vm._v(" "), _c('div', {
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('form', {
+    attrs: {
+      "action": "/purchases",
+      "method": "POST"
+    }
+  }, [_c('h1', [_vm._v("Plan Builder")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-md-2 control-label",
@@ -20237,7 +20288,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.pkg = pkg_i
         }
       }
-    }, [_vm._v("\n                    " + _vm._s(pkg_i.label) + "\n                ")])])
+    }, [_vm._v("\n                        " + _vm._s(pkg_i.label) + "\n                    ")])])
   }), _vm._v(" "), (_vm.hasError('weight')) ? _c('span', {
     staticClass: "help-block"
   }, [_c('strong', [_vm._v(_vm._s(_vm.getError('weight')))])]) : _vm._e()], 2)]), _vm._v(" "), _c('div', {
@@ -20256,7 +20307,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.shipping_modifier = 0
       }
     }
-  }, [_vm._v("\n                    Monthly\n                ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                        Monthly\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block",
@@ -20266,7 +20317,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.shipping_modifier = 1
       }
     }
-  }, [_vm._v("\n                    Bi-Weekly\n                ")])]), _vm._v(" "), (_vm.hasError('shipping_modifier')) ? _c('span', {
+  }, [_vm._v("\n                        Bi-Weekly\n                    ")])]), _vm._v(" "), (_vm.hasError('shipping_modifier')) ? _c('span', {
     staticClass: "help-block"
   }, [_c('strong', [_vm._v(_vm._s(_vm.getError('shipping_modifier')))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -20278,14 +20329,61 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-6"
   }, [_c('button', {
     staticClass: "btn btn-block btn-success"
-  }, [_vm._v("\n                    $ " + _vm._s(_vm.cost.toFixed(2)) + "\n                ")])]), _vm._v(" "), _vm._m(0)])]), _vm._v("\n    " + _vm._s(_vm.roundedWeight()) + "\n")])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_vm._v("\n                        $ " + _vm._s(_vm.cost.toFixed(2)) + "\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('button', {
-    staticClass: "btn btn-raised btn-success"
-  }, [_vm._v("\n                    Subscribe\n                ")])])
-}]}
+    staticClass: "btn btn-raised btn-success",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.subscribe($event)
+      }
+    }
+  }, [_vm._v("\n                        Subscribe\n                    ")])])])]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.formData.stripeToken),
+      expression: "formData.stripeToken"
+    }],
+    attrs: {
+      "type": "hidden",
+      "name": "stripeToken"
+    },
+    domProps: {
+      "value": (_vm.formData.stripeToken)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.formData.stripeToken = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.formData.stripeEmail),
+      expression: "formData.stripeEmail"
+    }],
+    attrs: {
+      "type": "hidden",
+      "name": "stripeEmail"
+    },
+    domProps: {
+      "value": (_vm.formData.stripeEmail)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.formData.stripeEmail = $event.target.value
+      }
+    }
+  })])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

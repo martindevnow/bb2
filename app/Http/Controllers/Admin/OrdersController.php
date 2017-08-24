@@ -152,8 +152,19 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
-    public function export($perPage = 4) {
-        $orders = Order::needsPacking()->get();
+    public function export($status, $perPage = 4) {
+        switch($status) {
+            case 'packing':
+                $orders = Order::needsPacking();
+                break;
+            case 'picking':
+                $orders = Order::needsPicking();
+                break;
+            default:
+                flash('Invalid type')->error();
+                return redirect()->back();
+        }
+        $orders = $orders->get();
 
         $time = time();
         $path = base_path() .'/pdfs/'. $time .'.pdf';

@@ -261,6 +261,13 @@ class Order extends Model
     public function scopeNeedsPacking(Builder $query) {
         return $query->where('packed', '=', 0);
     }
+    /**
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeNeedsPicking(Builder $query) {
+        return $query->where('picked', '=', 0);
+    }
 
 
     /**

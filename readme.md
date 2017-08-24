@@ -22,6 +22,17 @@ benm@barfbento.com. All security vulnerabilities will be promptly addressed.
 
 B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wikipedia.org/wiki/Proprietary_software).
 
+## Development
+
+Files Outside Version Control
+
+`/pdfs
+/seeds/fromGoogle`
+
+Node
+
+`npm run watch` for development with VueJS
+
 ## Future Features
 
 (Example: Today is Sunday, 1st of Month)
@@ -35,30 +46,6 @@ B.A.R.F. Bento is software licensed under a [Proprietary license](https://en.wik
 * Ability to export orders for **delivery**
 
 ## Test Coverage
-
-**2017-07-31**
-
-| Area | Lines | Fnct | Classes |
-| ---- | ----- | ---- | ------- |
-| Overall | 52.86% | 51.11% | 31.94% |
-| Martin | 40.84% | 37.93% | 14.29% |
-| app | 63.53% | 67.38% | 48.65% |
-
-**2017-08-01**
-
-| Area | Lines | Fnct | Classes |
-| ---- | ----- | ---- | ------- |
-| Overall | 64.28% | 63.08% | 48.65% |
-| Martin | 65.35% | 58.70% | 25.00% |
-| app | 63.53% | 67.38% | 48.65% |
-
-**2017-08-10**
-
-| Area | Lines | Fnct | Classes |
-| ---- | ----- | ---- | ------- |
-| Overall | 76.27% | 74.50% | 44.93% |
-| Martin | 83.25% | 75.61% | 37.50% |
-| app | 70.75% | 73.19% | 51.35% |
 
 **2017-08-16**
 

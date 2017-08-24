@@ -48,9 +48,8 @@
                             <td>Pet</td>
                             <td>Package</td>
                             <td>Weeks</td>
-                            <td>Meat Cost</td>
-                            <td>Packing Cost</td>
-                            <td>Weekly Cost</td>
+                            <td>Weekly Charge</td>
+                            <td>Internal Cost</td>
                             <td>Cost / lb of Dog</td>
                             <td>Profit</td>
                             <td>Action</td>
@@ -58,15 +57,15 @@
                         </thead>
                         <tbody>
                         @foreach($plans as $plan)
+
                             <tr class="{{ $plan->active ? '' : 'danger' }}">
                                 <td><a href="/admin/plans/{{ $plan->id }}">{{ $plan->id }}</a></td>
                                 <td>{{ $plan->customer->name }}</td>
                                 <td>{{ $plan->pet->name }} ({{ $plan->pet_weight }} lb)</td>
                                 <td>{{ $plan->package->label }}</td>
                                 <td>{{ $plan->weeks_at_a_time }}</td>
-                                <td>${{ round($plan->costPerWeek(), 2) }}</td>
-                                <td>${{ round($plan->totalPackingCost(), 2) }}</td>
                                 <td>${{ $plan->weekly_cost }}</td>
+                                <td>${{ round($plan->calculateSubtotal(), 2) }}</td>
                                 <td>${{ round($plan->costPerPoundOfDog(), 2) }}</td>
                                 <td>${{ round($plan->profit(), 2) }}</td>
                                 <td>
