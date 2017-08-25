@@ -40,10 +40,18 @@ Node
   * This **wednesday** (4th), we need to know how much meat we will need to order to pickup this weekend (6th-8th)
   * Said *meat* will then be packed into *meals* on the weekend or week of (6th-8th)
   * Those *meals* will then be delivered by the friday (13th), and we repeat this process **wednesday** (11th) for the **friday** (20th)
-* Ability to export orders for **meat ordering**
-* Ability to export orders for **packing**
-* Ability to export orders for **picking**
-* Ability to export orders for **delivery**
+* Checkout Flow
+  * User visits /quote
+  * -- fills in all details
+  * -- clicks submit
+  * If unauthorized, take them to the login/register screen
+  * -- User then registers
+  * They are logged in right away
+  * Present user with address form, etc
+  * User then fills in their address and other details
+  * -- clicks submit
+  * Stripe checkout process
+  * -- 
 
 ## Test Coverage
 

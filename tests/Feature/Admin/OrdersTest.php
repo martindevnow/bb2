@@ -114,13 +114,13 @@ class OrdersTest extends TestCase
     public function an_admin_can_see_the_meal_counts_on_show_page() {
         $this->loginAsAdmin();
 
+        /** @var Order $order */
         $order = $this->createOrderForBasicPlan();
 
-        $meals = $order->mealCounts()
-            ->toArray();
+        $meals = $order->mealCounts()->toArray();
 
-        $firstMeal = $meals[1];
-        $secondMeal = $meals[2];
+        $firstMeal = array_shift($meals);
+        $secondMeal = array_shift($meals);
 
         $this->get('/admin/orders/' . $order->id) // SHOW method
             ->assertSee($firstMeal['label'] . ' x ' . $firstMeal['count'])

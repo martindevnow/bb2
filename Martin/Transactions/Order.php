@@ -13,6 +13,7 @@ use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
+use Stripe\Collection;
 
 class Order extends Model
 {
@@ -190,7 +191,7 @@ class Order extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
+    public function mealCounts(Meal $meal = null): \Illuminate\Database\Eloquent\Collection {
         return $this->plan->mealCounts($meal);
     }
 
