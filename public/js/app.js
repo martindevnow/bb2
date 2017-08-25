@@ -2795,6 +2795,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -2806,7 +2815,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pkg: {},
             weight: 0,
             shipping_modifier: 0,
-            discount_rate: 0.15
+            discount_rate: 0.10
         };
     },
     mounted: function mounted() {
@@ -2864,7 +2873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var size = this.getSize();
             if (!size) return 0;
 
-            return size.base + (this.roundedWeight() - size.min) * size.inc + this.pkg.level * 5 + this.pkg.customization * 3;
+            return size.base + (this.roundedWeight() - size.min) / 5 * size.inc + this.pkg.level * 5 + this.pkg.customization * 3;
         },
         shippingCost: function shippingCost() {
             return this.shipping_modifier * 5;
@@ -2878,6 +2887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.cost) {
                 return this.cost * this.discount_rate;
             }
+            return 0;
         }
     }
 });
@@ -2945,7 +2955,7 @@ if (token) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.btn-total {\n    font-size: 2rem;\n}\n\n", ""]);
 
 /***/ }),
 /* 38 */
@@ -20306,6 +20316,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "weight"
     }],
     staticClass: "form-control",
+    staticStyle: {
+      "text-align": "center"
+    },
     attrs: {
       "type": "text",
       "name": "weight",
@@ -20351,7 +20364,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n                        " + _vm._s(pkg_i.label) + "\n                    ")])])
-  })], 2)])]), _vm._v(" "), _c('div', {
+  })], 2)])]), _vm._v(" "), (_vm.discount) ? _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Promotion (" + _vm._s(_vm.discount_rate * 100) + "% off for4 weeks)")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-danger"
+  }, [_vm._v("$" + _vm._s((_vm.discount).toFixed(2)) + " / week")])])])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group",
@@ -20408,43 +20436,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('label', {
     staticClass: "col-md-2 control-label"
-  }, [_vm._v("Sub-Total")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Total")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('div', {
     staticClass: "col-sm-3"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
   }, [_c('button', {
-    staticClass: "btn btn-block btn-success"
-  }, [_vm._v("$" + _vm._s((_vm.cost + _vm.shippingCost).toFixed(2)) + " / week")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "btn btn-block btn-success btn-raised btn-total"
+  }, [_vm._v("$" + _vm._s((_vm.cost + _vm.shippingCost - _vm.discount).toFixed(2)) + "* / week")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  })])])]), _vm._v(" "), (_vm.discount) ? _c('div', {
     staticClass: "row"
-  }, [(_vm.discount) ? _c('div', {
+  }, [_c('div', {
     staticClass: "form-group",
     staticStyle: {
       "margin-top": "0px"
     }
   }, [_c('label', {
     staticClass: "col-md-2 control-label"
-  }, [_vm._v("Discount (for the first 4 weeks)")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("*Promotional offer valid for new customers only. Promotional rate applies for the first 4 weeks of shipments only. After 4 weeks, plan pricing reverts to original pricing.")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('div', {
     staticClass: "col-sm-3"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
   }, [_c('button', {
-    staticClass: "btn btn-block btn-danger"
-  }, [_vm._v("$" + _vm._s((_vm.discount).toFixed(2)) + " / week")])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [(_vm.discount) ? _c('div', {
-    staticClass: "form-group",
-    staticStyle: {
-      "margin-top": "0px"
+    staticClass: "btn btn-block btn-info",
+    attrs: {
+      "btn-sm": ""
     }
-  }, [_c('label', {
-    staticClass: "col-md-2 control-label"
-  }, [_vm._v("You Pay (for the first 4 weeks)")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-10"
-  }, [_c('div', {
+  }, [_vm._v("$" + _vm._s((_vm.cost + _vm.shippingCost).toFixed(2)) + " / week afterwards")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_c('button', {
-    staticClass: "btn btn-block btn-success"
-  }, [_vm._v("$" + _vm._s((_vm.cost - _vm.shippingCost - _vm.discount).toFixed(2)) + " / week")])])])]) : _vm._e()])])
+  })])])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

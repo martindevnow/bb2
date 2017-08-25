@@ -18,6 +18,7 @@
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
                             <p>Fill out the form below to determine the cost to convert your pup to the BARF diet!</p>
+
                             <quotes-calculator></quotes-calculator>
 
                         </section>

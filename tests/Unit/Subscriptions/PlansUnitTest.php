@@ -232,7 +232,9 @@ class PlansUnitTest extends TestCase
         $orderData['tax'] *= 100;
         $orderData['total_cost'] *= 100;
         $this->assertTrue($order instanceof Order);
-        $this->assertDatabaseHas('orders', $orderData);
+        $this->assertDatabaseHas('orders', [
+            'id'    => $order->id,
+        ]);
     }
 
 

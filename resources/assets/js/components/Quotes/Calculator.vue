@@ -15,7 +15,9 @@
                                id="weight"
                                aria-describedby="weightHelp"
                                placeholder=""
-                               autocomplete="off">
+                               autocomplete="off"
+                               style="text-align: center;"
+                        >
                     </div>
                 </div>
             </div>
@@ -43,6 +45,16 @@
             </div>
         </div>
 
+        <div class="row" v-if="discount">
+            <div class="form-group" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">Promotion ({{ discount_rate * 100 }}% off for4 weeks)</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-danger">${{ (discount).toFixed(2) }} / week</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="form-group" style="margin-top: 0px;">
@@ -81,31 +93,28 @@
 
         <div class="row">
             <div class="form-group" style="margin-top: 0px;">
-                <label class="col-md-2 control-label">Sub-Total</label>
+                <label class="col-md-2 control-label">Total</label>
                 <div class="col-md-10">
                     <div class="col-sm-3">
-                        <button class="btn btn-block btn-success">${{ (cost + shippingCost).toFixed(2) }} / week</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-block btn-success btn-raised btn-total">${{ (cost + shippingCost - discount).toFixed(2) }}* / week</button>
+                    </div>
+                    <div class="col-sm-3">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group" v-if="discount" style="margin-top: 0px;">
-                <label class="col-md-2 control-label">Discount (for the first 4 weeks)</label>
+
+        <div class="row" v-if="discount">
+            <div class="form-group" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">*Promotional offer valid for new customers only. Promotional rate applies for the first 4 weeks of shipments only. After 4 weeks, plan pricing reverts to original pricing.</label>
                 <div class="col-md-10">
-                    <div class="col-sm-3">
-                        <button class="btn btn-block btn-danger">${{ (discount).toFixed(2) }} / week</button>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-block btn-info" btn-sm>${{ (cost + shippingCost).toFixed(2) }} / week afterwards</button>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group" v-if="discount" style="margin-top: 0px;">
-                <label class="col-md-2 control-label">You Pay (for the first 4 weeks)</label>
-                <div class="col-md-10">
-                    <div class="col-sm-3">
-                        <button class="btn btn-block btn-success">${{ (cost - shippingCost - discount).toFixed(2) }} / week</button>
-                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
             </div>
         </div>
@@ -124,7 +133,7 @@ export default {
             pkg: {},
             weight: 0,
             shipping_modifier: 0,
-            discount_rate: 0.15,
+            discount_rate: 0.10,
         };
     },
     mounted() {
@@ -189,7 +198,7 @@ export default {
                 return 0;
 
             return size.base
-            + (this.roundedWeight() - size.min) * size.inc
+            + (this.roundedWeight() - size.min) / 5 * size.inc
             + this.pkg.level * 5
             + this.pkg.customization * 3;
         },
@@ -206,11 +215,15 @@ export default {
             if (this.cost) {
                 return this.cost * this.discount_rate;
             }
+            return 0;
         }
     }
 }
 </script>
 
 <style>
+    .btn-total {
+        font-size: 2rem;
+    }
 
 </style>
