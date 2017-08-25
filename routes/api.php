@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Martin\Geo\GeoHelperMultiGeocoder;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +42,6 @@ Route::get('meals', function() {
     return \Martin\Products\Meal::all();
 });
 
-
 Route::get('packages', function() {
     return \Martin\Subscriptions\Package::all()->map(function($pkg, $index) {
         /** @var \Martin\Subscriptions\Package $pkg */
@@ -49,3 +49,43 @@ Route::get('packages', function() {
         return $pkg;
     });
 });
+
+Route::get('sizes', function() {
+    return [
+        ['label' => 'S',    'min' => 5,     'max' => 14,    'base' => 35.75,    'inc' => 2.000],
+        ['label' => 'M',    'min' => 15,    'max' => 49,    'base' => 41.60,    'inc' => 1.625],
+        ['label' => 'L',    'min' => 50,    'max' => 94,    'base' => 61.10,    'inc' => 1.755],
+        ['label' => 'XL',   'min' => 95,    'max' => 139,   'base' => 83.85,    'inc' => 1.950],
+        ['label' => 'XXL',  'min' => 140,   'max' => 220,   'base' => 98.80,    'inc' => 2.145],
+    ];
+});
+
+Route::get('postal-to-city/{postal}', function($postal) {
+
+    $postal = str_replace(" ", "", $postal);
+
+    //regex against the postal code
+    if (preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", $postal, $postal_code)):
+
+        $api = new GeoHelperMultiGeocoder();
+        $rc = $api->geocode($postal_code[0]);
+
+        //get latitude and longitude
+        $ll = $rc->ll();
+        //set up the query
+        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=$ll&sensor=false";
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curlData = curl_exec($curl);
+        curl_close($curl);
+        //get the address
+        $address = json_decode($curlData, TRUE);
+
+        echo $address['results'][0]['formatted_address'];
+    endif;
+});
+

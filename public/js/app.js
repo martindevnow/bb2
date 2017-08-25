@@ -2728,14 +2728,158 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
     data: function data() {
-        return {};
+        return {
+            selectedClass: 'btn-primary',
+            defaultClass: 'btn-default',
+            pkgs: [],
+            pkg: {},
+            weight: 0,
+            shipping_modifier: 0,
+            discount_rate: 0.15
+        };
+    },
+    mounted: function mounted() {
+        this.getPackages();
+        this.getSizes();
     },
 
-    methods: {}
+    methods: {
+        getPackages: function getPackages() {
+            var vm = this;
+            axios.get('/api/packages').then(function (response) {
+                vm.pkgs = response.data.filter(function (pkg) {
+                    return pkg.customization == 0;
+                });
+                vm.pkg = vm.pkgs[0];
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getSizes: function getSizes() {
+            var vm = this;
+            axios.get('/api/sizes').then(function (response) {
+                vm.sizes = response.data;
+            }).catch(function (error) {
+                console.log(error);
+                alert('There was an unknown error.');
+            });
+        },
+        isSelected: function isSelected(pkg2) {
+            return this.pkg && this.pkg.id === pkg2.id;
+        },
+        getSize: function getSize() {
+            var vm = this;
+            var size = this.sizes.filter(function (size) {
+                return vm.weight >= size.min && vm.weight <= size.max;
+            });
+            if (!size.length) {
+                return null;
+            }
+            return size[0];
+        },
+        roundedWeight: function roundedWeight() {
+            if (!this.weight) {
+                return 0;
+            }
+            return Math.round(this.weight / 5) * 5;
+        }
+    },
+    computed: {
+        cost: function cost() {
+            if (this.weight < 5) return 0;
+
+            if (!this.pkg) return 0;
+
+            var size = this.getSize();
+            if (!size) return 0;
+
+            return size.base + (this.roundedWeight() - size.min) * size.inc + this.pkg.level * 5 + this.pkg.customization * 3;
+        },
+        shippingCost: function shippingCost() {
+            return this.shipping_modifier * 5;
+        },
+        shippingCostLabel: function shippingCostLabel() {
+            if (this.shipping_modifier == 0) return "FREE";
+
+            return "+ $" + this.shippingCost + " / week";
+        },
+        discount: function discount() {
+            if (this.cost) {
+                return this.cost * this.discount_rate;
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -2801,7 +2945,7 @@ if (token) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 38 */
@@ -20136,78 +20280,172 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('div', {
-    staticClass: "form-group is-empty"
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
   }, [_c('label', {
     staticClass: "col-md-2 control-label",
     attrs: {
-      "for": "selected_pet_name"
+      "for": "weight"
     }
-  }, [_vm._v("Email")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Weight:")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.weight),
+      expression: "weight"
+    }],
     staticClass: "form-control",
     attrs: {
-      "type": "email",
-      "id": "selected_pet_name",
-      "placeholder": "Name"
+      "type": "text",
+      "name": "weight",
+      "id": "weight",
+      "aria-describedby": "weightHelp",
+      "placeholder": "",
+      "autocomplete": "off"
+    },
+    domProps: {
+      "value": (_vm.weight)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.weight = $event.target.value
+      }
     }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group is-empty"
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
   }, [_c('label', {
-    staticClass: "col-md-2 control-label",
-    attrs: {
-      "for": "selected_pet_weight"
-    }
-  }, [_vm._v("Email")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-10"
-  }, [_c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "email",
-      "id": "selected_pet_weight",
-      "placeholder": "Weight"
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "col-md-2 control-label",
-    attrs: {
-      "for": "selected_package"
-    }
+    staticClass: "col-md-2 control-label"
   }, [_vm._v("Package")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('div', {
-    staticClass: "btn-group bootstrap-select form-control"
-  }, [_c('select', {
-    staticClass: "form-control selectpicker",
-    attrs: {
-      "id": "selected_package",
-      "data-dropup-auto": "false",
-      "tabindex": "-98"
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-success"
+  }, [_vm._v("\n                        $" + _vm._s(_vm.cost.toFixed(2)) + " / week\n                    ")])]), _vm._v(" "), _vm._l((_vm.pkgs), function(pkg_i) {
+    return _c('div', {
+      staticClass: "col-sm-3"
+    }, [_c('button', {
+      staticClass: "btn btn-raised btn-block",
+      class: [_vm.isSelected(pkg_i) ? _vm.selectedClass : _vm.defaultClass],
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.pkg = pkg_i
+        }
+      }
+    }, [_vm._v("\n                        " + _vm._s(pkg_i.label) + "\n                    ")])])
+  })], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
     }
-  }, [_c('option', [_vm._v("Basic")]), _vm._v(" "), _c('option', [_vm._v("Classic ")]), _vm._v(" "), _c('option', [_vm._v("Premium")]), _vm._v(" "), _c('option', [_vm._v("Prey")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-md-2 control-label",
-    attrs: {
-      "for": "selected_package"
-    }
-  }, [_vm._v("Activity Level")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Shipping")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-10"
   }, [_c('div', {
-    staticClass: "btn-group bootstrap-select form-control"
-  }, [_c('select', {
-    staticClass: "form-control selectpicker",
-    attrs: {
-      "id": "selected_activity_level",
-      "data-dropup-auto": "false",
-      "tabindex": "-98"
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-success"
+  }, [_vm._v("\n                        " + _vm._s(_vm.shippingCostLabel) + "\n                    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-block",
+    class: [_vm.shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.shipping_modifier = 0
+      }
     }
-  }, [_c('option', [_vm._v("Low")]), _vm._v(" "), _c('option', [_vm._v("Medium ")]), _vm._v(" "), _c('option', [_vm._v("High")]), _vm._v(" "), _c('option', [_vm._v("Prey")])])])])])])
-}]}
+  }, [_vm._v("\n                        Monthly\n                    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-block",
+    class: [_vm.shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.shipping_modifier = 1
+      }
+    }
+  }, [_vm._v("\n                        Bi-Weekly\n                    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-raised btn-block",
+    class: [_vm.shipping_modifier === 2 ? _vm.selectedClass : _vm.defaultClass],
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.shipping_modifier = 2
+      }
+    }
+  }, [_vm._v("\n                        Weekly\n                    ")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Sub-Total")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-success"
+  }, [_vm._v("$" + _vm._s((_vm.cost + _vm.shippingCost).toFixed(2)) + " / week")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [(_vm.discount) ? _c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("Discount (for the first 4 weeks)")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-danger"
+  }, [_vm._v("$" + _vm._s((_vm.discount).toFixed(2)) + " / week")])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [(_vm.discount) ? _c('div', {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "0px"
+    }
+  }, [_c('label', {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v("You Pay (for the first 4 weeks)")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-10"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('button', {
+    staticClass: "btn btn-block btn-success"
+  }, [_vm._v("$" + _vm._s((_vm.cost - _vm.shippingCost - _vm.discount).toFixed(2)) + " / week")])])])]) : _vm._e()])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

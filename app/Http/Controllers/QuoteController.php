@@ -18,4 +18,13 @@ class QuoteController extends Controller
         return view('quote.index');
     }
 
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calculator() {
+        return view('quote.calculator');
+    }
+
 }

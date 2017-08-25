@@ -31,6 +31,7 @@ Route::post('/contact/send', 'ContactController@send');
 Route::get('/contact/success', 'ContactController@success');
 Route::get('/packages', 'PackagesController@index');
 
+Route::get('/quote/calculator', 'QuoteController@calculator');
 Route::get('/quote', 'QuoteController@index');
 
 Route::resource('/treats', 'TreatsController');

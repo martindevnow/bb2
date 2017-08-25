@@ -22,6 +22,7 @@
         "fzaninotto/faker": "~1.4",
         "laravel/dusk": "^1.1",
         "mockery/mockery": "0.9.*",
+        "phpunit/php-code-coverage": "4.0.8",
         "phpunit/phpunit": "~5.7"
     },
     "autoload": {

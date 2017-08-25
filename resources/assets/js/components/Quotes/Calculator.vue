@@ -1,48 +1,115 @@
 <template>
     <div>
-        <div class="form-group is-empty">
-            <label for="selected_pet_name" class="col-md-2 control-label">Email</label>
-            <div class="col-md-10">
-                <input type="email" class="form-control" id="selected_pet_name" placeholder="Name"> </div>
-        </div>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <div class="form-group" style="margin-top: 0px;">
+                    <label class="col-md-2 control-label"
+                           for="weight">Weight:</label>
+                    <div class="col-md-10">
 
-        <div class="form-group is-empty">
-            <label for="selected_pet_weight" class="col-md-2 control-label">Email</label>
-            <div class="col-md-10">
-                <input type="email" class="form-control" id="selected_pet_weight" placeholder="Weight"> </div>
-        </div>
-
-        <div class="form-group">
-            <label for="selected_package" class="col-md-2 control-label">Package</label>
-            <div class="col-md-10">
-                <div class="btn-group bootstrap-select form-control">
-                    <select id="selected_package"
-                            class="form-control selectpicker"
-                            data-dropup-auto="false"
-                            tabindex="-98">
-                        <option>Basic</option>
-                        <option>Classic </option>
-                        <option>Premium</option>
-                        <option>Prey</option>
-                    </select></div>
+                        <input type="text"
+                               name="weight"
+                               v-model="weight"
+                               class="form-control"
+                               id="weight"
+                               aria-describedby="weightHelp"
+                               placeholder=""
+                               autocomplete="off">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="selected_package" class="col-md-2 control-label">Activity Level</label>
-            <div class="col-md-10">
-                <div class="btn-group bootstrap-select form-control">
-                    <select id="selected_activity_level"
-                            class="form-control selectpicker"
-                            data-dropup-auto="false"
-                            tabindex="-98">
-                        <option>Low</option>
-                        <option>Medium </option>
-                        <option>High</option>
-                        <option>Prey</option>
-                    </select></div>
+
+        <div class="row">
+            <div class="form-group" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">Package</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-success">
+                            ${{ cost.toFixed(2) }} / week
+                        </button>
+                    </div>
+                    <div class="col-sm-3" v-for="pkg_i in pkgs">
+                        <button class="btn btn-raised btn-block"
+                                :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
+                                @click.prevent="pkg = pkg_i">
+                            {{ pkg_i.label }}
+                        </button>
+
+                    </div>
+                </div>
             </div>
         </div>
+
+
+        <div class="row">
+            <div class="form-group" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">Shipping</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-success">
+                            {{ shippingCostLabel }}
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-raised btn-block"
+                                :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
+                                @click.prevent="shipping_modifier = 0">
+                            Monthly
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-raised btn-block"
+                                :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
+                                @click.prevent="shipping_modifier = 1">
+                            Bi-Weekly
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-raised btn-block"
+                                :class="[shipping_modifier === 2 ? selectedClass : defaultClass]"
+                                @click.prevent="shipping_modifier = 2">
+                            Weekly
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">Sub-Total</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-success">${{ (cost + shippingCost).toFixed(2) }} / week</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group" v-if="discount" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">Discount (for the first 4 weeks)</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-danger">${{ (discount).toFixed(2) }} / week</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group" v-if="discount" style="margin-top: 0px;">
+                <label class="col-md-2 control-label">You Pay (for the first 4 weeks)</label>
+                <div class="col-md-10">
+                    <div class="col-sm-3">
+                        <button class="btn btn-block btn-success">${{ (cost - shippingCost - discount).toFixed(2) }} / week</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -50,11 +117,97 @@
 export default {
     props: [],
     data() {
-        return {};
+        return {
+            selectedClass: 'btn-primary',
+            defaultClass: 'btn-default',
+            pkgs: [],
+            pkg: {},
+            weight: 0,
+            shipping_modifier: 0,
+            discount_rate: 0.15,
+        };
+    },
+    mounted() {
+        this.getPackages();
+        this.getSizes();
     },
     methods: {
-
+        getPackages() {
+            let vm = this;
+            axios.get('/api/packages')
+                .then(function(response) {
+                    vm.pkgs = response.data.filter(function(pkg) {
+                        return pkg.customization == 0;
+                    });
+                    vm.pkg = vm.pkgs[0];
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        getSizes() {
+            let vm = this;
+            axios.get('/api/sizes')
+                .then(function(response) {
+                    vm.sizes = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    alert('There was an unknown error.')
+                })
+        },
+        isSelected(pkg2) {
+            return this.pkg && this.pkg.id === pkg2.id;
+        },
+        getSize() {
+            let vm = this;
+            let size = this.sizes.filter(function(size) {
+                return vm.weight >= size.min && vm.weight <= size.max;
+            });
+            if (! size.length) {
+                return null;
+            }
+            return size[0];
+        },
+        roundedWeight() {
+            if (! this.weight) {
+                return 0;
+            }
+            return Math.round(this.weight / 5) * 5;
+        },
     },
+    computed: {
+        cost() {
+            if (this.weight < 5)
+                return 0;
+
+            if (!this.pkg)
+                return 0;
+
+            let size = this.getSize();
+            if (! size)
+                return 0;
+
+            return size.base
+            + (this.roundedWeight() - size.min) * size.inc
+            + this.pkg.level * 5
+            + this.pkg.customization * 3;
+        },
+        shippingCost() {
+            return this.shipping_modifier * 5;
+        },
+        shippingCostLabel() {
+            if (this.shipping_modifier == 0)
+                return "FREE";
+
+            return "+ $" + this.shippingCost + " / week";
+        },
+        discount() {
+            if (this.cost) {
+                return this.cost * this.discount_rate;
+            }
+        }
+    }
 }
 </script>
 
