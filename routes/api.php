@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Martin\Geo\GeoHelperMultiGeocoder;
+use Martin\Transactions\ShoppingCart;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,11 @@ use Martin\Geo\GeoHelperMultiGeocoder;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('login', 'LoginController@login');
+Route::post('register', 'RegisterController@register');
+
+
 Route::post('github', function(Request $request) {
 
     Log::info($request->all());
@@ -87,5 +93,14 @@ Route::get('postal-to-city/{postal}', function($postal) {
 
         echo $address['results'][0]['formatted_address'];
     endif;
+});
+
+Route::post('/subscribe', function(Request $request) {
+    $cart = ShoppingCart::build(
+        $request->get('weight'),
+        $request->get('package_id'),
+        $request->get('shipping_modifier')
+    );
+   return $cart->hash;
 });
 

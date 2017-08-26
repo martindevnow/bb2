@@ -17,6 +17,7 @@
                                placeholder=""
                                autocomplete="off"
                                style="text-align: center;"
+                               autofocus
                         >
                     </div>
                 </div>
@@ -29,12 +30,12 @@
                 <label class="col-md-2 control-label">Package</label>
                 <div class="col-md-10">
                     <div class="col-sm-3">
-                        <button class="btn btn-block btn-success">
+                        <button class="btn btn-block btn-success btn-cost">
                             ${{ cost.toFixed(2) }} / week
                         </button>
                     </div>
                     <div class="col-sm-3" v-for="pkg_i in pkgs">
-                        <button class="btn btn-raised btn-block"
+                        <button class="btn btn-raised btn-block btn-label"
                                 :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
                                 @click.prevent="pkg = pkg_i">
                             {{ pkg_i.label }}
@@ -50,7 +51,7 @@
                 <label class="col-md-2 control-label">Promotion ({{ discount_rate * 100 }}% off for4 weeks)</label>
                 <div class="col-md-10">
                     <div class="col-sm-3">
-                        <button class="btn btn-block btn-danger">${{ (discount).toFixed(2) }} / week</button>
+                        <button class="btn btn-block btn-danger btn-cost">${{ (discount).toFixed(2) }} / week</button>
                     </div>
                 </div>
             </div>
@@ -61,26 +62,26 @@
                 <label class="col-md-2 control-label">Shipping</label>
                 <div class="col-md-10">
                     <div class="col-sm-3">
-                        <button class="btn btn-block btn-success">
+                        <button class="btn btn-block btn-success btn-cost">
                             {{ shippingCostLabel }}
                         </button>
                     </div>
                     <div class="col-sm-3">
-                        <button class="btn btn-raised btn-block"
+                        <button class="btn btn-raised btn-block btn-label"
                                 :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
                                 @click.prevent="shipping_modifier = 0">
                             Monthly
                         </button>
                     </div>
                     <div class="col-sm-3">
-                        <button class="btn btn-raised btn-block"
+                        <button class="btn btn-raised btn-block btn-label"
                                 :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
                                 @click.prevent="shipping_modifier = 1">
                             Bi-Weekly
                         </button>
                     </div>
                     <div class="col-sm-3">
-                        <button class="btn btn-raised btn-block"
+                        <button class="btn btn-raised btn-block btn-label"
                                 :class="[shipping_modifier === 2 ? selectedClass : defaultClass]"
                                 @click.prevent="shipping_modifier = 2">
                             Weekly
@@ -98,7 +99,7 @@
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-block btn-success btn-raised btn-total">${{ (cost + shippingCost - discount).toFixed(2) }}* / week</button>
+                        <button class="btn btn-block btn-success btn-raised btn-total btn-label">${{ (cost + shippingCost - discount).toFixed(2) }}* / week</button>
                     </div>
                     <div class="col-sm-3">
                     </div>
@@ -108,17 +109,25 @@
 
         <div class="row" v-if="discount">
             <div class="form-group" style="margin-top: 0px;">
-                <label class="col-md-2 control-label">*Promotional offer valid for new customers only. Promotional rate applies for the first 4 weeks of shipments only. After 4 weeks, plan pricing reverts to original pricing.</label>
+                <label class="col-md-12 control-label">*Promotional offer valid for new customers only. Promotional rate applies for the first 4 weeks of shipments only. After 4 weeks, plan pricing reverts to original pricing.</label>
                 <div class="col-md-10">
                     <div class="col-sm-3"></div>
                     <div class="col-sm-6">
-                        <button class="btn btn-block btn-info" btn-sm>${{ (cost + shippingCost).toFixed(2) }} / week afterwards</button>
+                        <button class="btn btn-block btn-info btn-cost" btn-sm>${{ (cost + shippingCost).toFixed(2) }} / week afterwards</button>
                     </div>
                     <div class="col-sm-3"></div>
                 </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <button class="btn btn-block btn-lg btn-raised"
+                        @click.prevent="subscribe"
+                >Signup</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -131,7 +140,7 @@ export default {
             defaultClass: 'btn-default',
             pkgs: [],
             pkg: {},
-            weight: 0,
+            weight: null,
             shipping_modifier: 0,
             discount_rate: 0.10,
         };
@@ -184,6 +193,18 @@ export default {
             }
             return Math.round(this.weight / 5) * 5;
         },
+        subscribe() {
+            let vm = this;
+            axios.post('/api/subscribe', {
+                weight: this.weight,
+                package_id: this.pkg.id,
+                shipping_modifier: this.shipping_modifier,
+            }).then(response => {
+                console.log(response);
+                let hash = response.data;
+                window.location.replace('/quote/subscribe/' + hash);
+            })
+        }
     },
     computed: {
         cost() {
@@ -224,6 +245,13 @@ export default {
 <style>
     .btn-total {
         font-size: 2rem;
+    }
+    .btn-cost:hover {
+        cursor: auto;
+    }
+    .btn-label {
+        border-radius: 0;
+        box-shadow: none;
     }
 
 </style>

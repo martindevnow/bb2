@@ -42,3 +42,15 @@
         padding-top: 2rem;
     }
 }
+
+.btn-total {
+    font-size: 2rem;
+}
+.btn.btn-cost:hover {
+    cursor: auto;
+    background-color: rgba(153,153,153,0.9)
+}
+.btn.btn-raised.btn-label {
+    border-radius: 0;
+    box-shadow: none;
+}

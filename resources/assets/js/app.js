@@ -22,12 +22,8 @@ $.ajaxSetup({
  */
 
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
-
-
-
-
-
-
+Vue.component('auth-login-form', require('./components/Auth/LoginForm.vue'));
+Vue.component('auth-registration-form', require('./components/Auth/RegistrationForm.vue'));
 
 Vue.component(
     'admin-meats-navigator',
