@@ -59,6 +59,7 @@ class Plan extends Model
         'weeks_at_a_time',
         'active',
         'payment_method',
+        'hash',
     ];
 
     /**
@@ -69,6 +70,10 @@ class Plan extends Model
     protected $dates = [
         'last_delivery_at',
     ];
+
+    public static function byHash($hash) {
+        return Plan::where('hash', $hash)->firstOrFail();
+    }
 
     public static function getPrice($pet_weight, Package $package, $shipping_modifier) {
         /** @var Collection $sizes */

@@ -207,137 +207,138 @@
 </template>
 
 <script>
-export default {
-    props: [],
-    data() {
-        return {
-            selectedClass: 'btn-primary',
-            defaultClass: 'btn-default',
-            packages: [],
-            pkg: {id: 1},
-            shipping_modifier: 0,
-            sizes: [
-                {label: 'S', min: 5, max: 14, base: 39, inc: 1.95},
-                {label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625},
-                {label: 'L', min: 50, max: 94, base: 65, inc: 1.755},
-                {label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95},
-                {label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145},
-            ],
-            formData: {
-                stripeEmail: '',
-                stripeToken: '',
-                package_id: 0,
-                pet_name: '',
-                pet_breed: '',
-                pet_weight: 0,
+    import swal from 'sweetalert2'
+
+    export default {
+        props: [],
+        data() {
+            return {
+                selectedClass: 'btn-primary',
+                defaultClass: 'btn-default',
+                packages: [],
+                pkg: {id: 1},
                 shipping_modifier: 0,
-            },
-            status: ''
-        };
-    },
-    methods: {
-        getPackages() {
-            let vm = this;
-            axios.get('/api/packages')
-                .then(function(response) {
-                    vm.packages = response.data.filter(function(pkg) {
-                        return pkg.customization == 0;
+                sizes: [
+                    {label: 'S', min: 5, max: 14, base: 39, inc: 1.95},
+                    {label: 'M', min: 15, max: 49, base: 44.85, inc: 1.625},
+                    {label: 'L', min: 50, max: 94, base: 65, inc: 1.755},
+                    {label: 'XL', min: 95, max: 139, base: 87.1, inc: 1.95},
+                    {label: 'XXL', min: 140, max: 220, base: 104, inc: 2.145},
+                ],
+                formData: {
+                    stripeEmail: '',
+                    stripeToken: '',
+                    package_id: 0,
+                    pet_name: '',
+                    pet_breed: '',
+                    pet_weight: 0,
+                    shipping_modifier: 0,
+                },
+                status: ''
+            };
+        },
+        methods: {
+            getPackages() {
+                let vm = this;
+                axios.get('/api/packages')
+                    .then(function(response) {
+                        vm.packages = response.data.filter(function(pkg) {
+                            return pkg.customization == 0;
+                        });
+                        vm.pkg = vm.packages[0];
+                    })
+                    .catch(function(error) {
+                        console.log(error);
                     });
-                    vm.pkg = vm.packages[0];
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
-        shippingCost() {
-            return 5 * this.shipping_modifier;
-        },
-        hasError(field) {
-            return this.getError(field) === null;
-        },
-        getError(field) {
-            if (field === 'weight') {
-                return this.validateWeight();
-            }
-        },
-        validateWeight() {
-            if (this.formData.pet_weight < 0) {
-                return 'The weight must be positive.';
-            }
-            return null;
-        },
-        getSize() {
-            let vm = this;
-            let size = this.sizes.filter(function(size) {
-                return vm.formData.pet_weight >= size.min && vm.formData.pet_weight <= size.max;
-            });
-            if (! size.length) {
+            },
+            shippingCost() {
+                return 5 * this.shipping_modifier;
+            },
+            hasError(field) {
+                return this.getError(field) === null;
+            },
+            getError(field) {
+                if (field === 'weight') {
+                    return this.validateWeight();
+                }
+            },
+            validateWeight() {
+                if (this.formData.pet_weight < 0) {
+                    return 'The weight must be positive.';
+                }
                 return null;
+            },
+            getSize() {
+                let vm = this;
+                let size = this.sizes.filter(function(size) {
+                    return vm.formData.pet_weight >= size.min && vm.formData.pet_weight <= size.max;
+                });
+                if (! size.length) {
+                    return null;
+                }
+                return size[0];
+            },
+            isSelected(pkg) {
+                return this.pkg && this.pkg.id === pkg.id;
+            },
+            roundedWeight() {
+                if (! this.formData.pet_weight) {
+                    return 0;
+                }
+                return Math.round(this.formData.pet_weight / 5) * 5;
+            },
+            subscribe() {
+                this.stripe.open({
+                    name: this.pkg.label,
+                    description: this.pkg.label + ' Bento for '
+                        + this.formData.pet_name
+                        + ' (' + this.formData.pet_weight + ' lbs)',
+                    zipCode: true,
+                    amount: this.cost * 100
+                });
             }
-            return size[0];
         },
-        isSelected(pkg) {
-            return this.pkg && this.pkg.id === pkg.id;
-        },
-        roundedWeight() {
-            if (! this.formData.pet_weight) {
-                return 0;
-            }
-            return Math.round(this.formData.pet_weight / 5) * 5;
-        },
-        subscribe() {
-            this.stripe.open({
-                name: this.pkg.label,
-                description: this.pkg.label + ' Bento for '
-                    + this.formData.pet_name
-                    + ' (' + this.formData.pet_weight + ' lbs)',
-                zipCode: true,
-                amount: this.cost * 100
+        mounted() {
+            this.getPackages();
+
+            let vm = this;
+            this.stripe = StripeCheckout.configure({
+                key: BarfBento.stripeKey,
+                image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+                locale: "auto",
+                panelLabel: "Subscribe For",
+                token: function(token) {
+                    vm.formData.stripeToken = token.id;
+                    vm.formData.stripeEmail = token.email;
+                    vm.formData.package_id = vm.pkg.id;
+                    vm.formData.shipping_modifier = vm.shipping_modifier;
+                    axios.post('/plans/subscribe', vm.formData)
+                        .then(function(response) {
+                            swal({
+                                type: 'success',
+                                title: 'Complete',
+                                text: 'Thank you for joining BARFBento!',
+                            });
+                        })
+                        .catch(function(response) {console.log({'response': response});});
+                  }
             });
-        }
-    },
-    mounted() {
-        this.getPackages();
+        },
+        computed: {
+            cost() {
+                if (! this.formData.pet_weight || ! this.pkg) {
+                    return 1;
+                }
+                let size = this.getSize();
 
-        let vm = this;
-        this.stripe = StripeCheckout.configure({
-            key: BarfBento.stripeKey,
-            image: "https://stripe.com/img/documentation/checkout/marketplace.png",
-            locale: "auto",
-            panelLabel: "Subscribe For",
-            token: (token) => {
-                this.formData.stripeToken = token.id;
-                this.formData.stripeEmail = token.email;
-                this.formData.package_id = this.pkg.id;
-                this.formData.shipping_modifier = this.shipping_modifier;
-                axios.post('/plans/subscribe', this.formData)
-                    .then(
-                        response => alert('Complete! Thanks for your payment!'),
-                    )
-                    .catch(
-                        response => {
-                            console.log({'response': response});
-                        }
-                    )
+                return size.base
+                    + (this.roundedWeight() - size.min) * size.inc
+                    + this.pkg.level * 5
+                    + this.pkg.customization * 3
+                    + this.shippingCost();
             }
-        });
-    },
-    computed: {
-        cost() {
-            if (! this.formData.pet_weight || ! this.pkg) {
-                return 1;
-            }
-            let size = this.getSize();
-
-            return size.base
-                + (this.roundedWeight() - size.min) * size.inc
-                + this.pkg.level * 5
-                + this.pkg.customization * 3
-                + this.shippingCost();
-        }
-    },
-
-}
+        },
+    }
 </script>
 
 <style>

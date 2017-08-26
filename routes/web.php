@@ -34,6 +34,7 @@ Route::get('/packages', 'PackagesController@index');
 
 Route::get('/quote/subscribe/{hash}', 'QuoteController@subscribe');
 Route::get('/quote/details/{hash}', 'QuoteController@details');
+Route::get('/quote/confirm/{hash}', 'QuoteController@confirm');
 
 Route::get('/quote/calculator', 'QuoteController@calculator');
 Route::get('/quote', 'QuoteController@index');

@@ -208,7 +208,7 @@ export default {
             }).then(response => {
                 console.log(response);
                 let hash = response.data;
-                window.location.replace('/quote/subscribe/' + hash);
+                window.location = ('/quote/subscribe/' + hash);
             })
         }
     },

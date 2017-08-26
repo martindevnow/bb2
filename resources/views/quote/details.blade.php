@@ -2,7 +2,8 @@
 
 @section('content')
 
-    <div class="ms-hero-page-override ms-hero-img-farm " style="background-image: url('/barfbento/img/throat.jpg');">
+    <div class="ms-hero-page-override ms-hero-img-farm"
+         style="background-image: url('/barfbento/img/throat.jpg');">
         <div class="container">
             <div class="text-center">
                 <h1>&nbsp;</h1>

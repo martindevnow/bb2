@@ -27,6 +27,7 @@ Vue.component('quotes-calculator', require('./components/Quotes/Calculator.vue')
 Vue.component('auth-login-form', require('./components/Auth/LoginForm.vue'));
 Vue.component('auth-registration-form', require('./components/Auth/RegistrationForm.vue'));
 Vue.component('details-collector', require('./components/Quotes/DetailsCollector.vue'));
+Vue.component('quotes-checkout', require('./components/Quotes/Checkout.vue'));
 
 
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));

@@ -77,7 +77,7 @@ export default {
                 .then(function(response) {
                     eventBus.$emit('user-logged-in', response.data.user);
                     console.log('Login was successful');
-                    window.location.replace('/quote/details/' + vm.hash);
+                    window.location = ('/quote/details/' + vm.hash);
                 })
                 .catch(function(error) {
                     console.log(error);

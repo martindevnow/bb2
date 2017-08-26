@@ -13,169 +13,200 @@
                     <option v-for="pet in pets">{{ pet.name }}</option>
                 </select>
 
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="pet_name">Name:</label>
-                    <div class="col-md-10">
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="pet_name">Name:</label>
+                        <div class="col-md-10">
 
-                        <input type="text"
-                               name="pet_name"
-                               v-model="myPet.name"
-                               class="form-control"
-                               id="pet_name"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
+                            <input type="text"
+                                   name="pet_name"
+                                   v-model="myPet.name"
+                                   class="form-control"
+                                   id="pet_name"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
                     </div>
                 </div>
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="pet_breed">Breed:</label>
-                    <div class="col-md-10">
 
-                        <input type="text"
-                               name="pet_breed"
-                               v-model="myPet.breed"
-                               class="form-control"
-                               id="pet_breed"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="pet_breed">Breed:</label>
+                        <div class="col-md-10">
+
+                            <input type="text"
+                                   name="pet_breed"
+                                   v-model="myPet.breed"
+                                   class="form-control"
+                                   id="pet_breed"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
                     </div>
                 </div>
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="pet_weight">Weight:</label>
-                    <div class="col-md-10">
 
-                        <input type="text"
-                               name="pet_weight"
-                               v-model="myPet.weight"
-                               class="form-control"
-                               id="pet_weight"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="pet_weight">Weight:</label>
+                        <div class="col-md-10">
+
+                            <input type="text"
+                                   name="pet_weight"
+                                   v-model="myPet.weight"
+                                   class="form-control"
+                                   id="pet_weight"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
                     </div>
                 </div>
-            </div><div class="col-sm-6">
+            </div>
+
+            <div class="col-sm-6">
                 <h2>Your Address</h2>
                 <select v-if="addresses.length">
                     <option v-for="address in addresses">{{ address.street_1 }}</option>
                 </select>
 
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_street_1">Street:</label>
-                    <div class="col-md-10">
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_street_1">Street:</label>
+                        <div class="col-md-10">
 
-                        <input type="text"
-                               name="address_street_1"
-                               v-model="myAddress.street_1"
-                               class="form-control"
-                               id="address_street_1"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
+                            <input type="text"
+                                   name="address_street_1"
+                                   v-model="myAddress.street_1"
+                                   class="form-control"
+                                   id="address_street_1"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_street_1">Street (Line 2):</label>
-                    <div class="col-md-10">
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_street_2">Street (Line 2):</label>
+                        <div class="col-md-10">
 
-                        <input type="text"
-                               name="address_street_1"
-                               v-model="myAddress.street_2"
-                               class="form-control"
-                               id="address_street_2"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
-                    </div>
-                </div>
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_city">City:</label>
-                    <div class="col-md-10">
-
-                        <input type="text"
-                               name="address_city"
-                               v-model="myAddress.city"
-                               class="form-control"
-                               id="address_city"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
-                    </div>
-                </div>
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_province">Province:</label>
-                    <div class="col-md-10">
-
-                        <input type="text"
-                               name="address_province"
-                               v-model="myAddress.province"
-                               class="form-control"
-                               id="address_province"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               disabled
-                        >
-                    </div>
-                </div>
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_country">Country:</label>
-                    <div class="col-md-10">
-
-                        <input type="text"
-                               name="address_country"
-                               v-model="myAddress.country"
-                               class="form-control"
-                               id="address_country"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               disabled
-                        >
+                            <input type="text"
+                                   name="address_street_2"
+                                   v-model="myAddress.street_2"
+                                   class="form-control"
+                                   id="address_street_2"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                            >
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-top: 0px;">
-                    <label class="col-md-2 control-label"
-                           for="address_postal">Postal Code:</label>
-                    <div class="col-md-10">
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_city">City:</label>
+                        <div class="col-md-10">
 
-                        <input type="text"
-                               name="address_postal"
-                               v-model="myAddress.postal"
-                               class="form-control"
-                               id="address_postal"
-                               placeholder=""
-                               autocomplete="off"
-                               style="text-align: center;"
-                               autofocus
-                        >
+                            <input type="text"
+                                   name="address_city"
+                                   v-model="myAddress.city"
+                                   class="form-control"
+                                   id="address_city"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_province">Province:</label>
+                        <div class="col-md-10">
 
+                            <input type="text"
+                                   name="address_province"
+                                   v-model="myAddress.province"
+                                   class="form-control"
+                                   id="address_province"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   disabled
+                                   required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_country">Country:</label>
+                        <div class="col-md-10">
+
+                            <input type="text"
+                                   name="address_country"
+                                   v-model="myAddress.country"
+                                   class="form-control"
+                                   id="address_country"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   disabled
+                                   required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="margin-top: 0px;">
+                        <label class="col-md-2 control-label"
+                               for="address_postal">Postal Code:</label>
+                        <div class="col-md-10">
+
+                            <input type="text"
+                                   name="address_postal"
+                                   v-model="myAddress.postal"
+                                   class="form-control"
+                                   id="address_postal"
+                                   placeholder=""
+                                   autocomplete="off"
+                                   style="text-align: center;"
+                                   autofocus
+                                   required
+                            >
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
@@ -206,6 +237,7 @@
                     province: 'ON',
                     country: 'Canada',
                 },
+
             };
         },
         methods: {
@@ -253,14 +285,30 @@
                     })
             },
             nextStep() {
+                if ( ! this.myPet.weight || ! this.myPet.name || ! this.myPet.breed) {
+                    return swal({
+                        type: 'error',
+                        text: 'Please fill in all of your dog\'s details',
+                        title: 'Missing Information',
+                    });
+                }
+
+                if ( ! this.myAddress.street_1 || ! this.myAddress.city || ! this.myAddress.postal) {
+                    return swal({
+                        type: 'error',
+                        text: 'Please fill in all of your address details',
+                        title: 'Missing Information',
+                    });
+                }
                 let vm = this;
                 axios.post('/api/subscribe/details', {
                     pet: vm.myPet,
                     address: vm.myAddress,
                     hash: vm.hash,
-                }).then(response => {
-
-                }).catch(error => {
+                }).then(function(response) {
+                    console.log(response.data);
+                    window.location = ('/quote/confirm/' + vm.hash);
+                }).catch(function(error) {
                     swal({
                         title: 'Error',
                         text: 'Could not save your details.. ' + error,

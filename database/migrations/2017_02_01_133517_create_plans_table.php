@@ -37,6 +37,7 @@ class CreatePlansTable extends Migration
             $table->dateTime('last_delivery_at')->nullable();
 
             $table->boolean('active')->default(true);
+            $table->string('hash')->nullable();
 
             $table->enum('payment_method', [
                 'cash',

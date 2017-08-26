@@ -65,7 +65,8 @@ class SubscriptionsController extends Controller
             'pet_activity_level'    => 2,
             'package_id'    => $cart->sub_package_id,
             'weekly_cost'   => calculateCost($pet->weight, $package),
-            'weeks_at_a_time'   => weeksAtATime($cart->sub_shipping_modifier)
+            'weeks_at_a_time'   => weeksAtATime($cart->sub_shipping_modifier),
+            'hash'  => $request->get('hash'),
         ]);
 
         return $plan;
