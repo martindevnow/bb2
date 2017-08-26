@@ -30,6 +30,8 @@ class QuoteController extends Controller
     }
 
     /**
+     * This builds the basic cart to preserve it through login.registration
+     *
      * @param $hash
      * @return $this
      */
@@ -41,20 +43,20 @@ class QuoteController extends Controller
         if (auth()->user())
             redirect('/quote/pet');
         return view('quote.subscribe')
-            ->with(compact($cart));
+            ->with(compact('cart', 'hash'));
     }
 
     /**
+     * This saves displays the pet details (if any)
+     * and allows the user to set address and/or pet details
+     *
      * @return $this
      */
-    public function pet() {
-        $hash = session('cart.hash');
+    public function details($hash) {
         $cart = ShoppingCart::byHash($hash);
 
-        $pets = auth()->user()->pets();
-
-        return view('quote.pet')
-            ->with(compact('pets', 'cart'));
+        return view('quote.details')
+            ->with(compact('hash'));
     }
 
 }

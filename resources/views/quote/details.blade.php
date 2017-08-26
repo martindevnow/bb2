@@ -15,19 +15,9 @@
             <div class="row">
                 <div class="col-md-12 ms-paper-content-container">
                     <div class="ms-paper-content">
-                        <h1 class="color-primary">Register</h1>
+                        <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
-                            <p>To be able to make modifications to your subscription, view your pet's diet and account, you will need to register.</p>
-                            <p>Please</p>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <auth-login-form hash="{{ $hash }}"></auth-login-form>
-                                </div>
-                                <div class="col-sm-6">
-                                    <auth-registration-form hash="{{ $hash }}"></auth-registration-form>
-                                </div>
-                            </div>
+                            <details-collector hash="{{ $hash }}"></details-collector>
                         </section>
 
                     </div>

@@ -33,11 +33,12 @@ Route::get('/packages', 'PackagesController@index');
 
 
 Route::get('/quote/subscribe/{hash}', 'QuoteController@subscribe');
+Route::get('/quote/details/{hash}', 'QuoteController@details');
+
 Route::get('/quote/calculator', 'QuoteController@calculator');
 Route::get('/quote', 'QuoteController@index');
 
 Route::resource('/treats', 'TreatsController');
 
-Route::post('/stripe/webhook', 'WebhooksController@handle');
 
 Route::post('/plans/subscribe', 'PlansController@subscribe');

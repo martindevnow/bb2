@@ -19,6 +19,26 @@ use Martin\Transactions\ShoppingCart;
 Route::post('login', 'LoginController@login');
 Route::post('register', 'RegisterController@register');
 
+Route::post('/stripe/webhook', 'WebhooksController@handle');
+
+Route::get('user/addresses', function(Request $request) {
+    return $request->user()->addresses;
+});
+
+Route::get('user/pets', function(Request $request) {
+    return $request->user()->pets;
+});
+
+Route::get('cart/{hash}', function  ($hash) {
+    return ShoppingCart::byHash($hash);
+});
+
+
+
+Route::post('/subscribe', 'SubscriptionsController@start');
+Route::post('/subscribe/details', 'SubscriptionsController@details');
+
+
 
 Route::post('github', function(Request $request) {
 
@@ -57,13 +77,7 @@ Route::get('packages', function() {
 });
 
 Route::get('sizes', function() {
-    return [
-        ['label' => 'S',    'min' => 5,     'max' => 14,    'base' => 35.75,    'inc' => 2.000],
-        ['label' => 'M',    'min' => 15,    'max' => 49,    'base' => 41.60,    'inc' => 1.625],
-        ['label' => 'L',    'min' => 50,    'max' => 94,    'base' => 61.10,    'inc' => 1.755],
-        ['label' => 'XL',   'min' => 95,    'max' => 139,   'base' => 83.85,    'inc' => 1.950],
-        ['label' => 'XXL',  'min' => 140,   'max' => 220,   'base' => 98.80,    'inc' => 2.145],
-    ];
+    return getSizes();
 });
 
 Route::get('postal-to-city/{postal}', function($postal) {
@@ -94,13 +108,3 @@ Route::get('postal-to-city/{postal}', function($postal) {
         echo $address['results'][0]['formatted_address'];
     endif;
 });
-
-Route::post('/subscribe', function(Request $request) {
-    $cart = ShoppingCart::build(
-        $request->get('weight'),
-        $request->get('package_id'),
-        $request->get('shipping_modifier')
-    );
-   return $cart->hash;
-});
-

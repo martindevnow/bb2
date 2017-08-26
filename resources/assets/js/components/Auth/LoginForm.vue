@@ -51,8 +51,10 @@
 
 <script>
 import eventBus from '../../events/eventBus';
+import swal from 'sweetalert2'
 
 export default {
+    props: ['hash'],
     data() {
         return {
             user: {},
@@ -70,18 +72,26 @@ export default {
         },
         login() {
             this.loading = true;
+            let vm = this;
             axios.post('/api/login', {email: this.email, password: this.password})
                 .then(function(response) {
                     eventBus.$emit('user-logged-in', response.data.user);
+                    console.log('Login was successful');
+                    window.location.replace('/quote/details/' + vm.hash);
                 })
-                .catch(function(response) {
+                .catch(function(error) {
+                    console.log(error);
                     swal('there was an error....');
                 });
             this.loading = false;
         },
     },
+    mounted() {
+        console.log('loginForm MOUNTED');
+    },
     created() {
         eventBus.$on('user-logged-in', this.loadUser);
+        console.log('loginForm CREATED');
     },
     beforeDestroy() {
         eventBus.$off('user-logged-in', this.loadUser);

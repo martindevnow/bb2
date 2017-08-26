@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Martin\Core\FaqCategory;
+use Illuminate\Support\Facades\Log;
 
 class WebhooksController extends Controller
 {
@@ -18,6 +19,8 @@ class WebhooksController extends Controller
         if (method_exists($this, $method = $this->eventToMethod($payload['type']))) {
             $this->$method($payload);
         }
+
+        Log::info($payload);
     }
 
     /**
@@ -28,5 +31,12 @@ class WebhooksController extends Controller
      */
     public function eventToMethod($stripeEvent) {
         return 'when' . studly_case(str_replace('.', '_', $stripeEvent));
+    }
+
+    /**
+     * @param $payload
+     */
+    public function whenCustomerSubscriptionDeleted($payload) {
+        dd ($payload);
     }
 }

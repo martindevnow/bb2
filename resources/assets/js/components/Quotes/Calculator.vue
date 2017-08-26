@@ -132,6 +132,8 @@
 </template>
 
 <script>
+import eventBus from '../../events/eventBus';
+import swal from 'sweetalert2'
 export default {
     props: [],
     data() {
@@ -195,6 +197,10 @@ export default {
         },
         subscribe() {
             let vm = this;
+            if (this.weight <=4 ) {
+                swal('Please enter your pet\'s weight.');
+                return;
+            }
             axios.post('/api/subscribe', {
                 weight: this.weight,
                 package_id: this.pkg.id,

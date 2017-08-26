@@ -3,6 +3,7 @@
 namespace Martin\Transactions;
 
 use Illuminate\Database\Eloquent\Model;
+use Martin\Subscriptions\Package;
 
 class ShoppingCart extends Model
 {
@@ -39,7 +40,12 @@ class ShoppingCart extends Model
      */
     public static function byHash($hash) {
         return ShoppingCart::where('hash', $hash)
+            ->with('package')
             ->orderBy('updated_at', 'desc')
             ->firstOrFail();
+    }
+
+    public function package() {
+        return $this->belongsTo(Package::class, 'sub_package_id');
     }
 }
