@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showForm">
+    <div>
         <div class="overlay" v-show="loading">
             <div id="loading-img"></div>
         </div>
@@ -69,11 +69,13 @@ export default {
             name: "",
             email: "",
             password: "",
+            showForm: true,
         }
     },
     methods: {
         loadUser(user) {
             this.user = user;
+            this.showForm = false;
         },
         register() {
             this.loading = true;
@@ -97,7 +99,7 @@ export default {
                 if ( ! password || vm.password != password)
                     return swal('Please try again...');
 
-                vm.$http.post('/api/register', {
+                axios.post('/api/register', {
                     'name':             vm.name,
                     'email':            vm.email,
                     'password':         vm.password,
@@ -113,17 +115,7 @@ export default {
                 swal('You must either register or login to subscribe to BARF Bento');
             });
             this.loading = false;
-
         }
-    },
-    computed: {
-        showForm() {
-            return !! this.user == null;
-        }
-    },
-    mounted() {
-        if (this.showForm)
-            this.email = this.user.email;
     },
     created() {
         eventBus.$on('user-logged-in', this.loadUser);
