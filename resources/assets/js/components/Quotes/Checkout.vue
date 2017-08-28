@@ -69,7 +69,10 @@ export default {
         };
     },
     methods: {
-
+        getCart() {
+            let vm = this;
+            axios.get('/api/cart')
+        }
     },
     mounted() {
         let vm = this;
