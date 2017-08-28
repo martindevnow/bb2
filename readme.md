@@ -52,6 +52,28 @@ Node
   * -- clicks submit
   * Stripe checkout process
   * -- 
+  
+## Next things to work on
+
+* Checkout process
+  * If logged in, skip the Login page of the checkout...
+  * Allow users to select an existing pet/address instead of a new one...
+  * Add discount codes for the checkout process.. pre-populate it with the "NEW..." code
+  * Clean up the cart page and final details page
+  * Let the user confirm (and update/change any specific details.)
+  * Initiate the stripe call
+  * Received payment
+  * activate the plan in our DB
+  * Send a notification to Viv to track the new orders
+  * allow the user to schedule their shipments.. 
+    * Let them choose day of the week.. ?
+    * Show what day will be their first shipment. Today +4, then the next day of the week that matches their requested day of the week
+* Manage the user's existing plans (make changes)
+* Allow existing users to add treats to their next shipment (must be placed at least a few days before the expected shipment)
+* Allow users to cancel their plans (and hook into the stripe webhook to allow them to cancel it from their end)
+  * keep in mind that plans are NOT prorated.
+    * cancel date should be end of the term (based on Stripe)
+    * check the DB to see if they have any invoice items other than the one for their bentos 
 
 ## Test Coverage
 
