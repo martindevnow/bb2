@@ -74,6 +74,8 @@ Node
   * keep in mind that plans are NOT prorated.
     * cancel date should be end of the term (based on Stripe)
     * check the DB to see if they have any invoice items other than the one for their bentos 
+* Create a task to remove old carts from the DB after 24 hours or something
+* Redirect the user if the cart does not exist (when they are on a page requiring the cart to exist)
 
 NRFs
 * extract some of the Vue methods to a mixin (sizes, packages, api calls, etc)
