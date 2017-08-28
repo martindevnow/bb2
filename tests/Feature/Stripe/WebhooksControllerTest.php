@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Http\Controllers\WebhooksController;
+use App\Http\Controllers\Api\WebhooksController;
 use Martin\ACL\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

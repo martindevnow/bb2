@@ -191,7 +191,7 @@ class Order extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null): \Illuminate\Database\Eloquent\Collection {
+    public function mealCounts(Meal $meal = null) {
         return $this->plan->mealCounts($meal);
     }
 
