@@ -75,6 +75,14 @@ Node
     * cancel date should be end of the term (based on Stripe)
     * check the DB to see if they have any invoice items other than the one for their bentos 
 
+NRFs
+* extract some of the Vue methods to a mixin (sizes, packages, api calls, etc)
+* Review the API middleware in the kernel to ensure running properly.
+* build out tests for all the new API endpoints
+* make sure orders:generate is scheduled (and check when...)
+* Make sure when a plan is cancelled, that the orders in the system that were already generated are deleted.
+* Send a notification when a plan is cancelled so viv and "undo" their packing.. etc...
+
 ## Test Coverage
 
 **2017-08-16**
