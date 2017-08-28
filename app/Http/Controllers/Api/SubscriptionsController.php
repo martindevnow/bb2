@@ -12,6 +12,10 @@ class SubscriptionsController extends Controller
 {
     public function __construct() {}
 
+    public function sizes() {
+        return getSizes();
+    }
+
     public function start(Request $request) {
         $this->validate($request, [
             'weight'            => 'required|integer',
