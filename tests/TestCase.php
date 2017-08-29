@@ -24,11 +24,20 @@ abstract class TestCase extends BaseTestCase
         $role = factory(Role::class)->create(['code' => 'admin']);
         $this->user = factory(User::class)->create();
         $this->user->assignRole($role);
-        $this->user = $this->user->fresh(['roles']);
+        return $this->user = $this->user->fresh(['roles']);
+    }
+
+    public function createCustomer() {
+        return $this->user = factory(User::class)->create();
     }
 
     public function loginAsAdmin() {
         $this->createAdminUser();
+        $this->be($this->user);
+    }
+
+    public function loginAsCustomer() {
+        $this->createCustomer();
         $this->be($this->user);
     }
 
