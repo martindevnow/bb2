@@ -20,7 +20,7 @@ trait CanSeedFromCSV {
         $file_path = base_path() . $file_path;
 
         $handle = fopen($file_path,"r");
-        while ($data = fgetcsv($handle,1500,",","'")) {
+        while ($data = fgetcsv($handle,3000,",","'")) {
             // Build the header columns if required
             if (count($col_names) == 0) {
                 $col_names = $this->getColNamesFromFirstRow($data);
@@ -49,8 +49,10 @@ trait CanSeedFromCSV {
                     $insert_data[$col_names[$col_number]] = $model->id;
                     continue;
                 }
-
-                $insert_data[$col_names[$col_number]] = $value;
+                if (isset($col_names[$col_number]))
+                    $insert_data[$col_names[$col_number]] = $value;
+                else
+                    continue;
             }
 
             if ($class) {

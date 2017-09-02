@@ -11,6 +11,8 @@
 |
 */
 
+use App\EventItem;
+
 Auth::routes();
 
 Route::get('/version', function () {
@@ -43,3 +45,25 @@ Route::resource('/treats', 'TreatsController');
 
 
 Route::post('/plans/subscribe', 'PlansController@subscribe');
+
+Route::get('schedule/preview', function() {
+    $fridayEvents = EventItem::where('day', '=', 'Friday')->get();
+    $saturdayEvents = EventItem::where('day', '=', 'Saturday')->get();
+
+    $fridayEvents->map(function($item) {
+        $item->time = explode(':', $item->time);
+        return $item;
+    });
+    $saturdayEvents->map(function($item) {
+        $item->time = explode(':', $item->time);
+        return $item;
+    });
+    return view('oobs-html')
+        ->with(compact('fridayEvents', 'saturdayEvents'));
+});
+Route::get('schedule', function() {
+    $fridayEvents = EventItem::where('day', '=', 'Friday')->get();
+    $saturdayEvents = EventItem::where('day', '=', 'Saturday')->get();
+    return view('oobs')
+        ->with(compact('fridayEvents', 'saturdayEvents'));
+});
