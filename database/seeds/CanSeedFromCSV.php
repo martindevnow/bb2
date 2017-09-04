@@ -20,7 +20,7 @@ trait CanSeedFromCSV {
         $file_path = base_path() . $file_path;
 
         $handle = fopen($file_path,"r");
-        while ($data = fgetcsv($handle,3000,",","'")) {
+        while ($data = fgetcsv($handle,5000,",","'")) {
             // Build the header columns if required
             if (count($col_names) == 0) {
                 $col_names = $this->getColNamesFromFirstRow($data);

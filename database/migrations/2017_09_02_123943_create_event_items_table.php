@@ -20,9 +20,10 @@ class CreateEventItemsTable extends Migration
             $table->string('category');
             $table->string('time');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->string('location')->nullable();
 
-            $table->string('speaker_name')->nullable();
+            $table->text('speaker_name')->nullable();
             $table->text('speaker_description')->nullable();
             $table->string('speaker_img')->nullable();
             $table->string('speaker_link')->nullable();

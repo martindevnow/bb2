@@ -50,14 +50,7 @@ Route::get('schedule/preview2', function() {
     $fridayEvents = EventItem::where('day', '=', 'Friday')->get();
     $saturdayEvents = EventItem::where('day', '=', 'Saturday')->get();
 
-    $fridayEvents->map(function($item) {
-        $item->time = explode(':', $item->time);
-        return $item;
-    });
-    $saturdayEvents->map(function($item) {
-        $item->time = explode(':', $item->time);
-        return $item;
-    });
+//    dd($fridayEvents->toArray());
     return view('oobs-html2')
         ->with(compact('fridayEvents', 'saturdayEvents'));
 });
@@ -65,14 +58,6 @@ Route::get('schedule/preview', function() {
     $fridayEvents = EventItem::where('day', '=', 'Friday')->get();
     $saturdayEvents = EventItem::where('day', '=', 'Saturday')->get();
 
-    $fridayEvents->map(function($item) {
-        $item->time = explode(':', $item->time);
-        return $item;
-    });
-    $saturdayEvents->map(function($item) {
-        $item->time = explode(':', $item->time);
-        return $item;
-    });
     return view('oobs-html')
         ->with(compact('fridayEvents', 'saturdayEvents'));
 });
