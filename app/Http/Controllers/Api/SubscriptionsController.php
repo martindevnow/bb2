@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Martin\Subscriptions\CostModel;
 use Martin\Subscriptions\Package;
 use Martin\Transactions\ShoppingCart;
 
@@ -13,7 +14,7 @@ class SubscriptionsController extends Controller
     public function __construct() {}
 
     public function sizes() {
-        return getSizes();
+        return CostModel::all();
     }
 
     public function start(Request $request) {

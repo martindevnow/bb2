@@ -14478,6 +14478,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: [],
     data: function data() {
         return {
+            sizes: [],
             selectedClass: 'btn-primary',
             defaultClass: 'btn-default',
             pkgs: [],
@@ -14519,7 +14520,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getSize: function getSize() {
             var vm = this;
             var size = this.sizes.filter(function (size) {
-                return vm.weight >= size.min && vm.weight <= size.max;
+                return vm.weight >= size.min_weight && vm.weight <= size.max_weight;
             });
             if (!size.length) {
                 return null;
@@ -14558,7 +14559,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var size = this.getSize();
             if (!size) return 0;
 
-            return size.base + (this.roundedWeight() - size.min) / 5 * size.inc + this.pkg.level * 5 + this.pkg.customization * 3;
+            return size.base_cost + (this.roundedWeight() - size.min_weight) / 5 * size.incremental_cost + this.pkg.level * size.upgrade_cost + this.pkg.customization * size.customization_cost;
         },
         shippingCost: function shippingCost() {
             return this.shipping_modifier * 5;

@@ -16,6 +16,6 @@ class CostModelsTableSeeder extends Seeder
     public function run() {
         echo "Loading \"Cost Models\"...\r\n";
         DB::table('cost_models')->truncate();
-        $this->seedFromGoogle('cost_models');
+        $this->seedFromGoogle('cost_models', \Martin\Subscriptions\CostModel::class);
     }
 }

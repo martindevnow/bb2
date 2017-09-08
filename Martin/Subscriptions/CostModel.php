@@ -28,7 +28,7 @@ class CostModel extends Model
      * @param $value
      */
     public function setBaseCostAttribute($value) {
-        $this->attributes['value'] = round($value * 100);
+        $this->attributes['base_cost'] = round($value * 100);
     }
 
     /**
@@ -43,7 +43,7 @@ class CostModel extends Model
      * @param $value
      */
     public function setIncrementalCostAttribute($value) {
-        $this->attributes['value'] = round($value * 100);
+        $this->attributes['incremental_cost'] = round($value * 100);
     }
 
     /**
@@ -58,7 +58,7 @@ class CostModel extends Model
      * @param $value
      */
     public function setUpgradeCostAttribute($value) {
-        $this->attributes['value'] = round($value * 100);
+        $this->attributes['upgrade_cost'] = round($value * 100);
     }
 
     /**
@@ -73,7 +73,7 @@ class CostModel extends Model
      * @param $value
      */
     public function setCustomizationCostAttribute($value) {
-        $this->attributes['value'] = round($value * 100);
+        $this->attributes['customization_cost'] = round($value * 100);
     }
 
 }
