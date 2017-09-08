@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Auth::routes();
 
 Route::get('/version', function () {
@@ -43,3 +45,16 @@ Route::resource('/treats', 'TreatsController');
 
 
 Route::post('/plans/subscribe', 'PlansController@subscribe');
+
+Route::get('camera', function () {
+    return view('camera');
+});
+
+Route::post('camera', function(Request $request) {
+
+//    dd ($request);
+    $path = $request->file('photo')
+        ->storeAs('images', 'file.jpg');
+    dd ($path);
+
+});
