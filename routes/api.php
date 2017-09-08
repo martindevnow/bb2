@@ -76,3 +76,10 @@ Route::get('packages', function() {
         return $pkg;
     });
 });
+
+/**
+ * Return the cost model for the different sizes
+ */
+Route::get('costModel', function() {
+    return \Martin\Subscriptions\CostModel::all();
+});
