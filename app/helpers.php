@@ -1,21 +1,17 @@
 <?php
 
+use Martin\Subscriptions\CostModel;
 use Martin\Subscriptions\Package;
 
-function getSizes() {
-    return [
-        ['label' => 'S',    'min' => 5,     'max' => 14,    'base' => 35.75,    'inc' => 2.000],
-        ['label' => 'M',    'min' => 15,    'max' => 49,    'base' => 41.60,    'inc' => 1.625],
-        ['label' => 'L',    'min' => 50,    'max' => 94,    'base' => 61.10,    'inc' => 1.755],
-        ['label' => 'XL',   'min' => 95,    'max' => 139,   'base' => 83.85,    'inc' => 1.950],
-        ['label' => 'XXL',  'min' => 140,   'max' => 220,   'base' => 98.80,    'inc' => 2.145],
-    ];
+function getSizes(): \Illuminate\Database\Eloquent\Collection {
+    return CostModel::all();
 }
 
 function getSize($weight) {
-    return collect(getSizes())
+    return getSizes()
         ->filter(function($size) use ($weight) {
-            return $size['min'] <= $weight && $size['max'] >= $weight;
+            return $size->min_weight <= $weight
+                && $size->max_weight >= $weight;
         })->first();
 }
 
@@ -44,10 +40,10 @@ function calculateCost($weight, Package $package) {
 
     $size = getSize($weight);
 
-    return $size['base']
-        + (roundToNearestFive($weight) - $size['min']) / 5 * $size['inc']
-        + $package->level* 5
-        + $package->customization * 3;
+    return $size->base_cost
+        + (roundToNearestFive($weight) - $size->min_weight) / 5 * $size->incremental_cost
+        + $package->level * $size->upgrade_cost
+        + $package->customization * $size->customization_cost;
 }
 
 

@@ -2,17 +2,16 @@
 
 namespace Tests\Unit\Transactions;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Payment;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PaymentsUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_payment_has_a_factory() {

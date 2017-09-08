@@ -2,16 +2,14 @@
 
 namespace Tests\Smoke;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Product;
 use Martin\Subscriptions\Package;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AllLoadingTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_loads_the_home_page() {

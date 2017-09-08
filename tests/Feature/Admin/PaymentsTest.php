@@ -3,15 +3,13 @@
 namespace Tests\Feature\Admin;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Transactions\Payment;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PaymentsTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_payments_page() {

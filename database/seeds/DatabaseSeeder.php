@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         /**
          * User / ACL / Permissions and Roles
          */
+        $this->call(CostModelsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ACLTableSeeder::class);
         $this->call(VendorsTableSeeder::class);

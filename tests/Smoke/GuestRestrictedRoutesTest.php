@@ -2,15 +2,13 @@
 
 namespace Tests\Smoke;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GuestRestrictedRoutesTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_loads_the_home_page() {

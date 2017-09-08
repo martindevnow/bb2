@@ -2,16 +2,15 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Inventory;
 use Martin\Products\Meat;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class InventoriesUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {

@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Customers\Pet;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetsTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_pets_page() {

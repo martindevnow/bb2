@@ -3,15 +3,14 @@
 namespace Tests\Unit;
 
 use App\Console\Commands\GenerateOrders;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GenerateOrdersTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     // TODO: Flesh this out more and ensure that orders are only generated when they should be....
 

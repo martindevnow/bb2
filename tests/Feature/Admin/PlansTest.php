@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlansTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_plans_page() {

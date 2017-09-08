@@ -2,16 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
-use Martin\ACL\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meat;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MeatsTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_meats_page() {

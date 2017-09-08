@@ -2,15 +2,14 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Container;
 use Martin\Products\ShippingContainer;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ShippingContainerUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_can_select_a_shipping_container_based_on_meal_weight() {

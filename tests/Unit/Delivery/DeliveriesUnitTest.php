@@ -3,16 +3,15 @@
 namespace Tests\Unit\Delivery;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Delivery\Courier;
 use Martin\Delivery\Delivery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DeliveriesUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_delivery_has_a_model_factory() {

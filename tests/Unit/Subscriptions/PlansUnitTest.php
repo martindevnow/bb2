@@ -3,6 +3,7 @@
 namespace Tests\Unit\Subscriptions;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
@@ -13,12 +14,10 @@ use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlansUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {

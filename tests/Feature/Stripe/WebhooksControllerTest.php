@@ -3,14 +3,13 @@
 namespace Tests\Unit;
 
 use App\Http\Controllers\Api\WebhooksController;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WebhooksControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_maps_a_stripe_event_to_a_method() {

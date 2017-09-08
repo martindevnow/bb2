@@ -2,15 +2,14 @@
 
 namespace Tests\Unit\Core;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Core\Faq;
 use Martin\Core\FaqCategory;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FaqsUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function faqs_have_a_model_factory() {

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Subscriptions;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
@@ -10,12 +11,10 @@ use Martin\Subscriptions\MealPackage;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PackagesUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {

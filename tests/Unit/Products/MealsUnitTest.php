@@ -2,17 +2,16 @@
 
 namespace Tests\Unit\Products;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Products\Topping;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MealsUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {

@@ -3,20 +3,14 @@
 namespace Tests\Feature\Admin;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Delivery\Courier;
-use Martin\Products\Meal;
-use Martin\Products\Meat;
-use Martin\Subscriptions\Package;
-use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class OrdersTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_orders_page() {

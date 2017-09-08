@@ -2,16 +2,15 @@
 
 namespace Tests\Api;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersApiTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_can_fetch_the_logged_in_user_object() {

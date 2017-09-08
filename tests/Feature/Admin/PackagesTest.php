@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Package;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PackagesTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_packages_page() {

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Transactions;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
@@ -15,12 +16,10 @@ use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class OrdersUnitTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function a_order_has_a_factory() {
