@@ -46,17 +46,6 @@
             </div>
         </div>
 
-        <div class="row" v-if="discount">
-            <div class="form-group" style="margin-top: 0px;">
-                <label class="col-md-2 control-label">Promotion ({{ discount_rate * 100 }}% off for4 weeks)</label>
-                <div class="col-md-10">
-                    <div class="col-sm-3">
-                        <button class="btn btn-block btn-danger btn-cost">${{ (discount).toFixed(2) }} / week</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
             <div class="form-group" style="margin-top: 0px;">
                 <label class="col-md-2 control-label">Shipping</label>
@@ -99,23 +88,10 @@
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-block btn-success btn-raised btn-total btn-label">${{ (cost + shippingCost - discount).toFixed(2) }}* / week</button>
+                        <button class="btn btn-block btn-success btn-raised btn-total btn-label">${{ (servingCost + shippingCost / 14).toFixed(2) }}* / serving</button>
                     </div>
                     <div class="col-sm-3">
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" v-if="discount">
-            <div class="form-group" style="margin-top: 0px;">
-                <label class="col-md-12 control-label">*Promotional offer valid for new customers only. Promotional rate applies for the first 4 weeks of shipments only. After 4 weeks, plan pricing reverts to original pricing.</label>
-                <div class="col-md-10">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-block btn-info btn-cost" btn-sm>${{ (cost + shippingCost).toFixed(2) }} / week afterwards</button>
-                    </div>
-                    <div class="col-sm-3"></div>
                 </div>
             </div>
         </div>
@@ -133,69 +109,20 @@
 
 <script>
 import eventBus from '../../events/eventBus';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
+import Pricing from '../../mixins/pricing';
 export default {
+    mixins: [
+        Pricing,
+    ],
     props: [],
     data() {
-        return {
-            sizes: [],
-            selectedClass: 'btn-primary',
-            defaultClass: 'btn-default',
-            pkgs: [],
-            pkg: {},
-            weight: null,
-            shipping_modifier: 0,
-            discount_rate: 0.10,
-        };
+        return {};
     },
     mounted() {
-        this.getPackages();
-        this.getSizes();
+        console.log('calculator component mounted()');
     },
     methods: {
-        getPackages() {
-            let vm = this;
-            axios.get('/api/packages')
-                .then(function(response) {
-                    vm.pkgs = response.data.filter(function(pkg) {
-                        return pkg.customization == 0;
-                    });
-                    vm.pkg = vm.pkgs[0];
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
-        getSizes() {
-            let vm = this;
-            axios.get('/api/sizes')
-                .then(function(response) {
-                    vm.sizes = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    alert('There was an unknown error.')
-                })
-        },
-        isSelected(pkg2) {
-            return this.pkg && this.pkg.id === pkg2.id;
-        },
-        getSize() {
-            let vm = this;
-            let size = this.sizes.filter(function(size) {
-                return vm.weight >= size.min_weight && vm.weight <= size.max_weight;
-            });
-            if (! size.length) {
-                return null;
-            }
-            return size[0];
-        },
-        roundedWeight() {
-            if (! this.weight) {
-                return 0;
-            }
-            return Math.round(this.weight / 5) * 5;
-        },
         subscribe() {
             let vm = this;
             if (this.weight <=4 ) {
@@ -214,37 +141,6 @@ export default {
         }
     },
     computed: {
-        cost() {
-            if (this.weight < 5)
-                return 0;
-
-            if (!this.pkg)
-                return 0;
-
-            let size = this.getSize();
-            if (! size)
-                return 0;
-
-            return size.base_cost
-            + (this.roundedWeight() - size.min_weight) / 5 * size.incremental_cost
-            + this.pkg.level * size.upgrade_cost
-            + this.pkg.customization * size.customization_cost;
-        },
-        shippingCost() {
-            return this.shipping_modifier * 5;
-        },
-        shippingCostLabel() {
-            if (this.shipping_modifier == 0)
-                return "FREE";
-
-            return "+ $" + this.shippingCost + " / week";
-        },
-        discount() {
-            if (this.cost) {
-                return this.cost * this.discount_rate;
-            }
-            return 0;
-        }
     }
 }
 </script>

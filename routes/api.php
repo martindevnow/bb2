@@ -80,6 +80,6 @@ Route::get('packages', function() {
 /**
  * Return the cost model for the different sizes
  */
-Route::get('costModel', function() {
+Route::get('pricing', function() {
     return \Martin\Subscriptions\CostModel::all();
 });

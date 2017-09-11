@@ -39,13 +39,13 @@ class ShoppingCart extends Model
      * @return Model|static
      */
     public static function byHash($hash) {
-        return ShoppingCart::where('hash', $hash)
-            ->with('package')
+        return ShoppingCart::with('subPackage')
+            ->where('hash', $hash)
             ->orderBy('updated_at', 'desc')
             ->firstOrFail();
     }
 
-    public function package() {
+    public function subPackage() {
         return $this->belongsTo(Package::class, 'sub_package_id');
     }
 }

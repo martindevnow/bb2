@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-sm-12" v-if="cart">
                 <h2>In Your Cart</h2>
-                <span>Plan: {{ cart.package.label }} Bento for a {{ cart.sub_weight }} lb dog</span><br />
-                <span>Shipping: {{ shippingFrequency }}</span><br />
-                <span>Promo Rate: TBD</span>
+                <span v-if="cart.sub_package_id">Plan: {{ cart.sub_package.label }} Bento for a {{ cart.sub_weight }} lb dog</span><br />
+                <span>Shipping: {{ shippingFrequency(cart.sub_shipping_modifier) }}</span><br />
+                <span>Serving Cost: ${{ servingCost.toFixed(2) }}</span>
             </div>
             <div class="col-sm-6">
                 <h2>Your Dog</h2>
@@ -63,7 +63,7 @@
 
                             <input type="text"
                                    name="pet_weight"
-                                   v-model="myPet.weight"
+                                   v-model="weight"
                                    class="form-control"
                                    id="pet_weight"
                                    placeholder=""
@@ -223,9 +223,11 @@
 </template>
 
 <script>
-    import swal from 'sweetalert2'
+    import swal from 'sweetalert2';
+    import Pricing from '../../mixins/pricing';
 
     export default {
+        mixins: [Pricing],
         props: ['hash'],
         data() {
             return {
@@ -275,6 +277,7 @@
                     .then(response => {
                         vm.cart = response.data;
                         vm.myPet.weight = vm.cart.sub_weight;
+                        vm.loadCartDetails();
                     })
                     .catch(response => {
                         swal({
@@ -315,24 +318,23 @@
                         type: 'error',
                     });
                 })
+            },
+            loadCartDetails() {
+                this.weight = this.cart.sub_weight;
+                this.shipping_modifier = this.cart.sub_shipping_modifier;
+                this.pkg = this.cart.sub_package;
             }
         },
-        computed: {
-            shippingFrequency() {
-                if (! this.cart || this.cart.shipping_modifier == 2)
-                    return 'Weekly';
-
-                if (this.cart.shipping_modifier == 0)
-                    return 'Monthly'
-
-                if (this.cart.shipping_modifier == 1)
-                    return 'Bi-Weekly'
-            }
-        },
+        computed: {},
         mounted() {
             this.getCart();
             this.getPets();
             this.getAddresses();
+        },
+        watch: {
+            myPet(pet, oldPet) {
+                this.weight = pet.sub_weight;
+            }
         }
 
 }

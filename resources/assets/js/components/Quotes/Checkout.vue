@@ -16,10 +16,10 @@
                                 <h4>Halley (50lb)</h4>
                             </td>
                             <td>
-                                <h5>Weekly Shipping</h5>
+                                <h5>{{  }} Shipping</h5>
                             </td>
                             <td>
-                                <span class="color-success">$61.99 / week</span>
+                                <span class="color-success">${{ cost.toFixed() }} / week</span>
                             </td>
                         </tr>
                         </tbody></table>
@@ -56,8 +56,11 @@
 </template>
 
 <script>
-    import swal from 'sweetalert2'
+import swal from 'sweetalert2';
+import Pricing from '../../mixins/pricing';
+
 export default {
+    mixins: [Pricing],
     props: ['hash'],
     data() {
         return {
@@ -69,10 +72,7 @@ export default {
         };
     },
     methods: {
-        getCart() {
-            let vm = this;
-            axios.get('/api/cart')
-        }
+
     },
     mounted() {
         let vm = this;
