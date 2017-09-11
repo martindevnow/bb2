@@ -14566,8 +14566,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    methods: {},
+    methods: {
+        getCart: function getCart() {
+            var vm = this;
+            axios.get('/api/cart/' + vm.hash).then(function (response) {
+                vm.cart = response.data;
+                vm.myPet.weight = vm.cart.sub_weight;
+                vm.loadCartDetails();
+            }).catch(function (response) {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    title: 'Error',
+                    text: 'Unable to retrieve your cart..',
+                    type: 'error'
+                });
+            });
+        },
+        loadCartDetails: function loadCartDetails() {
+            this.weight = this.cart.sub_weight;
+            this.shipping_modifier = this.cart.sub_shipping_modifier;
+            this.pkg = this.cart.sub_package;
+        }
+    },
     mounted: function mounted() {
+        this.getCart();
+
         var vm = this;
         this.stripe = StripeCheckout.configure({
             key: BarfBento.stripeKey,
@@ -15047,7 +15069,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -33881,9 +33903,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "card mb-1"
   }, [_c('table', {
     staticClass: "table table-responsive table-no-border vertical-center"
-  }, [_c('tbody', [_c('tr', [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('td', [_c('h5', [_vm._v(_vm._s() + " Shipping")])]), _vm._v(" "), _c('td', [_c('span', {
+  }, [_c('tbody', [_c('tr', [_vm._m(0), _vm._v(" "), _c('td', [(_vm.pkg) ? _c('h4', [_vm._v(_vm._s(_vm.pkg.label) + " Bento")]) : _vm._e()]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('td', [_c('h5', [_vm._v(_vm._s() + " Shipping")])]), _vm._v(" "), _c('td', [_c('span', {
     staticClass: "color-success"
-  }, [_vm._v("$" + _vm._s(_vm.cost.toFixed()) + " / week")])])])])])])]), _vm._v(" "), _vm._m(3)])])
+  }, [_vm._v("$" + _vm._s(_vm.cost.toFixed()) + " / week")])])])])])])]), _vm._v(" "), _vm._m(2)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', {
     staticClass: "hidden-xs"
@@ -33895,8 +33917,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "height": "100px"
     }
   })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('td', [_c('h4', {}, [_vm._v("Basic Bento")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', [_c('h4', [_vm._v("Halley (50lb)")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

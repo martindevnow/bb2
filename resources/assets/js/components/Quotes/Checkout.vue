@@ -10,7 +10,7 @@
                                      height="100px"
                                      class="img"> </td>
                             <td>
-                                <h4 class="">Basic Bento</h4>
+                                <h4 v-if="pkg">{{ pkg.label }} Bento</h4>
                             </td>
                             <td>
                                 <h4>Halley (50lb)</h4>
@@ -72,9 +72,31 @@ export default {
         };
     },
     methods: {
-
+        getCart() {
+            let vm = this;
+            axios.get('/api/cart/'+ vm.hash)
+                .then(response => {
+                    vm.cart = response.data;
+                    vm.myPet.weight = vm.cart.sub_weight;
+                    vm.loadCartDetails();
+                })
+                .catch(response => {
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to retrieve your cart..',
+                        type: 'error',
+                    });
+                })
+        },
+        loadCartDetails() {
+            this.weight = this.cart.sub_weight;
+            this.shipping_modifier = this.cart.sub_shipping_modifier;
+            this.pkg = this.cart.sub_package;
+        }
     },
     mounted() {
+        this.getCart();
+
         let vm = this;
         this.stripe = StripeCheckout.configure({
             key: BarfBento.stripeKey,
