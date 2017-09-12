@@ -68,6 +68,26 @@ export default {
             if (shipping_modifier == 1)
                 return 'Bi-Weekly'
         },
+        getCart() {
+            let vm = this;
+            axios.get('/api/cart/' + vm.hash)
+                .then(function(response) {
+                    vm.cart = response.data;
+                    vm.loadCartDetails();
+                })
+                .catch(function(error) {
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to retrieve your cart..',
+                        type: 'error',
+                    });
+                });
+        },
+        loadCartDetails() {
+            this.weight = this.cart.sub_weight;
+            this.shipping_modifier = this.cart.sub_shipping_modifier;
+            this.pkg = this.cart.sub_package;
+        },
     },
     mounted() {
         console.log('pricing mixin mounted');
