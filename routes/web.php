@@ -19,6 +19,14 @@ Route::get('/version', function () {
     return 'v1.0.0';
 });
 
+/** @START Temporary Routes for Testing Vue Components */
+
+Route::get('/pet', function() {
+    return view('testing.pet');
+});
+
+/** @END of Temporary Routes */
+
 Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@index');
 Route::get('/index', 'PagesController@index');

@@ -24,6 +24,7 @@ $.ajaxSetup({
 
 
 Vue.component('quotes-calculator', require('./components/Quotes/Calculator.vue'));
+Vue.component('customers-pet-selector', require('./components/Customers/PetSelector.vue'));
 Vue.component('auth-login-form', require('./components/Auth/LoginForm.vue'));
 Vue.component('auth-registration-form', require('./components/Auth/RegistrationForm.vue'));
 Vue.component('details-collector', require('./components/Quotes/DetailsCollector.vue'));

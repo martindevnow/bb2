@@ -37,7 +37,17 @@ Route::middleware('auth:api')
      ->get('/user', 'UsersController@user');
 Route::get('/user/addresses', 'UsersController@addresses');
 Route::get('/user/pets', 'UsersController@pets');
+Route::post('/user/pets', function(Request $request) {
 
+    $requestData = $request->validate([
+        'name'  => 'required',
+        'breed' => 'required',
+        'weight'    => 'required|numeric',
+    ]);
+
+    $request->user()->pets()->create($requestData);
+    return $request->user()->pets;
+});
 /**
  * Shopping Cart Functions
  */
