@@ -64,55 +64,58 @@ export default {
     props: ['hash'],
     data() {
         return {
+            stripe: null,
             formData: {
                 stripeEmail: '',
                 stripeToken: '',
                 cartHash: '',
             },
+
         };
     },
     methods: {
         getCart() {
             let vm = this;
-            axios.get('/api/cart/'+ vm.hash)
-                .then(response => {
+            axios.get('/api/cart/' + vm.hash)
+                .then(function(response) {
                     vm.cart = response.data;
                     vm.myPet.weight = vm.cart.sub_weight;
                     vm.loadCartDetails();
-                })
-                .catch(response => {
+                }).catch(function(error) {
                     swal({
                         title: 'Error',
                         text: 'Unable to retrieve your cart..',
                         type: 'error',
                     });
-                })
+                });
         },
         loadCartDetails() {
             this.weight = this.cart.sub_weight;
             this.shipping_modifier = this.cart.sub_shipping_modifier;
             this.pkg = this.cart.sub_package;
+        },
+        loadStripe() {
+            let vm = this;
+//            this.stripe = StripeCheckout.configure({
+//                key: BarfBento.stripeKey,
+//                image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+//                locale: "auto",
+//                panelLabel: "Subscribe For",
+//                token: function(token) {
+//                    vm.formData.stripeToken = token.id;
+//                    vm.formData.stripeEmail = token.email;
+//                    vm.formData.cartHash = vm.hash;
+//                    vm.formData.shipping_modifier = vm.shipping_modifier;
+//                    axios.post('/plans/subscribe', vm.formData)
+//                        .then(function(response) { alert('Complete! Thanks for your payment!'); })
+//                        .catch(function(response) {console.log({'response': response});});
+//                }
+//            });
         }
     },
     mounted() {
         this.getCart();
-
-        let vm = this;
-        this.stripe = StripeCheckout.configure({
-            key: BarfBento.stripeKey,
-            image: "https://stripe.com/img/documentation/checkout/marketplace.png",
-            locale: "auto",
-            panelLabel: "Subscribe For",
-            token: function(token) {
-                vm.formData.stripeToken = token.id;
-                vm.formData.stripeEmail = token.email;
-                vm.formData.cartHash = vm.hash;
-                vm.formData.shipping_modifier = vm.shipping_modifier;
-                axios.post('/plans/subscribe', vm.formData)
-                    .then(function(response) { alert('Complete! Thanks for your payment!'); })
-                    .catch(function(response) {console.log({'response': response});});
-            }
-        });
+//        this.loadStripe();
     }
 }
 </script>

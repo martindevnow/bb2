@@ -2529,7 +2529,8 @@ module.exports = defaults;
             weight: null,
             shipping_modifier: 0,
             selectedClass: 'btn-primary',
-            defaultClass: 'btn-default'
+            defaultClass: 'btn-default',
+            cart: {}
         };
     },
 
@@ -14828,11 +14829,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['hash'],
     data: function data() {
         return {
+            stripe: null,
             formData: {
                 stripeEmail: '',
                 stripeToken: '',
                 cartHash: ''
             }
+
         };
     },
 
@@ -14843,7 +14846,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.cart = response.data;
                 vm.myPet.weight = vm.cart.sub_weight;
                 vm.loadCartDetails();
-            }).catch(function (response) {
+            }).catch(function (error) {
                 __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                     title: 'Error',
                     text: 'Unable to retrieve your cart..',
@@ -14855,29 +14858,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.weight = this.cart.sub_weight;
             this.shipping_modifier = this.cart.sub_shipping_modifier;
             this.pkg = this.cart.sub_package;
+        },
+        loadStripe: function loadStripe() {
+            var vm = this;
+            //            this.stripe = StripeCheckout.configure({
+            //                key: BarfBento.stripeKey,
+            //                image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+            //                locale: "auto",
+            //                panelLabel: "Subscribe For",
+            //                token: function(token) {
+            //                    vm.formData.stripeToken = token.id;
+            //                    vm.formData.stripeEmail = token.email;
+            //                    vm.formData.cartHash = vm.hash;
+            //                    vm.formData.shipping_modifier = vm.shipping_modifier;
+            //                    axios.post('/plans/subscribe', vm.formData)
+            //                        .then(function(response) { alert('Complete! Thanks for your payment!'); })
+            //                        .catch(function(response) {console.log({'response': response});});
+            //                }
+            //            });
         }
     },
     mounted: function mounted() {
         this.getCart();
-
-        var vm = this;
-        this.stripe = StripeCheckout.configure({
-            key: BarfBento.stripeKey,
-            image: "https://stripe.com/img/documentation/checkout/marketplace.png",
-            locale: "auto",
-            panelLabel: "Subscribe For",
-            token: function token(_token) {
-                vm.formData.stripeToken = _token.id;
-                vm.formData.stripeEmail = _token.email;
-                vm.formData.cartHash = vm.hash;
-                vm.formData.shipping_modifier = vm.shipping_modifier;
-                axios.post('/plans/subscribe', vm.formData).then(function (response) {
-                    alert('Complete! Thanks for your payment!');
-                }).catch(function (response) {
-                    console.log({ 'response': response });
-                });
-            }
-        });
+        //        this.loadStripe();
     }
 });
 
@@ -15346,7 +15349,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 55 */

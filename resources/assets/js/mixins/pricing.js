@@ -10,6 +10,7 @@ export default {
             shipping_modifier: 0,
             selectedClass: 'btn-primary',
             defaultClass: 'btn-default',
+            cart: {},
         }
     },
     methods: {
