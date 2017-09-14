@@ -88,13 +88,11 @@ NRFs
 
 ## VueJS / Checkout Workflow
 
-Page 1:
+**Page 1:** (Quote/Calculator)
 
 * a guest visits the quotes page
   * APIs:
-    * packages
-    * costModels
-    * discountCodes
+    * packages, costModels, discountCodes
 * guest likes what they see
 * guest clicks continue/signup
   * BACKend:
@@ -107,7 +105,7 @@ Page 1:
       * this should reduce the # of API requests from the Vue component
 * redirect to login page (if quest) otherwise, Page 2.
 
-Page 2:
+**Page 2:** (Details, Pet and Address)
 
 * the new member is asked to fill in the rest of their pet's details
   * APIs:
@@ -120,7 +118,7 @@ Page 2:
     * update the cart accordingly
     * redirect to page 3
 
-Page 3:
+**Page 3:** (Confirmation & Impulse Buys)
 
 * the member is presented with the final cart summary.
   * APIS: 
@@ -137,7 +135,7 @@ Page 3:
     * set the first delivery date
     
     
-**Questons**
+**Questons** (Need to gather requirements)
 
 * do they need to select their first delivery date?
 * how soon after placing their order should the lead time be?
