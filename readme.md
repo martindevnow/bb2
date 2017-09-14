@@ -85,6 +85,71 @@ NRFs
 * Make sure when a plan is cancelled, that the orders in the system that were already generated are deleted.
 * Send a notification when a plan is cancelled so viv and "undo" their packing.. etc...
 
+
+## VueJS / Checkout Workflow
+
+Page 1:
+
+* a guest visits the quotes page
+  * APIs:
+    * packages
+    * costModels
+    * discountCodes
+* guest likes what they see
+* guest clicks continue/signup
+  * BACKend:
+    * validate
+    * create a shopping cart
+    * assign this cart to this session
+    * provide cart key to frontend
+  * OR
+    * provide the cart ID to the blade template to render the component....
+      * this should reduce the # of API requests from the Vue component
+* redirect to login page (if quest) otherwise, Page 2.
+
+Page 2:
+
+* the new member is asked to fill in the rest of their pet's details
+  * APIs:
+    * packages, costModels, cart, discountCodes, pets, addresses
+* the guest adds their pet and address
+* the guest clicks continue
+  * BACKend:
+    * validate
+    * add relational models to the DB
+    * update the cart accordingly
+    * redirect to page 3
+
+Page 3:
+
+* the member is presented with the final cart summary.
+  * APIS: 
+    * cart, packages, pet, address, discountCodes
+* if we wanted, we could offer the opportunity to add treats at this point (before the charge is fully made)
+* the member is happy with their cart selection (but could make changes if they wanted to)
+* the member clicks on "subscribe"
+* the member fills in their CC details and clicks Signup
+  * BACKend:
+    * validate
+    * create customer, subscription, assign any invoice items, save the plan to the customer
+    * save all the Stripe specific info
+    * create a PLAN in the DB
+    * set the first delivery date
+    
+    
+**Questons**
+
+* do they need to select their first delivery date?
+* how soon after placing their order should the lead time be?
+* how can we validate shipping location? 
+  * what do we do if someone from ottawa or nippising sign up?
+  * can we add in some validation for acceptable Cities?
+  * do we say only in GTA right now?
+  * do we know what the incremental shipping cost would be?
+  
+
+
+
 ## Test Coverage
 
 **2017-08-16**
