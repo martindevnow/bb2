@@ -1,16 +1,18 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-sm-12" v-if="cart">
+            <div class="col-sm-12" v-if="form.cart">
                 <h2>In Your Cart</h2>
-                <span v-if="cart.sub_package_id">Plan: {{ cart.sub_package.label }} Bento for a {{ cart.sub_weight }} lb dog</span><br />
-                <span>Shipping: {{ shippingFrequency(cart.sub_shipping_modifier) }}</span><br />
+                <span v-if="form.cart.sub_package_id && sub_packages.length">
+                    Plan: {{ getSubscriptionPackage(form.cart.sub_package_id).label }} Bento for a {{ form.cart.sub_weight }} lb dog
+                </span><br />
+                <span>Shipping: {{ shippingFrequency(form.cart.sub_shipping_modifier) }}</span><br />
                 <span>Serving Cost: ${{ servingCost.toFixed(2) }}</span>
             </div>
             <div class="col-sm-6">
                 <h2>Your Dog</h2>
-                <select v-if="pets.length">
-                    <option v-for="pet in pets">{{ pet.name }}</option>
+                <select v-if="user.pets.length">
+                    <option v-for="pet in user.pets">{{ pet.name }}</option>
                 </select>
 
                 <div class="row">
@@ -21,7 +23,7 @@
 
                             <input type="text"
                                    name="pet_name"
-                                   v-model="myPet.name"
+                                   v-model="form.pet.name"
                                    class="form-control"
                                    id="pet_name"
                                    placeholder=""
@@ -42,7 +44,7 @@
 
                             <input type="text"
                                    name="pet_breed"
-                                   v-model="myPet.breed"
+                                   v-model="form.pet.breed"
                                    class="form-control"
                                    id="pet_breed"
                                    placeholder=""
@@ -63,7 +65,7 @@
 
                             <input type="text"
                                    name="pet_weight"
-                                   v-model="weight"
+                                   v-model="form.pet.weight"
                                    class="form-control"
                                    id="pet_weight"
                                    placeholder=""
@@ -79,8 +81,8 @@
 
             <div class="col-sm-6">
                 <h2>Your Address</h2>
-                <select v-if="addresses.length">
-                    <option v-for="address in addresses">{{ address.street_1 }}</option>
+                <select v-if="user.addresses.length">
+                    <option v-for="address in user.addresses">{{ address.street_1 }}</option>
                 </select>
 
                 <div class="row">
@@ -91,7 +93,7 @@
 
                             <input type="text"
                                    name="address_street_1"
-                                   v-model="myAddress.street_1"
+                                   v-model="form.address.street_1"
                                    class="form-control"
                                    id="address_street_1"
                                    placeholder=""
@@ -112,7 +114,7 @@
 
                             <input type="text"
                                    name="address_street_2"
-                                   v-model="myAddress.street_2"
+                                   v-model="form.address.street_2"
                                    class="form-control"
                                    id="address_street_2"
                                    placeholder=""
@@ -132,7 +134,7 @@
 
                             <input type="text"
                                    name="address_city"
-                                   v-model="myAddress.city"
+                                   v-model="form.address.city"
                                    class="form-control"
                                    id="address_city"
                                    placeholder=""
@@ -153,7 +155,7 @@
 
                             <input type="text"
                                    name="address_province"
-                                   v-model="myAddress.province"
+                                   v-model="form.address.province"
                                    class="form-control"
                                    id="address_province"
                                    placeholder=""
@@ -174,7 +176,7 @@
 
                             <input type="text"
                                    name="address_country"
-                                   v-model="myAddress.country"
+                                   v-model="form.address.country"
                                    class="form-control"
                                    id="address_country"
                                    placeholder=""
@@ -195,7 +197,7 @@
 
                             <input type="text"
                                    name="address_postal"
-                                   v-model="myAddress.postal"
+                                   v-model="form.address.postal"
                                    class="form-control"
                                    id="address_postal"
                                    placeholder=""
@@ -230,49 +232,11 @@
         mixins: [Subscriptions],
         props: ['cart_hash'],
         data() {
-            return {
-                addresses: [],
-                pets: [],
-                cart: {},
-                myPet: {},
-                myAddress: {
-                    province: 'ON',
-                    country: 'Canada',
-                },
-
-            };
+            return {};
         },
         methods: {
-            getAddresses() {
-                let vm = this;
-                axios.get('/api/user/addresses')
-                    .then(response => {
-                        vm.addresses = response.data;
-                    })
-                    .catch(error => {
-                        swal({
-                            title: 'Error',
-                            text: 'Unable to fetch addresses..',
-                            type: 'error',
-                        });
-                    })
-            },
-            getPets() {
-                let vm = this;
-                axios.get('/api/user/pets')
-                    .then(response => {
-                        vm.pets = response.data;
-                    })
-                    .catch(error => {
-                        swal({
-                            title: 'Error',
-                            text: 'Unable to fetch pets..',
-                            type: 'error',
-                        });
-                    })
-            },
             nextStep() {
-                if ( ! this.myPet.weight || ! this.myPet.name || ! this.myPet.breed) {
+                if ( ! this.form.pet.weight || ! this.form.pet.name || ! this.form.pet.breed) {
                     return swal({
                         type: 'error',
                         text: 'Please fill in all of your dog\'s details',
@@ -280,7 +244,7 @@
                     });
                 }
 
-                if ( ! this.myAddress.street_1 || ! this.myAddress.city || ! this.myAddress.postal) {
+                if ( ! this.form.address.street_1 || ! this.form.address.city || ! this.form.address.postal) {
                     return swal({
                         type: 'error',
                         text: 'Please fill in all of your address details',
@@ -289,8 +253,8 @@
                 }
                 let vm = this;
                 axios.post('/api/subscribe/details', {
-                    pet: vm.myPet,
-                    address: vm.myAddress,
+                    pet: vm.form.pet,
+                    address: vm.form.address,
                     hash: vm.cart_hash,
                 }).then(function(response) {
                     console.log(response.data);
@@ -302,7 +266,7 @@
                         type: 'error',
                     });
                 })
-            }
+            },
         },
         computed: {},
         mounted() {
@@ -310,12 +274,6 @@
             this.getPets();
             this.getAddresses();
         },
-        watch: {
-            myPet(pet, oldPet) {
-                this.weight = pet.sub_weight;
-            }
-        }
-
 }
 </script>
 

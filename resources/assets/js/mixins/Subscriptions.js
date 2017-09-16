@@ -74,25 +74,73 @@ export class Price {
     }
 }
 
+export class Address {
+    constructor(addressData = null) {
+        if (addressData) {
+            this.id = addressData['id'];
+            this.street_1 = addressData['street_1'];
+            this.street_2 = addressData['street_2'];
+            this.city = addressData['city'];
+            this.province = addressData['province'];
+            this.country = addressData['country'];
+            this.postal = addressData['postal'];
+        } else {
+            this.province = 'ON';
+            this.country = 'Canada';
+        }
+    }
+}
+
 export default {
     data() {
         return {
             sub_prices: [],
             sub_packages: [],
             form: {
+                cart: new Cart(),
                 pet_id: null,
                 address_id: null,
                 pet: new Pet(),
-                cart: new Cart(),
+                address: new Address(),
             },
-            cart_hash: null,
+            user: {
+                pets: [],
+                addresses: [],
+            },
             selectedClass: 'btn-primary',
             defaultClass: 'btn-default',
         }
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
+        getAddresses() {
+            let vm = this;
+            axios.get('/api/user/addresses')
+                .then(response => {
+                    vm.user.addresses = response.data.map(addressData => new Address(addressData));
+                })
+                .catch(error => {
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to fetch addresses..',
+                        type: 'error',
+                    });
+                })
+        },
+        getPets() {
+            let vm = this;
+            axios.get('/api/user/pets')
+                .then(response => {
+                    vm.pets = response.data.map(petData => new Pet(petData));
+                })
+                .catch(error => {
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to fetch pets..',
+                        type: 'error',
+                    });
+                })
+        },
         getSubscriptionPrices() {
             let vm = this;
             axios.get('/api/pricing')
@@ -121,12 +169,10 @@ export default {
             let vm = this;
             axios.get('/api/packages')
                 .then(function(response) {
-                    vm.sub_packages = response.data.filter(function(pkg) {
-                        return pkg.customization == 0;
-                    });
-                    vm.sub_packages = vm.sub_packages.map((pkg) => {
-                        return new Package(pkg);
-                    });
+                    vm.sub_packages = response.data
+                        .map(pkgData => new Package(pkgData))
+                        .filter(pkg => pkg.customization === 0)
+
                     console.log(vm.sub_packages);
                     vm.form.cart.sub_package_id = vm.sub_packages[0].id;
                 })
@@ -135,6 +181,7 @@ export default {
                 });
         },
         getCart() {
+            console.log('loading cart...');
             if (! this.cart_hash) {
                 return ;
             }
@@ -143,6 +190,7 @@ export default {
             axios.get('/api/cart/' + vm.cart_hash)
                 .then(function(response) {
                     vm.form.cart = new Cart(response.data);
+                    vm.form.pet.weight = vm.form.cart.sub_weight;
                 })
                 .catch(function(error) {
                     swal({
@@ -152,7 +200,7 @@ export default {
                     });
                 });
         },
-        getSubsciptionPackage(id = null) {
+        getSubscriptionPackage(id = null) {
             id = id ? id : this.form.cart.sub_package_id;
             return this.sub_packages.filter(pkg => pkg.id === id)[0];
         },
@@ -160,14 +208,16 @@ export default {
             return this.form.cart.sub_package_id && this.form.cart.sub_package_id === pkg.id;
         },
         shippingFrequency(shipping_modifier) {
-            if (! shipping_modifier || shipping_modifier == 2)
+            shipping_modifier = Number.parseInt(shipping_modifier);
+
+            if (! shipping_modifier || shipping_modifier === 2)
                 return 'Weekly';
 
-            if (shipping_modifier == 0)
-                return 'Monthly'
+            if (shipping_modifier === 0)
+                return 'Monthly';
 
-            if (shipping_modifier == 1)
-                return 'Bi-Weekly'
+            if (shipping_modifier === 1)
+                return 'Bi-Weekly';
         },
 
     },
@@ -183,7 +233,7 @@ export default {
 
             console.log('weight OK');
 
-            if (!this.form.cart.sub_package_id)
+            if ( ! this.form.cart.sub_package_id || ! this.sub_packages.length)
                 return 0;
 
             console.log('Package ID OK');
@@ -194,7 +244,9 @@ export default {
 
             console.log('Price OK');
 
-            let pkg = this.getSubsciptionPackage();
+            let pkg = this.getSubscriptionPackage(this.form.cart.sub_package_id);
+
+            console.log(pkg);
             return price.base_cost
                 + price.getIncrementalCostByWeight(this.form.pet.roundedWeight())
                 + pkg.level * price.upgrade_cost

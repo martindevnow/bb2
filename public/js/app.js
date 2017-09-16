@@ -14997,6 +14997,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -15005,46 +15007,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__["a" /* default */]],
     props: ['cart_hash'],
     data: function data() {
-        return {
-            addresses: [],
-            pets: [],
-            cart: {},
-            myPet: {},
-            myAddress: {
-                province: 'ON',
-                country: 'Canada'
-            }
-
-        };
+        return {};
     },
 
     methods: {
-        getAddresses: function getAddresses() {
-            var vm = this;
-            axios.get('/api/user/addresses').then(function (response) {
-                vm.addresses = response.data;
-            }).catch(function (error) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                    title: 'Error',
-                    text: 'Unable to fetch addresses..',
-                    type: 'error'
-                });
-            });
-        },
-        getPets: function getPets() {
-            var vm = this;
-            axios.get('/api/user/pets').then(function (response) {
-                vm.pets = response.data;
-            }).catch(function (error) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                    title: 'Error',
-                    text: 'Unable to fetch pets..',
-                    type: 'error'
-                });
-            });
-        },
         nextStep: function nextStep() {
-            if (!this.myPet.weight || !this.myPet.name || !this.myPet.breed) {
+            if (!this.form.pet.weight || !this.form.pet.name || !this.form.pet.breed) {
                 return __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                     type: 'error',
                     text: 'Please fill in all of your dog\'s details',
@@ -15052,7 +15020,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
 
-            if (!this.myAddress.street_1 || !this.myAddress.city || !this.myAddress.postal) {
+            if (!this.form.address.street_1 || !this.form.address.city || !this.form.address.postal) {
                 return __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                     type: 'error',
                     text: 'Please fill in all of your address details',
@@ -15061,8 +15029,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var vm = this;
             axios.post('/api/subscribe/details', {
-                pet: vm.myPet,
-                address: vm.myAddress,
+                pet: vm.form.pet,
+                address: vm.form.address,
                 hash: vm.cart_hash
             }).then(function (response) {
                 console.log(response.data);
@@ -15081,14 +15049,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getCart();
         this.getPets();
         this.getAddresses();
-    },
-
-    watch: {
-        myPet: function myPet(pet, oldPet) {
-            this.weight = pet.sub_weight;
-        }
     }
-
 });
 
 /***/ }),
@@ -15154,7 +15115,7 @@ if (token) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 47 */
@@ -32716,11 +32677,11 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('div', {
     staticClass: "row"
-  }, [(_vm.cart) ? _c('div', {
+  }, [(_vm.form.cart) ? _c('div', {
     staticClass: "col-sm-12"
-  }, [_c('h2', [_vm._v("In Your Cart")]), _vm._v(" "), (_vm.cart.sub_package_id) ? _c('span', [_vm._v("Plan: " + _vm._s(_vm.cart.sub_package.label) + " Bento for a " + _vm._s(_vm.cart.sub_weight) + " lb dog")]) : _vm._e(), _c('br'), _vm._v(" "), _c('span', [_vm._v("Shipping: " + _vm._s(_vm.shippingFrequency(_vm.cart.sub_shipping_modifier)))]), _c('br'), _vm._v(" "), _c('span', [_vm._v("Serving Cost: $" + _vm._s(_vm.servingCost.toFixed(2)))])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_c('h2', [_vm._v("In Your Cart")]), _vm._v(" "), (_vm.form.cart.sub_package_id && _vm.sub_packages.length) ? _c('span', [_vm._v("\n                Plan: " + _vm._s(_vm.getSubscriptionPackage(_vm.form.cart.sub_package_id).label) + " Bento for a " + _vm._s(_vm.form.cart.sub_weight) + " lb dog\n            ")]) : _vm._e(), _c('br'), _vm._v(" "), _c('span', [_vm._v("Shipping: " + _vm._s(_vm.shippingFrequency(_vm.form.cart.sub_shipping_modifier)))]), _c('br'), _vm._v(" "), _c('span', [_vm._v("Serving Cost: $" + _vm._s(_vm.servingCost.toFixed(2)))])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_c('h2', [_vm._v("Your Dog")]), _vm._v(" "), (_vm.pets.length) ? _c('select', _vm._l((_vm.pets), function(pet) {
+  }, [_c('h2', [_vm._v("Your Dog")]), _vm._v(" "), (_vm.user.pets.length) ? _c('select', _vm._l((_vm.user.pets), function(pet) {
     return _c('option', [_vm._v(_vm._s(pet.name))])
   })) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
@@ -32740,8 +32701,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myPet.name),
-      expression: "myPet.name"
+      value: (_vm.form.pet.name),
+      expression: "form.pet.name"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32757,12 +32718,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myPet.name)
+      "value": (_vm.form.pet.name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myPet.name = $event.target.value
+        _vm.form.pet.name = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -32783,8 +32744,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myPet.breed),
-      expression: "myPet.breed"
+      value: (_vm.form.pet.breed),
+      expression: "form.pet.breed"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32800,12 +32761,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myPet.breed)
+      "value": (_vm.form.pet.breed)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myPet.breed = $event.target.value
+        _vm.form.pet.breed = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -32826,8 +32787,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.weight),
-      expression: "weight"
+      value: (_vm.form.pet.weight),
+      expression: "form.pet.weight"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32843,17 +32804,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.weight)
+      "value": (_vm.form.pet.weight)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.weight = $event.target.value
+        _vm.form.pet.weight = $event.target.value
       }
     }
   })])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_c('h2', [_vm._v("Your Address")]), _vm._v(" "), (_vm.addresses.length) ? _c('select', _vm._l((_vm.addresses), function(address) {
+  }, [_c('h2', [_vm._v("Your Address")]), _vm._v(" "), (_vm.user.addresses.length) ? _c('select', _vm._l((_vm.user.addresses), function(address) {
     return _c('option', [_vm._v(_vm._s(address.street_1))])
   })) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
@@ -32873,8 +32834,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.street_1),
-      expression: "myAddress.street_1"
+      value: (_vm.form.address.street_1),
+      expression: "form.address.street_1"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32890,12 +32851,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myAddress.street_1)
+      "value": (_vm.form.address.street_1)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.street_1 = $event.target.value
+        _vm.form.address.street_1 = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -32916,8 +32877,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.street_2),
-      expression: "myAddress.street_2"
+      value: (_vm.form.address.street_2),
+      expression: "form.address.street_2"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32932,12 +32893,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "autofocus": ""
     },
     domProps: {
-      "value": (_vm.myAddress.street_2)
+      "value": (_vm.form.address.street_2)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.street_2 = $event.target.value
+        _vm.form.address.street_2 = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -32958,8 +32919,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.city),
-      expression: "myAddress.city"
+      value: (_vm.form.address.city),
+      expression: "form.address.city"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -32975,12 +32936,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myAddress.city)
+      "value": (_vm.form.address.city)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.city = $event.target.value
+        _vm.form.address.city = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -33001,8 +32962,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.province),
-      expression: "myAddress.province"
+      value: (_vm.form.address.province),
+      expression: "form.address.province"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -33018,12 +32979,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myAddress.province)
+      "value": (_vm.form.address.province)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.province = $event.target.value
+        _vm.form.address.province = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -33044,8 +33005,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.country),
-      expression: "myAddress.country"
+      value: (_vm.form.address.country),
+      expression: "form.address.country"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -33061,12 +33022,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myAddress.country)
+      "value": (_vm.form.address.country)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.country = $event.target.value
+        _vm.form.address.country = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -33087,8 +33048,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.myAddress.postal),
-      expression: "myAddress.postal"
+      value: (_vm.form.address.postal),
+      expression: "form.address.postal"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -33104,12 +33065,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     domProps: {
-      "value": (_vm.myAddress.postal)
+      "value": (_vm.form.address.postal)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.myAddress.postal = $event.target.value
+        _vm.form.address.postal = $event.target.value
       }
     }
   })])])])])]), _vm._v(" "), _c('div', {
@@ -34649,6 +34610,7 @@ module.exports = __webpack_require__(16);
 /* unused harmony export Cart */
 /* unused harmony export Package */
 /* unused harmony export Price */
+/* unused harmony export Address */
 var _data$mounted$methods;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -34760,18 +34722,41 @@ var Price = function () {
     return Price;
 }();
 
+var Address = function Address() {
+    var addressData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    _classCallCheck(this, Address);
+
+    if (addressData) {
+        this.id = addressData['id'];
+        this.street_1 = addressData['street_1'];
+        this.street_2 = addressData['street_2'];
+        this.city = addressData['city'];
+        this.province = addressData['province'];
+        this.country = addressData['country'];
+        this.postal = addressData['postal'];
+    } else {
+        this.province = 'ON';
+        this.country = 'Canada';
+    }
+};
+
 /* harmony default export */ __webpack_exports__["a"] = (_data$mounted$methods = {
     data: function data() {
         return {
             sub_prices: [],
             sub_packages: [],
             form: {
+                cart: new Cart(),
                 pet_id: null,
                 address_id: null,
                 pet: new Pet(),
-                cart: new Cart()
+                address: new Address()
             },
-            cart_hash: null,
+            user: {
+                pets: [],
+                addresses: []
+            },
             selectedClass: 'btn-primary',
             defaultClass: 'btn-default'
         };
@@ -34779,6 +34764,34 @@ var Price = function () {
     mounted: function mounted() {},
 
     methods: {
+        getAddresses: function getAddresses() {
+            var vm = this;
+            axios.get('/api/user/addresses').then(function (response) {
+                vm.user.addresses = response.data.map(function (addressData) {
+                    return new Address(addressData);
+                });
+            }).catch(function (error) {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    title: 'Error',
+                    text: 'Unable to fetch addresses..',
+                    type: 'error'
+                });
+            });
+        },
+        getPets: function getPets() {
+            var vm = this;
+            axios.get('/api/user/pets').then(function (response) {
+                vm.pets = response.data.map(function (petData) {
+                    return new Pet(petData);
+                });
+            }).catch(function (error) {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    title: 'Error',
+                    text: 'Unable to fetch pets..',
+                    type: 'error'
+                });
+            });
+        },
         getSubscriptionPrices: function getSubscriptionPrices() {
             var vm = this;
             axios.get('/api/pricing').then(function (response) {
@@ -34803,12 +34816,12 @@ var Price = function () {
         getSubscriptionPackages: function getSubscriptionPackages() {
             var vm = this;
             axios.get('/api/packages').then(function (response) {
-                vm.sub_packages = response.data.filter(function (pkg) {
-                    return pkg.customization == 0;
+                vm.sub_packages = response.data.map(function (pkgData) {
+                    return new Package(pkgData);
+                }).filter(function (pkg) {
+                    return pkg.customization === 0;
                 });
-                vm.sub_packages = vm.sub_packages.map(function (pkg) {
-                    return new Package(pkg);
-                });
+
                 console.log(vm.sub_packages);
                 vm.form.cart.sub_package_id = vm.sub_packages[0].id;
             }).catch(function (error) {
@@ -34816,6 +34829,7 @@ var Price = function () {
             });
         },
         getCart: function getCart() {
+            console.log('loading cart...');
             if (!this.cart_hash) {
                 return;
             }
@@ -34823,6 +34837,7 @@ var Price = function () {
             var vm = this;
             axios.get('/api/cart/' + vm.cart_hash).then(function (response) {
                 vm.form.cart = new Cart(response.data);
+                vm.form.pet.weight = vm.form.cart.sub_weight;
             }).catch(function (error) {
                 __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                     title: 'Error',
@@ -34831,7 +34846,7 @@ var Price = function () {
                 });
             });
         },
-        getSubsciptionPackage: function getSubsciptionPackage() {
+        getSubscriptionPackage: function getSubscriptionPackage() {
             var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             id = id ? id : this.form.cart.sub_package_id;
@@ -34843,11 +34858,13 @@ var Price = function () {
             return this.form.cart.sub_package_id && this.form.cart.sub_package_id === pkg.id;
         },
         shippingFrequency: function shippingFrequency(shipping_modifier) {
-            if (!shipping_modifier || shipping_modifier == 2) return 'Weekly';
+            shipping_modifier = Number.parseInt(shipping_modifier);
 
-            if (shipping_modifier == 0) return 'Monthly';
+            if (!shipping_modifier || shipping_modifier === 2) return 'Weekly';
 
-            if (shipping_modifier == 1) return 'Bi-Weekly';
+            if (shipping_modifier === 0) return 'Monthly';
+
+            if (shipping_modifier === 1) return 'Bi-Weekly';
         }
     }
 }, _defineProperty(_data$mounted$methods, 'mounted', function mounted() {
@@ -34860,7 +34877,7 @@ var Price = function () {
 
         console.log('weight OK');
 
-        if (!this.form.cart.sub_package_id) return 0;
+        if (!this.form.cart.sub_package_id || !this.sub_packages.length) return 0;
 
         console.log('Package ID OK');
 
@@ -34869,7 +34886,9 @@ var Price = function () {
 
         console.log('Price OK');
 
-        var pkg = this.getSubsciptionPackage();
+        var pkg = this.getSubscriptionPackage(this.form.cart.sub_package_id);
+
+        console.log(pkg);
         return price.base_cost + price.getIncrementalCostByWeight(this.form.pet.roundedWeight()) + pkg.level * price.upgrade_cost + pkg.customization * price.customization_cost;
     },
     servingCost: function servingCost() {
