@@ -224,11 +224,11 @@
 
 <script>
     import swal from 'sweetalert2';
-    import Pricing from '../../mixins/pricing';
+    import Subscriptions from '../../mixins/Subscriptions';
 
     export default {
-        mixins: [Pricing],
-        props: ['hash'],
+        mixins: [Subscriptions],
+        props: ['cart_hash'],
         data() {
             return {
                 addresses: [],
@@ -271,22 +271,6 @@
                         });
                     })
             },
-            getCart() {
-                let vm = this;
-                axios.get('/api/cart/'+ vm.hash)
-                    .then(response => {
-                        vm.cart = response.data;
-                        vm.myPet.weight = vm.cart.sub_weight;
-                        vm.loadCartDetails();
-                    })
-                    .catch(response => {
-                        swal({
-                            title: 'Error',
-                            text: 'Unable to retrieve your cart..',
-                            type: 'error',
-                        });
-                    })
-            },
             nextStep() {
                 if ( ! this.myPet.weight || ! this.myPet.name || ! this.myPet.breed) {
                     return swal({
@@ -307,10 +291,10 @@
                 axios.post('/api/subscribe/details', {
                     pet: vm.myPet,
                     address: vm.myAddress,
-                    hash: vm.hash,
+                    hash: vm.cart_hash,
                 }).then(function(response) {
                     console.log(response.data);
-                    window.location = ('/quote/confirm/' + vm.hash);
+                    window.location = ('/quote/confirm/' + vm.cart_hash);
                 }).catch(function(error) {
                     swal({
                         title: 'Error',
@@ -318,11 +302,6 @@
                         type: 'error',
                     });
                 })
-            },
-            loadCartDetails() {
-                this.weight = this.cart.sub_weight;
-                this.shipping_modifier = this.cart.sub_shipping_modifier;
-                this.pkg = this.cart.sub_package;
             }
         },
         computed: {},

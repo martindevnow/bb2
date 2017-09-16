@@ -10,7 +10,7 @@
 
                         <input type="text"
                                name="weight"
-                               v-model="weight"
+                               v-model="form.pet.weight"
                                class="form-control"
                                id="weight"
                                aria-describedby="weightHelp"
@@ -34,11 +34,11 @@
                             ${{ cost.toFixed(2) }} / week
                         </button>
                     </div>
-                    <div class="col-sm-3" v-for="pkg_i in pkgs">
+                    <div class="col-sm-3" v-for="sub_package in sub_packages">
                         <button class="btn btn-raised btn-block btn-label"
-                                :class="[isSelected(pkg_i) ? selectedClass : defaultClass]"
-                                @click.prevent="pkg = pkg_i">
-                            {{ pkg_i.label }}
+                                :class="[isSelected(sub_package) ? selectedClass : defaultClass]"
+                                @click.prevent="form.cart.sub_package_id = sub_package.id">
+                            {{ sub_package.label }}
                         </button>
 
                     </div>
@@ -52,27 +52,27 @@
                 <div class="col-md-10">
                     <div class="col-sm-3">
                         <button class="btn btn-block btn-success btn-cost">
-                            {{ shippingCostLabel }}
+                            {{ form.cart.shippingCostLabel() }}
                         </button>
                     </div>
                     <div class="col-sm-3">
                         <button class="btn btn-raised btn-block btn-label"
-                                :class="[shipping_modifier === 0 ? selectedClass : defaultClass]"
-                                @click.prevent="shipping_modifier = 0">
+                                :class="[form.cart.sub_shipping_modifier === 0 ? selectedClass : defaultClass]"
+                                @click.prevent="form.cart.sub_shipping_modifier = 0">
                             Monthly
                         </button>
                     </div>
                     <div class="col-sm-3">
                         <button class="btn btn-raised btn-block btn-label"
-                                :class="[shipping_modifier === 1 ? selectedClass : defaultClass]"
-                                @click.prevent="shipping_modifier = 1">
+                                :class="[form.cart.sub_shipping_modifier === 1 ? selectedClass : defaultClass]"
+                                @click.prevent="form.cart.sub_shipping_modifier = 1">
                             Bi-Weekly
                         </button>
                     </div>
                     <div class="col-sm-3">
                         <button class="btn btn-raised btn-block btn-label"
-                                :class="[shipping_modifier === 2 ? selectedClass : defaultClass]"
-                                @click.prevent="shipping_modifier = 2">
+                                :class="[form.cart.sub_shipping_modifier === 2 ? selectedClass : defaultClass]"
+                                @click.prevent="form.cart.sub_shipping_modifier = 2">
                             Weekly
                         </button>
                     </div>
@@ -81,14 +81,14 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" v-if="cost">
             <div class="form-group" style="margin-top: 0px;">
                 <label class="col-md-2 control-label">Total</label>
                 <div class="col-md-10">
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-block btn-success btn-raised btn-total btn-label">${{ (servingCost + shippingCost / 14).toFixed(2) }}* / serving</button>
+                        <button class="btn btn-block btn-success btn-raised btn-total btn-label">${{ (servingCost + form.cart.shippingCost() / 14).toFixed(2) }}* / serving</button>
                     </div>
                     <div class="col-sm-3">
                     </div>
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="cost">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
                 <button class="btn btn-block btn-lg btn-raised"
@@ -110,10 +110,10 @@
 <script>
 import eventBus from '../../events/eventBus';
 import swal from 'sweetalert2';
-import Pricing from '../../mixins/pricing';
+import Subscriptions from '../../mixins/Subscriptions';
 export default {
     mixins: [
-        Pricing,
+        Subscriptions,
     ],
     props: [],
     data() {
@@ -125,14 +125,14 @@ export default {
     methods: {
         subscribe() {
             let vm = this;
-            if (this.weight <=4 ) {
+            if (this.form.pet.weight <=4 ) {
                 swal('Please enter your pet\'s weight.');
                 return;
             }
             axios.post('/api/subscribe', {
-                weight: this.weight,
-                package_id: this.pkg.id,
-                shipping_modifier: this.shipping_modifier,
+                weight: this.form.pet.weight,
+                package_id: this.form.cart.sub_package_id,
+                shipping_modifier: this.form.sub_shipping_modifier,
             }).then(response => {
                 console.log(response);
                 let hash = response.data;

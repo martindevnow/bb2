@@ -57,10 +57,10 @@
 
 <script>
 import swal from 'sweetalert2';
-import Pricing from '../../mixins/pricing';
+import Subscriptions from '../../mixins/Subscriptions';
 
 export default {
-    mixins: [Pricing],
+    mixins: [Subscriptions],
     props: ['hash'],
     data() {
         return {

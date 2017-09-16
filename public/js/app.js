@@ -2512,126 +2512,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-    data: function data() {
-        return {
-            prices: [],
-            pkgs: [],
-            pkg: {},
-            weight: null,
-            shipping_modifier: 0,
-            selectedClass: 'btn-primary',
-            defaultClass: 'btn-default',
-            cart: {}
-        };
-    },
-
-    methods: {
-        getPricingModels: function getPricingModels() {
-            var vm = this;
-            axios.get('/api/pricing').then(function (response) {
-                vm.prices = response.data;
-            }).catch(function (error) {
-                console.log(error);
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('There was an unknown error.');
-            });
-        },
-        getPricingModel: function getPricingModel(weight) {
-            var vm = this;
-            var pricing = this.prices.filter(function (pricingModel) {
-                return weight >= pricingModel.min_weight && weight <= pricingModel.max_weight;
-            });
-            if (!pricing.length) {
-                return null;
-            }
-            return pricing[0];
-        },
-        getPackages: function getPackages() {
-            var vm = this;
-            axios.get('/api/packages').then(function (response) {
-                vm.pkgs = response.data.filter(function (pkg) {
-                    return pkg.customization == 0;
-                });
-                vm.pkg = vm.pkgs[0];
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        isSelected: function isSelected(pkg2) {
-            return this.pkg && this.pkg.id === pkg2.id;
-        },
-        roundedWeight: function roundedWeight() {
-            if (!this.weight) {
-                return 0;
-            }
-            return Math.round(this.weight / 5) * 5;
-        },
-        shippingFrequency: function shippingFrequency(shipping_modifier) {
-            if (!shipping_modifier || shipping_modifier == 2) return 'Weekly';
-
-            if (shipping_modifier == 0) return 'Monthly';
-
-            if (shipping_modifier == 1) return 'Bi-Weekly';
-        },
-        getCart: function getCart() {
-            var vm = this;
-            axios.get('/api/cart/' + vm.hash).then(function (response) {
-                vm.cart = response.data;
-                vm.loadCartDetails();
-            }).catch(function (error) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                    title: 'Error',
-                    text: 'Unable to retrieve your cart..',
-                    type: 'error'
-                });
-            });
-        },
-        loadCartDetails: function loadCartDetails() {
-            this.weight = this.cart.sub_weight;
-            this.shipping_modifier = this.cart.sub_shipping_modifier;
-            this.pkg = this.cart.sub_package;
-        }
-    },
-    mounted: function mounted() {
-        console.log('pricing mixin mounted');
-        this.getPricingModels();
-        this.getPackages();
-    },
-
-    computed: {
-        cost: function cost() {
-            if (this.weight < 5) return 0;
-
-            if (!this.pkg) return 0;
-
-            var price = this.getPricingModel(this.weight);
-            if (!price) return 0;
-
-            return price.base_cost + (this.roundedWeight() - price.min_weight) / 5 * price.incremental_cost + this.pkg.level * price.upgrade_cost + this.pkg.customization * price.customization_cost;
-        },
-        servingCost: function servingCost() {
-            return this.cost / 14;
-        },
-        shippingCost: function shippingCost() {
-            return this.shipping_modifier * 5;
-        },
-        shippingCostLabel: function shippingCostLabel() {
-            if (this.shipping_modifier == 0) return "FREE";
-
-            return "+ $" + this.shippingCost + " / week";
-        }
-    }
-});
-
-/***/ }),
+/* 7 */,
 /* 8 */
 /***/ (function(module, exports) {
 
@@ -14627,7 +14508,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_eventBus__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_sweetalert2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_pricing__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_Subscriptions__ = __webpack_require__(88);
 //
 //
 //
@@ -14742,7 +14623,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_pricing__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_Subscriptions__["a" /* default */]],
     props: [],
     data: function data() {
         return {};
@@ -14754,14 +14635,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         subscribe: function subscribe() {
             var vm = this;
-            if (this.weight <= 4) {
+            if (this.form.pet.weight <= 4) {
                 __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('Please enter your pet\'s weight.');
                 return;
             }
             axios.post('/api/subscribe', {
-                weight: this.weight,
-                package_id: this.pkg.id,
-                shipping_modifier: this.shipping_modifier
+                weight: this.form.pet.weight,
+                package_id: this.form.cart.sub_package_id,
+                shipping_modifier: this.form.sub_shipping_modifier
             }).then(function (response) {
                 console.log(response);
                 var hash = response.data;
@@ -14780,7 +14661,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_pricing__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__ = __webpack_require__(88);
 //
 //
 //
@@ -14843,7 +14724,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_pricing__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__["a" /* default */]],
     props: ['hash'],
     data: function data() {
         return {
@@ -14893,7 +14774,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_pricing__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__ = __webpack_require__(88);
 //
 //
 //
@@ -15123,8 +15004,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_pricing__["a" /* default */]],
-    props: ['hash'],
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__["a" /* default */]],
+    props: ['cart_hash'],
     data: function data() {
         return {
             addresses: [],
@@ -15164,20 +15045,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             });
         },
-        getCart: function getCart() {
-            var vm = this;
-            axios.get('/api/cart/' + vm.hash).then(function (response) {
-                vm.cart = response.data;
-                vm.myPet.weight = vm.cart.sub_weight;
-                vm.loadCartDetails();
-            }).catch(function (response) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                    title: 'Error',
-                    text: 'Unable to retrieve your cart..',
-                    type: 'error'
-                });
-            });
-        },
         nextStep: function nextStep() {
             if (!this.myPet.weight || !this.myPet.name || !this.myPet.breed) {
                 return __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
@@ -15198,10 +15065,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/api/subscribe/details', {
                 pet: vm.myPet,
                 address: vm.myAddress,
-                hash: vm.hash
+                hash: vm.cart_hash
             }).then(function (response) {
                 console.log(response.data);
-                window.location = '/quote/confirm/' + vm.hash;
+                window.location = '/quote/confirm/' + vm.cart_hash;
             }).catch(function (error) {
                 __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                     title: 'Error',
@@ -15209,11 +15076,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'error'
                 });
             });
-        },
-        loadCartDetails: function loadCartDetails() {
-            this.weight = this.cart.sub_weight;
-            this.shipping_modifier = this.cart.sub_shipping_modifier;
-            this.pkg = this.cart.sub_package;
         }
     },
     computed: {},
@@ -15294,7 +15156,7 @@ if (token) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 47 */
@@ -33464,8 +33326,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.weight),
-      expression: "weight"
+      value: (_vm.form.pet.weight),
+      expression: "form.pet.weight"
     }],
     staticClass: "form-control",
     staticStyle: {
@@ -33481,12 +33343,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "autofocus": ""
     },
     domProps: {
-      "value": (_vm.weight)
+      "value": (_vm.form.pet.weight)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.weight = $event.target.value
+        _vm.form.pet.weight = $event.target.value
       }
     }
   })])])])]), _vm._v(" "), _c('div', {
@@ -33504,19 +33366,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-block btn-success btn-cost"
-  }, [_vm._v("\n                        $" + _vm._s(_vm.cost.toFixed(2)) + " / week\n                    ")])]), _vm._v(" "), _vm._l((_vm.pkgs), function(pkg_i) {
+  }, [_vm._v("\n                        $" + _vm._s(_vm.cost.toFixed(2)) + " / week\n                    ")])]), _vm._v(" "), _vm._l((_vm.sub_packages), function(sub_package) {
     return _c('div', {
       staticClass: "col-sm-3"
     }, [_c('button', {
       staticClass: "btn btn-raised btn-block btn-label",
-      class: [_vm.isSelected(pkg_i) ? _vm.selectedClass : _vm.defaultClass],
+      class: [_vm.isSelected(sub_package) ? _vm.selectedClass : _vm.defaultClass],
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.pkg = pkg_i
+          _vm.form.cart.sub_package_id = sub_package.id
         }
       }
-    }, [_vm._v("\n                        " + _vm._s(pkg_i.label) + "\n                    ")])])
+    }, [_vm._v("\n                        " + _vm._s(sub_package.label) + "\n                    ")])])
   })], 2)])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -33532,40 +33394,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-block btn-success btn-cost"
-  }, [_vm._v("\n                        " + _vm._s(_vm.shippingCostLabel) + "\n                    ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                        " + _vm._s(_vm.form.cart.shippingCostLabel()) + "\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block btn-label",
-    class: [_vm.shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
+    class: [_vm.form.cart.sub_shipping_modifier === 0 ? _vm.selectedClass : _vm.defaultClass],
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.shipping_modifier = 0
+        _vm.form.cart.sub_shipping_modifier = 0
       }
     }
   }, [_vm._v("\n                        Monthly\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block btn-label",
-    class: [_vm.shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
+    class: [_vm.form.cart.sub_shipping_modifier === 1 ? _vm.selectedClass : _vm.defaultClass],
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.shipping_modifier = 1
+        _vm.form.cart.sub_shipping_modifier = 1
       }
     }
   }, [_vm._v("\n                        Bi-Weekly\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('button', {
     staticClass: "btn btn-raised btn-block btn-label",
-    class: [_vm.shipping_modifier === 2 ? _vm.selectedClass : _vm.defaultClass],
+    class: [_vm.form.cart.sub_shipping_modifier === 2 ? _vm.selectedClass : _vm.defaultClass],
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.shipping_modifier = 2
+        _vm.form.cart.sub_shipping_modifier = 2
       }
     }
-  }, [_vm._v("\n                        Weekly\n                    ")])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                        Weekly\n                    ")])])])])]), _vm._v(" "), (_vm.cost) ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group",
@@ -33582,9 +33444,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-6"
   }, [_c('button', {
     staticClass: "btn btn-block btn-success btn-raised btn-total btn-label"
-  }, [_vm._v("$" + _vm._s((_vm.servingCost + _vm.shippingCost / 14).toFixed(2)) + "* / serving")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("$" + _vm._s((_vm.servingCost + _vm.form.cart.shippingCost() / 14).toFixed(2)) + "* / serving")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  })])])]), _vm._v(" "), _c('div', {
+  })])])]) : _vm._e(), _vm._v(" "), (_vm.cost) ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-2"
@@ -33598,7 +33460,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.subscribe($event)
       }
     }
-  }, [_vm._v("Signup")])])])])
+  }, [_vm._v("Signup")])])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -34777,6 +34639,245 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(16);
 
+
+/***/ }),
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+/* unused harmony export Pet */
+/* unused harmony export Cart */
+/* unused harmony export Package */
+/* unused harmony export Price */
+var _data$mounted$methods;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var Pet = function () {
+    function Pet() {
+        var petData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+        _classCallCheck(this, Pet);
+
+        if (petData) {
+            this.id = petData['id'];
+            this.weight = petData['weight'];
+            this.name = petData['name'];
+            this.breed = petData['breed'];
+            this.species = petData['species'];
+        } else {
+            this.weight = 0;
+        }
+    }
+
+    _createClass(Pet, [{
+        key: 'roundedWeight',
+        value: function roundedWeight() {
+            if (!this.weight) {
+                return 0;
+            }
+            return Math.round(this.weight / 5) * 5;
+        }
+    }]);
+
+    return Pet;
+}();
+
+var Cart = function () {
+    function Cart() {
+        var cartData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+        _classCallCheck(this, Cart);
+
+        if (cartData) {
+            this.id = cartData['id'];
+            this.hash = cartData['hash'];
+            this.sub_weight = cartData['sub_weight'];
+            this.sub_package_id = cartData['sub_package_id'];
+            this.sub_shipping_modifier = cartData['sub_shipping_modifier'];
+        } else {
+            this.sub_shipping_modifier = 0;
+            this.sub_package_id = 0;
+        }
+    }
+
+    _createClass(Cart, [{
+        key: 'shippingCost',
+        value: function shippingCost() {
+            return this.sub_shipping_modifier * 5;
+        }
+    }, {
+        key: 'shippingCostLabel',
+        value: function shippingCostLabel() {
+            if (this.sub_shipping_modifier === 0) return "FREE";
+
+            return "+ $" + this.shippingCost() + " / week";
+        }
+    }]);
+
+    return Cart;
+}();
+
+var Package = function Package(data) {
+    _classCallCheck(this, Package);
+
+    this.id = data['id'];
+    this.code = data['code'];
+    this.label = data['label'];
+    this.active = data['active'];
+    this.isPublic = data['public'];
+    this.customization = data['customization'];
+    this.level = data['level'];
+};
+
+var Price = function () {
+    function Price(data) {
+        _classCallCheck(this, Price);
+
+        this.id = data['id'];
+        this.size = data['size'];
+        this.max_weight = data['max_weight'];
+        this.min_weight = data['min_weight'];
+        this.base_cost = data['base_cost'];
+        this.incremental_cost = data['incremental_cost'];
+        this.upgrade_cost = data['upgrade_cost'];
+        this.customization_cost = data['customization_cost'];
+    }
+
+    _createClass(Price, [{
+        key: 'getIncrementalCostByWeight',
+        value: function getIncrementalCostByWeight(weight) {
+            return (weight - this.min_weight) / 5 * this.incremental_cost;
+        }
+    }]);
+
+    return Price;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_data$mounted$methods = {
+    data: function data() {
+        return {
+            sub_prices: [],
+            sub_packages: [],
+            form: {
+                pet_id: null,
+                address_id: null,
+                pet: new Pet(),
+                cart: new Cart()
+            },
+            cart_hash: null,
+            selectedClass: 'btn-primary',
+            defaultClass: 'btn-default'
+        };
+    },
+    mounted: function mounted() {},
+
+    methods: {
+        getSubscriptionPrices: function getSubscriptionPrices() {
+            var vm = this;
+            axios.get('/api/pricing').then(function (response) {
+                vm.sub_prices = response.data.map(function (priceData) {
+                    return new Price(priceData);
+                });
+            }).catch(function (error) {
+                console.log(error);
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('There was an unknown error.');
+            });
+        },
+        getSubscriptionPrice: function getSubscriptionPrice(weight) {
+            var vm = this;
+            var pricing = this.sub_prices.filter(function (price) {
+                return weight >= price.min_weight && weight <= price.max_weight;
+            });
+            if (!pricing.length) {
+                return null;
+            }
+            return pricing[0];
+        },
+        getSubscriptionPackages: function getSubscriptionPackages() {
+            var vm = this;
+            axios.get('/api/packages').then(function (response) {
+                vm.sub_packages = response.data.filter(function (pkg) {
+                    return pkg.customization == 0;
+                });
+                vm.sub_packages = vm.sub_packages.map(function (pkg) {
+                    return new Package(pkg);
+                });
+                console.log(vm.sub_packages);
+                vm.form.cart.sub_package_id = vm.sub_packages[0].id;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getCart: function getCart() {
+            if (!this.cart_hash) {
+                return;
+            }
+
+            var vm = this;
+            axios.get('/api/cart/' + vm.cart_hash).then(function (response) {
+                vm.form.cart = new Cart(response.data);
+            }).catch(function (error) {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    title: 'Error',
+                    text: 'Unable to retrieve your cart..',
+                    type: 'error'
+                });
+            });
+        },
+        getSubsciptionPackage: function getSubsciptionPackage() {
+            var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            id = id ? id : this.form.cart.sub_package_id;
+            return this.sub_packages.filter(function (pkg) {
+                return pkg.id === id;
+            })[0];
+        },
+        isSelected: function isSelected(pkg) {
+            return this.form.cart.sub_package_id && this.form.cart.sub_package_id === pkg.id;
+        },
+        shippingFrequency: function shippingFrequency(shipping_modifier) {
+            if (!shipping_modifier || shipping_modifier == 2) return 'Weekly';
+
+            if (shipping_modifier == 0) return 'Monthly';
+
+            if (shipping_modifier == 1) return 'Bi-Weekly';
+        }
+    }
+}, _defineProperty(_data$mounted$methods, 'mounted', function mounted() {
+    console.log('Subscription mixin mounted');
+    this.getSubscriptionPrices();
+    this.getSubscriptionPackages();
+}), _defineProperty(_data$mounted$methods, 'computed', {
+    cost: function cost() {
+        if (Number.parseInt(this.form.pet.weight) < 5) return 0;
+
+        console.log('weight OK');
+
+        if (!this.form.cart.sub_package_id) return 0;
+
+        console.log('Package ID OK');
+
+        var price = this.getSubscriptionPrice(this.form.pet.weight);
+        if (!price) return 0;
+
+        console.log('Price OK');
+
+        var pkg = this.getSubsciptionPackage();
+        return price.base_cost + price.getIncrementalCostByWeight(this.form.pet.roundedWeight()) + pkg.level * price.upgrade_cost + pkg.customization * price.customization_cost;
+    },
+    servingCost: function servingCost() {
+        return this.cost / 14;
+    }
+}), _data$mounted$methods);
 
 /***/ })
 /******/ ]);
