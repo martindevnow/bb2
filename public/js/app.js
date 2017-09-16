@@ -13785,7 +13785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['hash'],
+    props: ['cart_hash'],
     data: function data() {
         return {
             user: {},
@@ -13807,21 +13807,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var vm = this;
             axios.post('/api/login', { email: this.email, password: this.password }).then(function (response) {
                 __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('user-logged-in', response.data.user);
-                console.log('Login was successful');
-                window.location = '/quote/details/' + vm.hash;
+                window.location = '/quote/details/' + vm.cart_hash;
             }).catch(function (error) {
                 console.log(error);
-                __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('there was an error....');
+                __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('Unable to Login...');
             });
             this.loading = false;
         }
     },
-    mounted: function mounted() {
-        console.log('loginForm MOUNTED');
-    },
+    mounted: function mounted() {},
     created: function created() {
         __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$on('user-logged-in', this.loadUser);
-        console.log('loginForm CREATED');
     },
     beforeDestroy: function beforeDestroy() {
         __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$off('user-logged-in', this.loadUser);
@@ -13902,6 +13898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['cart_hash'],
     data: function data() {
         return {
             user: null,
@@ -13945,10 +13942,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'password': vm.password,
                     'password-confirm': password
                 }).then(function (response) {
-                    console.log(response.data);
                     __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('user-logged-in', response.data.user);
+                    window.location = '/quote/details/' + vm.cart_hash;
                 }, function (error) {
-                    __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('Could not login.');
+                    console.log(error);
+                    __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('Could not register.');
                 });
             }, function (dismiss) {
                 __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('You must either register or login to subscribe to BARF Bento');
@@ -14642,7 +14640,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/api/subscribe', {
                 weight: this.form.pet.weight,
                 package_id: this.form.cart.sub_package_id,
-                shipping_modifier: this.form.sub_shipping_modifier
+                shipping_modifier: this.form.cart.sub_shipping_modifier
             }).then(function (response) {
                 console.log(response);
                 var hash = response.data;

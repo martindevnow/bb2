@@ -22,10 +22,10 @@
 
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <auth-login-form hash="{{ $hash }}"></auth-login-form>
+                                    <auth-login-form cart_hash="{{ $hash }}"></auth-login-form>
                                 </div>
                                 <div class="col-sm-6">
-                                    <auth-registration-form hash="{{ $hash }}"></auth-registration-form>
+                                    <auth-registration-form cart_hash="{{ $hash }}"></auth-registration-form>
                                 </div>
                             </div>
                         </section>

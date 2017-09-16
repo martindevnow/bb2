@@ -63,6 +63,7 @@ import eventBus from '../../events/eventBus';
 import swal from 'sweetalert2'
 
 export default {
+    props: ['cart_hash'],
     data() {
         return {
             user: null,
@@ -107,10 +108,12 @@ export default {
                     'password-confirm': password
                 })
                     .then(function(response) {
-                        console.log(response.data);
                         eventBus.$emit('user-logged-in', response.data.user);
+                        window.location = ('/quote/details/' + vm.cart_hash);
+
                     }, function(error) {
-                        swal('Could not login.');
+                        console.log(error);
+                        swal('Could not register.');
                     });
             }, function(dismiss) {
                 swal('You must either register or login to subscribe to BARF Bento');

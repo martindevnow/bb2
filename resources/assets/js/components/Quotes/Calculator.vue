@@ -132,7 +132,7 @@ export default {
             axios.post('/api/subscribe', {
                 weight: this.form.pet.weight,
                 package_id: this.form.cart.sub_package_id,
-                shipping_modifier: this.form.sub_shipping_modifier,
+                shipping_modifier: this.form.cart.sub_shipping_modifier,
             }).then(response => {
                 console.log(response);
                 let hash = response.data;
