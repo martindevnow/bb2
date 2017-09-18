@@ -12726,6 +12726,8 @@ Vue.component('auth-registration-form', __webpack_require__(59));
 Vue.component('details-collector', __webpack_require__(65));
 Vue.component('quotes-checkout', __webpack_require__(64));
 
+Vue.component('cart-summary', __webpack_require__(91));
+
 Vue.component('plan-builder', __webpack_require__(62));
 
 Vue.component('admin-meats-navigator', __webpack_require__(57));
@@ -14999,6 +15001,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -15115,7 +15120,7 @@ if (token) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 47 */
@@ -32679,7 +32684,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [(_vm.form.cart) ? _c('div', {
     staticClass: "col-sm-12"
-  }, [_c('h2', [_vm._v("In Your Cart")]), _vm._v(" "), (_vm.form.cart.sub_package_id && _vm.sub_packages.length) ? _c('span', [_vm._v("\n                Plan: " + _vm._s(_vm.getSubscriptionPackage(_vm.form.cart.sub_package_id).label) + " Bento for a " + _vm._s(_vm.form.cart.sub_weight) + " lb dog\n            ")]) : _vm._e(), _c('br'), _vm._v(" "), _c('span', [_vm._v("Shipping: " + _vm._s(_vm.shippingFrequency(_vm.form.cart.sub_shipping_modifier)))]), _c('br'), _vm._v(" "), _c('span', [_vm._v("Serving Cost: $" + _vm._s(_vm.servingCost.toFixed(2)))])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_c('cart-summary', {
+    attrs: {
+      "cart": _vm.form.cart
+    }
+  }), _vm._v(" "), _c('h2', [_vm._v("In Your Cart")]), _vm._v(" "), (_vm.form.cart.sub_package_id && _vm.sub_packages.length) ? _c('span', [_vm._v("\n                Plan: " + _vm._s(_vm.getSubscriptionPackage(_vm.form.cart.sub_package_id).label) + " Bento for a " + _vm._s(_vm.form.cart.sub_weight) + " lb dog\n            ")]) : _vm._e(), _c('br'), _vm._v(" "), _c('span', [_vm._v("Shipping: " + _vm._s(_vm.shippingFrequency(_vm.form.cart.sub_shipping_modifier)))]), _c('br'), _vm._v(" "), _c('span', [_vm._v("Serving Cost: $" + _vm._s(_vm.servingCost.toFixed(2)))])], 1) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('h2', [_vm._v("Your Dog")]), _vm._v(" "), (_vm.user.pets.length) ? _c('select', _vm._l((_vm.user.pets), function(pet) {
     return _c('option', [_vm._v(_vm._s(pet.name))])
@@ -34607,7 +34616,7 @@ module.exports = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
 /* unused harmony export Pet */
-/* unused harmony export Cart */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Cart; });
 /* unused harmony export Package */
 /* unused harmony export Price */
 /* unused harmony export Address */
@@ -34895,6 +34904,127 @@ var Address = function Address() {
         return this.cost / 14;
     }
 }), _data$mounted$methods);
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__ = __webpack_require__(88);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__["a" /* default */]],
+    props: ['cart_hash', 'cart_data'],
+    data: function data() {
+        return {
+            cart: {}
+        };
+    },
+    mounted: function mounted() {
+        this.cart = new __WEBPACK_IMPORTED_MODULE_1__mixins_Subscriptions__["b" /* Cart */](this.cart_data);
+    }
+});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(93)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(89),
+  /* template */
+  __webpack_require__(92),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Cart/Summary.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Summary.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1d2f58b1", Component.options)
+  } else {
+    hotAPI.reload("data-v-1d2f58b1", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h1', [_vm._v("In Your Cart")]), _vm._v(" "), _c('span', [_vm._v("Bento: ")]), _c('span', [_vm._v(_vm._s(_vm.getSubscriptionPackage(_vm.cart.sub_package_id).label))]), _vm._v(" "), _c('span', [_vm._v("Shipping: ")]), _c('span', [_vm._v(_vm._s(_vm.shippingFrequency(_vm.cart.sub_shipping_modifier)))]), _vm._v(" "), _c('span', [_vm._v("Meal Cost:")]), _c('span', [_vm._v(" $" + _vm._s(_vm.servingCost.toFixed(2)))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1d2f58b1", module.exports)
+  }
+}
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(90);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("7fa4d428", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1d2f58b1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Summary.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1d2f58b1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Summary.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

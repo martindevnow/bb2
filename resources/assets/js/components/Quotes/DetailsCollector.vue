@@ -2,6 +2,9 @@
     <div>
         <div class="row">
             <div class="col-sm-12" v-if="form.cart">
+
+                <cart-summary :cart="form.cart"></cart-summary>
+
                 <h2>In Your Cart</h2>
                 <span v-if="form.cart.sub_package_id && sub_packages.length">
                     Plan: {{ getSubscriptionPackage(form.cart.sub_package_id).label }} Bento for a {{ form.cart.sub_weight }} lb dog

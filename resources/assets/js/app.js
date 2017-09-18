@@ -31,6 +31,9 @@ Vue.component('details-collector', require('./components/Quotes/DetailsCollector
 Vue.component('quotes-checkout', require('./components/Quotes/Checkout.vue'));
 
 
+Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
+
+
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
 
 
