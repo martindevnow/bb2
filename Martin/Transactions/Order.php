@@ -209,7 +209,7 @@ class Order extends Model
 
         foreach($meals as $meal) {
             foreach ($meal->meats as $meat) {
-                $this->inventoryChange()->create([
+                $this->inventoryChanges()->create([
                     'inventoryable_id'      => $meat->id,
                     'inventoryable_type'    => get_class($meat),
                     'change'    => -1 * $meal->total_weight / $meal->meats()->count(),
@@ -225,7 +225,7 @@ class Order extends Model
         $meals = $this->mealCounts();
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -241,7 +241,7 @@ class Order extends Model
         $meals = $this->mealCounts();
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -306,7 +306,7 @@ class Order extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function inventoryChange() {
+    public function inventoryChanges() {
         return $this->morphMany(Inventory::class, 'changeable');
     }
 

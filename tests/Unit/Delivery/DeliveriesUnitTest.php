@@ -79,16 +79,22 @@ class DeliveriesUnitTest extends TestCase
     }
 
     /** @test */
-    public function a_delivery_can_see_the_change_history_in_inventories() {
+    public function a_delivery_can_be_associated_to_an_order() {
         /** @var Order $order */
         $order = $this->createOrderForBasicPlan();
         $delivery = factory(Delivery::class)->make([
             'shipped_at'  => Carbon::now(),
         ]);
+        $order->markAsPicked();
         $order->markAsShipped($delivery);
 
         $delivery = $order->delivery;
         $this->assertTrue($delivery instanceof Delivery);
+
+        $invs = $order->inventoryChanges;
+        print_r($invs);
+        $this->assertCount(1, $invs);
+
     }
 
 
