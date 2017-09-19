@@ -11,7 +11,7 @@
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                             <li role="presentation" 1="" class="active"><a href="#tab-business" aria-controls="tab-2017-09-04" role="tab" data-toggle="tab" aria-expanded="false">BUSINESS</a></li>
                             <li role="presentation" 2="" class=""><a href="#tab-law" aria-controls="tab-2017-09-05" role="tab" data-toggle="tab" aria-expanded="false">LAW</a></li>
-                            <li role="presentation" 3="" class=""><a href="#tab-other" aria-controls="tab-2017-09-06" role="tab" data-toggle="tab" aria-expanded="false">OTHER</a></li>
+                            <li role="presentation" 3="" class=""><a href="#tab-other" aria-controls="tab-2017-09-06" role="tab" data-toggle="tab" aria-expanded="false">STEM/Tech</a></li>
                         </ul>
 
                         <div class="tab-content">

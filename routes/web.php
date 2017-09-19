@@ -62,8 +62,12 @@ Route::get('schedule/preview', function() {
         ->with(compact('fridayEvents', 'saturdayEvents'));
 });
 Route::get('schedule', function() {
-    $fridayEvents = EventItem::where('day', '=', 'Friday')->get();
-    $saturdayEvents = EventItem::where('day', '=', 'Saturday')->get();
+    $fridayEvents = EventItem::where('day', '=', 'Friday')
+        ->orderBy('time', 'ASC')
+        ->get();
+    $saturdayEvents = EventItem::where('day', '=', 'Saturday')
+        ->orderBy('time', 'ASC')
+        ->get();
     return view('oobs')
         ->with(compact('fridayEvents', 'saturdayEvents'));
 });

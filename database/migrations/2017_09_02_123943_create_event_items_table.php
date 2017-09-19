@@ -19,6 +19,7 @@ class CreateEventItemsTable extends Migration
             $table->string('day');
             $table->string('category');
             $table->string('time');
+            $table->string('time_12h');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('location')->nullable();

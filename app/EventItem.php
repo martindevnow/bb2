@@ -20,7 +20,7 @@ class EventItem extends Model
     public function getSpeakerDescriptionAttribute($value) {
         return explode('<br>', $value);
     }
-    public function getTimeAttribute($value) {
+    public function getTime12hAttribute($value) {
         return explode(':', $value);
     }
 
@@ -60,5 +60,12 @@ class EventItem extends Model
             ]);
     }
 
+    public function titleSlug() {
+        return str_slug($this->title .' '. $this->id);
+    }
+
+    public function titleSpeakerSlug($key) {
+        return str_slug($this->title . ' ' . $this->getSpeakerName($key));
+    }
 
 }
