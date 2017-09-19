@@ -61,6 +61,8 @@
     {{--<script defer src="/js/packs/solid.js"></script>--}}
     {{--<script defer src="/js/fontawesome.js"></script>--}}
 
+    <link rel="stylesheet" href="/css/sweetalert2.min.css" />
+
     <style>
         @media (min-width: 768px){
             .seven-cols .col-md-1,

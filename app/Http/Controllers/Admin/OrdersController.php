@@ -18,6 +18,19 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
+    public function index_orig()
+    {
+        $orders = Order::all();
+
+        return view('admin.orders.index_orig')
+            ->with(compact('orders'));
+    }
+
+    /**
+     * Display all Orders
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
         $orders = Order::all();
 

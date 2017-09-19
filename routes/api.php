@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Martin\Geo\GeoHelperMultiGeocoder;
+use Martin\Transactions\Order;
 use Martin\Transactions\ShoppingCart;
 
 /*
@@ -71,6 +72,8 @@ Route::post('github', 'GitHubController@handle');
 
 
 
+
+
 Route::get('meats', function() {
     return \Martin\Products\Meat::all();
 });
@@ -92,4 +95,15 @@ Route::get('packages', function() {
  */
 Route::get('pricing', function() {
     return \Martin\Subscriptions\CostModel::all();
+});
+
+
+
+
+/**
+ * Admin Specific
+ */
+
+Route::get('orders', function () {
+    return Order::with('customer', 'plan.pet', 'plan', 'plan.package', 'deliveryAddress')->get();
 });

@@ -377,4 +377,15 @@ class PlansUnitTest extends TestCase
             round(Plan::getPrice(50, $package, 0) * 100, 0)
             );
     }
+
+    /** @test */
+    public function a_plan_can_generate_the_required_orders() {
+        $preDate = Carbon::now()->addWeeks(2);
+        $this->createOrderForBasicPlan();
+
+        $this->assertCount(2, Order::all());
+
+
+
+    }
 }

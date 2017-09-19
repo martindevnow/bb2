@@ -37,15 +37,10 @@ Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
 
 
-Vue.component(
-    'admin-meats-navigator',
-    require('./components/Admin/Meats/Navigator.vue')
-);
+Vue.component('admin-meats-navigator', require('./components/Admin/Meats/Navigator.vue'));
+Vue.component('admin-meals-select-box', require('./components/Admin/Meals/SelectBox.vue'));
+Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
 
-Vue.component(
-    'admin-meals-select-box',
-    require('./components/Admin/Meals/SelectBox.vue')
-);
 
 Vue.component('example', require('./components/Example.vue'));
 
