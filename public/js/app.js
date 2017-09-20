@@ -14089,9 +14089,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         markAsPaid: function markAsPaid(order) {
+            if (order.paid) {
+                return null;
+            }
+
             var vm = this;
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                title: 'Multiple inputs',
+                title: 'Payment Record',
                 html: 'Method: <input id="swal-method" class="swal2-input" value="cash">' + 'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' + 'Date: <input id="swal-date" class="swal2-input" value="today">',
                 preConfirm: function preConfirm() {
                     return new Promise(function (resolve, reject) {
@@ -14118,12 +14122,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (result) {
                 console.log(result);
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('That order has been marked as paid.');
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Paid',
+                    text: 'This payment has been recorded.'
+                });
             }).catch(function (error) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('There was an error...');
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    type: 'error',
+                    title: 'Error',
+                    text: 'There was an unknown error'
+                });
             });
         },
         markAsPacked: function markAsPacked(order) {
+            if (order.packed) {
+                return null;
+            }
+
             var vm = this;
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                 title: 'How many weeks were packed?',
@@ -14156,8 +14172,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Do nothing.. they just clicked the cancel button
             });
         },
-        markAsPicked: function markAsPicked(order) {},
-        markAsShipped: function markAsShipped(order) {},
+        markAsPicked: function markAsPicked(order) {
+            if (order.picked) {
+                return null;
+            }
+            var vm = this;
+            axios.post('/admin/api/orders/' + order.id + '/picked').then(function (response) {
+                order.picked = 1;
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Picked'
+                });
+            }).catch(function (error) {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    type: 'error',
+                    title: 'Error',
+                    text: error.data.message
+                });
+            });
+        },
+        markAsShipped: function markAsShipped(order) {
+            if (order.shipped) {
+                return null;
+            }
+
+            var vm = this;
+            __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                title: 'Payment Record',
+                html: 'Method: <input id="swal-carrier" class="swal2-input" value="cash">' + 'Date: <input id="swal-date" class="swal2-input" value="' + Date.now() + '">',
+                preConfirm: function preConfirm() {
+                    return new Promise(function (resolve, reject) {
+
+                        var format = $('#swal-method').val();
+                        var amount_paid = $('#swal-amount').val();
+                        var received_at = $('#swal-date').val();
+
+                        axios.post('/admin/api/orders/' + order.id + '/paid', { format: format, amount_paid: amount_paid, received_at: received_at }).then(function (response) {
+                            order.paid = 1;
+                            return resolve(response);
+                        }).catch(function (error) {
+                            console.log(error.response);
+                            var errorMessage = '';
+                            for (var propertyName in error.response.data.errors) {
+                                errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                            }
+                            return reject(errorMessage);
+                        });
+                    });
+                },
+                onOpen: function onOpen() {
+                    $('#swal-method').focus();
+                }
+            }).then(function (result) {
+                console.log(result);
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Paid',
+                    text: 'This payment has been recorded.'
+                });
+            }).catch(function (error) {
+                // Do nothing... they just exited the modal.. that's all
+            });
+        },
         markAsDelivered: function markAsDelivered(order) {}
     },
     computed: {}
@@ -15667,7 +15743,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 59 */

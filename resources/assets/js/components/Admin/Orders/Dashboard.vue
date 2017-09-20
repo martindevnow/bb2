@@ -58,9 +58,13 @@ export default {
                 .catch(error => vm.errors = error);
         },
         markAsPaid(order) {
+            if (order.paid) {
+                return null;
+            }
+
             let vm = this;
             swal({
-                title: 'Multiple inputs',
+                title: 'Payment Record',
                 html:
                 'Method: <input id="swal-method" class="swal2-input" value="cash">' +
                 'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' +
@@ -92,12 +96,24 @@ export default {
                 }
             }).then(function (result) {
                 console.log(result);
-                swal('That order has been marked as paid.');
+                swal({
+                    type: 'success',
+                    title: 'Paid',
+                    text: 'This payment has been recorded.',
+                });
             }).catch(error => {
-                swal('There was an error...');
+                swal({
+                    type: 'error',
+                    title: 'Error',
+                    text: 'There was an unknown error',
+                });
             })
         },
         markAsPacked(order) {
+            if (order.packed) {
+                return null;
+            }
+
             let vm = this;
             swal({
                 title: 'How many weeks were packed?',
@@ -133,10 +149,72 @@ export default {
             })
         },
         markAsPicked(order) {
-
+            if (order.picked) {
+                return null;
+            }
+            let vm = this;
+            axios.post('/admin/api/orders/' + order.id + '/picked')
+                .then(response => {
+                    order.picked = 1;
+                    swal({
+                        type: 'success',
+                        title: 'Picked',
+                    });
+                })
+                .catch(error => {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: error.data.message,
+                    });
+                });
         },
         markAsShipped(order) {
+            if (order.shipped) {
+                return null;
+            }
 
+            let vm = this;
+            swal({
+                title: 'Payment Record',
+                html:
+                'Method: <input id="swal-carrier" class="swal2-input" value="cash">' +
+                'Date: <input id="swal-date" class="swal2-input" value="' + Date.now() + '">',
+                preConfirm: function () {
+                    return new Promise(function (resolve, reject) {
+
+                        let format = $('#swal-method').val();
+                        let amount_paid = $('#swal-amount').val();
+                        let received_at = $('#swal-date').val();
+
+                        axios.post('/admin/api/orders/'+ order.id +'/paid', {format, amount_paid, received_at})
+                            .then(response => {
+                                order.paid = 1;
+                                return resolve(response);
+                            })
+                            .catch(error => {
+                                console.log(error.response);
+                                let errorMessage = '';
+                                for (let propertyName in error.response.data.errors) {
+                                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                                }
+                                return reject(errorMessage);
+                            });
+                    })
+                },
+                onOpen: function () {
+                    $('#swal-method').focus()
+                }
+            }).then(function (result) {
+                console.log(result);
+                swal({
+                    type: 'success',
+                    title: 'Paid',
+                    text: 'This payment has been recorded.',
+                });
+            }).catch(error => {
+                // Do nothing... they just exited the modal.. that's all
+            })
         },
         markAsDelivered(order) {
 
