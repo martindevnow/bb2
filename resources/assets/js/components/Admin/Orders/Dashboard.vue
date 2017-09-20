@@ -16,9 +16,12 @@
             <div class="col-sm-1">{{ order.plan.weeks_at_a_time }}</div>
             <div class="col-sm-6">
                 <button class="btn btn-xs"
-                    @click="markAsPacked(order)"
+
                 >Paid</button>
-                <button class="btn btn-xs">Packed</button>
+                <button class="btn btn-xs"
+                        @click="markAsPacked(order)"
+                        :class="{ 'btn-danger': !order.packed, 'btn-success': order.packed}"
+                >Packed</button>
                 <button class="btn btn-xs">Picked</button>
                 <button class="btn btn-xs">Shipped</button>
                 <button class="btn btn-xs">Delivered</button>
@@ -42,7 +45,7 @@ export default {
     methods: {
         getOrders() {
             let vm = this;
-            axios.get('/api/orders')
+            axios.get('/admin/api/orders')
                 .then(response => vm.orders = response.data)
                 .catch(error => vm.errors = error);
         },
@@ -56,19 +59,29 @@ export default {
                 showLoaderOnConfirm: true,
                 preConfirm: function (weeks) {
                     return new Promise(function (resolve, reject) {
-                        // TODO: Add the ajax request here...
+                        if (! weeks || weeks <= 0 || weeks == false) {
+                            return reject('You must enter a positive number..');
+                        }
 
-                        console.log(' you packed ' + weeks + ' weeks of food');
-                        resolve();
+                        axios.post('/admin/api/orders/' + order.id + '/packed', {weeks})
+                            .then((response) => {
+                                return resolve();
+                            })
+                            .catch((error) => {
+                                return reject('There was an error.. Please try again.');
+                            });
                     })
                 },
                 allowOutsideClick: false
             }).then(function (weeks) {
+                order.packed = 1;
                 swal({
                     type: 'success',
                     title: 'Packed',
                     html: 'Thank you for packing ' + weeks + ' weeks of food'
                 })
+            }).catch(function (weeks) {
+                // Do nothing.. they just clicked the cancel button
             })
         }
     },
