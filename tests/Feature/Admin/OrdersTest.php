@@ -47,7 +47,7 @@ class OrdersTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** @notest */
     public function an_admin_can_see_existing_orders_on_the_index() {
         $order = factory(Order::class)->create();
         $this->loginAsAdmin();

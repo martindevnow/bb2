@@ -91,9 +91,9 @@ class DeliveriesUnitTest extends TestCase
         $delivery = $order->delivery;
         $this->assertTrue($delivery instanceof Delivery);
 
+        // There is one inventory change for each Meal type associated to the Plan/Package
         $invs = $order->inventoryChanges;
-        print_r($invs);
-        $this->assertCount(1, $invs);
+        $this->assertCount(2, $invs);
 
     }
 

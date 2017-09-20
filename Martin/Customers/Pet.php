@@ -34,6 +34,11 @@ class Pet extends Model
         return round($this->weight / 5);
     }
 
+    /**
+     * Meal Size in LBs
+     *
+     * @return float
+     */
     public function mealSize() {
         return $this->weight * $this->activity_level / 100 / 2;
     }

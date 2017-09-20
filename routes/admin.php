@@ -36,6 +36,7 @@ Route::get('/orders/export/view/{perPage}', 'OrdersController@exportView');
 Route::get('/orders/export/{status}/{perPage}', 'OrdersController@export');
 
 Route::post('/orders/{order}/packed', 'OrdersController@packed');
+Route::get('/orders_orig', 'OrdersController@index_orig');
 Route::resource('/orders', 'OrdersController');
 
 // Packages

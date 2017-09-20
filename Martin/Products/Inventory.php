@@ -21,6 +21,21 @@ class Inventory extends Model
 
 
     /**
+     * @param $size
+     * @return float|int
+     */
+    public function getSizeAttribute($size) {
+        return $size / 100;
+    }
+
+    /**
+     * @param $size
+     */
+    public function setSizeAttribute($size) {
+        $this->attributes['size'] = round($size * 100);
+    }
+
+    /**
      * @param $change
      * @return float|int
      */
@@ -49,9 +64,6 @@ class Inventory extends Model
     public function setCurrentAttribute($current) {
         $this->attributes['current'] = round($current * 100);
     }
-
-
-
 
 
     /**
