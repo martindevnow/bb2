@@ -40,12 +40,10 @@ class OrdersController extends Controller
 
         $payment = Payment::make($paymentData);
         if ($order->markAsPaid($payment)) {
-            flash('That order was marked as paid.');
-            return redirect('/admin/orders');
+            return response('success', 200);
         }
 
-        flash('There was an unexpected error...')->error();
-        return redirect()->back()->withInput()->withErrors();
+        return response('', 422)->withErrors();
     }
 
     /**

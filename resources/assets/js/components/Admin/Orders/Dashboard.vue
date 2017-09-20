@@ -16,15 +16,23 @@
             <div class="col-sm-1">{{ order.plan.weeks_at_a_time }}</div>
             <div class="col-sm-6">
                 <button class="btn btn-xs"
-
+                        @click="markAsPaid(order)"
+                        :class="{ 'btn-danger': !order.paid, 'btn-success': order.paid}"
                 >Paid</button>
                 <button class="btn btn-xs"
                         @click="markAsPacked(order)"
                         :class="{ 'btn-danger': !order.packed, 'btn-success': order.packed}"
                 >Packed</button>
-                <button class="btn btn-xs">Picked</button>
-                <button class="btn btn-xs">Shipped</button>
-                <button class="btn btn-xs">Delivered</button>
+                <button class="btn btn-xs"
+                        @click="markAsPicked(order)"
+                        :class="{ 'btn-danger': !order.picked, 'btn-success': order.picked}"
+                >Picked</button>
+                <button class="btn btn-xs"
+                        :class="{ 'btn-danger': !order.shipped, 'btn-success': order.shipped}"
+                >Shipped</button>
+                <button class="btn btn-xs"
+                        :class="{ 'btn-danger': !order.delivered, 'btn-success': order.delivered}"
+                >Shipped</button>
             </div>
         </div>
     </div>
@@ -48,6 +56,46 @@ export default {
             axios.get('/admin/api/orders')
                 .then(response => vm.orders = response.data)
                 .catch(error => vm.errors = error);
+        },
+        markAsPaid(order) {
+            let vm = this;
+            swal({
+                title: 'Multiple inputs',
+                html:
+                'Method: <input id="swal-method" class="swal2-input" value="cash">' +
+                'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' +
+                'Date: <input id="swal-date" class="swal2-input" value="today">',
+                preConfirm: function () {
+                    return new Promise(function (resolve, reject) {
+
+                        let format = $('#swal-method').val();
+                        let amount_paid = $('#swal-amount').val();
+                        let received_at = $('#swal-date').val();
+
+                        axios.post('/admin/api/orders/'+ order.id +'/paid', {format, amount_paid, received_at})
+                            .then(response => {
+                                order.paid = 1;
+                                return resolve(response);
+                            })
+                            .catch(error => {
+                                console.log(error.response);
+                                let errorMessage = '';
+                                for (let propertyName in error.response.data.errors) {
+                                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                                }
+                                return reject(errorMessage);
+                            });
+                    })
+                },
+                onOpen: function () {
+                    $('#swal-method').focus()
+                }
+            }).then(function (result) {
+                console.log(result);
+                swal('That order has been marked as paid.');
+            }).catch(error => {
+                swal('There was an error...');
+            })
         },
         markAsPacked(order) {
             let vm = this;
@@ -83,7 +131,16 @@ export default {
             }).catch(function (weeks) {
                 // Do nothing.. they just clicked the cancel button
             })
-        }
+        },
+        markAsPicked(order) {
+
+        },
+        markAsShipped(order) {
+
+        },
+        markAsDelivered(order) {
+
+        },
     },
     computed: {
     }
