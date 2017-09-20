@@ -28,11 +28,13 @@
                         :class="{ 'btn-danger': !order.picked, 'btn-success': order.picked}"
                 >Picked</button>
                 <button class="btn btn-xs"
+                        @click="markAsShipped(order)"
                         :class="{ 'btn-danger': !order.shipped, 'btn-success': order.shipped}"
                 >Shipped</button>
                 <button class="btn btn-xs"
+                        @click="markAsDelivered(order)"
                         :class="{ 'btn-danger': !order.delivered, 'btn-success': order.delivered}"
-                >Shipped</button>
+                >Delivered</button>
             </div>
         </div>
     </div>
@@ -65,6 +67,8 @@ export default {
             let vm = this;
             swal({
                 title: 'Payment Record',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
                 html:
                 'Method: <input id="swal-method" class="swal2-input" value="cash">' +
                 'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' +
@@ -102,11 +106,7 @@ export default {
                     text: 'This payment has been recorded.',
                 });
             }).catch(error => {
-                swal({
-                    type: 'error',
-                    title: 'Error',
-                    text: 'There was an unknown error',
-                });
+                // Do nothing.. modal was just closed...
             })
         },
         markAsPacked(order) {

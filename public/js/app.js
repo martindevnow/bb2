@@ -14066,6 +14066,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -14096,6 +14098,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var vm = this;
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
                 title: 'Payment Record',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
                 html: 'Method: <input id="swal-method" class="swal2-input" value="cash">' + 'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' + 'Date: <input id="swal-date" class="swal2-input" value="today">',
                 preConfirm: function preConfirm() {
                     return new Promise(function (resolve, reject) {
@@ -14128,11 +14132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     text: 'This payment has been recorded.'
                 });
             }).catch(function (error) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                    type: 'error',
-                    title: 'Error',
-                    text: 'There was an unknown error'
-                });
+                // Do nothing.. modal was just closed...
             });
         },
         markAsPacked: function markAsPacked(order) {
@@ -35016,13 +35016,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-xs",
       class: {
         'btn-danger': !order.shipped, 'btn-success': order.shipped
+      },
+      on: {
+        "click": function($event) {
+          _vm.markAsShipped(order)
+        }
       }
     }, [_vm._v("Shipped")]), _vm._v(" "), _c('button', {
       staticClass: "btn btn-xs",
       class: {
         'btn-danger': !order.delivered, 'btn-success': order.delivered
+      },
+      on: {
+        "click": function($event) {
+          _vm.markAsDelivered(order)
+        }
       }
-    }, [_vm._v("Shipped")])])])
+    }, [_vm._v("Delivered")])])])
   })], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
