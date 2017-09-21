@@ -13029,6 +13029,7 @@ Vue.component('plan-builder', __webpack_require__(68));
 Vue.component('admin-meats-navigator', __webpack_require__(61));
 Vue.component('admin-meals-select-box', __webpack_require__(60));
 Vue.component('admin-orders-dashboard', __webpack_require__(62));
+Vue.component('admin-orders-payment-logger', __webpack_require__(100));
 
 Vue.component('example', __webpack_require__(67));
 
@@ -14100,7 +14101,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: 'Payment Record',
                 showCancelButton: true,
                 confirmButtonText: 'Confirm',
-                html: 'Method: <input id="swal-method" class="swal2-input" value="cash">' + 'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' + 'Date: <input id="swal-date" class="swal2-input" value="today">',
+                html: '<admin-orders-payment-logger :order_id="' + order.id + '"></admin-orders-payment-logger>',
                 preConfirm: function preConfirm() {
                     return new Promise(function (resolve, reject) {
 
@@ -14197,17 +14198,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             var vm = this;
+            var today = new Date(Date.now()).toDateString();
+            var options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            };
+
+            var dateTime = Intl.DateTimeFormat('sr-RS', options);
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-                title: 'Payment Record',
-                html: 'Method: <input id="swal-carrier" class="swal2-input" value="cash">' + 'Date: <input id="swal-date" class="swal2-input" value="' + Date.now() + '">',
+                title: 'Shipment Record',
+                html: 'Carrier/Courier: <input id="swal-carrier" class="swal2-input" value="cash">' + 'Date: <input id="swal-date" class="swal2-input" value="' + dateTime.format(new Date()) + '">',
                 preConfirm: function preConfirm() {
                     return new Promise(function (resolve, reject) {
 
-                        var format = $('#swal-method').val();
-                        var amount_paid = $('#swal-amount').val();
-                        var received_at = $('#swal-date').val();
+                        var carrier = $('#swal-carrier').val();
+                        var shipped_at = $('#swal-date').val();
 
-                        axios.post('/admin/api/orders/' + order.id + '/paid', { format: format, amount_paid: amount_paid, received_at: received_at }).then(function (response) {
+                        axios.post('/admin/api/orders/' + order.id + '/paid', { carrier: carrier, shipped_at: shipped_at }).then(function (response) {
                             order.paid = 1;
                             return resolve(response);
                         }).catch(function (error) {
@@ -15743,7 +15751,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 59 */
@@ -35410,6 +35418,185 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(16);
 
+
+/***/ }),
+/* 98 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['order_id'],
+    data: function data() {
+        return {
+            amount_paid: 0,
+            received_at: null,
+            format: null
+        };
+    },
+
+    methods: {},
+    mounted: function mounted() {
+        this.amount_paid = 0;
+        this.format = 'cash';
+        this.received_at = '2017-09-01';
+    }
+});
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(102)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(98),
+  /* template */
+  __webpack_require__(101),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PaymentLogger.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PaymentLogger.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1cea4766", Component.options)
+  } else {
+    hotAPI.reload("data-v-1cea4766", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("\n    Method: "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.format),
+      expression: "format"
+    }],
+    staticClass: "swal2-input",
+    attrs: {
+      "id": "swal-method"
+    },
+    domProps: {
+      "value": (_vm.format)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.format = $event.target.value
+      }
+    }
+  }), _vm._v("\n    Amount: "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.amount_paid),
+      expression: "amount_paid"
+    }],
+    staticClass: "swal2-input",
+    attrs: {
+      "id": "swal-amount"
+    },
+    domProps: {
+      "value": (_vm.amount_paid)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.amount_paid = $event.target.value
+      }
+    }
+  }), _vm._v("\n    Date: "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.received_at),
+      expression: "received_at"
+    }],
+    staticClass: "swal2-input",
+    attrs: {
+      "id": "swal-date"
+    },
+    domProps: {
+      "value": (_vm.received_at)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.received_at = $event.target.value
+      }
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1cea4766", module.exports)
+  }
+}
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(99);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("21b9be96", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1cea4766\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentLogger.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1cea4766\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentLogger.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

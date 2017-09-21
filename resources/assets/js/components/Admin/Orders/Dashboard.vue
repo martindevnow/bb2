@@ -70,9 +70,7 @@ export default {
                 showCancelButton: true,
                 confirmButtonText: 'Confirm',
                 html:
-                'Method: <input id="swal-method" class="swal2-input" value="cash">' +
-                'Amount: <input id="swal-amount" class="swal2-input" value="' + order.plan.weekly_cost + '">' +
-                'Date: <input id="swal-date" class="swal2-input" value="today">',
+                '<admin-orders-payment-logger :order_id="' + (order.id) + '"></admin-orders-payment-logger>',
                 preConfirm: function () {
                     return new Promise(function (resolve, reject) {
 
@@ -175,19 +173,26 @@ export default {
             }
 
             let vm = this;
+            let today = new Date(Date.now()).toDateString();
+            let options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            };
+
+            let dateTime = Intl.DateTimeFormat('sr-RS', options);
             swal({
-                title: 'Payment Record',
+                title: 'Shipment Record',
                 html:
-                'Method: <input id="swal-carrier" class="swal2-input" value="cash">' +
-                'Date: <input id="swal-date" class="swal2-input" value="' + Date.now() + '">',
+                'Carrier/Courier: <input id="swal-carrier" class="swal2-input" value="cash">' +
+                'Date: <input id="swal-date" class="swal2-input" value="' + dateTime.format(new Date()) + '">',
                 preConfirm: function () {
                     return new Promise(function (resolve, reject) {
 
-                        let format = $('#swal-method').val();
-                        let amount_paid = $('#swal-amount').val();
-                        let received_at = $('#swal-date').val();
+                        let carrier = $('#swal-carrier').val();
+                        let shipped_at = $('#swal-date').val();
 
-                        axios.post('/admin/api/orders/'+ order.id +'/paid', {format, amount_paid, received_at})
+                        axios.post('/admin/api/orders/'+ order.id +'/paid', {carrier, shipped_at})
                             .then(response => {
                                 order.paid = 1;
                                 return resolve(response);
