@@ -1,25 +1,25 @@
 <template>
 
-    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-right: 15px; display: block;">
+    <div class="modal fade in" role="dialog" style="padding-right: 15px; display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <button type="button" class="close" @click="$emit('close')">
                         ×
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">Article Post</h4>
+                    <h4 class="modal-title">
+                        <slot name="title"></slot>
+                    </h4>
                 </div>
                 <div class="modal-body">
-
-                    <slot></slot>
-
+                    <slot name="body"></slot>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" @click="$emit('close')">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-primary">
-                        Post Article
+                    <button type="button" class="btn btn-primary" @click="processChildForm()">
+                        <slot name="submit"></slot>
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -30,6 +30,16 @@
 
 <script>
 export default {
+    props: [],
+    data() {
+        return {};
+    },
+    methods: {
+        processChildForm() {
+            console.log(this.$slots.body);
+            this.$slots.body[0].componentInstance.alertMe();
+        }
+    }
 
 }
 </script>

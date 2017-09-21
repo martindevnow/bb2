@@ -34,6 +34,7 @@ Vue.component('quotes-checkout', require('./components/Quotes/Checkout.vue'));
 Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
 
 
+Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue'));
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
 
 

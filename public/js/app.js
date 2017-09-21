@@ -13024,6 +13024,7 @@ Vue.component('quotes-checkout', __webpack_require__(70));
 
 Vue.component('cart-summary', __webpack_require__(65));
 
+Vue.component('admin-common-modal', __webpack_require__(105));
 Vue.component('plan-builder', __webpack_require__(68));
 
 Vue.component('admin-meats-navigator', __webpack_require__(61));
@@ -14069,13 +14070,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            orders: []
+            orders: [],
+            showModal: false
         };
     },
     mounted: function mounted() {
@@ -14090,6 +14097,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 return vm.errors = error;
             });
+        },
+        showPaymentLogger: function showPaymentLogger(order) {
+            this.order_id = order.id;
+            this.showModal = true;
         },
         markAsPaid: function markAsPaid(order) {
             if (order.paid) {
@@ -15751,7 +15762,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 59 */
@@ -34997,7 +35008,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "click": function($event) {
-          _vm.markAsPaid(order)
+          _vm.showPaymentLogger(order)
         }
       }
     }, [_vm._v("Paid")]), _vm._v(" "), _c('button', {
@@ -35041,7 +35052,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("Delivered")])])])
-  })], 2)
+  }), _vm._v(" "), (_vm.showModal) ? _c('admin-common-modal', {
+    on: {
+      "close": function($event) {
+        _vm.showModal = false
+      }
+    }
+  }, [_c('div', {
+    slot: "title"
+  }, [_vm._v("Title HERE")]), _vm._v(" "), _c('admin-orders-payment-logger', {
+    attrs: {
+      "order_id": _vm.order_id
+    },
+    slot: "body"
+  }), _vm._v(" "), _c('div', {
+    slot: "submit"
+  }, [_vm._v("Submit HERE")])], 1) : _vm._e()], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
@@ -35440,11 +35466,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             amount_paid: 0,
             received_at: null,
-            format: null
+            format: null,
+            order: null
         };
     },
 
-    methods: {},
+    methods: {
+        alertMe: function alertMe() {
+            alert('Alerted!!!');
+        },
+        markAsPaid: function markAsPaid(order) {
+            if (order.paid) {
+                return null;
+            }
+
+            var vm = this;
+
+            axios.post('/admin/api/orders/' + order_id + '/paid', {
+                format: this.format,
+                amount_paid: this.amount_paid,
+                received_at: this.received_at
+            }).then(function (response) {
+                order.paid = 1;
+                return resolve(response);
+            }).catch(function (error) {
+                console.log(error.response);
+                var errorMessage = '';
+                for (var propertyName in error.response.data.errors) {
+                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                }
+                return reject(errorMessage);
+            });
+        }
+    },
     mounted: function mounted() {
         this.amount_paid = 0;
         this.format = 'cash';
@@ -35457,7 +35511,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 100 */
@@ -35509,7 +35563,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.format),
       expression: "format"
     }],
-    staticClass: "swal2-input",
     attrs: {
       "id": "swal-method"
     },
@@ -35522,14 +35575,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.format = $event.target.value
       }
     }
-  }), _vm._v("\n    Amount: "), _c('input', {
+  }), _c('br'), _vm._v("\n    Amount: "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.amount_paid),
       expression: "amount_paid"
     }],
-    staticClass: "swal2-input",
     attrs: {
       "id": "swal-amount"
     },
@@ -35542,14 +35594,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.amount_paid = $event.target.value
       }
     }
-  }), _vm._v("\n    Date: "), _c('input', {
+  }), _c('br'), _vm._v("\n    Date:   "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.received_at),
       expression: "received_at"
     }],
-    staticClass: "swal2-input",
     attrs: {
       "id": "swal-date"
     },
@@ -35590,6 +35641,195 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1cea4766\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentLogger.vue", function() {
      var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1cea4766\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentLogger.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 103 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: [],
+    data: function data() {
+        return {};
+    },
+
+    methods: {
+        processChildForm: function processChildForm() {
+            console.log(this.$slots.body);
+            this.$slots.body[0].componentInstance.alertMe();
+        }
+    }
+
+});
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(107)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(103),
+  /* template */
+  __webpack_require__(106),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Common/Modal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4cee06e3", Component.options)
+  } else {
+    hotAPI.reload("data-v-4cee06e3", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal fade in",
+    staticStyle: {
+      "padding-right": "15px",
+      "display": "block"
+    },
+    attrs: {
+      "role": "dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('close')
+      }
+    }
+  }, [_vm._v("\n                    ×\n                ")]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._t("title")], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_vm._t("body")], 2), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('close')
+      }
+    }
+  }, [_vm._v("\n                    Cancel\n                ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.processChildForm()
+      }
+    }
+  }, [_vm._t("submit")], 2)])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4cee06e3", module.exports)
+  }
+}
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(104);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("1368a3b0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4cee06e3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Modal.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4cee06e3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Modal.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
