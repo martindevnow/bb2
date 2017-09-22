@@ -19,7 +19,7 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-primary" @click="processChildForm()">
-                        <slot name="submit"></slot>
+                        <slot name="submit">Submit</slot>
                     </button>
                 </div>
             </div><!-- /.modal-content -->

@@ -1,5 +1,12 @@
 <template>
     <div>
+        <section>
+            <label class="label">Amount Paid</label>
+            <label class="input">
+                <input type="text" class="input-sm">
+            </label>
+        </section>
+
         Method: <input id="swal-method" v-model="format"><br />
         Amount: <input id="swal-amount" v-model="amount_paid"><br />
         Date:   <input id="swal-date"   v-model="received_at">

@@ -16,7 +16,7 @@
             <div class="col-sm-1">{{ order.plan.weeks_at_a_time }}</div>
             <div class="col-sm-6">
                 <button class="btn btn-xs"
-                        @click="showPaymentLogger(order)"
+                        @click="displayPaidModal(order)"
                         :class="{ 'btn-danger': !order.paid, 'btn-success': order.paid}"
                 >Paid</button>
                 <button class="btn btn-xs"
@@ -37,10 +37,13 @@
                 >Delivered</button>
             </div>
         </div>
-        <admin-common-modal v-if="showModal" @close="showModal = false">
-            <div slot="title">Title HERE</div>
+        <admin-common-modal v-if="showPaidModal" @close="showPaidModal = false">
+            <div slot="title">Log a Payment</div>
             <admin-orders-payment-logger :order_id="order_id" slot="body"></admin-orders-payment-logger>
-            <div slot="submit">Submit HERE</div>
+        </admin-common-modal>
+        <admin-common-modal v-if="showPackedModal" @close="showPackedModal = false">
+            <div slot="title">How much was packed?</div>
+            <admin-orders-packing-logger :order_id="order_id" slot="body"></admin-orders-packing-logger>
         </admin-common-modal>
     </div>
 </template>
@@ -52,7 +55,11 @@ export default {
     data() {
         return {
             orders: [],
-            showModal: false,
+            showPaidModal: false,
+            showPackedModal: false,
+            showPickedModal: false,
+            showShippedModal: false,
+            showDeliveredModal: false,
         };
     },
     mounted() {
@@ -65,9 +72,9 @@ export default {
                 .then(response => vm.orders = response.data)
                 .catch(error => vm.errors = error);
         },
-        showPaymentLogger(order) {
+        displayPaidModal(order) {
             this.order_id = order.id;
-            this.showModal = true;
+            this.showPaidModal = true;
         },
         markAsPaid(order) {
             if (order.paid) {
