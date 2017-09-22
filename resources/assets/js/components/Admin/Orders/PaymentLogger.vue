@@ -1,19 +1,46 @@
 <template>
     <div>
-        <section>
-            <label class="label">Amount Paid</label>
-            <label class="input">
-                <input type="text" class="input-sm">
-            </label>
-        </section>
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="label">Amount Paid</span>
+            </div>
+            <div class="col-sm-8">
+                <label class="input">
+                    <input type="text" class="input-sm"
+                           v-model="amount_paid"
+                    >
+                </label>
+            </div>
+        </div>
 
-        Method: <input id="swal-method" v-model="format"><br />
-        Amount: <input id="swal-amount" v-model="amount_paid"><br />
-        Date:   <input id="swal-date"   v-model="received_at">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="label">Date Received</span>
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="input-sm"
+                       v-model="received_at"
+                >
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="label">Format</span>
+            </div>
+            <div class="col-sm-8">
+                <select v-model="format">
+                    <option v-for="format in paymentFormats">{{ format }}</option>
+                </select>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import eventBus from '../../../events/eventBus';
 export default {
     props: ['order_id'],
     data() {
@@ -22,37 +49,35 @@ export default {
             received_at: null,
             format: null,
             order: null,
+            paymentFormats: [
+                'cash',
+                'interac',
+                'e-transfer',
+                'stripe',
+                'paypal',
+            ],
         };
     },
     methods: {
-        alertMe() {
-            alert('Alerted!!!');
-        },
-        markAsPaid(order) {
-            if (order.paid) {
-                return null;
-            }
-
+        processForm() {
             let vm = this;
 
-            axios.post('/admin/api/orders/'+ order_id +'/paid', {
-                format: this.format,
+            axios.post('/admin/api/orders/'+ vm.order_id +'/paid', {
+                format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,
             })
                 .then(response => {
-                    order.paid = 1;
-                    return resolve(response);
+                    console.log('success');
+                    eventBus.$emit('order-marked-as-paid', { order_id: vm.order_id });
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    console.log('error.response', error.response);
                     let errorMessage = '';
                     for (let propertyName in error.response.data.errors) {
                         errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
                     }
-                    return reject(errorMessage);
                 });
-
         },
     },
     mounted() {
@@ -64,5 +89,7 @@ export default {
 </script>
 
 <style>
-
+span.label {
+    color: black;
+}
 </style>

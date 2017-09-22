@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" @click="$emit('close')">
+                    <button type="button" class="close" @click="closeModal()">
                         ×
                     </button>
                     <h4 class="modal-title">
@@ -15,7 +15,7 @@
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="$emit('close')">
+                    <button type="button" class="btn btn-default" @click="closeModal()">
                         Cancel
                     </button>
                     <button type="button" class="btn btn-primary" @click="processChildForm()">
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import eventBus from '../../../events/eventBus';
+
 export default {
     props: [],
     data() {
@@ -36,9 +38,18 @@ export default {
     },
     methods: {
         processChildForm() {
-            console.log(this.$slots.body);
-            this.$slots.body[0].componentInstance.alertMe();
+            console.log('body', this.$slots.body);
+            this.$slots.body[0].componentInstance.processForm();
+        },
+        closeModal(params) {
+            this.$emit('close');
         }
+    },
+    mounted() {
+        eventBus.$on('order-marked-as-paid', this.closeModal(order_id));
+    },
+    beforeDestroy() {
+        eventBus.$off('order-marked-as-packed', this.closeModal(order_id));
     }
 
 }

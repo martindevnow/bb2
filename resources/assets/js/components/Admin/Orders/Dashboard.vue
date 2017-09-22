@@ -50,6 +50,7 @@
 
 <script>
 import swal from 'sweetalert2';
+import eventBus from '../../../events/eventBus';
 
 export default {
     data() {
@@ -241,8 +242,23 @@ export default {
         markAsDelivered(order) {
 
         },
+        setOrderAsPaid(order_id) {
+            this.order.map((order) => {
+                if (order.id === order_id) {
+                    order.paid = true;
+                }
+                return order;
+            })
+        },
+
     },
     computed: {
+    },
+    creted() {
+        eventBus.$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
+    },
+    beforeDestroy() {
+        eventBus.$off('order-marked-as-paid', this.setOrderAsPaid(order_id));
     }
 
 }

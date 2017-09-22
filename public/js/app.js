@@ -13885,6 +13885,7 @@ module.exports = function spread(callback) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_eventBus__ = __webpack_require__(5);
 //
 //
 //
@@ -13915,6 +13916,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: [],
@@ -13924,11 +13927,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         processChildForm: function processChildForm() {
-            console.log(this.$slots.body);
-            this.$slots.body[0].componentInstance.alertMe();
+            console.log('body', this.$slots.body);
+            this.$slots.body[0].componentInstance.processForm();
+        },
+        closeModal: function closeModal(params) {
+            this.$emit('close');
         }
+    },
+    mounted: function mounted() {
+        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$on('order-marked-as-paid', this.closeModal(order_id));
+    },
+    beforeDestroy: function beforeDestroy() {
+        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$off('order-marked-as-packed', this.closeModal(order_id));
     }
-
 });
 
 /***/ }),
@@ -14080,6 +14091,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__events_eventBus__ = __webpack_require__(5);
 //
 //
 //
@@ -14130,6 +14142,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -14312,10 +14325,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Do nothing... they just exited the modal.. that's all
             });
         },
-        markAsDelivered: function markAsDelivered(order) {}
+        markAsDelivered: function markAsDelivered(order) {},
+        setOrderAsPaid: function setOrderAsPaid(order_id) {
+            this.order.map(function (order) {
+                if (order.id === order_id) {
+                    order.paid = true;
+                }
+                return order;
+            });
+        }
     },
-    computed: {}
-
+    computed: {},
+    creted: function creted() {
+        __WEBPACK_IMPORTED_MODULE_1__events_eventBus__["a" /* default */].$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
+    },
+    beforeDestroy: function beforeDestroy() {
+        __WEBPACK_IMPORTED_MODULE_1__events_eventBus__["a" /* default */].$off('order-marked-as-paid', this.setOrderAsPaid(order_id));
+    }
 });
 
 /***/ }),
@@ -14324,6 +14350,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_eventBus__ = __webpack_require__(5);
 //
 //
 //
@@ -14339,6 +14366,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['order_id'],
@@ -14347,35 +14401,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             amount_paid: 0,
             received_at: null,
             format: null,
-            order: null
+            order: null,
+            paymentFormats: ['cash', 'interac', 'e-transfer', 'stripe', 'paypal']
         };
     },
 
     methods: {
-        alertMe: function alertMe() {
-            alert('Alerted!!!');
-        },
-        markAsPaid: function markAsPaid(order) {
-            if (order.paid) {
-                return null;
-            }
-
+        processForm: function processForm() {
             var vm = this;
 
-            axios.post('/admin/api/orders/' + order_id + '/paid', {
+            axios.post('/admin/api/orders/' + vm.order_id + '/paid', {
                 format: this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at
             }).then(function (response) {
-                order.paid = 1;
-                return resolve(response);
+                console.log('success');
+                __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('order-marked-as-paid', { order_id: vm.order_id });
             }).catch(function (error) {
-                console.log(error.response);
+                console.log('error.response', error.response);
                 var errorMessage = '';
                 for (var propertyName in error.response.data.errors) {
                     errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
                 }
-                return reject(errorMessage);
             });
         }
     },
@@ -15840,7 +15887,7 @@ exports.push([module.i, "\n.btn-total {\n    font-size: 2rem;\n}\n.btn-cost:hove
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\nspan.label {\n    color: black;\n}\n", ""]);
 
 /***/ }),
 /* 54 */
@@ -15882,7 +15929,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 60 */
@@ -15903,7 +15950,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 63 */
@@ -33015,7 +33062,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Common\\Modal.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Common/Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33053,7 +33100,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meals\\SelectBox.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meals/SelectBox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SelectBox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33091,7 +33138,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meats\\Navigator.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meats/Navigator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Navigator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33129,7 +33176,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\Dashboard.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33167,7 +33214,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\PaymentLogger.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PaymentLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PaymentLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33205,7 +33252,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Auth\\LoginForm.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Auth/LoginForm.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] LoginForm.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33243,7 +33290,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Auth\\RegistrationForm.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Auth/RegistrationForm.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] RegistrationForm.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33281,7 +33328,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Cart\\Summary.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Cart/Summary.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Summary.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33319,7 +33366,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Customers\\PetSelector.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Customers/PetSelector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PetSelector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33353,7 +33400,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33391,7 +33438,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\PlanBuilder.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/PlanBuilder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlanBuilder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33429,7 +33476,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Calculator.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Calculator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Calculator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33467,7 +33514,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Checkout.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Checkout.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Checkout.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -33505,7 +33552,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\DetailsCollector.vue"
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/DetailsCollector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] DetailsCollector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -34322,34 +34369,22 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v("\n\n    Method: "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.format),
-      expression: "format"
-    }],
-    attrs: {
-      "id": "swal-method"
-    },
-    domProps: {
-      "value": (_vm.format)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.format = $event.target.value
-      }
-    }
-  }), _c('br'), _vm._v("\n    Amount: "), _c('input', {
+  return _c('div', [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('label', {
+    staticClass: "input"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.amount_paid),
       expression: "amount_paid"
     }],
+    staticClass: "input-sm",
     attrs: {
-      "id": "swal-amount"
+      "type": "text"
     },
     domProps: {
       "value": (_vm.amount_paid)
@@ -34360,15 +34395,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.amount_paid = $event.target.value
       }
     }
-  }), _c('br'), _vm._v("\n    Date:   "), _c('input', {
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.received_at),
       expression: "received_at"
     }],
+    staticClass: "input-sm",
     attrs: {
-      "id": "swal-date"
+      "type": "text"
     },
     domProps: {
       "value": (_vm.received_at)
@@ -34379,18 +34419,49 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.received_at = $event.target.value
       }
     }
-  })])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('section', [_c('label', {
-    staticClass: "label"
-  }, [_vm._v("Amount Paid")]), _vm._v(" "), _c('label', {
-    staticClass: "input"
-  }, [_c('input', {
-    staticClass: "input-sm",
-    attrs: {
-      "type": "text"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.format),
+      expression: "format"
+    }],
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.format = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
     }
-  })])])
+  }, _vm._l((_vm.paymentFormats), function(format) {
+    return _c('option', [_vm._v(_vm._s(format))])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Amount Paid")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Date Received")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Format")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -35213,7 +35284,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.$emit('close')
+        _vm.closeModal()
       }
     }
   }, [_vm._v("\n                    ×\n                ")]), _vm._v(" "), _c('h4', {
@@ -35229,7 +35300,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.$emit('close')
+        _vm.closeModal()
       }
     }
   }, [_vm._v("\n                    Cancel\n                ")]), _vm._v(" "), _c('button', {
