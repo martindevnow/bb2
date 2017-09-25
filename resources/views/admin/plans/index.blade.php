@@ -63,7 +63,7 @@
                                 <td>{{ $plan->customer->name }}</td>
                                 <td>{{ $plan->pet->name }} ({{ $plan->pet_weight }} lb)</td>
                                 <td>{{ $plan->package->label }}</td>
-                                <td>{{ $plan->weeks_at_a_time }}</td>
+                                <td>{{ $plan->weeks_of_food_per_shipment }}</td>
                                 <td>${{ $plan->weekly_cost }}</td>
                                 <td>${{ round($plan->calculateSubtotal(), 2) }}</td>
                                 <td>${{ round($plan->costPerPoundOfDog(), 2) }}</td>

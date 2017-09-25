@@ -13,7 +13,7 @@
             <div class="col-sm-2">{{ order.deliver_by }} <br />{{ order.plan.pet.name }}</div>
             <div class="col-sm-1">{{ (order.plan.pet.weight * .02 / 2 * 454).toFixed(2) }}g</div>
             <div class="col-sm-2">{{ order.plan.package.label }}</div>
-            <div class="col-sm-1">{{ order.plan.weeks_at_a_time }}</div>
+            <div class="col-sm-1">{{ order.plan.weeks_of_food_per_shipment }}</div>
             <div class="col-sm-6">
                 <button class="btn btn-xs"
                         @click="displayPaidModal(order)"

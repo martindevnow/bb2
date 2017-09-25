@@ -79,7 +79,7 @@
                                 <td>{{ round($order->plan->pet->mealSizeInGrams()) }} g</td>
                                 <td>{{ $order->plan->package->label }}</td>
                                 <td>{{ $order->deliveryAddress->toString() }}</td>
-                                <td>{{ $order->plan->weeks_at_a_time }}</td>
+                                <td>{{ $order->plan->weeks_of_food_per_shipment }}</td>
                                 <td>${{ $order->total_cost }}</td>
                                 <td>
                                     @if($order->paid)

@@ -95,7 +95,7 @@ abstract class TestCase extends BaseTestCase
         /** @var Plan $plan */
         $plan = factory(Plan::class)->create([
             'package_id'    => $package->id,
-            'weeks_at_a_time'   => 2,
+            'weeks_of_food_per_shipment'   => 2,
             'pet_weight'    => $pet->weight,
             'pet_id'    => $pet->id,
             'pet_activity_level'    => $pet->activity_level,

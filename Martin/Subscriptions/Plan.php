@@ -56,7 +56,7 @@ class Plan extends Model
         'weekly_cost',
 
         'last_delivery_at',
-        'weeks_at_a_time',
+        'weeks_of_food_per_shipment',
         'active',
         'payment_method',
         'hash',
@@ -113,20 +113,20 @@ class Plan extends Model
         // 4 weeks at a time will be if the last delivery_at is older than 2 weeks
         return $query->where(function (Builder $sQ) {
             $sQ->where('last_delivery_at', '<=', Carbon::now())
-                ->where('weeks_at_a_time', '<=', 2)
+                ->where('weeks_of_food_per_shipment', '<=', 2)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
                 });
             ;
         })->orWhere(function (Builder $sQ) {
             $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
-                ->where('weeks_at_a_time', '=', 3)
+                ->where('weeks_of_food_per_shipment', '=', 3)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
                 });
         })->orWhere(function (Builder $sQ) {
             $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
-                ->where('weeks_at_a_time', '=', 4)
+                ->where('weeks_of_food_per_shipment', '=', 4)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
                 });
@@ -274,7 +274,7 @@ class Plan extends Model
 
         return $this->getLatestOrder()
             ->created_at
-            ->addDays(7 * $this->weeks_at_a_time);
+            ->addDays(7 * $this->weeks_of_food_per_shipment);
     }
 
     /**
@@ -282,11 +282,11 @@ class Plan extends Model
      * @return mixed
      */
     public function mealCounts(Meal $meal = null) {
-        $weeks_at_a_time = $this->weeks_at_a_time;
+        $weeks_of_food_per_shipment = $this->weeks_of_food_per_shipment;
         $grouped =  $this->package->meals->groupBy('id')
-            ->map(function($group, $key) use ($weeks_at_a_time) {
+            ->map(function($group, $key) use ($weeks_of_food_per_shipment) {
                 $item = $group->first();
-                $item->count = $group->count() * $weeks_at_a_time;
+                $item->count = $group->count() * $weeks_of_food_per_shipment;
                 return $item;
             });
 
@@ -341,14 +341,14 @@ class Plan extends Model
                 ->addDays(4);
 
         return $this->last_delivery_at
-            ->addDays($this->weeks_at_a_time * 7);
+            ->addDays($this->weeks_of_food_per_shipment * 7);
 
         if (! $this->orders()->count())
             return $this->getFirstDeliveryDate();
 
         return $this->getLatestOrder()
             ->deliver_by
-            ->addDays($this->weeks_at_a_time * 7);
+            ->addDays($this->weeks_of_food_per_shipment * 7);
     }
 
     /**
@@ -364,7 +364,7 @@ class Plan extends Model
      * @return mixed
      */
     public function calculateSubtotal() {
-        return self::getPrice($this->pet_weight, $this->package, $this->weeks_at_a_time === 4 ? 0 : 1);
+        return self::getPrice($this->pet_weight, $this->package, $this->weeks_of_food_per_shipment === 4 ? 0 : 1);
     }
 
     /**

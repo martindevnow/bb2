@@ -23,7 +23,7 @@
         'package_id',
         'weekly_cost',
 
-        'weeks_at_a_time',
+        'weeks_of_food_per_shipment',
         'active',
         -->
 
@@ -142,23 +142,23 @@
 
 
                         <section class="col col-6">
-                            <label class="label" for="weeks_at_a_time">Weeks at a Time:</label>
+                            <label class="label" for="weeks_of_food_per_shipment">Weeks at a Time:</label>
                             <label class="input">
                                 <input type="text"
-                                       name="weeks_at_a_time"
-                                       value="{{ old('weeks_at_a_time') }}"
+                                       name="weeks_of_food_per_shipment"
+                                       value="{{ old('weeks_of_food_per_shipment') }}"
                                        class="form-control"
-                                       id="weeks_at_a_time"
-                                       aria-describedby="weeks_at_a_timeHelp"
-                                       placeholder="weeks_at_a_time"
+                                       id="weeks_of_food_per_shipment"
+                                       aria-describedby="weeks_of_food_per_shipmentHelp"
+                                       placeholder="weeks_of_food_per_shipment"
                                        autocomplete="off">
                             </label>
-                            @if ($errors->has('weeks_at_a_time'))
+                            @if ($errors->has('weeks_of_food_per_shipment'))
                                 <span class="help-block">
-                            <strong>{{ $errors->first('weeks_at_a_time') }}</strong>
+                            <strong>{{ $errors->first('weeks_of_food_per_shipment') }}</strong>
                         </span>
                             @endif
-                            <small id="weeks_at_a_timeHelp" class="form-text text-muted">The number of weeks to be delivered at a time.</small>
+                            <small id="weeks_of_food_per_shipmentHelp" class="form-text text-muted">The number of weeks to be delivered at a time.</small>
                         </section>
 
                         <section class="col col-6">

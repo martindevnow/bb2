@@ -61,7 +61,7 @@ class PlansController extends Controller
 
             'shipping_cost'         => 'required|numeric',
             'weekly_cost'           => 'required|numeric',
-            'weeks_at_a_time'       => 'required|integer',
+            'weeks_of_food_per_shipment'       => 'required|integer',
             'active'                => 'required'
         ]);
 
@@ -70,7 +70,7 @@ class PlansController extends Controller
             'pet_id',
             'package_id',
             'weekly_cost',
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
             'active'
         ]);
 
@@ -123,7 +123,7 @@ class PlansController extends Controller
             'package_base'          => 'required|numeric',
 
             'weekly_cost'           => 'required|numeric',
-            'weeks_at_a_time'       => 'required|integer',
+            'weeks_of_food_per_shipment'       => 'required|integer',
         ]);
 
         $planData = $request->only([
@@ -141,7 +141,7 @@ class PlansController extends Controller
 
             'weekly_cost',
 
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
             'active']);
 
         $plan->fill($planData);

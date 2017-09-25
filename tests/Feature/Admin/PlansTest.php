@@ -93,7 +93,7 @@ class PlansTest extends TestCase
             'pet_id'    => $pet->id,
             'shipping_cost' => 20,
             'weekly_cost' => 20,
-            'weeks_at_a_time' => 1,
+            'weeks_of_food_per_shipment' => 1,
             'active'    => 1,
         ];
 

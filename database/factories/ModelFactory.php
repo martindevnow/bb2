@@ -293,7 +293,7 @@ $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $f
         'package_stripe_code' => $faker->word,
         'package_base' => $faker->numberBetween(100,300),
         'weekly_cost' => $faker->numberBetween(2000,4000),
-        'weeks_at_a_time' => $faker->numberBetween(1,4),
+        'weeks_of_food_per_shipment' => $faker->numberBetween(1,4),
         'active' => 1,
         'payment_method'    => $faker->randomElement($types),
     ];
