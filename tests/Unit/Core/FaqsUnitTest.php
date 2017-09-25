@@ -69,10 +69,11 @@ class FaqsUnitTest extends TestCase
         $faq = $faq->fresh(['category']);
 
         $faq->assignCategory($faq_category[1]->code);
-        $this->assertFalse($faq->assignCategory(true));
         $faq = $faq->fresh(['category']);
 
         $this->assertEquals($faq_category[1]->id, $faq->category->id);
+
+        $this->assertFalse($faq->assignCategory(true));
     }
 
     /** @test */

@@ -157,7 +157,7 @@ class OrdersUnitTest extends TestCase
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
                 'change'                => 1400,         // this is 14 meals * 100
-                'size'                  => $order->plan->pet->mealSize(),
+                'size'                  => $order->plan->pet->mealSize() * 100,
             ]);
         }
     }
