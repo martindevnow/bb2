@@ -13920,7 +13920,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: [],
+    props: ['model_type', 'model_id'],
     data: function data() {
         return {};
     },
@@ -13928,17 +13928,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         processChildForm: function processChildForm() {
             console.log('body', this.$slots.body);
+            // TODO
+            // This should return a promise.... then i can handle closing the form here FFS....
+            // and Then, i can avoid all of this $emitting BS...
             this.$slots.body[0].componentInstance.processForm();
         },
         closeModal: function closeModal(params) {
-            this.$emit('close');
+
+            if (!params) {
+                return this.$emit('close');
+            } else {
+                console.log('event received');
+                console.log('params', params);
+                console.log('this', this.model_id, this.model_type);
+            }
+            if (params.model_type == this.model_type && params.model_id == this.model_id) {
+                this.$emit('close');
+            }
         }
     },
     mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$on('order-marked-as-paid', this.closeModal(order_id));
+        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$on('close-modal', this.closeModal);
     },
     beforeDestroy: function beforeDestroy() {
-        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$off('order-marked-as-packed', this.closeModal(order_id));
+        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$off('close-modal', this.closeModal);
     }
 });
 
@@ -14142,6 +14155,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -14154,7 +14175,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showPackedModal: false,
             showPickedModal: false,
             showShippedModal: false,
-            showDeliveredModal: false
+            showDeliveredModal: false,
+            order_id: null
         };
     },
     mounted: function mounted() {
@@ -14336,7 +14358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     computed: {},
-    creted: function creted() {
+    created: function created() {
         __WEBPACK_IMPORTED_MODULE_1__events_eventBus__["a" /* default */].$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
     },
     beforeDestroy: function beforeDestroy() {
@@ -14415,8 +14437,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 amount_paid: this.amount_paid,
                 received_at: this.received_at
             }).then(function (response) {
-                console.log('success');
+                console.log('success....');
                 __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('order-marked-as-paid', { order_id: vm.order_id });
+                __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('close-modal', { model_type: 'order', model_id: vm.order_id });
             }).catch(function (error) {
                 console.log('error.response', error.response);
                 var errorMessage = '';
@@ -15929,7 +15952,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 60 */
@@ -15950,7 +15973,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 63 */
@@ -35430,7 +35453,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "row"
     }, [_c('div', {
       staticClass: "col-sm-2"
-    }, [_vm._v(_vm._s(order.deliver_by) + " "), _c('br'), _vm._v(_vm._s(order.plan.pet.name))]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(order.plan.pet.name) + " (" + _vm._s(order.plan.pet.breed) + ") " + _vm._s(order.customer.name))]), _vm._v(" "), _c('div', {
       staticClass: "col-sm-1"
     }, [_vm._v(_vm._s((order.plan.pet.weight * .02 / 2 * 454).toFixed(2)) + "g")]), _vm._v(" "), _c('div', {
       staticClass: "col-sm-2"
@@ -35490,6 +35513,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("Delivered")])])])
   }), _vm._v(" "), (_vm.showPaidModal) ? _c('admin-common-modal', {
+    attrs: {
+      "model_type": "order",
+      "model_id": _vm.order_id
+    },
     on: {
       "close": function($event) {
         _vm.showPaidModal = false
@@ -35503,6 +35530,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     slot: "body"
   })], 1) : _vm._e(), _vm._v(" "), (_vm.showPackedModal) ? _c('admin-common-modal', {
+    attrs: {
+      "model_type": "order",
+      "model_id": _vm.order_id
+    },
     on: {
       "close": function($event) {
         _vm.showPackedModal = false
@@ -35521,7 +35552,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-2"
-  }, [_vm._v("Date / Customer")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Pet (Breed) - Customer")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-1"
   }, [_vm._v("Meal Size")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-2"

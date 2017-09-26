@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-sm-2">Date / Customer</div>
+            <div class="col-sm-2">Pet (Breed) - Customer</div>
             <div class="col-sm-1">Meal Size</div>
             <div class="col-sm-2">Package</div>
             <div class="col-sm-1"># of Weeks</div>
@@ -10,7 +10,7 @@
 
 
         <div class="row" v-for="order in orders">
-            <div class="col-sm-2">{{ order.deliver_by }} <br />{{ order.plan.pet.name }}</div>
+            <div class="col-sm-2">{{ order.plan.pet.name }} ({{ order.plan.pet.breed }}) {{ order.customer.name }}</div>
             <div class="col-sm-1">{{ (order.plan.pet.weight * .02 / 2 * 454).toFixed(2) }}g</div>
             <div class="col-sm-2">{{ order.plan.package.label }}</div>
             <div class="col-sm-1">{{ order.plan.weeks_of_food_per_shipment }}</div>
@@ -37,11 +37,19 @@
                 >Delivered</button>
             </div>
         </div>
-        <admin-common-modal v-if="showPaidModal" @close="showPaidModal = false">
+        <admin-common-modal v-if="showPaidModal"
+                            @close="showPaidModal = false"
+                            model_type="order"
+                            :model_id="order_id"
+        >
             <div slot="title">Log a Payment</div>
             <admin-orders-payment-logger :order_id="order_id" slot="body"></admin-orders-payment-logger>
         </admin-common-modal>
-        <admin-common-modal v-if="showPackedModal" @close="showPackedModal = false">
+        <admin-common-modal v-if="showPackedModal"
+                            @close="showPackedModal = false"
+                            model_type="order"
+                            :model_id="order_id"
+        >
             <div slot="title">How much was packed?</div>
             <admin-orders-packing-logger :order_id="order_id" slot="body"></admin-orders-packing-logger>
         </admin-common-modal>
@@ -61,6 +69,7 @@ export default {
             showPickedModal: false,
             showShippedModal: false,
             showDeliveredModal: false,
+            order_id: null,
         };
     },
     mounted() {
@@ -254,7 +263,7 @@ export default {
     },
     computed: {
     },
-    creted() {
+    created() {
         eventBus.$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
     },
     beforeDestroy() {

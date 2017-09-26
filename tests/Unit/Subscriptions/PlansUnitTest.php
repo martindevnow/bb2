@@ -383,9 +383,6 @@ class PlansUnitTest extends TestCase
         $preDate = Carbon::now()->addWeeks(2);
         $this->createOrderForBasicPlan();
 
-        $this->assertCount(2, Order::all());
-
-
-
+        $this->assertCount(1, Order::all());
     }
 }
