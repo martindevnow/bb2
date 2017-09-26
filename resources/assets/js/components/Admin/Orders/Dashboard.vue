@@ -1,5 +1,16 @@
 <template>
     <div>
+
+        <button id="show-modal" @click="showModal = true">Show Modal</button>
+        <!-- use the modal component, pass in the prop -->
+        <payment-modal v-if="showModal" @close="showModal = false">
+            <!--
+              you can use custom content here to overwrite
+              default content
+            -->
+            <h3 slot="header">custom header</h3>
+        </payment-modal>
+
         <div class="row">
             <div class="col-sm-2">Pet (Breed) - Customer</div>
             <div class="col-sm-1">Meal Size</div>
@@ -64,6 +75,7 @@ export default {
     data() {
         return {
             orders: [],
+            showModal: false,
             showPaidModal: false,
             showPackedModal: false,
             showPickedModal: false,

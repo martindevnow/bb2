@@ -13025,6 +13025,7 @@ Vue.component('quotes-checkout', __webpack_require__(76));
 Vue.component('cart-summary', __webpack_require__(71));
 
 Vue.component('admin-common-modal', __webpack_require__(64));
+Vue.component('payment-modal', __webpack_require__(110));
 Vue.component('plan-builder', __webpack_require__(74));
 
 Vue.component('admin-meats-navigator', __webpack_require__(66));
@@ -13915,7 +13916,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -13927,32 +13927,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         processChildForm: function processChildForm() {
+            var vm = this;
             console.log('body', this.$slots.body);
             // TODO
             // This should return a promise.... then i can handle closing the form here FFS....
             // and Then, i can avoid all of this $emitting BS...
-            this.$slots.body[0].componentInstance.processForm();
+            this.$slots.body[0].componentInstance.processForm().then(function (response) {
+                console.log('success....');
+                vm.closeModal();
+            }).catch(function (error) {
+                console.log('error.response', error.response);
+                var errorMessage = '';
+                for (var propertyName in error.response.data.errors) {
+                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                }
+                console.log(errorMessage);
+            });
         },
-        closeModal: function closeModal(params) {
-
-            if (!params) {
-                return this.$emit('close');
-            } else {
-                console.log('event received');
-                console.log('params', params);
-                console.log('this', this.model_id, this.model_type);
-            }
-            if (params.model_type == this.model_type && params.model_id == this.model_id) {
-                this.$emit('close');
-            }
+        closeModal: function closeModal() {
+            return this.$emit('close');
         }
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$on('close-modal', this.closeModal);
-    },
-    beforeDestroy: function beforeDestroy() {
-        __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$off('close-modal', this.closeModal);
     }
+
 });
 
 /***/ }),
@@ -14163,6 +14159,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -14171,6 +14178,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             orders: [],
+            showModal: false,
             showPaidModal: false,
             showPackedModal: false,
             showPickedModal: false,
@@ -14432,20 +14440,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         processForm: function processForm() {
             var vm = this;
 
-            axios.post('/admin/api/orders/' + vm.order_id + '/paid', {
+            return axios.post('/admin/api/orders/' + vm.order_id + '/paid', {
                 format: this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at
-            }).then(function (response) {
-                console.log('success....');
-                __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('order-marked-as-paid', { order_id: vm.order_id });
-                __WEBPACK_IMPORTED_MODULE_0__events_eventBus__["a" /* default */].$emit('close-modal', { model_type: 'order', model_id: vm.order_id });
-            }).catch(function (error) {
-                console.log('error.response', error.response);
-                var errorMessage = '';
-                for (var propertyName in error.response.data.errors) {
-                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
-                }
             });
         }
     },
@@ -15952,7 +15950,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 60 */
@@ -15973,7 +15971,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 63 */
@@ -35448,7 +35446,24 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _vm._l((_vm.orders), function(order) {
+  return _c('div', [_c('button', {
+    attrs: {
+      "id": "show-modal"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showModal = true
+      }
+    }
+  }, [_vm._v("Show Modal")]), _vm._v(" "), (_vm.showModal) ? _c('payment-modal', {
+    on: {
+      "close": function($event) {
+        _vm.showModal = false
+      }
+    }
+  }, [_c('h3', {
+    slot: "header"
+  }, [_vm._v("custom header")])]) : _vm._e(), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._l((_vm.orders), function(order) {
     return _c('div', {
       staticClass: "row"
     }, [_c('div', {
@@ -35975,6 +35990,159 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(16);
 
+
+/***/ }),
+/* 108 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: [],
+    data: function data() {}
+});
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(112)
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(108),
+  /* template */
+  __webpack_require__(111),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PaymentModal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PaymentModal.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9a8c7072", Component.options)
+  } else {
+    hotAPI.reload("data-v-9a8c7072", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('transition', {
+    attrs: {
+      "name": "modal"
+    }
+  }, [_c('div', {
+    staticClass: "modal-mask"
+  }, [_c('div', {
+    staticClass: "modal-wrapper"
+  }, [_c('div', {
+    staticClass: "modal-container"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_vm._t("header", [_vm._v("\n                        default header\n                    ")])], 2), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_vm._t("body", [_vm._v("\n                        default body\n                    ")])], 2), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_vm._t("footer", [_vm._v("\n                        default footer\n                        "), _c('button', {
+    staticClass: "modal-default-button",
+    on: {
+      "click": function($event) {
+        _vm.$emit('close')
+      }
+    }
+  }, [_vm._v("\n                            OK\n                        ")])])], 2)])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9a8c7072", module.exports)
+  }
+}
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(109);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("18bcfca8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-9a8c7072\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentModal.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-9a8c7072\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentModal.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

@@ -35,6 +35,7 @@ Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
 
 
 Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue'));
+Vue.component('payment-modal', require('./components/Admin/Orders/PaymentModal.vue'));
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
 
 

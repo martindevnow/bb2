@@ -1,5 +1,4 @@
 <template>
-
     <div class="modal fade in" role="dialog" style="padding-right: 15px; display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -38,32 +37,29 @@ export default {
     },
     methods: {
         processChildForm() {
+            let vm = this;
             console.log('body', this.$slots.body);
             // TODO
             // This should return a promise.... then i can handle closing the form here FFS....
             // and Then, i can avoid all of this $emitting BS...
-            this.$slots.body[0].componentInstance.processForm();
+            this.$slots.body[0].componentInstance.processForm()
+                .then(response => {
+                    console.log('success....');
+                    vm.closeModal();
+                })
+                .catch(error => {
+                    console.log('error.response', error.response);
+                    let errorMessage = '';
+                    for (let propertyName in error.response.data.errors) {
+                        errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+                    }
+                    console.log(errorMessage);
+                });
         },
-        closeModal(params) {
-
-            if (!params) {
-                return this.$emit('close');
-            } else {
-                console.log ('event received');
-                console.log('params', params);
-                console.log('this', this.model_id, this.model_type);
-            }
-            if (params.model_type == this.model_type && params.model_id == this.model_id) {
-                this.$emit('close');
-            }
+        closeModal() {
+            return this.$emit('close');
         }
     },
-    mounted() {
-        eventBus.$on('close-modal', this.closeModal);
-    },
-    beforeDestroy() {
-        eventBus.$off('close-modal', this.closeModal);
-    }
 
 }
 </script>

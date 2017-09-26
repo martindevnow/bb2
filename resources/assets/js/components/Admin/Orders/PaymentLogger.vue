@@ -62,23 +62,12 @@ export default {
         processForm() {
             let vm = this;
 
-            axios.post('/admin/api/orders/'+ vm.order_id +'/paid', {
+            return axios.post('/admin/api/orders/'+ vm.order_id +'/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,
-            })
-                .then(response => {
-                    console.log('success....');
-                    eventBus.$emit('order-marked-as-paid', { order_id: vm.order_id });
-                    eventBus.$emit('close-modal', {model_type: 'order', model_id: vm.order_id});
-                })
-                .catch(error => {
-                    console.log('error.response', error.response);
-                    let errorMessage = '';
-                    for (let propertyName in error.response.data.errors) {
-                        errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
-                    }
-                });
+            });
+
         },
     },
     mounted() {

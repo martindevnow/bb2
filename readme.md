@@ -157,3 +157,20 @@ NRFs
 | Overall | 80.80% | 81.57% | 49.23% |
 | Martin | 92.49% | 87.58% | 46.43% |
 | app | 71.78% | 75.00% | 51.35% |
+
+
+## Books to Investigate
+
+The Joy of UX
+The UX Career Handbook
+UX Style Frameworks
+The Design Studio Method
+IT Project Management
+
+
+## Main TODOs
+
+* use Vuex for state-management
+* rebuild the client-facing app...
+  * Rebuild the checkout process for customers and consider the communication between componenets/state/DB/server/etc...
+* rebuild the 
