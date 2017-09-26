@@ -68,8 +68,9 @@ export default {
                 received_at: this.received_at,
             })
                 .then(response => {
-                    console.log('success');
+                    console.log('success....');
                     eventBus.$emit('order-marked-as-paid', { order_id: vm.order_id });
+                    eventBus.$emit('close-modal', {model_type: 'order', model_id: vm.order_id});
                 })
                 .catch(error => {
                     console.log('error.response', error.response);

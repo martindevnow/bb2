@@ -32,24 +32,37 @@
     import eventBus from '../../../events/eventBus';
 
 export default {
-    props: [],
+    props: ['model_type', 'model_id'],
     data() {
         return {};
     },
     methods: {
         processChildForm() {
             console.log('body', this.$slots.body);
+            // TODO
+            // This should return a promise.... then i can handle closing the form here FFS....
+            // and Then, i can avoid all of this $emitting BS...
             this.$slots.body[0].componentInstance.processForm();
         },
         closeModal(params) {
-            this.$emit('close');
+
+            if (!params) {
+                return this.$emit('close');
+            } else {
+                console.log ('event received');
+                console.log('params', params);
+                console.log('this', this.model_id, this.model_type);
+            }
+            if (params.model_type == this.model_type && params.model_id == this.model_id) {
+                this.$emit('close');
+            }
         }
     },
     mounted() {
-        eventBus.$on('order-marked-as-paid', this.closeModal(order_id));
+        eventBus.$on('close-modal', this.closeModal);
     },
     beforeDestroy() {
-        eventBus.$off('order-marked-as-packed', this.closeModal(order_id));
+        eventBus.$off('close-modal', this.closeModal);
     }
 
 }
