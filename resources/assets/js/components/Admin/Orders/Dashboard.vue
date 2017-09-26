@@ -263,7 +263,7 @@ export default {
     },
     computed: {
     },
-    creted() {
+    created() {
         eventBus.$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
     },
     beforeDestroy() {

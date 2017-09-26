@@ -14358,7 +14358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     computed: {},
-    creted: function creted() {
+    created: function created() {
         __WEBPACK_IMPORTED_MODULE_1__events_eventBus__["a" /* default */].$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
     },
     beforeDestroy: function beforeDestroy() {
