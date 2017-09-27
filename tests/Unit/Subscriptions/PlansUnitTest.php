@@ -39,15 +39,14 @@ class PlansUnitTest extends TestCase
             'pet_id'  => $pet->id,
             'pet_weight' => 55,
             'package_id' => $package->id,
-            'package_stripe_code' => 'BASIC',
-            'package_base' => 10,
+            'internal_cost' => 10,
             'weeks_of_food_per_shipment' => 1,
             'active' => 1,
         ]);
 
         $this->assertEquals(11.5, $plan->shipping_cost);
         $this->assertEquals(55, $plan->pet_weight);
-        $this->assertEquals(10, $plan->package_base);
+        $this->assertEquals(10, $plan->internal_cost);
         $this->assertEquals(1, $plan->weeks_of_food_per_shipment);
     }
 
@@ -56,26 +55,26 @@ class PlansUnitTest extends TestCase
      */
 
     /** @test */
-    public function package_base_is_mutated_when_saving() {
-        $package_baseInDollars = 1;
-        $package_baseInCents = $package_baseInDollars * 100;
+    public function internal_cost_is_mutated_when_saving() {
+        $internal_costInDollars = 1;
+        $internal_costInCents = $internal_costInDollars * 100;
 
-        factory(Plan::class)->create(['package_base' => $package_baseInDollars]);
-        $this->assertDatabaseHas('plans', ['package_base' => $package_baseInCents]);
+        factory(Plan::class)->create(['internal_cost' => $internal_costInDollars]);
+        $this->assertDatabaseHas('plans', ['internal_cost' => $internal_costInCents]);
     }
 
     /** @test */
-    public function package_base_is_mutated_when_retrieving() {
-        $package_baseInDollars = 1;
-        $package_baseInCents = $package_baseInDollars * 100;
+    public function internal_cost_is_mutated_when_retrieving() {
+        $internal_costInDollars = 1;
+        $internal_costInCents = $internal_costInDollars * 100;
 
         $plan = factory(Plan::class)->make([
-            'package_stripe_code'=> 'THIS_PLAN',
-            'package_base' => $package_baseInCents
+            'hash'=> 'THIS_PLAN',
+            'internal_cost' => $internal_costInCents
         ]);
         DB::table('plans')->insert($plan->toArray());
-        $plan_clone = Plan::where('package_stripe_code', 'THIS_PLAN')->firstOrFail();
-        $this->assertEquals($package_baseInDollars, $plan_clone->package_base);
+        $plan_clone = Plan::where('hash', 'THIS_PLAN')->firstOrFail();
+        $this->assertEquals($internal_costInDollars, $plan_clone->internal_cost);
     }
 
     /**
@@ -244,7 +243,7 @@ class PlansUnitTest extends TestCase
     /** @test */
     public function it_fetches_a_weekly_plan_with_pending_orders() {
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
 
@@ -256,7 +255,7 @@ class PlansUnitTest extends TestCase
     public function it_ignores_a_weekly_plan_with_pending_orders_already_generated() {
         /** @var Plan $weekly_plan */
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
         $weekly_plan->generateOrder();  // No longer pending...
@@ -269,12 +268,12 @@ class PlansUnitTest extends TestCase
     /** @test */
     public function it_fetches_bi_weekly_plans_with_pending_orders() {
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
 
         $bi_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 2,
         ]);
 
@@ -285,22 +284,22 @@ class PlansUnitTest extends TestCase
     /** @test */
     public function it_ignores_plans_that_are_not_pending() {
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
 
         $bi_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 2,
         ]);
 
         $tri_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 3,
         ]);
 
         $monthly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 4,
         ]);
 
@@ -311,17 +310,17 @@ class PlansUnitTest extends TestCase
     /** @test */
     public function it_fetches_tri_weekly_orders_that_are_pending() {
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
 
         $bi_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 2,
         ]);
 
         $tri_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now()->subDays(8),
+            'latest_delivery_at'  => Carbon::now()->subDays(8),
             'weeks_of_food_per_shipment'   => 3,
         ]);
 
@@ -332,22 +331,22 @@ class PlansUnitTest extends TestCase
     /** @test */
     public function it_fetches_monthly_orders_that_are_pending() {
         $weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at' => Carbon::now(),
+            'latest_delivery_at' => Carbon::now(),
             'weeks_of_food_per_shipment'   => 1,
         ]);     // IS pending
 
         $bi_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now(),
+            'latest_delivery_at'  => Carbon::now(),
             'weeks_of_food_per_shipment'   => 2,
         ]);
 
         $tri_weekly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now()->subDays(8),
+            'latest_delivery_at'  => Carbon::now()->subDays(8),
             'weeks_of_food_per_shipment'   => 3,
         ]);
 
         $monthly_plan = factory(Plan::class)->create([
-            'last_delivery_at'  => Carbon::now()->subDays(16),
+            'latest_delivery_at'  => Carbon::now()->subDays(16),
             'weeks_of_food_per_shipment'   => 4,
         ]);
 

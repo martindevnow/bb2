@@ -50,13 +50,12 @@ class Plan extends Model
         'pet_activity_level',
 
         'package_id',
-        'package_stripe_code',
-        'package_base',     // cents
-
+        'internal_cost',     // cents
         'weekly_cost',
 
-        'last_delivery_at',
+        'latest_delivery_at',
         'weeks_of_food_per_shipment',
+        'ships_every_x_weeks',
         'active',
         'payment_method',
         'hash',
@@ -68,7 +67,8 @@ class Plan extends Model
      * @var array
      */
     protected $dates = [
-        'last_delivery_at',
+        'latest_delivery_at',
+        'first_delivery_at'
     ];
 
     public static function byHash($hash) {
@@ -109,23 +109,23 @@ class Plan extends Model
         //      as long as there are no orders with....
         //          deliver_by is within the next two weeks
         // 2 weeks at a time, will be all orders, as long as there isn't an order already made for that day
-        // 3 weeks at a time will be if the last_delivery_at is older than 1 week
-        // 4 weeks at a time will be if the last delivery_at is older than 2 weeks
+        // 3 weeks at a time will be if the latest_delivery_at is older than 1 week
+        // 4 weeks at a time will be if the latest_delivery_at delivery_at is older than 2 weeks
         return $query->where(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now())
+            $sQ->where('latest_delivery_at', '<=', Carbon::now())
                 ->where('weeks_of_food_per_shipment', '<=', 2)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
                 });
             ;
         })->orWhere(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
+            $sQ->where('latest_delivery_at', '<=', Carbon::now()->subDays(7))
                 ->where('weeks_of_food_per_shipment', '=', 3)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
                 });
         })->orWhere(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
+            $sQ->where('latest_delivery_at', '<=', Carbon::now()->subDays(14))
                 ->where('weeks_of_food_per_shipment', '=', 4)
                 ->whereDoesntHave('orders', function (Builder $ssQ) {
                     $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
@@ -142,15 +142,15 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getPackageBaseAttribute($value) {
+    public function getInternalCostAttribute($value) {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setPackageBaseAttribute($value) {
-        $this->attributes['package_base'] = round($value * 100);
+    public function setInternalCostAttribute($value) {
+        $this->attributes['internal_cost'] = round($value * 100);
     }
 
     /**
@@ -336,11 +336,11 @@ class Plan extends Model
      * @return mixed
      */
     public function getNextDeliveryDate() {
-        if (! $this->last_delivery_at)
+        if (! $this->latest_delivery_at)
             return $this->created_at
                 ->addDays(4);
 
-        return $this->last_delivery_at
+        return $this->latest_delivery_at
             ->addDays($this->weeks_of_food_per_shipment * 7);
 
         if (! $this->orders()->count())

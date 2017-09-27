@@ -281,21 +281,22 @@ $factory->define(\Martin\Subscriptions\Plan::class, function (Faker\Generator $f
         'stripe',
         'paypal',
     ];
+    $weeks_of_food_per_shipment = $faker->numberBetween(1,4);
 
     return [
-        'customer_id' => factory(\Martin\ACL\User::class)->create()->id,
-        'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
-        'shipping_cost' => $faker->numberBetween(6,15),
-        'pet_id' => factory(\Martin\Customers\Pet::class)->create()->id,
-        'pet_weight' => $faker->numberBetween(10,90),
-        'pet_activity_level' => $faker->randomElement([2, 2.5, 3]),
-        'package_id' => factory(\Martin\Subscriptions\Package::class)->create()->id,
-        'package_stripe_code' => $faker->word,
-        'package_base' => $faker->numberBetween(100,300),
-        'weekly_cost' => $faker->numberBetween(2000,4000),
-        'weeks_of_food_per_shipment' => $faker->numberBetween(1,4),
-        'active' => 1,
-        'payment_method'    => $faker->randomElement($types),
+        'customer_id'           => factory(\Martin\ACL\User::class)->create()->id,
+        'delivery_address_id'   => factory(\Martin\Core\Address::class)->create()->id,
+        'shipping_cost'         => $faker->numberBetween(6,15),
+        'pet_id'                => factory(\Martin\Customers\Pet::class)->create()->id,
+        'pet_weight'            => $faker->numberBetween(10,90),
+        'pet_activity_level'    => $faker->randomElement([2, 2.5, 3]),
+        'package_id'            => factory(\Martin\Subscriptions\Package::class)->create()->id,
+        'internal_cost'         => $faker->numberBetween(1000,3000),
+        'weekly_cost'           => $faker->numberBetween(2000,4000),
+        'weeks_of_food_per_shipment' => $weeks_of_food_per_shipment,
+        'ships_every_x_weeks'   => $weeks_of_food_per_shipment,
+        'active'                => 1,
+        'payment_method'        => $faker->randomElement($types),
     ];
 });
 
