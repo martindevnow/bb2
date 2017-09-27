@@ -127,7 +127,7 @@ class PlansController extends Controller
             'weekly_cost'           => 'required|numeric',
 
             'weeks_of_food_per_shipment'    => 'required|integer',
-            'ships_every_x-weeks'           => 'required|integer',
+            'ships_every_x_weeks'           => 'required|integer',
         ]);
 
         $planData = $request->only([
