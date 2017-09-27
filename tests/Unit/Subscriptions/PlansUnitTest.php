@@ -10,6 +10,7 @@ use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
+use Martin\Subscriptions\CostModel;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
@@ -368,11 +369,16 @@ class PlansUnitTest extends TestCase
 
     /** @test */
     public function it_can_calculate_the_subtotal() {
+        $costModel = factory(CostModel::class)->create([
+            'min_weight' => 50,
+            'max_weight' => 90,
+            'base_cost' => 50.99,
+        ]);
         $package = factory(Package::class)->create([
             'customization' => 0,
             'level' => 0,
         ]);
-        $this->assertEquals(6500,
+        $this->assertEquals(5099,
             round(Plan::getPrice(50, $package, 0) * 100, 0)
             );
     }

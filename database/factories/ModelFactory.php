@@ -72,6 +72,22 @@ $factory->define(\Martin\Delivery\Courier::class, function(Faker\Generator $fake
 });
 
 /**
+ * CostModel
+ */
+$factory->define(\Martin\Subscriptions\CostModel::class, function(Faker\Generator $faker) {
+    $min_weight = $faker->numberBetween(0,80);
+    return [
+        'size'  => $faker->word,
+        'max_weight' => $faker->numberBetween($min_weight, $min_weight + 50),
+        'min_weight'    => $min_weight,
+        'base_cost' => $faker->numberBetween(30, 45),
+        'incremental_cost'  => $faker->numberBetween(1, 2),
+        'upgrade_cost'  => $faker->numberBetween(3, 7),
+        'customization_cost'    => $faker->numberBetween(4, 8),
+    ];
+});
+
+/**
  * Delivery
  */
 $factory->define(\Martin\Delivery\Delivery::class, function(Faker\Generator $faker) {
