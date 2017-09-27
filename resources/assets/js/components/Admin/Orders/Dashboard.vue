@@ -103,48 +103,48 @@ export default {
                 return null;
             }
 
-            let vm = this;
-            swal({
-                title: 'Payment Record',
-                showCancelButton: true,
-                confirmButtonText: 'Confirm',
-                html:
-                '<admin-orders-payment-logger :order_id="' + (order.id) + '"></admin-orders-payment-logger>',
-                preConfirm: function () {
-                    return new Promise(function (resolve, reject) {
-
-                        let format = $('#swal-method').val();
-                        let amount_paid = $('#swal-amount').val();
-                        let received_at = $('#swal-date').val();
-
-                        axios.post('/admin/api/orders/'+ order.id +'/paid', {format, amount_paid, received_at})
-                            .then(response => {
-                                order.paid = 1;
-                                return resolve(response);
-                            })
-                            .catch(error => {
-                                console.log(error.response);
-                                let errorMessage = '';
-                                for (let propertyName in error.response.data.errors) {
-                                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
-                                }
-                                return reject(errorMessage);
-                            });
-                    })
-                },
-                onOpen: function () {
-                    $('#swal-method').focus()
-                }
-            }).then(function (result) {
-                console.log(result);
-                swal({
-                    type: 'success',
-                    title: 'Paid',
-                    text: 'This payment has been recorded.',
-                });
-            }).catch(error => {
-                // Do nothing.. modal was just closed...
-            })
+//            let vm = this;
+//            swal({
+//                title: 'Payment Record',
+//                showCancelButton: true,
+//                confirmButtonText: 'Confirm',
+//                html:
+//                'ger :order_id="' + (order.id) + '"></admin-orders-payment-logger>',
+//                preConfirm: function () {
+//                    return new Promise(function (resolve, reject) {
+//
+//                        let format = $('#swal-method').val();
+//                        let amount_paid = $('#swal-amount').val();
+//                        let received_at = $('#swal-date').val();
+//
+//                        axios.post('/admin/api/orders/'+ order.id +'/paid', {format, amount_paid, received_at})
+//                            .then(response => {
+//                                order.paid = 1;
+//                                return resolve(response);
+//                            })
+//                            .catch(error => {
+//                                console.log(error.response);
+//                                let errorMessage = '';
+//                                for (let propertyName in error.response.data.errors) {
+//                                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
+//                                }
+//                                return reject(errorMessage);
+//                            });
+//                    })
+//                },
+//                onOpen: function () {
+//                    $('#swal-method').focus()
+//                }
+//            }).then(function (result) {
+//                console.log(result);
+//                swal({
+//                    type: 'success',
+//                    title: 'Paid',
+//                    text: 'This payment has been recorded.',
+//                });
+//            }).catch(error => {
+//                // Do nothing.. modal was just closed...
+//            })
         },
         markAsPacked(order) {
             if (order.packed) {
@@ -276,10 +276,10 @@ export default {
     computed: {
     },
     created() {
-        eventBus.$on('order-marked-as-paid', this.setOrderAsPaid(order_id));
+        eventBus.$on('order-marked-as-paid', this.setOrderAsPaid);
     },
     beforeDestroy() {
-        eventBus.$off('order-marked-as-paid', this.setOrderAsPaid(order_id));
+        eventBus.$off('order-marked-as-paid', this.setOrderAsPaid);
     }
 
 }
