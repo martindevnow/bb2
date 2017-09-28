@@ -5,9 +5,15 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
+        customers: [],
         orders: [],
+        packages: [],
+        pets: [],
+        plans: [],
         selected: {
             order: null,
+            plan: null,
+            package: null,
         },
         show: {
             paymentModal: false,
@@ -40,13 +46,37 @@ export const store = new Vuex.Store({
         },
         loadOrders(context) {
             axios.get('/admin/api/orders')
-                .then(response => context.commit('setOrders', response.data))
+                .then(response => context.commit('populateOrdersCollection', response.data))
+                .catch(error => console.log(error));
+        },
+        loadPackages(context) {
+            axios.get('/admin/api/packages')
+                .then(response => context.commit('populatePackagesCollection', response.data))
+                .catch(error => console.log(error));
+        },
+        loadPlans(context) {
+            axios.get('/admin/api/plans')
+                .then(response => context.commit('populatePlansCollection', response.data))
+                .catch(error => console.log(error));
+        },
+        loadPets(context) {
+            axios.get('/admin/api/pets')
+                .then(response => context.commit('populatePetsCollection', response.data))
                 .catch(error => console.log(error));
         }
     },
     mutations: {
-        setOrders(state, data) {
+        populateOrdersCollection(state, data) {
             state.orders = data;
+        },
+        populatePackagesCollection(state, data) {
+            state.packages = data;
+        },
+        populatePlansCollection(state, data) {
+            state.plans = data;
+        },
+        populatePetsCollection(state, data) {
+            state.pets = data;
         },
         setSelectedOrder(state, order) {
             state.selected.order = order;
@@ -67,8 +97,6 @@ export const store = new Vuex.Store({
             state.show.packedModal = false;
         },
         updateSelectedOrder(state, payload) {
-            console.log('payload', payload);
-            // TODO: apply the changed fields (in the payload) on the state object;
             state.selected.order = { ...state.selected.order, ...payload };
             state.orders = state.orders.filter(order => order.id !== state.selected.order.id);
             state.orders.unshift(state.selected.order);
