@@ -36,11 +36,28 @@
                 </select>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-primary"
+                        @click="save()"
+                >
+                    Save
+                </button>
+                <button class="btn btn-default"
+                        @click="$emit('close')"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import eventBus from '../../../events/eventBus';
+import { mapState } from 'vuex';
+import eventBus from '../../../events/eventBus';
+
 export default {
     props: ['order_id'],
     data() {
@@ -59,17 +76,20 @@ export default {
         };
     },
     methods: {
-        processForm() {
+        save() {
             let vm = this;
 
             return axios.post('/admin/api/orders/'+ vm.order_id +'/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,
+            }).then(response => {
+                vm.$store.commit('setSelectedOrder', { paid: true });
             });
 
         },
     },
+    computed: mapState(['show', 'selected']),
     mounted() {
         this.amount_paid = 0;
         this.format = 'cash';

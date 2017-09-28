@@ -13,8 +13,15 @@
         <div class="row" v-for="order in orders">
             <div class="col-xs-4">{{ order.customer }} ({{ order.pet }})</div>
             <div class="col-xs-4">{{ order.weeks_at_a_time }}</div>
-            <div class="col-xs-4">{{ order.plan}}</div>
+            <div class="col-xs-3">{{ order.plan}}</div>
+            <div class="col-xs-1">
+                <button @click="openPaymentModal(order)">Paid</button>
+            </div>
         </div>
+
+        <admin-payment-modal v-if="show.paymentModal"
+                             @close="closePaymentModal"
+        ></admin-payment-modal>
     </div>
 </template>
 
@@ -29,8 +36,14 @@ export default {
     mounted() {
     },
     methods: {
+        openPaymentModal(order) {
+            this.$store.dispatch('openPaymentModal', { order });
+        },
+        closePaymentModal() {
+            this.$store.dispatch('closePaymentModal');
+        }
     },
-    computed: mapState(['orders']),
+    computed: mapState(['orders', 'show']),
 
 
 }

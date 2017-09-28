@@ -6,24 +6,26 @@
 
                     <div class="modal-header">
                         <slot name="header">
-                            default header
+                            Log a Payment
                         </slot>
                     </div>
 
                     <div class="modal-body">
                         <slot name="body">
-                            default body
+                            <admin-payment-logger></admin-payment-logger>
                         </slot>
                     </div>
 
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            default footer
-                            <button class="modal-default-button" @click="$emit('close')">
-                                OK
-                            </button>
-                        </slot>
-                    </div>
+                    <!--<div class="modal-footer">-->
+                        <!--<slot name="footer">-->
+                            <!--<button class="btn btn-primary">-->
+                                <!--Save-->
+                            <!--</button>-->
+                            <!--<button class="btn btn-default" @click="$emit('close')">-->
+                                <!--Cancel-->
+                            <!--</button>-->
+                        <!--</slot>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -31,11 +33,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     props: [],
     data() {
         return {};
-    }
+    },
+    computed: mapState(['selected', 'show'])
 }
 </script>
 
