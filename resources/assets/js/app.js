@@ -34,16 +34,16 @@ Vue.component('quotes-checkout', require('./components/Quotes/Checkout.vue'));
 Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
 
 
-Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue'));
 Vue.component('plan-builder', require('./components/PlanBuilder.vue'));
 Vue.component('admin-meats-navigator', require('./components/Admin/Meats/Navigator.vue'));
-
-
 Vue.component('admin-meals-select-box', require('./components/Admin/Meals/SelectBox.vue'));
-Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
 
-Vue.component('admin-payment-modal', require('./components/Admin/Orders/PaymentModal.vue'));
+
+Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
+Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue'));
+
 Vue.component('admin-payment-logger', require('./components/Admin/Orders/PaymentLogger.vue'));
+Vue.component('admin-packed-logger', require('./components/Admin/Orders/PackedLogger.vue'));
 
 
 Vue.component('example', require('./components/Example.vue'));

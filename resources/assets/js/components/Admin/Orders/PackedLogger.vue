@@ -1,13 +1,16 @@
 <template>
     <div>
+        <p>Note: if you update the package or # of weeks packed here, it will update their Order for this shipment.</p>
+        <p>It will not change their plan.</p>
+
         <div class="row">
             <div class="col-sm-4">
-                <span class="label">Amount Paid</span>
+                <span class="label">Weeks Packed</span>
             </div>
             <div class="col-sm-8">
                 <label class="input">
                     <input type="text" class="input-sm"
-                           v-model="amount_paid"
+                           v-model="weeks_packed"
                     >
                 </label>
             </div>
@@ -45,7 +48,7 @@
                     Save
                 </button>
                 <button class="btn btn-default"
-                        @click="closePaymentModal()"
+                        @click="closePackedModal()"
                 >
                     Cancel
                 </button>
@@ -75,7 +78,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'closePaymentModal',
+            'closePackedModal',
         ]),
         save() {
             let vm = this;

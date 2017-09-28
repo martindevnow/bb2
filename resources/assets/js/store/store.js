@@ -11,6 +11,11 @@ export const store = new Vuex.Store({
         },
         show: {
             paymentModal: false,
+            packedModal: false,
+            pickedModal: false,
+            shippedModal: false,
+            deliveredModal: false,
+            noteModal: false,
         }
     },
     getters: {
@@ -22,8 +27,16 @@ export const store = new Vuex.Store({
             context.commit('showPaymentModal');
         },
         closePaymentModal(context) {
+            context.commit('hidePaymentModal');
             context.commit('deselectOrder');
-            context.commit('hidePaymentModal')
+        },
+        openPackedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showPackedModal');
+        },
+        closePackedModal(context) {
+            context.commit('hidePackedModal');
+            context.commit('deselectOrder');
         },
         loadOrders(context) {
             axios.get('/admin/api/orders')
@@ -47,11 +60,17 @@ export const store = new Vuex.Store({
         hidePaymentModal(state) {
             state.show.paymentModal = false;
         },
+        showPackedModal(state) {
+            state.show.packedModal = true;
+        },
+        hidePackedModal(state) {
+            state.show.packedModal = false;
+        },
         updateSelectedOrder(state, payload) {
             console.log('payload', payload);
             // TODO: apply the changed fields (in the payload) on the state object;
             state.selected.order = { ...state.selected.order, ...payload };
-            state.orders.splice(state.orders.indexOf(state.selected.order), 1);
+            state.orders = state.orders.filter(order => order.id !== state.selected.order.id);
             state.orders.unshift(state.selected.order);
         }
     }

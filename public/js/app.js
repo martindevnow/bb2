@@ -13895,15 +13895,15 @@ Vue.component('quotes-checkout', __webpack_require__(81));
 
 Vue.component('cart-summary', __webpack_require__(76));
 
-Vue.component('admin-common-modal', __webpack_require__(68));
 Vue.component('plan-builder', __webpack_require__(79));
 Vue.component('admin-meats-navigator', __webpack_require__(70));
-
 Vue.component('admin-meals-select-box', __webpack_require__(69));
-Vue.component('admin-orders-dashboard', __webpack_require__(71));
 
-Vue.component('admin-payment-modal', __webpack_require__(73));
+Vue.component('admin-orders-dashboard', __webpack_require__(71));
+Vue.component('admin-common-modal', __webpack_require__(68));
+
 Vue.component('admin-payment-logger', __webpack_require__(72));
+Vue.component('admin-packed-logger', __webpack_require__(119));
 
 Vue.component('example', __webpack_require__(78));
 
@@ -14760,13 +14760,7 @@ module.exports = function spread(callback) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_eventBus__ = __webpack_require__(5);
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
 //
 //
 //
@@ -14794,34 +14788,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['model_type', 'model_id'],
+    props: [],
     data() {
         return {};
     },
-    methods: {
-        processChildForm() {
-            let vm = this;
-            console.log('body', this.$slots.body);
-            // TODO
-            // This should return a promise.... then i can handle closing the form here FFS....
-            // and Then, i can avoid all of this $emitting BS...
-            this.$slots.body[0].componentInstance.processForm().then(response => {
-                console.log('success....');
-                vm.closeModal();
-            }).catch(error => {
-                console.log('error.response', error.response);
-                let errorMessage = '';
-                for (let propertyName in error.response.data.errors) {
-                    errorMessage = errorMessage + ' ' + error.response.data.errors[propertyName];
-                }
-                console.log(errorMessage);
-            });
-        },
-        closeModal() {
-            return this.$emit('close');
-        }
-    }
-
+    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['selected', 'show'])
 });
 
 /***/ }),
@@ -15004,6 +14975,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15015,7 +15007,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.loadOrders();
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['openPaymentModal', 'closePaymentModal', 'loadOrders'])),
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['openPaymentModal', 'closePaymentModal', 'openPackedModal', 'closePackedModal', 'loadOrders'])),
     computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])(['orders', 'show']))
 
 });
@@ -15124,47 +15116,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 });
 
 /***/ }),
-/* 41 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: [],
-    data() {
-        return {};
-    },
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['selected', 'show'])
-});
-
-/***/ }),
+/* 41 */,
 /* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16606,7 +16558,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             order: null
         },
         show: {
-            paymentModal: false
+            paymentModal: false,
+            packedModal: false,
+            pickedModal: false,
+            shippedModal: false,
+            deliveredModal: false,
+            noteModal: false
         }
     },
     getters: {},
@@ -16616,8 +16573,16 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             context.commit('showPaymentModal');
         },
         closePaymentModal(context) {
-            context.commit('deselectOrder');
             context.commit('hidePaymentModal');
+            context.commit('deselectOrder');
+        },
+        openPackedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showPackedModal');
+        },
+        closePackedModal(context) {
+            context.commit('hidePackedModal');
+            context.commit('deselectOrder');
         },
         loadOrders(context) {
             axios.get('/admin/api/orders').then(response => context.commit('setOrders', response.data)).catch(error => console.log(error));
@@ -16639,11 +16604,17 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         hidePaymentModal(state) {
             state.show.paymentModal = false;
         },
+        showPackedModal(state) {
+            state.show.packedModal = true;
+        },
+        hidePackedModal(state) {
+            state.show.packedModal = false;
+        },
         updateSelectedOrder(state, payload) {
             console.log('payload', payload);
             // TODO: apply the changed fields (in the payload) on the state object;
             state.selected.order = _extends({}, state.selected.order, payload);
-            state.orders.splice(state.orders.indexOf(state.selected.order), 1);
+            state.orders = state.orders.filter(order => order.id !== state.selected.order.id);
             state.orders.unshift(state.selected.order);
         }
     }
@@ -16719,7 +16690,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 63 */
@@ -16729,13 +16700,7 @@ exports = module.exports = __webpack_require__(1)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
+/* 64 */,
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16743,13 +16708,7 @@ exports = module.exports = __webpack_require__(1)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
+/* 66 */,
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33961,7 +33920,7 @@ module.exports = Component.exports
 
 
 /* styles */
-__webpack_require__(111)
+__webpack_require__(116)
 
 var Component = __webpack_require__(0)(
   /* script */
@@ -33969,7 +33928,7 @@ var Component = __webpack_require__(0)(
   /* template */
   __webpack_require__(97),
   /* scopeId */
-  null,
+  "data-v-d4893078",
   /* cssModules */
   null
 )
@@ -34032,44 +33991,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(109)
-
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(41),
-  /* template */
-  __webpack_require__(95),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PaymentModal.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] PaymentModal.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9a8c7072", Component.options)
-  } else {
-    hotAPI.reload("data-v-9a8c7072", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 73 */,
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35293,7 +35215,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-default",
     on: {
       "click": function($event) {
-        _vm.$emit('close')
+        _vm.closePaymentModal()
       }
     }
   }, [_vm._v("\n                Cancel\n            ")])])])])
@@ -36115,58 +36037,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade in",
-    staticStyle: {
-      "padding-right": "15px",
-      "display": "block"
-    },
+  return _c('transition', {
     attrs: {
-      "role": "dialog"
+      "name": "modal"
     }
   }, [_c('div', {
-    staticClass: "modal-dialog"
+    staticClass: "modal-mask"
   }, [_c('div', {
-    staticClass: "modal-content"
+    staticClass: "modal-wrapper"
+  }, [_c('div', {
+    staticClass: "modal-container"
   }, [_c('div', {
     staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.closeModal()
-      }
-    }
-  }, [_vm._v("\n                    ×\n                ")]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._t("title")], 2)]), _vm._v(" "), _c('div', {
+  }, [_vm._t("header", [_vm._v("\n                        Packed Order\n                    ")])], 2), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_vm._t("body")], 2), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.closeModal()
-      }
-    }
-  }, [_vm._v("\n                    Cancel\n                ")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.processChildForm()
-      }
-    }
-  }, [_vm._t("submit", [_vm._v("Submit")])], 2)])])])])
+  }, [_vm._t("body", [_vm._v("\n                        Load your component in here...\n                    ")])], 2)])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -36208,41 +36093,7 @@ if (false) {
 }
 
 /***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('transition', {
-    attrs: {
-      "name": "modal"
-    }
-  }, [_c('div', {
-    staticClass: "modal-mask"
-  }, [_c('div', {
-    staticClass: "modal-wrapper"
-  }, [_c('div', {
-    staticClass: "modal-container"
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_vm._t("header", [_vm._v("\n                        Log a Payment\n                    ")])], 2), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_vm._t("body", [_c('admin-payment-logger', {
-    on: {
-      "close": function($event) {
-        _vm.$emit('close')
-      }
-    }
-  })])], 2)])])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9a8c7072", module.exports)
-  }
-}
-
-/***/ }),
+/* 95 */,
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36319,11 +36170,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "col-xs-4"
     }, [_vm._v(_vm._s(order.customer.name) + " (" + _vm._s(order.plan.pet.name) + ")")]), _vm._v(" "), _c('div', {
-      staticClass: "col-xs-4"
+      staticClass: "col-xs-2"
     }, [_vm._v(_vm._s(order.plan.weeks_at_a_time))]), _vm._v(" "), _c('div', {
       staticClass: "col-xs-3"
     }, [_vm._v(_vm._s(order.plan.package.label))]), _vm._v(" "), _c('div', {
-      staticClass: "col-xs-1"
+      staticClass: "col-xs-3"
     }, [_c('button', {
       staticClass: "btn",
       class: {
@@ -36335,14 +36186,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.openPaymentModal(order)
         }
       }
-    }, [_vm._v("\n                Paid\n            ")])])])
-  }), _vm._v(" "), (_vm.show.paymentModal) ? _c('admin-payment-modal', {
+    }, [_vm._v("\n                Paid\n            ")]), _vm._v(" "), _c('button', {
+      staticClass: "btn",
+      class: {
+        'btn-danger': !order.packed,
+          'btn-success': order.packed
+      },
+      on: {
+        "click": function($event) {
+          _vm.openPackedModal(order)
+        }
+      }
+    }, [_vm._v("\n                Packed\n            ")])])])
+  }), _vm._v(" "), (_vm.show.paymentModal) ? _c('admin-common-modal', {
     on: {
       "close": function($event) {
         _vm.closePaymentModal()
       }
     }
-  }) : _vm._e()], 2)
+  }, [_c('admin-payment-logger', {
+    on: {
+      "close": function($event) {
+        _vm.$emit('close')
+      }
+    },
+    slot: "body"
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.show.packedModal) ? _c('admin-common-modal', {
+    on: {
+      "close": function($event) {
+        _vm.closePackedModal()
+      }
+    }
+  }, [_c('admin-packed-logger', {
+    on: {
+      "close": function($event) {
+        _vm.$emit('close')
+      }
+    },
+    slot: "body"
+  })], 1) : _vm._e()], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
@@ -36653,32 +36535,7 @@ if(false) {
 }
 
 /***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(64);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("18bcfca8", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-9a8c7072\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentModal.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-9a8c7072\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentModal.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 109 */,
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36705,32 +36562,7 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(66);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("6c5b1475", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-d4893078\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dashboard.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-d4893078\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dashboard.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 111 */,
 /* 112 */
 /***/ (function(module, exports) {
 
@@ -36797,6 +36629,341 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(17);
 
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n.row[data-v-d4893078] {\n    border-bottom: 1px solid black;\n}\n", ""]);
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(115);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("d1dab2ac", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-d4893078\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dashboard.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-d4893078\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dashboard.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 117 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__events_eventBus__ = __webpack_require__(5);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data() {
+        return {
+            amount_paid: 0,
+            received_at: null,
+            format: '',
+            paymentFormats: ['cash', 'interac', 'e-transfer', 'stripe', 'paypal']
+        };
+    },
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['closePackedModal']), {
+        save() {
+            let vm = this;
+
+            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/paid', {
+                format: this.format,
+                amount_paid: this.amount_paid,
+                received_at: this.received_at
+            }).then(response => {
+                vm.$store.commit('updateSelectedOrder', { paid: true });
+                vm.$store.dispatch('closePaymentModal');
+            }).catch(error => {
+                console.log('error', error);
+            });
+        }
+    }),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['show', 'selected'])),
+    mounted() {
+        this.amount_paid = 0;
+        this.format = 'cash';
+        this.received_at = '2017-09-01';
+    }
+});
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\nspan.label {\n    color: black;\n}\n", ""]);
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(121)
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(117),
+  /* template */
+  __webpack_require__(120),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PackedLogger.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PackedLogger.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-efb891b0", Component.options)
+  } else {
+    hotAPI.reload("data-v-efb891b0", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('p', [_vm._v("Note: if you update the package or # of weeks packed here, it will update their Order for this shipment.")]), _vm._v(" "), _c('p', [_vm._v("It will not change their plan.")]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('label', {
+    staticClass: "input"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.weeks_packed),
+      expression: "weeks_packed"
+    }],
+    staticClass: "input-sm",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.weeks_packed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.weeks_packed = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.received_at),
+      expression: "received_at"
+    }],
+    staticClass: "input-sm",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.received_at)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.received_at = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.format),
+      expression: "format"
+    }],
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.format = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.paymentFormats), function(format) {
+    return _c('option', [_vm._v(_vm._s(format))])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.save()
+      }
+    }
+  }, [_vm._v("\n                Save\n            ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": function($event) {
+        _vm.closePackedModal()
+      }
+    }
+  }, [_vm._v("\n                Cancel\n            ")])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Weeks Packed")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Date Received")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Format")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-efb891b0", module.exports)
+  }
+}
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(118);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("176a53f5", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-efb891b0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PackedLogger.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-efb891b0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PackedLogger.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

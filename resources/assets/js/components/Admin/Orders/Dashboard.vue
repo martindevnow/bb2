@@ -12,9 +12,9 @@
 
         <div class="row" v-for="order in orders">
             <div class="col-xs-4">{{ order.customer.name }} ({{ order.plan.pet.name }})</div>
-            <div class="col-xs-4">{{ order.plan.weeks_at_a_time }}</div>
+            <div class="col-xs-2">{{ order.plan.weeks_at_a_time }}</div>
             <div class="col-xs-3">{{ order.plan.package.label }}</div>
-            <div class="col-xs-1">
+            <div class="col-xs-3">
                 <button @click="openPaymentModal(order)"
                         class="btn"
                         :class="{
@@ -24,12 +24,33 @@
                 >
                     Paid
                 </button>
+                <button @click="openPackedModal(order)"
+                        class="btn"
+                        :class="{
+                            'btn-danger': ! order.packed,
+                            'btn-success': order.packed
+                        }"
+                >
+                    Packed
+                </button>
             </div>
         </div>
 
-        <admin-payment-modal v-if="show.paymentModal"
+        <admin-common-modal v-if="show.paymentModal"
                              @close="closePaymentModal()"
-        ></admin-payment-modal>
+        >
+            <admin-payment-logger @close="$emit('close')"
+                                  slot="body"
+            ></admin-payment-logger>
+        </admin-common-modal>
+
+        <admin-common-modal v-if="show.packedModal"
+                            @close="closePackedModal()"
+        >
+            <admin-packed-logger @close="$emit('close')"
+                                 slot="body"
+            ></admin-packed-logger>
+        </admin-common-modal>
     </div>
 </template>
 
@@ -48,6 +69,8 @@ export default {
         ...mapActions([
             'openPaymentModal',
             'closePaymentModal',
+            'openPackedModal',
+            'closePackedModal',
             'loadOrders'
         ]),
     },
@@ -59,6 +82,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.row {
+    border-bottom: 1px solid black;
+}
 </style>
