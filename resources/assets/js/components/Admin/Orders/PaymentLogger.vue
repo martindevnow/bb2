@@ -55,17 +55,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import eventBus from '../../../events/eventBus';
 
 export default {
-    props: ['order_id'],
     data() {
         return {
             amount_paid: 0,
             received_at: null,
-            format: null,
-            order: null,
+            format: '',
             paymentFormats: [
                 'cash',
                 'interac',
@@ -76,10 +74,14 @@ export default {
         };
     },
     methods: {
+        ...mapActions([
+            'closePaymentModal',
+        ]),
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.selected.order.id +'/paid', {
+
+            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,
@@ -89,10 +91,14 @@ export default {
             }).catch(error => {
                 console.log('error', error);
             });
-
         },
     },
-    computed: mapState(['show', 'selected']),
+    computed: {
+        ...mapState([
+            'show',
+            'selected'
+        ]),
+    },
     mounted() {
         this.amount_paid = 0;
         this.format = 'cash';

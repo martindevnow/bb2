@@ -12,20 +12,9 @@
 
                     <div class="modal-body">
                         <slot name="body">
-                            <admin-payment-logger></admin-payment-logger>
+                            <admin-payment-logger @close="$emit('close')"></admin-payment-logger>
                         </slot>
                     </div>
-
-                    <!--<div class="modal-footer">-->
-                        <!--<slot name="footer">-->
-                            <!--<button class="btn btn-primary">-->
-                                <!--Save-->
-                            <!--</button>-->
-                            <!--<button class="btn btn-default" @click="$emit('close')">-->
-                                <!--Cancel-->
-                            <!--</button>-->
-                        <!--</slot>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>

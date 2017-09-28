@@ -5,10 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        orders: [
-            {id: 1, customer: 'Ben', pet: 'Halley', plan: 'Basic', paid: 1, weeks_at_a_time: 2},
-            {id: 2, customer: 'Vivian', pet: 'Nova', plan: 'Premium', paid: 0, weeks_at_a_time: 2},
-        ],
+        orders: [],
         selected: {
             order: null,
         },
@@ -20,8 +17,8 @@ export const store = new Vuex.Store({
 
     },
     actions: {
-        openPaymentModal(context, payload) {
-            context.commit('setSelectedOrder', payload);
+        openPaymentModal(context, order) {
+            context.commit('setSelectedOrder', order);
             context.commit('showPaymentModal');
         },
         closePaymentModal(context) {
@@ -38,8 +35,8 @@ export const store = new Vuex.Store({
         setOrders(state, data) {
             state.orders = data;
         },
-        setSelectedOrder(state, payload) {
-            state.selected.order = payload.order;
+        setSelectedOrder(state, order) {
+            state.selected.order = order;
         },
         deselectOrder(state) {
             state.selected.order = null;
@@ -51,10 +48,11 @@ export const store = new Vuex.Store({
             state.show.paymentModal = false;
         },
         updateSelectedOrder(state, payload) {
+            console.log('payload', payload);
             // TODO: apply the changed fields (in the payload) on the state object;
-            // state.selected.order.paid = { ...state.selected.order, payload };
+            state.selected.order = { ...state.selected.order, ...payload };
             state.orders.splice(state.orders.indexOf(state.selected.order), 1);
-            state.orders.push(state.selected.order);
+            state.orders.unshift(state.selected.order);
         }
     }
 });

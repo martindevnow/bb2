@@ -28,7 +28,7 @@
         </div>
 
         <admin-payment-modal v-if="show.paymentModal"
-                             @close="closePaymentModal"
+                             @close="closePaymentModal()"
         ></admin-payment-modal>
     </div>
 </template>
@@ -42,17 +42,18 @@ export default {
         return {};
     },
     mounted() {
-        this.$store.dispatch('loadOrders');
+        this.loadOrders();
     },
     methods: {
-        openPaymentModal(order) {
-            this.$store.dispatch('openPaymentModal', { order });
-        },
-        closePaymentModal() {
-            this.$store.dispatch('closePaymentModal');
-        }
+        ...mapActions([
+            'openPaymentModal',
+            'closePaymentModal',
+            'loadOrders'
+        ]),
     },
-    computed: mapState(['orders', 'show']),
+    computed: {
+        ...mapState(['orders', 'show'])
+    },
 
 
 }
