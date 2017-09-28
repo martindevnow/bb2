@@ -46,7 +46,9 @@ Vue.component('admin-orders-payment-logger', require('./components/Admin/Orders/
 
 
 Vue.component('example', require('./components/Example.vue'));
+import { store } from './store/store';
 
 const app = new Vue({
-    el: '#content'
+    el: '#content',
+    store: store,
 });
