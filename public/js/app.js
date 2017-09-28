@@ -12925,7 +12925,7 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* unused harmony export Store */
 /* unused harmony export install */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mapState; });
 /* unused harmony export mapMutations */
 /* unused harmony export mapGetters */
 /* unused harmony export mapActions */
@@ -13825,7 +13825,7 @@ var index_esm = {
 };
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = (index_esm);
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
 
@@ -13863,7 +13863,6 @@ module.exports = g;
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__store_store__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -13911,7 +13910,7 @@ Vue.component('example', __webpack_require__(78));
 
 const app = new Vue({
     el: '#content',
-    store: __WEBPACK_IMPORTED_MODULE_0__store_store__["store"]
+    store: __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */]
 });
 
 /***/ }),
@@ -14995,6 +14994,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15003,7 +15010,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data() {
         return {};
     },
-    mounted() {},
+    mounted() {
+        this.$store.dispatch('loadOrders');
+    },
     methods: {
         openPaymentModal(order) {
             this.$store.dispatch('openPaymentModal', { order });
@@ -15012,7 +15021,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.dispatch('closePaymentModal');
         }
     },
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* mapState */])(['orders', 'show'])
+    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])(['orders', 'show'])
 
 });
 
@@ -15099,16 +15108,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + vm.order_id + '/paid', {
+            return axios.post('/admin/api/orders/' + this.selected.order.id + '/paid', {
                 format: this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at
             }).then(response => {
-                vm.$store.commit('setSelectedOrder', { paid: true });
+                vm.$store.commit('updateSelectedOrder', { paid: true });
+                vm.$store.dispatch('closePaymentModal');
+            }).catch(error => {
+                console.log('error', error);
             });
         }
     },
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapState */])(['show', 'selected']),
+    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['show', 'selected']),
     mounted() {
         this.amount_paid = 0;
         this.format = 'cash';
@@ -15165,7 +15177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data() {
         return {};
     },
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapState */])(['selected', 'show'])
+    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['selected', 'show'])
 });
 
 /***/ }),
@@ -16590,9 +16602,67 @@ if (token) {
 
 /***/ }),
 /* 52 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module parse failed: /Users/bmartin/Web/bb2/node_modules/babel-loader/lib/index.js?cacheDirectory!/Users/bmartin/Web/bb2/resources/assets/js/store/store.js Unexpected token (41:37)\nYou may need an appropriate loader to handle this file type.\n|         },\n|         updateSelectedOrder(state, payload) {\n|             state.selected.order = { ...state.selected.order, payload };\n|             state.orders.splice(state.orders.indexOf(state.selected.order), 1);\n|             state.orders.push(state.selected.order);");
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(15);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+    state: {
+        orders: [{ id: 1, customer: 'Ben', pet: 'Halley', plan: 'Basic', paid: 1, weeks_at_a_time: 2 }, { id: 2, customer: 'Vivian', pet: 'Nova', plan: 'Premium', paid: 0, weeks_at_a_time: 2 }],
+        selected: {
+            order: null
+        },
+        show: {
+            paymentModal: false
+        }
+    },
+    getters: {},
+    actions: {
+        openPaymentModal(context, payload) {
+            context.commit('setSelectedOrder', payload);
+            context.commit('showPaymentModal');
+        },
+        closePaymentModal(context) {
+            context.commit('deselectOrder');
+            context.commit('hidePaymentModal');
+        },
+        loadOrders(context) {
+            axios.get('/admin/api/orders').then(response => context.commit('setOrders', response.data)).catch(error => console.log(error));
+        }
+    },
+    mutations: {
+        setOrders(state, data) {
+            state.orders = data;
+        },
+        setSelectedOrder(state, payload) {
+            state.selected.order = payload.order;
+        },
+        deselectOrder(state) {
+            state.selected.order = null;
+        },
+        showPaymentModal(state) {
+            state.show.paymentModal = true;
+        },
+        hidePaymentModal(state) {
+            state.show.paymentModal = false;
+        },
+        updateSelectedOrder(state, payload) {
+            // TODO: apply the changed fields (in the payload) on the state object;
+            // state.selected.order.paid = { ...state.selected.order, payload };
+            state.orders.splice(state.orders.indexOf(state.selected.order), 1);
+            state.orders.push(state.selected.order);
+        }
+    }
+});
+/* harmony export (immutable) */ __webpack_exports__["a"] = store;
+
 
 /***/ }),
 /* 53 */
@@ -16690,7 +16760,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 67 */
@@ -36255,19 +36325,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "row"
     }, [_c('div', {
       staticClass: "col-xs-4"
-    }, [_vm._v(_vm._s(order.customer) + " (" + _vm._s(order.pet) + ")")]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(order.customer.name) + " (" + _vm._s(order.plan.pet.name) + ")")]), _vm._v(" "), _c('div', {
       staticClass: "col-xs-4"
-    }, [_vm._v(_vm._s(order.weeks_at_a_time))]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(order.plan.weeks_at_a_time))]), _vm._v(" "), _c('div', {
       staticClass: "col-xs-3"
-    }, [_vm._v(_vm._s(order.plan))]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(order.plan.package.label))]), _vm._v(" "), _c('div', {
       staticClass: "col-xs-1"
     }, [_c('button', {
+      staticClass: "btn",
+      class: {
+        'btn-danger': !order.paid,
+          'btn-success': order.paid
+      },
       on: {
         "click": function($event) {
           _vm.openPaymentModal(order)
         }
       }
-    }, [_vm._v("Paid")])])])
+    }, [_vm._v("\n                Paid\n            ")])])])
   }), _vm._v(" "), (_vm.show.paymentModal) ? _c('admin-payment-modal', {
     on: {
       "close": _vm.closePaymentModal

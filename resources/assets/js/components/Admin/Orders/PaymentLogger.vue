@@ -79,12 +79,15 @@ export default {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ vm.order_id +'/paid', {
+            return axios.post('/admin/api/orders/'+ this.selected.order.id +'/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,
             }).then(response => {
-                vm.$store.commit('setSelectedOrder', { paid: true });
+                vm.$store.commit('updateSelectedOrder', { paid: true });
+                vm.$store.dispatch('closePaymentModal');
+            }).catch(error => {
+                console.log('error', error);
             });
 
         },

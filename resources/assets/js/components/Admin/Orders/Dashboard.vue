@@ -11,11 +11,19 @@
 
 
         <div class="row" v-for="order in orders">
-            <div class="col-xs-4">{{ order.customer }} ({{ order.pet }})</div>
-            <div class="col-xs-4">{{ order.weeks_at_a_time }}</div>
-            <div class="col-xs-3">{{ order.plan}}</div>
+            <div class="col-xs-4">{{ order.customer.name }} ({{ order.plan.pet.name }})</div>
+            <div class="col-xs-4">{{ order.plan.weeks_at_a_time }}</div>
+            <div class="col-xs-3">{{ order.plan.package.label }}</div>
             <div class="col-xs-1">
-                <button @click="openPaymentModal(order)">Paid</button>
+                <button @click="openPaymentModal(order)"
+                        class="btn"
+                        :class="{
+                            'btn-danger': ! order.paid,
+                            'btn-success': order.paid
+                        }"
+                >
+                    Paid
+                </button>
             </div>
         </div>
 
@@ -28,12 +36,13 @@
 <script>
 import swal from 'sweetalert2';
 import eventBus from '../../../events/eventBus';
-import {mapGetters, mapState} from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 export default {
     data() {
         return {};
     },
     mounted() {
+        this.$store.dispatch('loadOrders');
     },
     methods: {
         openPaymentModal(order) {
