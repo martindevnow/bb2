@@ -19,23 +19,14 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <span class="label">Date Received</span>
+                <span class="label">Package</span>
             </div>
             <div class="col-sm-8">
-                <input type="text" class="input-sm"
-                       v-model="received_at"
+                <select v-model="packed_package_id"
                 >
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Format</span>
-            </div>
-            <div class="col-sm-8">
-                <select v-model="format">
-                    <option v-for="format in paymentFormats">{{ format }}</option>
+                    <option v-for="package in packages"
+                            :selected="order.plan.package_id == package.id"
+                    >{{ package.label }}</option>
                 </select>
             </div>
         </div>
@@ -64,16 +55,8 @@ import eventBus from '../../../events/eventBus';
 export default {
     data() {
         return {
-            amount_paid: 0,
-            received_at: null,
-            format: '',
-            paymentFormats: [
-                'cash',
-                'interac',
-                'e-transfer',
-                'stripe',
-                'paypal',
-            ],
+            weeks_packed: 0,
+            packed_package_id: null,
         };
     },
     methods: {
@@ -83,8 +66,7 @@ export default {
         save() {
             let vm = this;
 
-
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/paid', {
+            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/packed', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at,

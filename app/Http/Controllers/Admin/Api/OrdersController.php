@@ -48,10 +48,20 @@ class OrdersController extends Controller
 
     /**
      * @param Order $order
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function markAsPacked(Order $order) {
-        $order->markAsPacked();
+    public function markAsPacked(Order $order, Request $request) {
+        $this->validate($request, [
+            'weeks_packed'  => 'required|numeric',
+            'packed_package_id' => 'required|exists:pacakges,id',
+        ]);
+
+        $order->markAsPacked($request->only([
+            'weeks_packed',
+            'packed_package_id',
+        ]));
+
         return response('success', 200);
     }
 

@@ -16590,6 +16590,30 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             context.commit('hidePackedModal');
             context.commit('deselectOrder');
         },
+        openPickedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showPickedModal');
+        },
+        closePickedModal(context) {
+            context.commit('hidePickedModal');
+            context.commit('deselectOrder');
+        },
+        openShippedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showShippedModal');
+        },
+        closeShippedModal(context) {
+            context.commit('hideShippedModal');
+            context.commit('deselectOrder');
+        },
+        openDeliveredModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showDeliveredModal');
+        },
+        closeDeliveredModal(context) {
+            context.commit('hideDeliveredModal');
+            context.commit('deselectOrder');
+        },
         loadOrders(context) {
             axios.get('/admin/api/orders').then(response => context.commit('populateOrdersCollection', response.data)).catch(error => console.log(error));
         },
@@ -16633,6 +16657,24 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         },
         hidePackedModal(state) {
             state.show.packedModal = false;
+        },
+        showPickedModal(state) {
+            state.show.pickedModal = true;
+        },
+        hidePickedModal(state) {
+            state.show.pickedModal = false;
+        },
+        showShippedModal(state) {
+            state.show.shippedModal = true;
+        },
+        hideShippedModal(state) {
+            state.show.shippedModal = false;
+        },
+        showDeliveredModal(state) {
+            state.show.deliveredModal = true;
+        },
+        hideDeliveredModal(state) {
+            state.show.deliveredModal = false;
         },
         updateSelectedOrder(state, payload) {
             state.selected.order = _extends({}, state.selected.order, payload);
@@ -36745,15 +36787,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -36761,17 +36794,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
         return {
-            amount_paid: 0,
-            received_at: null,
-            format: '',
-            paymentFormats: ['cash', 'interac', 'e-transfer', 'stripe', 'paypal']
+            weeks_packed: 0,
+            packed_package_id: null
         };
     },
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['closePackedModal']), {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/paid', {
+            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/packed', {
                 format: this.format,
                 amount_paid: this.amount_paid,
                 received_at: this.received_at
@@ -36871,36 +36902,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_vm._m(1), _vm._v(" "), _c('div', {
     staticClass: "col-sm-8"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.received_at),
-      expression: "received_at"
-    }],
-    staticClass: "input-sm",
-    attrs: {
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.received_at)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.received_at = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_vm._m(2), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-8"
   }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.format),
-      expression: "format"
+      value: (_vm.packed_package_id),
+      expression: "packed_package_id"
     }],
     on: {
       "change": function($event) {
@@ -36910,11 +36917,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.format = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.packed_package_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, _vm._l((_vm.paymentFormats), function(format) {
-    return _c('option', [_vm._v(_vm._s(format))])
+  }, _vm._l((_vm.packages), function(package) {
+    return _c('option', {
+      domProps: {
+        "selected": _vm.order.plan.package_id == package.id
+      }
+    }, [_vm._v(_vm._s(package.label))])
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -36945,13 +36956,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-4"
   }, [_c('span', {
     staticClass: "label"
-  }, [_vm._v("Date Received")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('span', {
-    staticClass: "label"
-  }, [_vm._v("Format")])])
+  }, [_vm._v("Package")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

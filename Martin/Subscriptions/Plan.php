@@ -282,8 +282,8 @@ class Plan extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
-        $weeks_of_food_per_shipment = $this->weeks_of_food_per_shipment;
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+        $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $grouped =  $this->package->meals->groupBy('id')
             ->map(function($group, $key) use ($weeks_of_food_per_shipment) {
                 $item = $group->first();

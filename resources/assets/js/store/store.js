@@ -44,6 +44,30 @@ export const store = new Vuex.Store({
             context.commit('hidePackedModal');
             context.commit('deselectOrder');
         },
+        openPickedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showPickedModal');
+        },
+        closePickedModal(context) {
+            context.commit('hidePickedModal');
+            context.commit('deselectOrder');
+        },
+        openShippedModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showShippedModal');
+        },
+        closeShippedModal(context) {
+            context.commit('hideShippedModal');
+            context.commit('deselectOrder');
+        },
+        openDeliveredModal(context, order) {
+            context.commit('setSelectedOrder', order);
+            context.commit('showDeliveredModal');
+        },
+        closeDeliveredModal(context) {
+            context.commit('hideDeliveredModal');
+            context.commit('deselectOrder');
+        },
         loadOrders(context) {
             axios.get('/admin/api/orders')
                 .then(response => context.commit('populateOrdersCollection', response.data))
@@ -95,6 +119,24 @@ export const store = new Vuex.Store({
         },
         hidePackedModal(state) {
             state.show.packedModal = false;
+        },
+        showPickedModal(state) {
+            state.show.pickedModal = true;
+        },
+        hidePickedModal(state) {
+            state.show.pickedModal = false;
+        },
+        showShippedModal(state) {
+            state.show.shippedModal = true;
+        },
+        hideShippedModal(state) {
+            state.show.shippedModal = false;
+        },
+        showDeliveredModal(state) {
+            state.show.deliveredModal = true;
+        },
+        hideDeliveredModal(state) {
+            state.show.deliveredModal = false;
         },
         updateSelectedOrder(state, payload) {
             state.selected.order = { ...state.selected.order, ...payload };

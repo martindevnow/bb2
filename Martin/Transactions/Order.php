@@ -138,11 +138,19 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsPacked() {
-        $this->reduceMeatInventory();
+    public function markAsPacked($data = null) {
+        $this->reduceMeatInventory(null, $data['weeks_packed']);
         $this->increaseMealInventory();
 
         $this->packed = true;
+        if ($data) {
+            $this->weeks_packed = $data['weeks_packed'];
+            $this->packed_package_id = $data['packed_package_id'];
+        } else {
+            $this->weeks_packed = $this->plan->weeks_of_food_per_shipment;
+            $this->packed_package_id = $this->plan->package_id;
+        }
+
         $this->save();
 
         return $this;
@@ -191,14 +199,14 @@ class Order extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
-        return $this->plan->mealCounts($meal);
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+        return $this->plan->mealCounts($meal, $number_of_weeks);
     }
 
     /**
      * TODO: Move to Plan
      */
-    private function reduceMeatInventory() {
+    private function reduceMeatInventory($number_of_weeks, $package_id) {
         $pet_meal_size = $this->plan->pet->mealSize();
 
         // TODO: This should be on the Plan model too.. no reason for it to be here....
@@ -220,9 +228,10 @@ class Order extends Model
 
     /**
      * TODO: Make it public and simply reference the plan.. these methods should be on Plan
+     * @param null $number_of_weeks
      */
-    private function increaseMealInventory() {
-        $meals = $this->mealCounts();
+    private function increaseMealInventory($number_of_weeks = null) {
+        $meals = $this->mealCounts(null, $number_of_weeks);
 
         foreach($meals as $meal) {
             $this->inventoryChanges()->create([
