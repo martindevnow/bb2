@@ -64,6 +64,7 @@ export default {
     },
     mounted() {
         this.loadOrders();
+        this.loadPackages();
     },
     methods: {
         ...mapActions([
@@ -71,7 +72,8 @@ export default {
             'closePaymentModal',
             'openPackedModal',
             'closePackedModal',
-            'loadOrders'
+            'loadOrders',
+            'loadPackages',
         ]),
     },
     computed: {

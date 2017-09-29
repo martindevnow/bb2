@@ -54,7 +54,7 @@ class OrdersController extends Controller
     public function markAsPacked(Order $order, Request $request) {
         $this->validate($request, [
             'weeks_packed'  => 'required|numeric',
-            'packed_package_id' => 'required|exists:pacakges,id',
+            'packed_package_id' => 'required|exists:packages,id',
         ]);
 
         $order->markAsPacked($request->only([

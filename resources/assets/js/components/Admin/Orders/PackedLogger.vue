@@ -1,44 +1,51 @@
 <template>
     <div>
-        <p>Note: if you update the package or # of weeks packed here, it will update their Order for this shipment.</p>
-        <p>It will not change their plan.</p>
-
-        <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Weeks Packed</span>
-            </div>
-            <div class="col-sm-8">
-                <label class="input">
-                    <input type="text" class="input-sm"
-                           v-model="weeks_packed"
-                    >
-                </label>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Package</span>
-            </div>
-            <div class="col-sm-8">
-                <select v-model="packed_package_id"
-                >
-                    <option v-for="package in packages"
-                            :selected="order.plan.package_id == package.id"
-                    >{{ package.label }}</option>
-                </select>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-sm-12">
-                <button class="btn btn-primary"
+                <p>Note: if you update the package or # of weeks packed here, it will update their Order for this shipment.</p>
+                <p>It will not change their plan.</p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="weeks_packed">Weeks Packed</label>
+                    <input type="text" class="form-control"
+                           id="weeks_packed"
+                           v-model="weeks_packed"
+                    >
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="packed_package_id">Package</label>
+                    <select v-model="packed_package_id"
+                            class="form-control"
+                            id="packed_package_id"
+                    >
+                        <option v-for="package in packages"
+                                :selected="selected.order.plan.package_id == package.id"
+                                :value="package.id"
+                        >{{ package.label }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <button class="btn btn-primary btn-block"
                         @click="save()"
                 >
                     Save
                 </button>
-                <button class="btn btn-default"
+            </div>
+            <div class="col-sm-6">
+                <button class="btn btn-default btn-block"
                         @click="closePackedModal()"
                 >
                     Cancel
@@ -67,12 +74,11 @@ export default {
             let vm = this;
 
             return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/packed', {
-                format:      this.format,
-                amount_paid: this.amount_paid,
-                received_at: this.received_at,
+                weeks_packed:      this.weeks_packed,
+                packed_package_id: this.packed_package_id,
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', { paid: true });
-                vm.$store.dispatch('closePaymentModal');
+                vm.$store.commit('updateSelectedOrder', { packed: true });
+                vm.$store.dispatch('closePackedModal');
             }).catch(error => {
                 console.log('error', error);
             });
@@ -81,13 +87,13 @@ export default {
     computed: {
         ...mapState([
             'show',
-            'selected'
+            'selected',
+            'packages',
         ]),
     },
     mounted() {
-        this.amount_paid = 0;
-        this.format = 'cash';
-        this.received_at = '2017-09-01';
+        this.weeks_packed = this.selected.order.plan.weeks_of_food_per_shipment;
+        this.packed_package_id = this.selected.order.plan.package_id;
     }
 }
 </script>

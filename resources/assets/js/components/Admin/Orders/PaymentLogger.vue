@@ -1,54 +1,74 @@
 <template>
     <div>
+
         <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Amount Paid</span>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="amount_paid">Amount Paid</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="10"
+                               id="amount_paid"
+                               v-model="amount_paid"
+                        >
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-8">
-                <label class="input">
-                    <input type="text" class="input-sm"
-                           v-model="amount_paid"
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="received_at">Received At</label>
+                    <input type="text"
+                           class="form-control"
+                           id="received_at"
+                           v-model="received_at"
                     >
-                </label>
+                </div>
+
             </div>
         </div>
 
 
         <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Date Received</span>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="format">Format</label>
+                    <select v-model="format"
+                            class="form-control"
+                            id="format"
+                    >
+                        <option v-for="format in paymentFormats">{{ format }}</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-8">
-                <input type="text" class="input-sm"
-                       v-model="received_at"
-                >
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-4">
-                <span class="label">Format</span>
-            </div>
-            <div class="col-sm-8">
-                <select v-model="format">
-                    <option v-for="format in paymentFormats">{{ format }}</option>
-                </select>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>&nbsp;</label>
+                        <button class="btn btn-primary btn-block"
+                                @click="save()"
+                        >
+                            Save
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>&nbsp;</label>
+                        <button class="btn btn-default btn-block"
+                                @click="closePaymentModal()"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
-                <button class="btn btn-primary"
-                        @click="save()"
-                >
-                    Save
-                </button>
-                <button class="btn btn-default"
-                        @click="closePaymentModal()"
-                >
-                    Cancel
-                </button>
+
+
             </div>
         </div>
     </div>

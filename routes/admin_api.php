@@ -1,6 +1,7 @@
 <?php
 
 // Orders
+use Martin\Subscriptions\Package;
 use Martin\Transactions\Order;
 
 Route::get('orders', function () {
@@ -14,3 +15,6 @@ Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 
 
+Route::get('packages', function() {
+    return Package::all();
+});

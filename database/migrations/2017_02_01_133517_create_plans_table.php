@@ -29,7 +29,7 @@ class CreatePlansTable extends Migration
             $table->integer('internal_cost')->nullable();
             $table->integer('weekly_cost');
             $table->integer('weeks_of_food_per_shipment');
-            $table->integer('ships_every_x_weeks');
+            $table->integer('ships_every_x_weeks')->nullable();
             $table->dateTime('first_delivery_at')->nullable();
             $table->dateTime('latest_delivery_at')->nullable();
 
