@@ -101,9 +101,10 @@ export const store = new Vuex.Store({
         },
         populateOrdersCollection(state, data) {
             state.orders = data.map(order => {
+                let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
                 let package_label = order.plan.package.label;
                 let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
-                return {...order, package_label, pet_breed_customer };
+                return {...order, package_label, pet_breed_customer, meal_size };
             });
         },
         populatePackagesCollection(state, data) {

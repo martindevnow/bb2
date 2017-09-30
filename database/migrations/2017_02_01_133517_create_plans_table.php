@@ -35,6 +35,7 @@ class CreatePlansTable extends Migration
 
             $table->boolean('active')->default(true);
             $table->string('hash')->nullable();
+            $table->mediumText('comment')->nullable();
 
             $table->enum('payment_method', [
                 'cash',

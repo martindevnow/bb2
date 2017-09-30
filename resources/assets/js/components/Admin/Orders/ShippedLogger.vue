@@ -12,7 +12,9 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('weeks_shipped') }"
+                >
                     <label for="weeks_shipped">Weeks Shipped</label>
                     <input type="text" class="form-control"
                            id="weeks_shipped"
@@ -22,7 +24,9 @@
 
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('shipped_package_id') }"
+                >
                     <label for="shipped_package_id">Package</label>
                     <select v-model="shipped_package_id"
                             class="form-control"
@@ -39,7 +43,9 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('shipped_at') }"
+                >
                     <label>Date Shipped</label>
                     <datepicker v-model="shipped_at"
                                 id="shipped_at"
@@ -88,38 +94,18 @@
 </template>
 
 <script>
-    class Errors {
-        constructor() {
-            this.errors = {};
-        }
-
-        get(field) {
-            if (this.errors[field]) {
-                return this.errors[field][0];
-            }
-        }
-
-        has(field) {
-            return  !! this.errors[field];
-        }
-
-        record(errors) {
-            this.errors = { ...this.errors, ...errors };
-        }
-
-        clear(field) {
-            console.log('clearing .. ' + field);
-            delete this.errors[field];
-        }
-
-    }
 
 
+//import Errors from '../../../models/Errors'
 import { mapState, mapActions } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
+import hasErrors from '../../../mixins/hasErrors';
 export default {
+    mixins: [
+        hasErrors
+    ],
     components: {
         Datepicker,
     },
@@ -129,7 +115,6 @@ export default {
             shipped_package_id: null,
             shipped_at: null,
             courier_id: null,
-            errors: new Errors(),
         };
     },
     methods: {
@@ -170,7 +155,6 @@ export default {
         ]),
     },
     mounted() {
-        this.errors = new Errors();
         this.loadCouriers();
         this.shipped_at = new Date();
         this.shipped_package_id = this.selected.order.packed_package_id

@@ -32,7 +32,7 @@ Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::get('/orders/{order}/delivered', 'OrdersController@createDelivery');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 
-Route::get('/orders/export/view/{perPage}', 'OrdersController@exportView');
+Route::get('/orders/export-view/{perPage}', 'OrdersController@exportView');
 Route::get('/orders/export/{status}/{perPage}', 'OrdersController@export');
 
 Route::post('/orders/{order}/packed', 'OrdersController@packed');

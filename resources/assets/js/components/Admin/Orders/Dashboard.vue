@@ -21,7 +21,7 @@
                     @click="sortBy(key)"
                     :class="{ active: sortable.sortKey == key }">
                     {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'">
+                    <span class="fa" :class="sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'">
                   </span>
                 </th>
                 <th>Actions</th>
@@ -30,9 +30,9 @@
 
             <tbody>
             <tr v-for="order in filteredData(orders)">
-                <td>{{ order.customer.name }} ({{ order.plan.pet.name }})</td>
-                <td>{{ mealSize(order) }}</td>
-                <td>{{ order.plan.package.label }}</td>
+                <td>{{ order.pet_breed_customer }}</td>
+                <td>{{ order.meal_size }}</td>
+                <td>{{ order.package_label }}</td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>
                     <button @click="openPaymentModal(order)"
@@ -71,6 +71,7 @@
         <admin-common-modal v-if="show.paymentModal"
                              @close="closePaymentModal()"
         >
+            <p slot="header">Log a Payment</p>
             <admin-payment-logger @close="$emit('close')"
                                   slot="body"
             ></admin-payment-logger>
@@ -79,6 +80,7 @@
         <admin-common-modal v-if="show.packedModal"
                             @close="closePackedModal()"
         >
+            <p slot="header">Log Packing an Order</p>
             <admin-packed-logger @close="$emit('close')"
                                  slot="body"
             ></admin-packed-logger>
@@ -87,6 +89,7 @@
         <admin-common-modal v-if="show.shippedModal"
                             @close="closeShippedModal()"
         >
+            <p slot="header">Log a Shipment</p>
             <admin-shipped-logger @close="$emit('close')"
                                   slot="body"
             ></admin-shipped-logger>
@@ -98,15 +101,18 @@
 import swal from 'sweetalert2';
 import eventBus from '../../../events/eventBus';
 import { mapGetters, mapState, mapActions } from 'vuex';
-import sortable from '../../../mixins/sortable';
+import isSortable from '../../../mixins/isSortable';
 
 export default {
-    mixins: [sortable],
+    mixins: [
+        isSortable
+
+    ],
     data() {
         let columns = [
-            'Pet (Breed) - Owner',
-            'Meal Size',
-            'Package',
+            'pet_breed_customer',
+            'meal_size',
+            'package_label',
             '# of Weeks',
         ];
         let numColumns = columns.length;

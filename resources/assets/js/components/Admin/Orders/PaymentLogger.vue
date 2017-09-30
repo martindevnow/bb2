@@ -1,9 +1,12 @@
 <template>
-    <div>
-
+    <form @keydown="errors.clear($event.target.name)"
+          @submit.prevent=""
+    >
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('amount_paid') }"
+                >
                     <label for="amount_paid">Amount Paid</label>
                     <div class="input-group">
                         <span class="input-group-addon">$</span>
@@ -11,21 +14,28 @@
                                class="form-control"
                                placeholder="10"
                                id="amount_paid"
+                               name="amount_paid"
                                v-model="amount_paid"
                         >
                     </div>
+                    <span class="help-block">{{ errors.get('amount_paid') }}</span>
+
                 </div>
             </div>
 
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('received_at') }"
+                >
                     <label>Received At</label>
                     <datepicker v-model="received_at"
                                 id="received_at"
+                                name="received_at"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
                     >
                     </datepicker>
+                    <span class="help-block">{{ errors.get('received_at') }}</span>
                 </div>
             </div>
         </div>
@@ -33,14 +43,20 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('format') }"
+                >
                     <label for="format">Format</label>
                     <select v-model="format"
                             class="form-control"
                             id="format"
+                            name="format"
+                            @change="errors.clear('format')"
                     >
                         <option v-for="format in paymentFormats">{{ format }}</option>
                     </select>
+                    <span class="help-block">{{ errors.get('format') }}</span>
+
                 </div>
             </div>
             <div class="col-sm-6">
@@ -64,7 +80,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
@@ -72,8 +88,12 @@ import { mapState, mapActions } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
+import hasErrors from '../../../mixins/hasErrors';
 
 export default {
+    mixins: [
+        hasErrors
+    ],
     components: {
         Datepicker,
     },
@@ -106,7 +126,7 @@ export default {
                 vm.$store.commit('updateSelectedOrder', { paid: true });
                 vm.$store.dispatch('closePaymentModal');
             }).catch(error => {
-                console.log('error', error);
+                vm.errors.record(error.response.data.errors);
             });
         },
     },

@@ -31,7 +31,7 @@ class OrdersController extends Controller
     public function storePayment(Order $order, Request $request) {
         $this->validate($request, [
             'format'        => 'required',
-            'amount_paid'   => 'required|numeric',
+            'amount_paid'   => 'required|numeric|min:1',
             'received_at'   => 'required|date_format:Y-m-d',
         ]);
         $paymentData = $request->only(['format', 'amount_paid', 'received_at']);
@@ -53,7 +53,7 @@ class OrdersController extends Controller
      */
     public function markAsPacked(Order $order, Request $request) {
         $this->validate($request, [
-            'weeks_packed'  => 'required|numeric',
+            'weeks_packed'      => 'required|integer|min:1',
             'packed_package_id' => 'required|exists:packages,id',
         ]);
 
@@ -78,6 +78,8 @@ class OrdersController extends Controller
         $this->validate($request, [
             'courier_id'    => 'required|exists:couriers,id',
             'shipped_at'    => 'required|date_format:Y-m-d',
+            'weeks_shipped' => 'required|integer|min:1',
+            'shipped_package_id'    => 'required|exists:packages,id',
         ]);
 
         $deliveryData = $request->only([

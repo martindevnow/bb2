@@ -87,6 +87,7 @@
         }
         .table {
             margin-bottom: 0.5rem;
+            border: 1px solid black;
         }
 
         .package-name {
@@ -98,10 +99,12 @@
         .table > tbody > tr > td {
             padding: 0.5rem;
             font-size: 1.5rem;
+            border: 1px solid black;
         }
         .table > thead > tr > td {
             padding: 0.75rem;
             font-size: 1.7rem;
+            border: 1px solid black;
         }
 
     </style>
@@ -160,7 +163,11 @@
                             @forelse($order->plan->notes as $note)
                             <li><em>{{ $note->content }}</em></li>
                             @empty
-                            <li><em>None</em></li>
+                                @if ($order->plan->comment)
+                                    <li><em>{{ $order->plan->comment }}</em></li>
+                                @else
+                                    <li><em>-</em></li>
+                                @endif
                             @endforelse
                             </ul>
                         </div>
