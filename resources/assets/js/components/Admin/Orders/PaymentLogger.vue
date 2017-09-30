@@ -84,10 +84,10 @@ export default {
             format: '',
             paymentFormats: [
                 'cash',
-                'interac',
                 'e-transfer',
                 'stripe',
                 'paypal',
+                'interac',
             ],
         };
     },
@@ -97,8 +97,6 @@ export default {
         ]),
         save() {
             let vm = this;
-
-
 
             return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/paid', {
                 format:      this.format,
