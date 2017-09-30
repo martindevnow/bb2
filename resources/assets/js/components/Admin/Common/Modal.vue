@@ -1,5 +1,11 @@
 <template>
-    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-right: 15px; display: block;">
+    <div class="modal fade in"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true"
+         style="padding-right: 15px;
+         display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -8,14 +14,14 @@
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
                         <slot name="header">
-                            Packed Order
+                            MODAL HEADER
                         </slot>
                     </h4>
                 </div>
                 <div class="modal-body">
 
                     <slot name="body">
-                        Load your component in here...
+                        MODAL BODY
                     </slot>
 
                 </div>

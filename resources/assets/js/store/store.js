@@ -100,7 +100,11 @@ export const store = new Vuex.Store({
             state.couriers = data;
         },
         populateOrdersCollection(state, data) {
-            state.orders = data;
+            state.orders = data.map(order => {
+                let package_label = order.plan.package.label;
+                let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
+                return {...order, package_label, pet_breed_customer };
+            });
         },
         populatePackagesCollection(state, data) {
             state.packages = data;
