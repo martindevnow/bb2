@@ -1,5 +1,7 @@
 <template>
-    <div>
+    <form @keydown="errors.clear($event.target.name)"
+          @submit.prevent=""
+    >
         <div class="row">
             <div class="col-sm-12">
                 <p>Note: if you update the package or # of weeks shipped here, it will update their Order for this shipment.</p>
@@ -48,16 +50,20 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group"
+                     v-bind:class="{'has-error': errors.has('courier_id') }"
+                >
                     <label for="courier_id">Courier</label>
                     <select v-model="courier_id"
                             class="form-control"
                             id="courier_id"
+                            @change="errors.clear('courier_id')"
                     >
                         <option v-for="courier in couriers"
                                 :value="courier.id"
                         >{{ courier.label }}</option>
                     </select>
+                    <span class="help-block">{{ errors.get('courier_id') }}</span>
                 </div>
             </div>
         </div>
@@ -78,10 +84,37 @@
                 </button>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
+    class Errors {
+        constructor() {
+            this.errors = {};
+        }
+
+        get(field) {
+            if (this.errors[field]) {
+                return this.errors[field][0];
+            }
+        }
+
+        has(field) {
+            return  !! this.errors[field];
+        }
+
+        record(errors) {
+            this.errors = { ...this.errors, ...errors };
+        }
+
+        clear(field) {
+            console.log('clearing .. ' + field);
+            delete this.errors[field];
+        }
+
+    }
+
+
 import { mapState, mapActions } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
@@ -96,6 +129,7 @@ export default {
             shipped_package_id: null,
             shipped_at: null,
             courier_id: null,
+            errors: new Errors(),
         };
     },
     methods: {
@@ -103,6 +137,9 @@ export default {
             'closeShippedModal',
             'loadCouriers',
         ]),
+        hasErrorClass(field) {
+            return this.errors.has(field) ? 'has-error' : '';
+        },
         save() {
             let vm = this;
 
@@ -119,8 +156,8 @@ export default {
                     shipped_package_id: this.shipped_package_id,
                 });
                 vm.$store.dispatch('closeShippedModal');
-            }).catch(error => {
-                console.log('error', error);
+            }).catch(function(error) {
+                vm.errors.record(error.response.data.errors);
             });
         },
     },
@@ -133,6 +170,7 @@ export default {
         ]),
     },
     mounted() {
+        this.errors = new Errors();
         this.loadCouriers();
         this.shipped_at = new Date();
         this.shipped_package_id = this.selected.order.packed_package_id

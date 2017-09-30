@@ -15237,7 +15237,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             amount_paid: null,
             received_at: null,
             format: '',
-            paymentFormats: ['cash', 'interac', 'e-transfer', 'stripe', 'paypal']
+            paymentFormats: ['cash', 'e-transfer', 'stripe', 'paypal', 'interac']
         };
     },
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['closePaymentModal']), {
@@ -37195,6 +37195,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+class Errors {
+    constructor() {
+        this.errors = {};
+    }
+
+    get(field) {
+        if (this.errors[field]) {
+            return this.errors[field][0];
+        }
+    }
+
+    has(field) {
+        return !!this.errors[field];
+    }
+
+    record(errors) {
+        this.errors = _extends({}, this.errors, errors);
+    }
+
+    clear(field) {
+        console.log('clearing .. ' + field);
+        delete this.errors[field];
+    }
+
+}
 
 
 
@@ -37209,10 +37241,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             weeks_shipped: null,
             shipped_package_id: null,
             shipped_at: null,
-            courier_id: null
+            courier_id: null,
+            errors: new Errors()
         };
     },
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['closeShippedModal', 'loadCouriers']), {
+        hasErrorClass(field) {
+            return this.errors.has(field) ? 'has-error' : '';
+        },
         save() {
             let vm = this;
 
@@ -37229,13 +37265,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     shipped_package_id: this.shipped_package_id
                 });
                 vm.$store.dispatch('closeShippedModal');
-            }).catch(error => {
-                console.log('error', error);
+            }).catch(function (error) {
+                vm.errors.record(error.response.data.errors);
             });
         }
     }),
     computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['show', 'selected', 'packages', 'couriers'])),
     mounted() {
+        this.errors = new Errors();
         this.loadCouriers();
         this.shipped_at = new Date();
         this.shipped_package_id = this.selected.order.packed_package_id || this.selected.order.plan.package_id;
@@ -37293,7 +37330,16 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+  return _c('form', {
+    on: {
+      "keydown": function($event) {
+        _vm.errors.clear($event.target.name)
+      },
+      "submit": function($event) {
+        $event.preventDefault();
+      }
+    }
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
@@ -37383,7 +37429,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })], 1)]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.has('courier_id')
+    }
   }, [_c('label', {
     attrs: {
       "for": "courier_id"
@@ -37400,7 +37449,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "courier_id"
     },
     on: {
-      "change": function($event) {
+      "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
           return o.selected
         }).map(function(o) {
@@ -37408,7 +37457,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.courier_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      }, function($event) {
+        _vm.errors.clear('courier_id')
+      }]
     }
   }, _vm._l((_vm.couriers), function(courier) {
     return _c('option', {
@@ -37416,7 +37467,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": courier.id
       }
     }, [_vm._v(_vm._s(courier.label))])
-  }))])])]), _vm._v(" "), _c('div', {
+  })), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v(_vm._s(_vm.errors.get('courier_id')))])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
