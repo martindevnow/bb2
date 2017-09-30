@@ -19,14 +19,14 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="received_at">Received At</label>
-                    <input type="text"
-                           class="form-control"
-                           id="received_at"
-                           v-model="received_at"
+                    <label>Received At</label>
+                    <datepicker v-model="received_at"
+                                id="received_at"
+                                format="yyyy-MM-dd"
+                                input-class="form-control"
                     >
+                    </datepicker>
                 </div>
-
             </div>
         </div>
 
@@ -64,24 +64,22 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-
-
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import eventBus from '../../../events/eventBus';
+import Datepicker from 'vuejs-datepicker';
+import moment from 'moment';
 
 export default {
+    components: {
+        Datepicker,
+    },
     data() {
         return {
-            amount_paid: 0,
+            amount_paid: null,
             received_at: null,
             format: '',
             paymentFormats: [
@@ -101,10 +99,11 @@ export default {
             let vm = this;
 
 
+
             return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
-                received_at: this.received_at,
+                received_at: moment(this.received_at).format('YYYY-MM-DD'),
             }).then(response => {
                 vm.$store.commit('updateSelectedOrder', { paid: true });
                 vm.$store.dispatch('closePaymentModal');
@@ -120,9 +119,9 @@ export default {
         ]),
     },
     mounted() {
-        this.amount_paid = 0;
         this.format = 'cash';
-        this.received_at = '2017-09-01';
+        this.received_at = new Date();
+        this.amount_paid = this.selected.order.plan.weekly_cost;
     }
 }
 </script>

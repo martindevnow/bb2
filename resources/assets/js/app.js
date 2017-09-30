@@ -44,6 +44,7 @@ Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue
 
 Vue.component('admin-payment-logger', require('./components/Admin/Orders/PaymentLogger.vue'));
 Vue.component('admin-packed-logger', require('./components/Admin/Orders/PackedLogger.vue'));
+Vue.component('admin-shipped-logger', require('./components/Admin/Orders/ShippedLogger.vue'));
 
 
 Vue.component('example', require('./components/Example.vue'));

@@ -33,6 +33,15 @@
                 >
                     Packed
                 </button>
+                <button @click="openShippedModal(order)"
+                        class="btn"
+                        :class="{
+                            'btn-danger': ! order.shipped,
+                            'btn-success': order.shipped
+                        }"
+                >
+                    Shipped
+                </button>
             </div>
         </div>
 
@@ -50,6 +59,14 @@
             <admin-packed-logger @close="$emit('close')"
                                  slot="body"
             ></admin-packed-logger>
+        </admin-common-modal>
+
+        <admin-common-modal v-if="show.shippedModal"
+                            @close="closeShippedModal()"
+        >
+            <admin-shipped-logger @close="$emit('close')"
+                                  slot="body"
+            ></admin-shipped-logger>
         </admin-common-modal>
     </div>
 </template>
@@ -72,6 +89,8 @@ export default {
             'closePaymentModal',
             'openPackedModal',
             'closePackedModal',
+            'openShippedModal',
+            'closeShippedModal',
             'loadOrders',
             'loadPackages',
         ]),

@@ -77,7 +77,11 @@ export default {
                 weeks_packed:      this.weeks_packed,
                 packed_package_id: this.packed_package_id,
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', { packed: true });
+                vm.$store.commit('updateSelectedOrder', {
+                    packed: true,
+                    weeks_packed: vm.weeks_packed,
+                    packed_package_id: vm.packed_package_id,
+                });
                 vm.$store.dispatch('closePackedModal');
             }).catch(error => {
                 console.log('error', error);

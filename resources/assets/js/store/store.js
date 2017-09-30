@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
+        couriers: [],
         customers: [],
         orders: [],
         packages: [],
@@ -68,6 +69,11 @@ export const store = new Vuex.Store({
             context.commit('hideDeliveredModal');
             context.commit('deselectOrder');
         },
+        loadCouriers(context) {
+            axios.get('/admin/api/couriers')
+                .then(response => context.commit('populateCouriersCollection', response.data))
+                .catch(error => console.log(error));
+        },
         loadOrders(context) {
             axios.get('/admin/api/orders')
                 .then(response => context.commit('populateOrdersCollection', response.data))
@@ -90,6 +96,9 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
+        populateCouriersCollection(state, data) {
+            state.couriers = data;
+        },
         populateOrdersCollection(state, data) {
             state.orders = data;
         },
