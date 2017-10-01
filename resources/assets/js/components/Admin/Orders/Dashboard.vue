@@ -98,15 +98,12 @@
 </template>
 
 <script>
-import swal from 'sweetalert2';
-import eventBus from '../../../events/eventBus';
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
 
 export default {
     mixins: [
         isSortable
-
     ],
     data() {
         let columns = [
@@ -154,8 +151,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.row {
-    border-bottom: 1px solid black;
-}
+<style>
+
 </style>

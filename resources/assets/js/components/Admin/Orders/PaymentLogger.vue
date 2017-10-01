@@ -64,6 +64,7 @@
                     <div class="col-sm-6">
                         <label>&nbsp;</label>
                         <button class="btn btn-primary btn-block"
+                                :disabled="errors.any()"
                                 @click="save()"
                         >
                             Save
@@ -85,7 +86,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
@@ -118,7 +118,7 @@ export default {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/paid', {
+            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: moment(this.received_at).format('YYYY-MM-DD'),
@@ -145,7 +145,5 @@ export default {
 </script>
 
 <style>
-span.label {
-    color: black;
-}
+
 </style>

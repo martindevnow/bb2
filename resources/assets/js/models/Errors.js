@@ -21,4 +21,8 @@ export default class Errors {
         console.log('clearing .. ' + field);
         delete this.errors[field];
     }
+
+    any() {
+        return !! Object.keys(this.errors).length > 0;
+    }
 }

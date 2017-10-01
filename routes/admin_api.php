@@ -1,7 +1,10 @@
 <?php
 
 // Orders
+use Martin\ACL\User;
+use Martin\Customers\Pet;
 use Martin\Delivery\Courier;
+use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
 use Martin\Transactions\Order;
 
@@ -19,6 +22,17 @@ Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 Route::get('couriers', function() {
     return Courier::all();
 });
+
 Route::get('packages', function() {
     return Package::all();
+});
+
+Route::resource('pets', 'PetsController');
+
+Route::get('meats', function() {
+    return Meat::all();
+});
+
+Route::get('users', function() {
+    return User::all();
 });
