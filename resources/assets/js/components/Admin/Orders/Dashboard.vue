@@ -34,6 +34,7 @@
                 <td>{{ order.meal_size }}</td>
                 <td>{{ order.package_label }}</td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
+                <td>{{ order.deliver_by }}</td>
                 <td>
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
@@ -111,6 +112,7 @@ export default {
             'meal_size',
             'package_label',
             '# of Weeks',
+            'deliver_by',
         ];
         let numColumns = columns.length;
         let sortOrders = {};

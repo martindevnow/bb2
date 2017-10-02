@@ -9,7 +9,13 @@ use Martin\Subscriptions\Package;
 use Martin\Transactions\Order;
 
 Route::get('orders', function () {
-    return Order::with('customer', 'plan.pet', 'plan', 'plan.package', 'deliveryAddress')->get();
+    return Order::with([
+        'customer',
+        'plan.pet',
+        'plan',
+        'plan.package',
+        'deliveryAddress'
+    ])->get();
 });
 
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
@@ -34,5 +40,7 @@ Route::get('meats', function() {
 });
 
 Route::get('users', function() {
-    return User::all();
+    return User::with([
+        'pets'
+    ])->get();
 });

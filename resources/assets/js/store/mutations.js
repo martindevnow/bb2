@@ -11,7 +11,8 @@ export const populateOrdersCollection = (state, data) => {
         let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
         let package_label = order.plan.package.label;
         let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
-        return {...order, package_label, pet_breed_customer, meal_size };
+        let deliver_by = order.deliver_by.slice(0,10);
+        return {...order, package_label, pet_breed_customer, meal_size, deliver_by };
     });
 };
 
@@ -35,7 +36,17 @@ export const addToPetsCollection = (state, pet) => {
 };
 
 export const populateUsersCollection = (state, data) => {
-    state.users = data;
+    state.users = data.map(user => {
+        if (! user.pets) {
+            return user;
+        }
+        let pets = user.pets.reduce(function(carry, pet) {
+            if (carry == '')
+                return pet.name;
+            return carry + ", " + pet.name
+        }, '');
+        return {...user, pets};
+    });
 };
 
 export const setSelectedOrder = (state, order) => {

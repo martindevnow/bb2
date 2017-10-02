@@ -44,6 +44,8 @@ Vue.component('admin-meats-dashboard', require('./components/Admin/Meats/Dashboa
 Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
 Vue.component('admin-pets-dashboard', require('./components/Admin/Pets/Dashboard.vue'));
 Vue.component('admin-pets-creator', require('./components/Admin/Pets/Creator.vue'));
+Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboard.vue'));
+Vue.component('admin-users-creator', require('./components/Admin/Users/Creator.vue'));
 
 /**
  * Common Components
