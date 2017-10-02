@@ -74566,6 +74566,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -74598,7 +74604,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 252 */
@@ -74695,6 +74701,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "colspan": _vm.numColumns + 1
     }
   }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
     staticClass: "input-group"
   }, [_c('input', {
     directives: [{
@@ -74716,14 +74726,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.sortable.filterKey = $event.target.value
       }
     }
-  }), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('button', {
+  }), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
         _vm.openUserCreatorModal()
       }
     }
-  }, [_vm._v("\n                    New\n                ")])])]), _vm._v(" "), _c('tr', [_vm._l((_vm.columns), function(key) {
+  }, [_vm._v("\n                            New\n                        ")])])])])]), _vm._v(" "), _c('tr', [_vm._l((_vm.columns), function(key) {
     return _c('th', {
       class: {
         active: _vm.sortable.sortKey == key

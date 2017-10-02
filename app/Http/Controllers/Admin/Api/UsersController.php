@@ -8,12 +8,16 @@ use Martin\ACL\User;
 
 class UsersController extends Controller {
 
+    /**
+     * Fetch a list of Users
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[] |Illuminate\Database\Eloquent\Collection
+     */
     public function index() {
         return User::with(['pets'])->get();
     }
 
     /**
-     * Add a new User. Their owner must exist
+     * Add a new User
      *
      * @param Request $request
      * @return mixed
