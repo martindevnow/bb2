@@ -4,23 +4,6 @@
     >
 
         <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group"
-                     :class="{ 'has-error': errors.has('owner_id') }"
-                >
-                    <label>Owner</label>
-                    <basic-select :options="ownersSelect"
-                                  :selected-option="owner"
-                                  placeholder="Select Owner..."
-                                  @select="onSelect"
-                                  :class="{ 'has-error': errors.has('name') }"
-                    >
-                    </basic-select>
-                    <span class="help-block">{{ errors.get('owner_id') }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('name') }"
@@ -37,16 +20,16 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('breed') }"
+                     :class="{ 'has-error': errors.has('email') }"
                 >
-                    <label for="breed">Breed</label>
-                    <input type="text"
+                    <label for="email">Email</label>
+                    <input type="email"
                            class="form-control"
-                           id="breed"
-                           name="breed"
-                           v-model="form.breed"
+                           id="email"
+                           name="email"
+                           v-model="form.email"
                     >
-                    <span class="help-block">{{ errors.get('breed') }}</span>
+                    <span class="help-block">{{ errors.get('email') }}</span>
                 </div>
             </div>
         </div>
@@ -54,61 +37,60 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('species') }"
+                     :class="{ 'has-error': errors.has('password') }"
                 >
-                    <label for="species">Species</label>
-                    <input type="text"
+                    <label for="password">Password</label>
+                    <input type="password"
                            class="form-control"
-                           id="species"
-                           name="species"
-                           v-model="form.species"
+                           id="password"
+                           name="password"
+                           v-model="form.password"
                     >
-                    <span class="help-block">{{ errors.get('species') }}</span>
+                    <span class="help-block">{{ errors.get('password') }}</span>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('activity_level') }"
+                     :class="{ 'has-error': errors.has('phone_number') }"
                 >
-                    <label for="activity_level">Activity Level</label>
+                    <label for="phone_number">Phone Number</label>
                     <input type="text"
                            class="form-control"
-                           id="activity_level"
-                           name="activity_level"
-                           v-model="form.activity_level"
+                           id="phone_number"
+                           name="phone_number"
+                           v-model="form.phone_number"
                     >
-                    <span class="help-block">{{ errors.get('activity_level') }}</span>
+                    <span class="help-block">{{ errors.get('phone_number') }}</span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('birthday') }"
+                     :class="{ 'has-error': errors.has('first_name') }"
                 >
-                    <label>Birthday</label>
-                    <datepicker v-model="form.birthday"
-                                id="birthday"
-                                name="birthday"
-                                format="yyyy-MM-dd"
-                                input-class="form-control"
+                    <label>First Name</label>
+                    <input type="text"
+                           v-model="form.first_name"
+                           id="first_name"
+                           name="first_name"
+                           class="form-control"
                     >
-                    </datepicker>
-                    <span class="help-block">{{ errors.get('birthday') }}</span>
+                    <span class="help-block">{{ errors.get('first_name') }}</span>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('weight') }"
+                     :class="{ 'has-error': errors.has('last_name') }"
                 >
-                    <label for="weight">Weight</label>
+                    <label for="last_name">Last Name</label>
                     <input type="text"
                            class="form-control"
-                           id="weight"
-                           name="weight"
-                           v-model="form.weight"
+                           id="last_name"
+                           name="last_name"
+                           v-model="form.last_name"
                     >
-                    <span class="help-block">{{ errors.get('weight') }}</span>
+                    <span class="help-block">{{ errors.get('last_name') }}</span>
                 </div>
             </div>
         </div>
@@ -127,7 +109,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePetCreatorModal()"
+                        @click="closeUserCreatorModal()"
                 >
                     Cancel
                 </button>
@@ -142,17 +124,12 @@
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
     import { mapGetters, mapState, mapActions } from 'vuex';
-    import moment from 'moment';
-    import Datepicker from 'vuejs-datepicker';
-    import { BasicSelect } from 'vue-search-select'
 
 export default {
     mixins: [
         hasErrors
     ],
     components: {
-        Datepicker,
-        BasicSelect,
     },
     data() {
         return {
@@ -163,48 +140,34 @@ export default {
             },
             form: {
                 name: '',
-                breed: '',
-                species: 'dog',
-                weight: null,
-                activity_level: null,
-                birthday: null,
+                email: '',
+                password: '',
+                first_name: null,
+                last_name: null,
+                phone_number: null,
             }
         };
     },
     methods: {
         ...mapActions([
-            'closePetCreatorModal',
-            'addToPetsCollection',
+            'closeUserCreatorModal',
+            'addToUsersCollection',
             'loadUsers',
         ]),
         save() {
             let vm = this;
 
-            let birthday = moment(this.birthday).format('YYYY-MM-DD');
-            let owner_id = this.owner.value;
-            return axios.post('/admin/api/pets', {
-                ...this.form,
-                birthday,
-                owner_id,
-            }).then(response => {
-                vm.$store.commit('addToPetCollection', { pet: response.data });
-                vm.$store.dispatch('closePetCreatorModal');
+            return axios.post('/admin/api/users', this.form
+            ).then(response => {
+                vm.$store.commit('addToUsersCollection', { user: response.data });
+                vm.$store.dispatch('closeUserCreatorModal');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        onSelect(owner) {
-            this.errors.clear('owner_id');
-            this.owner = owner;
-        }
     },
     computed: {
         ...mapState(['show', 'selected', 'users']),
-        ownersSelect() {
-            return this.users.map(user => {
-                return { value: user.id, text: user.name + ' (' + user.id + ')' };
-            });
-        }
     },
     mounted() {
         this.loadUsers();

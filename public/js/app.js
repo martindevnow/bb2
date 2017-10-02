@@ -32745,6 +32745,18 @@ const closePetCreatorModal = context => {
 /* harmony export (immutable) */ __webpack_exports__["closePetCreatorModal"] = closePetCreatorModal;
 
 
+const openUserCreatorModal = context => {
+    context.commit('showUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openUserCreatorModal"] = openUserCreatorModal;
+
+
+const closeUserCreatorModal = context => {
+    context.commit('hideUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
+
+
 const loadCouriers = context => {
     axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
 };
@@ -32889,6 +32901,12 @@ const addToPetsCollection = (state, pet) => {
 /* harmony export (immutable) */ __webpack_exports__["addToPetsCollection"] = addToPetsCollection;
 
 
+const addToUsersCollection = (state, user) => {
+    state.users.unshift(user);
+};
+/* harmony export (immutable) */ __webpack_exports__["addToUsersCollection"] = addToUsersCollection;
+
+
 const populateUsersCollection = (state, data) => {
     state.users = data.map(user => {
         if (!user.pets) {
@@ -32988,6 +33006,18 @@ const hidePetCreatorModal = state => {
 /* harmony export (immutable) */ __webpack_exports__["hidePetCreatorModal"] = hidePetCreatorModal;
 
 
+const showUserCreatorModal = state => {
+    state.show.userCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showUserCreatorModal"] = showUserCreatorModal;
+
+
+const hideUserCreatorModal = state => {
+    state.show.userCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
+
+
 const updateSelectedOrder = (state, payload) => {
     state.selected.order = _extends({}, state.selected.order, payload);
     state.orders = state.orders.filter(order => order.id !== state.selected.order.id);
@@ -33023,7 +33053,8 @@ const updateSelectedOrder = (state, payload) => {
         shippedModal: false,
         deliveredModal: false,
         noteModal: false,
-        petCreatorModal: false
+        petCreatorModal: false,
+        userCreatorModal: false
     }
 });
 
@@ -74297,12 +74328,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_hasErrors__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Form__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuejs_datepicker__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuejs_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vuejs_datepicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_search_select__ = __webpack_require__(230);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_search_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_search_select__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -74427,27 +74452,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
 
 
 
@@ -74455,10 +74459,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_hasErrors__["a" /* default */]],
-    components: {
-        Datepicker: __WEBPACK_IMPORTED_MODULE_4_vuejs_datepicker___default.a,
-        BasicSelect: __WEBPACK_IMPORTED_MODULE_5_vue_search_select__["BasicSelect"]
-    },
+    components: {},
     data() {
         return {
             ownerSearchText: '',
@@ -74468,42 +74469,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             },
             form: {
                 name: '',
-                breed: '',
-                species: 'dog',
-                weight: null,
-                activity_level: null,
-                birthday: null
+                email: '',
+                password: '',
+                first_name: null,
+                last_name: null,
+                phone_number: null
             }
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['closePetCreatorModal', 'addToPetsCollection', 'loadUsers']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['closeUserCreatorModal', 'addToUsersCollection', 'loadUsers']), {
         save() {
             let vm = this;
 
-            let birthday = __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.birthday).format('YYYY-MM-DD');
-            let owner_id = this.owner.value;
-            return axios.post('/admin/api/pets', _extends({}, this.form, {
-                birthday,
-                owner_id
-            })).then(response => {
-                vm.$store.commit('addToPetCollection', { pet: response.data });
-                vm.$store.dispatch('closePetCreatorModal');
+            return axios.post('/admin/api/users', this.form).then(response => {
+                vm.$store.commit('addToUsersCollection', { user: response.data });
+                vm.$store.dispatch('closeUserCreatorModal');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
-        },
-        onSelect(owner) {
-            this.errors.clear('owner_id');
-            this.owner = owner;
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])(['show', 'selected', 'users']), {
-        ownersSelect() {
-            return this.users.map(user => {
-                return { value: user.id, text: user.name + ' (' + user.id + ')' };
-            });
-        }
-    }),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])(['show', 'selected', 'users'])),
     mounted() {
         this.loadUsers();
     }
@@ -74619,7 +74605,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 253 */
@@ -74811,29 +74797,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-12"
-  }, [_c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.errors.has('owner_id')
-    }
-  }, [_c('label', [_vm._v("Owner")]), _vm._v(" "), _c('basic-select', {
-    class: {
-      'has-error': _vm.errors.has('name')
-    },
-    attrs: {
-      "options": _vm.ownersSelect,
-      "selected-option": _vm.owner,
-      "placeholder": "Select Owner..."
-    },
-    on: {
-      "select": _vm.onSelect
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('owner_id')))])], 1)])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group",
@@ -74873,169 +74836,177 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "form-group",
     class: {
-      'has-error': _vm.errors.has('breed')
+      'has-error': _vm.errors.has('email')
     }
   }, [_c('label', {
     attrs: {
-      "for": "breed"
+      "for": "email"
     }
-  }, [_vm._v("Breed")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.breed),
-      expression: "form.breed"
+      value: (_vm.form.email),
+      expression: "form.email"
     }],
     staticClass: "form-control",
     attrs: {
-      "type": "text",
-      "id": "breed",
-      "name": "breed"
+      "type": "email",
+      "id": "email",
+      "name": "email"
     },
     domProps: {
-      "value": (_vm.form.breed)
+      "value": (_vm.form.email)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.breed = $event.target.value
+        _vm.form.email = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('breed')))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.errors.get('email')))])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group",
     class: {
-      'has-error': _vm.errors.has('species')
+      'has-error': _vm.errors.has('password')
     }
   }, [_c('label', {
     attrs: {
-      "for": "species"
+      "for": "password"
     }
-  }, [_vm._v("Species")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Password")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.species),
-      expression: "form.species"
+      value: (_vm.form.password),
+      expression: "form.password"
     }],
     staticClass: "form-control",
     attrs: {
-      "type": "text",
-      "id": "species",
-      "name": "species"
+      "type": "password",
+      "id": "password",
+      "name": "password"
     },
     domProps: {
-      "value": (_vm.form.species)
+      "value": (_vm.form.password)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.species = $event.target.value
+        _vm.form.password = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('species')))])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.errors.get('password')))])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group",
     class: {
-      'has-error': _vm.errors.has('activity_level')
+      'has-error': _vm.errors.has('phone_number')
     }
   }, [_c('label', {
     attrs: {
-      "for": "activity_level"
+      "for": "phone_number"
     }
-  }, [_vm._v("Activity Level")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Phone Number")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.activity_level),
-      expression: "form.activity_level"
+      value: (_vm.form.phone_number),
+      expression: "form.phone_number"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "activity_level",
-      "name": "activity_level"
+      "id": "phone_number",
+      "name": "phone_number"
     },
     domProps: {
-      "value": (_vm.form.activity_level)
+      "value": (_vm.form.phone_number)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.activity_level = $event.target.value
+        _vm.form.phone_number = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('activity_level')))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.errors.get('phone_number')))])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group",
     class: {
-      'has-error': _vm.errors.has('birthday')
+      'has-error': _vm.errors.has('first_name')
     }
-  }, [_c('label', [_vm._v("Birthday")]), _vm._v(" "), _c('datepicker', {
-    attrs: {
-      "id": "birthday",
-      "name": "birthday",
-      "format": "yyyy-MM-dd",
-      "input-class": "form-control"
-    },
-    model: {
-      value: (_vm.form.birthday),
-      callback: function($$v) {
-        _vm.form.birthday = $$v
-      },
-      expression: "form.birthday"
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('birthday')))])], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.errors.has('weight')
-    }
-  }, [_c('label', {
-    attrs: {
-      "for": "weight"
-    }
-  }, [_vm._v("Weight")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("First Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.weight),
-      expression: "form.weight"
+      value: (_vm.form.first_name),
+      expression: "form.first_name"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "weight",
-      "name": "weight"
+      "id": "first_name",
+      "name": "first_name"
     },
     domProps: {
-      "value": (_vm.form.weight)
+      "value": (_vm.form.first_name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.weight = $event.target.value
+        _vm.form.first_name = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v(_vm._s(_vm.errors.get('weight')))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.errors.get('first_name')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.has('last_name')
+    }
+  }, [_c('label', {
+    attrs: {
+      "for": "last_name"
+    }
+  }, [_vm._v("Last Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.last_name),
+      expression: "form.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "last_name",
+      "name": "last_name"
+    },
+    domProps: {
+      "value": (_vm.form.last_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.last_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v(_vm._s(_vm.errors.get('last_name')))])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
@@ -75055,7 +75026,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-default btn-block",
     on: {
       "click": function($event) {
-        _vm.closePetCreatorModal()
+        _vm.closeUserCreatorModal()
       }
     }
   }, [_vm._v("\n                Cancel\n            ")])])])])

@@ -35,6 +35,10 @@ export const addToPetsCollection = (state, pet) => {
     state.pets.unshift(pet);
 };
 
+export const addToUsersCollection = (state, user) => {
+    state.users.unshift(user);
+};
+
 export const populateUsersCollection = (state, data) => {
     state.users = data.map(user => {
         if (! user.pets) {
@@ -103,6 +107,14 @@ export const showPetCreatorModal = (state) => {
 
 export const hidePetCreatorModal = (state) => {
     state.show.petCreatorModal = false;
+};
+
+export const showUserCreatorModal = (state) => {
+    state.show.userCreatorModal = true;
+};
+
+export const hideUserCreatorModal = (state) => {
+    state.show.userCreatorModal = false;
 };
 
 export const updateSelectedOrder = (state, payload) => {

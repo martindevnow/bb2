@@ -21,5 +21,6 @@ export default {
         deliveredModal: false,
         noteModal: false,
         petCreatorModal: false,
+        userCreatorModal: false,
     }
 }

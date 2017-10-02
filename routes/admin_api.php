@@ -39,8 +39,4 @@ Route::get('meats', function() {
     return Meat::all();
 });
 
-Route::get('users', function() {
-    return User::with([
-        'pets'
-    ])->get();
-});
+Route::resource('users', 'UsersController');
