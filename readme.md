@@ -180,3 +180,57 @@ IT Project Management
   * then, add in the first payment logger...
   * then, add in each additional logger
     * search for patterns, extract to mixin or helper classes (or even models where appropriate)...
+    
+**Orders, When to Generate and How to Manage Forecasting Meat to Order and What to Pack**
+* a user signs up for the website..
+  * the fastest turnaround EVER would be 24h... this is un reliable..
+  * realistically, we would say earliest would be order_date + 3 days.. (3 business days..)
+    * orders placed on monday would be **shipped** by monday... this is an important distinction
+    * we may be using mostly same day couriers for most of the shipping now, but in the future, we might not be able to do so. 
+      * the cost of shipping and lead times, etc needs to be resolved elsewhere too......
+      * for lead times, we need to have some estimate.. keep in mind this is just for the first shipment.... 
+      * after the first one, it will be more regular., so there is no "delay" in the shipment.
+      * there is still lead time in terms of when we start preparing the order vs when we ship it out.. we need to account for that
+      * however, the lead time of the first shipment is an *additional** 2-3 days.. 
+      * this gives us the time to receive the order into our system and pack and prepare the order.
+  * for people in the GTA, lead time should be 3 days (then same day shipment)
+  * southern ontario should be 4 days (3 + 1 for overnight shipping)
+  * for outside southern ontario, we need to do some proper analysis to understand when the first shipment would be
+  * but we still need to give the customer an estimate of when the shipment should arrive
+  * this might need to be done on a case by case basis.... so, order generation will be hard. 
+    * (or rather knowing when the next order needs to be delivered by...)
+
+So....
+
+* if we track when an plan is created... the FIRST order might be manual... to say we input the delivery by date..
+* the user creates the plan, within 24h, we arrange with the customer when the first delivery should be...
+* then, we will know what the shipping method will be... self-delivered, same-day courier, or national courier...
+* then we can schedule the first shipment on the first order... 
+* when an order is packed, we confirm shipment size
+* when it is shipped, it is again confirmed...
+
+
+One thing to realize, is if we order meat based on the next 2 weeks of orders.. we cannot mark these orders as having had meat ordered for them
+* because if we get new customers, we will consume meat not ordered FOR them... this meat was ordered for existing customers
+* we cannot track how much meat we have on hand according to the way tht vivian is using the meat.
+ 
+
+
+
+
+Orders should not be generated if there is an open order that is no packed yet.
+* if the most recent order has already been packed, then we can generate the next order.. that will allow us to see how far in advance we are..
+
+this will solve the problem of knowing what to pack and when...
+
+ordering meat...
+* that will require having the "packed" orders up to date...
+* then we can pull all the orders that need to be packed and use those..
+* we can also allow the person placing the meat order to select a date they would like to NEXT order meat.
+* then we would look at the plans we have, and any that will ship an order prior to that date will need to be included in this estimate
+
+**note** that i said SHIP an order... 
+* we need to be careful of this because we will need to be aware of lead times when it comes to shipments 
+* otherwise, if an order is to be delivered the day AFTER the date the person placing the order chooses, then that order won't be considered
+* this is dangerous if that order was supposed to ship within the timeframe selected (due to lead times)
+  
