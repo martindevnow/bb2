@@ -20,6 +20,10 @@ Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 // Meats
 Route::resource('/meats', 'MeatsController');
 
+// Order Exporter
+Route::get('/orders/exporter', 'OrdersExporterController@index');
+Route::post('/orders/exporter/prepare', 'OrdersExporterController@prepare');
+
 // Orders
 Route::get('/orders/{order}/paid', 'OrdersController@createPayment');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');

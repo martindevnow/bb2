@@ -334,12 +334,26 @@ class Plan extends Model
      */
 
     /**
+     * TODO: Seriously think about the data flow here and how
+     * each part will know the status of each other.. what happens in the flow
+     * and when to notify each other that more food needs to be packed
+     * or whatnot
+     *
      * @return mixed
      */
     public function getNextDeliveryDate() {
-        if (! $this->latest_delivery_at)
+        if ( ! $this->plans()->count() && ! $this->latest_delivery_at)
             return $this->created_at
                 ->addDays(4);
+
+        if ($this->plans()->count()) {
+            $latestOrder = $this->getLatestOrder();
+
+            $weeks_of_food = $latestOrder->weeks_shipped
+                || $latestOrder->weeks_packed
+                || $this->weeks_of_food_per_shipment;
+
+        }
 
         return $this->latest_delivery_at
             ->addDays($this->weeks_of_food_per_shipment * 7);

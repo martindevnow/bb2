@@ -390,4 +390,16 @@ class PlansUnitTest extends TestCase
 
         $this->assertCount(1, Order::all());
     }
+
+    /** @test */
+    public function a_plan_knows_when_the_next_order_is_needed() {
+        $order = $this->createOrderForBasicPlan();
+
+        echo "### Order ###";
+        print_r($order->toArray());
+        echo "### Plan ###";
+        print_r($order->plan->toArray());
+
+        $next_order_date = $order->plan->getNextDeliveryDate();
+    }
 }
