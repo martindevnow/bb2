@@ -342,17 +342,24 @@ class Plan extends Model
      * @return mixed
      */
     public function getNextDeliveryDate() {
-        if ( ! $this->plans()->count() && ! $this->latest_delivery_at)
-            return $this->created_at
-                ->addDays(4);
+        // TODO: Make the lead time take weekends and holidays into account
+        // AND consider the delivery address for this plan too...
+        $lead_time_in_days = 4;
 
-        if ($this->plans()->count()) {
+        // First Order Ever
+        if ( ! $this->orders()->count() && ! $this->latest_delivery_at)
+            return $this->created_at
+                ->addDays($lead_time_in_days);
+
+        // Second Order Ever
+        if ($this->orders()->count() && ! $this->latest_delivery_at) {
             $latestOrder = $this->getLatestOrder();
 
-            $weeks_of_food = $latestOrder->weeks_shipped
-                || $latestOrder->weeks_packed
-                || $this->weeks_of_food_per_shipment;
+            $weeks_delay = $latestOrder->weeks_shipped ?:
+                 $latestOrder->weeks_packed ?:
+                 $this->ships_every_x_weeks;
 
+            return $latestOrder->deliver_by->addDays($weeks_delay * 7);
         }
 
         return $this->latest_delivery_at

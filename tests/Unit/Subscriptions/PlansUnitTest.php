@@ -392,14 +392,141 @@ class PlansUnitTest extends TestCase
     }
 
     /** @test */
-    public function a_plan_knows_when_the_next_order_is_needed() {
-        $order = $this->createOrderForBasicPlan();
+    public function a_weekly_plan_with_no_orders_knows_when_the_next_order_is_needed() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
 
-        echo "### Order ###";
-        print_r($order->toArray());
-        echo "### Plan ###";
-        print_r($order->plan->toArray());
+        $next_delivery_date = $plan->getNextDeliveryDate();
+        $today = Carbon::now();
 
-        $next_order_date = $order->plan->getNextDeliveryDate();
+        // TODO: Make the lead time determined by business days,
+        // TODO: AND where the delivery address is...
+        $lead_time_in_days = 4;
+
+        $order = $plan->generateOrder();
+        $this->assertEquals(
+            $order->deliver_by->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+
+        $this->assertEquals(
+            $today->addDays($lead_time_in_days)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
     }
+
+    /** @test */
+    public function a_weekly_plan_with_one_order_knows_when_the_next_order_should_bew_delivered_by() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
+
+        $previousOrder = $plan->generateOrder();
+
+        $plan = $plan->fresh(['orders']);
+        $next_delivery_date = $plan->getNextDeliveryDate();
+
+        $days_delay = $plan->ships_every_x_weeks * 7;
+
+        $this->assertEquals(
+            $previousOrder->deliver_by->addDays($days_delay)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_biweekly_plan_with_no_orders_knows_when_the_next_order_is_needed() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 2,
+            'ships_every_x_weeks'           => 2,
+        ]);
+
+        $next_delivery_date = $plan->getNextDeliveryDate();
+        $today = Carbon::now();
+
+        // TODO: Make the lead time determined by business days,
+        // TODO: AND where the delivery address is...
+        $lead_time_in_days = 4;
+
+        $order = $plan->generateOrder();
+        $this->assertEquals(
+            $order->deliver_by->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+
+        $this->assertEquals(
+            $today->addDays($lead_time_in_days)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_biweekly_plan_with_one_order_knows_when_the_next_order_should_bew_delivered_by() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 2,
+            'ships_every_x_weeks'           => 2,
+        ]);
+
+        $previousOrder = $plan->generateOrder();
+
+        $plan = $plan->fresh(['orders']);
+        $next_delivery_date = $plan->getNextDeliveryDate();
+
+        $days_delay = $plan->ships_every_x_weeks * 7;
+
+        $this->assertEquals(
+            $previousOrder->deliver_by->addDays($days_delay)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_biweekly_shipping_plan_with_no_orders_knows_when_the_next_order_is_needed() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 2,
+        ]);
+
+        $next_delivery_date = $plan->getNextDeliveryDate();
+        $today = Carbon::now();
+
+        // TODO: Make the lead time determined by business days,
+        // TODO: AND where the delivery address is...
+        $lead_time_in_days = 4;
+
+        $order = $plan->generateOrder();
+        $this->assertEquals(
+            $order->deliver_by->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+
+        $this->assertEquals(
+            $today->addDays($lead_time_in_days)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_biweekly_shipping_plan_with_one_order_knows_when_the_next_order_should_bew_delivered_by() {
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 2,
+        ]);
+
+        $previousOrder = $plan->generateOrder();
+
+        $plan = $plan->fresh(['orders']);
+        $next_delivery_date = $plan->getNextDeliveryDate();
+
+        $days_delay = $plan->ships_every_x_weeks * 7;
+
+        $this->assertEquals(
+            $previousOrder->deliver_by->addDays($days_delay)->format('Y-m-d'),
+            $next_delivery_date->format('Y-m-d')
+        );
+    }
+
 }
