@@ -267,18 +267,6 @@ class Plan extends Model
     }
 
     /**
-     * @return Carbon
-     */
-    public function getNextOrderDate() {
-        if (! $this->hasOrders())
-            return Carbon::now();
-
-        return $this->getLatestOrder()
-            ->created_at
-            ->addDays(7 * $this->weeks_of_food_per_shipment);
-    }
-
-    /**
      * @param Meal|null $meal
      * @return mixed
      */
@@ -355,6 +343,7 @@ class Plan extends Model
         if ($this->orders()->count() && ! $this->latest_delivery_at) {
             $latestOrder = $this->getLatestOrder();
 
+//            dd($latestOrder->toArray());
             $weeks_delay = $latestOrder->weeks_shipped ?:
                  $latestOrder->weeks_packed ?:
                  $this->ships_every_x_weeks;

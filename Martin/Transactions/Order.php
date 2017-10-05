@@ -139,17 +139,16 @@ class Order extends Model
      * @return $this
      */
     public function markAsPacked($data = null) {
-        $this->reduceMeatInventory(null, $data['weeks_packed']);
+        $numberOfWeeks = isset($data['weeks_packed']) ? $data['weeks_packed'] : $this->plan->weeks_of_food_per_shipment;
+        $packageId = isset($data['packed_package_id']) ? $data['packed_package_id'] : $this->plan->package_id;
+
+        $this->reduceMeatInventory($numberOfWeeks, $packageId);
         $this->increaseMealInventory();
 
         $this->packed = true;
-        if ($data) {
-            $this->weeks_packed = $data['weeks_packed'];
-            $this->packed_package_id = $data['packed_package_id'];
-        } else {
-            $this->weeks_packed = $this->plan->weeks_of_food_per_shipment;
-            $this->packed_package_id = $this->plan->package_id;
-        }
+
+        $this->weeks_packed = $numberOfWeeks;
+        $this->packed_package_id = $packageId;
 
         $this->save();
 
@@ -177,6 +176,10 @@ class Order extends Model
     public function markAsShipped(Delivery $delivery) {
         $delivery->recipient_id = $this->customer_id;
         $this->delivery()->save($delivery);
+
+        $this->shipped_at = $delivery->shipped_at;
+        $this->weeks_shipped = $delivery->weeks_shipped;
+        $this->shipped_package_id = $delivery->shipped_package_id;
 
         $this->shipped = true;
         $this->save();

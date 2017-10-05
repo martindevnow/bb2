@@ -29,12 +29,11 @@ class OrdersController extends Controller
      * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function storePayment(Order $order, Request $request) {
-        $this->validate($request, [
+        $paymentData = $request->validate([
             'format'        => 'required',
             'amount_paid'   => 'required|numeric|min:1',
             'received_at'   => 'required|date_format:Y-m-d',
         ]);
-        $paymentData = $request->only(['format', 'amount_paid', 'received_at']);
         $paymentData['customer_id'] = $order->customer_id;
         $paymentData['collector_id'] = Auth::user()->id;
 
@@ -52,15 +51,12 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function markAsPacked(Order $order, Request $request) {
-        $this->validate($request, [
+        $packedData = $request->validate([
             'weeks_packed'      => 'required|integer|min:1',
             'packed_package_id' => 'required|exists:packages,id',
         ]);
 
-        $order->markAsPacked($request->only([
-            'weeks_packed',
-            'packed_package_id',
-        ]));
+        $order->markAsPacked($packedData);
 
         return response('success', 200);
     }
@@ -75,18 +71,13 @@ class OrdersController extends Controller
     }
 
     public function storeShipment(Order $order, Request $request) {
-        $this->validate($request, [
-            'courier_id'    => 'required|exists:couriers,id',
-            'shipped_at'    => 'required|date_format:Y-m-d',
-            'weeks_shipped' => 'required|integer|min:1',
+        $deliveryData = $request->validate([
+            'courier_id'            => 'required|exists:couriers,id',
+            'shipped_at'            => 'required|date_format:Y-m-d',
+            'weeks_shipped'         => 'required|integer|min:1',
             'shipped_package_id'    => 'required|exists:packages,id',
-        ]);
-
-        $deliveryData = $request->only([
-            'courier_id',
-            'shipped_at',
-            'tracking_number',
-            'instructions'
+            'tracking_number'       => '',
+            'instructions'          => '',
         ]);
 
         $delivery = Delivery::make($deliveryData);
@@ -95,7 +86,7 @@ class OrdersController extends Controller
     }
 
     public function storeDelivery(Order $order, Request $request) {
-        $this->validate($request, [
+        $request->validate([
             'delivered_at'    => 'required|date_format:Y-m-d',
         ]);
 

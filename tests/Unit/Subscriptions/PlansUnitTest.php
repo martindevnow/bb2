@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
+use Martin\Delivery\Delivery;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\CostModel;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
+use Martin\Transactions\Payment;
 use Tests\TestCase;
 
 class PlansUnitTest extends TestCase
@@ -529,4 +531,68 @@ class PlansUnitTest extends TestCase
         );
     }
 
+    /** @test */
+    public function a_plan_with_a_order_marked_as_packed_different_from_the_plan_knows_the_next_delivery_date() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
+
+        /** @var Order $initialOrder */
+        $initialOrder = $plan->generateOrder();
+
+        $weeks_packed = 2;
+        $packingData = compact('weeks_packed');
+
+        $payment = factory(Payment::class)->make();
+        $initialOrder->markAsPaid($payment);
+        $initialOrder->markAsPacked($packingData);
+
+        $nextOrderDate = $plan->getNextDeliveryDate();
+
+        $this->assertEquals(
+            $initialOrder->deliver_by->addDays($weeks_packed * 7)->format('Y-m-d'),
+            $nextOrderDate->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_with_a_order_marked_as_shipped_different_from_the_plan_knows_the_next_delivery_date() {
+        /** @var Plan $plan */
+        $plan = factory(Plan::class)->create([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
+
+        /** @var Order $initialOrder */
+        $initialOrder = $plan->generateOrder();
+
+        $weeks_packed = 1;
+        $weeks_shipped = 2;
+        $packingData = compact('weeks_packed');
+
+        $payment = factory(Payment::class)->make();
+        $initialOrder->markAsPaid($payment);
+        $initialOrder->markAsPacked($packingData);
+        $initialOrder->markAsPicked();
+
+        $deliveryData = [
+            'courier_id'    => 1,
+            'shipped_at'    => Carbon::now(),
+            'weeks_shipped' => $weeks_shipped,
+        ];
+
+        $delivery = factory(Delivery::class)->create($deliveryData);
+        $initialOrder->markAsShipped($delivery);
+
+        $plan = $plan->fresh(['orders']);
+
+        $nextOrderDate = $plan->getNextDeliveryDate();
+
+        $this->assertEquals(
+            $initialOrder->deliver_by->addDays($weeks_shipped * 7)->format('Y-m-d'),
+            $nextOrderDate->format('Y-m-d')
+        );
+    }
 }
