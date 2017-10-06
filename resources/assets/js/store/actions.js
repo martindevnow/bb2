@@ -56,6 +56,14 @@ export const closePetCreatorModal = (context) => {
     context.commit('hidePetCreatorModal');
 };
 
+export const openPackageCreatorModal = (context) => {
+    context.commit('showPackageCreatorModal');
+};
+
+export const closePackageCreatorModal = (context) => {
+    context.commit('hidePackageCreatorModal');
+};
+
 export const openUserCreatorModal = (context) => {
     context.commit('showUserCreatorModal');
 };
