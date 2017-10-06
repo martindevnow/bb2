@@ -22,6 +22,8 @@ class PlansUnitTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $firstOrderLeadTime = 4;
+
     /** @test */
     public function it_has_a_model_factory() {
         $plan = factory(Plan::class)->create();
@@ -119,8 +121,8 @@ class PlansUnitTest extends TestCase
         ]);
 
         $this->assertEquals(
-            Carbon::now()->format('Y-m-d'),
-            $plan->getNextOrderDate()->format('Y-m-d')
+            Carbon::now()->addDays($this->firstOrderLeadTime)->format('Y-m-d'),
+            $plan->getNextDeliveryDate()->format('Y-m-d')
         );
     }
 
@@ -132,28 +134,35 @@ class PlansUnitTest extends TestCase
         ]);
 
         $this->assertEquals(
-            Carbon::now()->format('Y-m-d'),
-            $plan->getNextOrderDate()->format('Y-m-d')
+            Carbon::now()->addDays($this->firstOrderLeadTime)->format('Y-m-d'),
+            $plan->getNextDeliveryDate()->format('Y-m-d')
         );
     }
 
     /** @test */
-    public function a_plan_knows_when_the_next_order_should_be_generated() {
+    public function a_plan_knows_when_the_next_order_should_be_generated_weekly() {
         /** @var Plan $plan */
         $plan = factory(Plan::class)->create([
             'weeks_of_food_per_shipment'   => 1,
+            'ships_every_x_weeks'   => 1,
         ]);
-        $plan->generateOrder();
+
+        $order = $plan->generateOrder();
 
         $this->assertEquals(
-            Carbon::now()->addDays(7)->format('Y-m-d'),
-            $plan->getNextOrderDate()->format('Y-m-d')
+            Carbon::now()->addDays($this->firstOrderLeadTime)->format('Y-m-d'),
+            $order->deliver_by->format('Y-m-d')
+        );
+
+        $plan = $plan->fresh(['orders']);
+
+        $this->assertEquals(
+            Carbon::now()->addDays(7 + $this->firstOrderLeadTime)->format('Y-m-d'),
+            $plan->getNextDeliveryDate()->format('Y-m-d')
         );
 
         $newOrder = $plan->generateOrder();
         $this->assertTrue($newOrder instanceof Order);
-//        $newOrder->dlive
-
     }
 
     /** @test */
@@ -161,12 +170,20 @@ class PlansUnitTest extends TestCase
         /** @var Plan $plan */
         $plan = factory(Plan::class)->create([
             'weeks_of_food_per_shipment'   => 2,
+            'ships_every_x_weeks'   => 2,
         ]);
-        $plan->generateOrder();
+        $order = $plan->generateOrder();
 
         $this->assertEquals(
-            Carbon::now()->addDays(2 * 7)->format('Y-m-d'),
-            $plan->getNextOrderDate()->format('Y-m-d')
+            $delivery = Carbon::now()->addDays($this->firstOrderLeadTime)->format('Y-m-d'),
+            $order->deliver_by->format('Y-m-d')
+        );
+
+        $plan = $plan->fresh(['orders']);
+
+        $this->assertEquals(
+            $delivery = Carbon::now()->addDays(2 * 7 + $this->firstOrderLeadTime)->format('Y-m-d'),
+            $plan->getNextDeliveryDate()->format('Y-m-d')
         );
     }
 

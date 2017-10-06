@@ -57,7 +57,7 @@ class GenerateOrders extends Command
                  return true;
 
             /** @var Carbon $nextDeliveryDate */
-            $nextDeliveryDate = $plan->getNextOrderDate();
+            $nextDeliveryDate = $plan->getNextDeliveryDate();
             return $nextDeliveryDate->lessThanOrEqualTo($weekFromToday);
         });
         $this->line('There are '. $plansNeedingNewOrders->count() . ' orders to be made...');

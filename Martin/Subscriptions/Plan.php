@@ -343,7 +343,6 @@ class Plan extends Model
         if ($this->orders()->count() && ! $this->latest_delivery_at) {
             $latestOrder = $this->getLatestOrder();
 
-//            dd($latestOrder->toArray());
             $weeks_delay = $latestOrder->weeks_shipped ?:
                  $latestOrder->weeks_packed ?:
                  $this->ships_every_x_weeks;
