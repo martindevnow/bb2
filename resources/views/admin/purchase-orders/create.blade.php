@@ -12,39 +12,41 @@
         <!-- widget div-->
         <div role="content">
 
-            <div class="widget-body smart-form">
+            <div class="widget-body no-padding smart-form">
 
-                <form action="/admin/meats/order" method="POST">
-                    <header>Generate a Meat Purchase Order
-                    </header>
+                <form action="/admin/purchase-orders" method="POST">
+                    <header>Generate a Meat Purchase Order</header>
 
                     <?= csrf_field() ?>
 
                     <fieldset>
-                        <div class="row">
-                            <div class="col-sm-9">
-                                Plan (Customer and Package)
-                            </div>
-                            <div class="col-sm-3">
-                                # of Weeks
-                            </div>
-                        </div>
-                        @foreach($plans as $plan)
-                            <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-7">
-                                    <b>{{ $plan->package->label }}</b> Bento for <u>{{ $plan->pet->name }}</u> <em>({{ $plan->customer->name }})</em>
-                                </div>
-                                <div class="col-sm-2">
-                                    <input type="text"
-                                           id="plan_id_{{ $plan->id }}"
-                                           name="plan_id_{{ $plan->id }}"
-                                           value="{{ $plan->weeks_of_food_per_shipment }}"
-                                           class="form-control">
-                                </div>
-                                <div class="col-sm-2"></div>
-                            </div>
-                        @endforeach
+                        <table class="table table-bordered table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Plan</th>
+                                <th>Dog (Weight)</th>
+                                <th># of Weeks</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($plans as $plan)
+
+                                <tr>
+                                <td><b>{{ $plan->package->label }}</b> Bento (<em>{{ $plan->customer->name }}</em>)</td>
+                                <td><u>{{ $plan->pet->name }}</u> ({{ $plan->pet_weight }} lb)</td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        <input type="text"
+                                               id="plan_id_{{ $plan->id }}"
+                                               name="plan_id[{{ $plan->id }}]"
+                                               value="{{ $plan->weeks_of_food_per_shipment }}"
+                                               class="form-control">
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
 
                     </fieldset>
 

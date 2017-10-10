@@ -135,6 +135,9 @@ class Plan extends Model
         });
     }
 
+    public function scopeActive(Builder $query) {
+        return $query->where('active', true);
+    }
 
     /**
      * Mutators

@@ -8,7 +8,7 @@ use Martin\Subscriptions\Package;
 use Martin\Vendors\PurchaseOrder;
 use Tests\TestCase;
 
-class MeatOrdersTest extends TestCase
+class PurchaseOrdersTest extends TestCase
 {
     use RefreshDatabase;
 
