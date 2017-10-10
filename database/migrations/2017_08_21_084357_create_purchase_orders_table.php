@@ -16,14 +16,14 @@ class CreatePurchaseOrdersTable extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('vendor_id');
+            $table->integer('vendor_id')->nullable();
 
-            $table->integer('total');
+            $table->integer('total')->default(0);
 
-            $table->boolean('ordered');
+            $table->boolean('ordered')->default(0);
             $table->dateTime('ordered_at')->nullable();
 
-            $table->boolean('received')->default(false);
+            $table->boolean('received')->default(0);
             $table->dateTime('received_at')->nullable();
 
             $table->timestamps();

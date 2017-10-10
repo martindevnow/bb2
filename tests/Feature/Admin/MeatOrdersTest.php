@@ -5,11 +5,51 @@ namespace Tests\Feature\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
+use Martin\Vendors\PurchaseOrder;
 use Tests\TestCase;
 
 class MeatOrdersTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function a_purchase_order_knows_if_it_has_an_item() {
+        $meat = factory(Meat::class)->create();
+        $po = PurchaseOrder::create();
+
+        $po->addItem($meat, 1);
+
+        $po = $po->fresh(['details']);
+        $this->assertTrue($po->hasItem($meat) != false);
+    }
+
+    /** @test */
+    public function a_purchase_order_knows_if_it_doesnt_have_an_item() {
+        $meat = factory(Meat::class)->create();
+        $po = PurchaseOrder::create();
+
+        $po = $po->fresh(['details']);
+        $this->assertTrue($po->hasItem($meat) == false);
+    }
+
+    /** @test */
+    public function a_purchase_order_can_add_the_meats() {
+        $order[] = $this->createOrderForBasicPlan();
+        $order[] = $this->createOrderForBasicPlan();
+
+        $plans[] = $order[0]->plan;
+        $plans[] = $order[1]->plan;
+
+        $purchaseOrder = PurchaseOrder::create();
+        foreach ($plans as $plan) {
+            $purchaseOrder->addPlanToOrder($plan, 1);
+        }
+
+        $purchaseOrder = $purchaseOrder->fresh(['details']);
+        foreach ($purchaseOrder->details as $detail) {
+            $this->assertEquals(50 * 0.02 * 7 * 454, $detail->quantity);
+        }
+    }
 
     /** @test */
     public function a_plan_can_return_the_meat_needed_to_fill_an_order() {
@@ -70,7 +110,7 @@ class MeatOrdersTest extends TestCase
 
 
     }
-    /** @test */
+    /**  */
     public function a_plan_can_return_the_meat_needed_to_fill_two_orders() {
         $order[] = $this->createOrderForBasicPlan();
         $order[] = $this->createOrderForBasicPlan();
@@ -89,6 +129,7 @@ class MeatOrdersTest extends TestCase
                 $meatOrder[$code] += $weight;
             }
         }
-
     }
+
+
 }
