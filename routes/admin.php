@@ -18,6 +18,8 @@ Route::post('/meals/{meal}/addTopping', 'MealsController@addTopping');
 Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 
 // Meats
+Route::get('/meat-orders', 'MeatOrdersController@create');
+Route::post('/meat-orders', 'MeatOrdersController@store');
 Route::resource('/meats', 'MeatsController');
 
 // Order Exporter

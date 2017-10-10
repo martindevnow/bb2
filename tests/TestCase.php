@@ -60,16 +60,28 @@ abstract class TestCase extends BaseTestCase
     }
 
     public function createOrderForBasicPlan() {
-        $package = factory(Package::class)->create();
+        $package = factory(Package::class)->create([
+            'code'  => 'Basic Package',
+        ]);
 
-        $chkMeal = factory(Meal::class)->create();
-        $turkMeal = factory(Meal::class)->create();
+        $chkMeal = factory(Meal::class)->create([
+            'code'  => 'chickenMeal',
+        ]);
+        $turkMeal = factory(Meal::class)->create([
+            'code'  => 'chickenMeal',
+        ]);
 
         $chickenCost = 1;
         $turkeyCost = 6;
 
-        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
-        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+        $chicken = factory(Meat::class)->create([
+            'code'  => 'chicken',
+            'cost_per_lb' => $chickenCost
+        ]);
+        $turkey = factory(Meat::class)->create([
+            'code'  => 'turkey',
+            'cost_per_lb' => $turkeyCost
+        ]);
 
         $chkMeal->addMeat($chicken);
         $turkMeal->addMeat($turkey);
