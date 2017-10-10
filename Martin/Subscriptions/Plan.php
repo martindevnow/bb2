@@ -324,8 +324,6 @@ class Plan extends Model
         $mealSize = $this->pet->mealSizeInGrams();
         $packageMealWeights[$this->package->code] += $mealSize / 454 * 14;
 
-
-
         foreach ($this->package->meals as $meal) {
             foreach ($meal->meats as $meat) {
                 if ( ! isset($meatWeights[$meat->code]))

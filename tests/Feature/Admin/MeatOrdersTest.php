@@ -51,9 +51,12 @@ class MeatOrdersTest extends TestCase
 //            }
 //        }
 
-        $meats = $plan->package->meals->map(function($meal) {
-            return $meal->meats;
-        })->flatten()->unique('id');
+        $meats = $plan->package->meals
+            ->map(function($meal) {
+                return $meal->meats;
+            })
+            ->flatten()
+            ->unique('id');
 
         $meatWeights = $plan->getMeatWeightsByCode();
 
@@ -65,6 +68,27 @@ class MeatOrdersTest extends TestCase
         $this->assertEquals(50 * 0.02 * 7 / 2 * 454,
             $meatWeights[$meat->code]);
 
+
+    }
+    /** @test */
+    public function a_plan_can_return_the_meat_needed_to_fill_two_orders() {
+        $order[] = $this->createOrderForBasicPlan();
+        $order[] = $this->createOrderForBasicPlan();
+
+        $plans[] = $order[0]->plan;
+        $plans[] = $order[1]->plan;
+
+
+        foreach ($plans as $plan) {
+            $meatWeights = $plan->getMeatWeightsByCode();
+
+            foreach($meatWeights as $code => $weight) {
+                if ( ! isset($meatOrder[$code]))
+                    $meatOrder[$code] = 0;
+
+                $meatOrder[$code] += $weight;
+            }
+        }
 
     }
 }
