@@ -14,16 +14,57 @@ class MeatOrdersTest extends TestCase
     /** @test */
     public function a_plan_can_return_the_meat_needed_to_fill_an_order() {
         $order = $this->createOrderForBasicPlan();
+        $order2 = $this->createOrderForBasicPlan();
 
         $plan = $order->plan;
+        $plan2 = $order->plan;
 
-        $packages = Package::all()->map(function($package) {
-            return $package->code;
-        })->flatten();
+//        $packages = Package::all();
+//        $packageMealWeights = $packages->pluck('code')
+//            ->flip()
+//            ->map(function($val) {
+//                return 0;
+//            })
+//            ->toArray();
+//
+//        $meats = Meat::all();
+//        $meatWeights = $meats->pluck('code')->flip()->map(function($val) {
+//            return 0;
+//        })->toArray();
+//
+//
+////        foreach($plans as $plan) {
+//        $mealSize = $plan->pet->mealSizeInGrams();
+//        $packageMealWeights[$plan->package->code] += $mealSize / 454 * 14;
+////        }
+//
+//        print_r($packageMealWeights);
+//
+//        foreach ($packages as $package) {
+//            if ($packageMealWeights[$package->code] <= 0)
+//                continue;
+//
+//            foreach ($package->meals as $meal) {
+//                foreach ($meal->meats as $meat) {
+//                    $meatWeights[$meat->code] += $mealSize;
+//                }
+//            }
+//        }
 
-        foreach ($packages as $key => $val) {
-            echo "The Key is " . $key . " and the $val is " . $val . " \n\r ";
-        }
+        $meats = $plan->package->meals->map(function($meal) {
+            return $meal->meats;
+        })->flatten()->unique('id');
+
+        $meatWeights = $plan->getMeatWeightsByCode();
+
+        $meat = $meats->pop();
+        $this->assertEquals(50 * 0.02 * 7 / 2 * 454,
+            $meatWeights[$meat->code]);
+
+        $meat = $meats->pop();
+        $this->assertEquals(50 * 0.02 * 7 / 2 * 454,
+            $meatWeights[$meat->code]);
+
 
     }
 }

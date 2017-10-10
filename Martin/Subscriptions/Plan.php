@@ -14,6 +14,7 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
+use Martin\Products\Meat;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -315,6 +316,26 @@ class Plan extends Model
         ]);
     }
 
+    public function getMeatWeightsByCode() {
+
+        $packageMealWeights = [$this->package->code => 0];
+        $meatWeights = [];
+
+        $mealSize = $this->pet->mealSizeInGrams();
+        $packageMealWeights[$this->package->code] += $mealSize / 454 * 14;
+
+
+
+        foreach ($this->package->meals as $meal) {
+            foreach ($meal->meats as $meat) {
+                if ( ! isset($meatWeights[$meat->code]))
+                    $meatWeights[$meat->code] = 0;
+
+                $meatWeights[$meat->code] += $mealSize;
+            }
+        }
+        return $meatWeights;
+    }
 
 
     /**
