@@ -18,7 +18,6 @@ export default class Errors {
     }
 
     clear(field) {
-        console.log('clearing .. ' + field);
         delete this.errors[field];
     }
 

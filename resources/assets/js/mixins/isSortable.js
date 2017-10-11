@@ -18,8 +18,6 @@ export default {
 
             let sortKey = this.sortable.sortKey;
             let filterKey = this.sortable.filterKey && this.sortable.filterKey.toLowerCase();
-            console.log('sortKey', sortKey);
-            console.log('filterKey', filterKey);
 
             let order = this.sortOrders[sortKey] || 1;
             // let data = this.collection;

@@ -7833,8 +7833,6 @@ let eventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
             let sortKey = this.sortable.sortKey;
             let filterKey = this.sortable.filterKey && this.sortable.filterKey.toLowerCase();
-            console.log('sortKey', sortKey);
-            console.log('filterKey', filterKey);
 
             let order = this.sortOrders[sortKey] || 1;
             // let data = this.collection;
@@ -52151,18 +52149,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['closePetCreatorModal', 'addToPetsCollection', 'loadUsers']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('pets', ['closePetCreatorModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["d" /* mapMutations */])('pets', ['addToPetsCollection']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('users', ['loadUsers']), {
         save() {
             let vm = this;
-
-            let birthday = __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.birthday).format('YYYY-MM-DD');
+            let birthday = this.birthday ? __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.birthday).format('YYYY-MM-DD') : null;
             let owner_id = this.owner.value;
             return axios.post('/admin/api/pets', _extends({}, this.form, {
                 birthday,
                 owner_id
             })).then(response => {
-                vm.$store.commit('addToPetCollection', { pet: response.data });
-                vm.$store.dispatch('closePetCreatorModal');
+                vm.addToPetsCollection(response.data);
+                vm.closePetCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -52172,7 +52169,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.owner = owner;
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])(['show', 'selected', 'users']), {
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])('pets', ['show', 'selected']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])('users', {
+        'users': 'collection'
+    }), {
         ownersSelect() {
             return this.users.map(user => {
                 return { value: user.id, text: user.name + ' (' + user.id + ')' };
@@ -52281,8 +52280,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.loadPets();
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['loadPets', 'openPetCreatorModal', 'closePetCreatorModal'])),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['pets', 'show']))
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('pets', ['loadPets', 'openPetCreatorModal', 'closePetCreatorModal'])),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('pets', ['collection', 'show']))
 });
 
 /***/ }),
@@ -53967,7 +53966,6 @@ class Errors {
     }
 
     clear(field) {
-        console.log('clearing .. ' + field);
         delete this.errors[field];
     }
 
@@ -53984,28 +53982,6 @@ class Errors {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const openPetCreatorModal = context => {
-    context.commit('showPetCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPetCreatorModal"] = openPetCreatorModal;
-
-
-const closePetCreatorModal = context => {
-    context.commit('hidePetCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePetCreatorModal"] = closePetCreatorModal;
-
-
-const openUserCreatorModal = context => {
-    context.commit('showUserCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openUserCreatorModal"] = openUserCreatorModal;
-
-
-const closeUserCreatorModal = context => {
-    context.commit('hideUserCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
 
 
 const loadMeats = context => {
@@ -54018,18 +53994,6 @@ const loadPlans = context => {
     axios.get('/admin/api/plans').then(response => context.commit('populatePlansCollection', response.data)).catch(error => console.log(error));
 };
 /* harmony export (immutable) */ __webpack_exports__["loadPlans"] = loadPlans;
-
-
-const loadPets = context => {
-    axios.get('/admin/api/pets').then(response => context.commit('populatePetsCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadPets"] = loadPets;
-
-
-const loadUsers = context => {
-    axios.get('/admin/api/users').then(response => context.commit('populateUsersCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadUsers"] = loadUsers;
 
 
 /***/ }),
@@ -54158,8 +54122,6 @@ const purchaseOrdersModule = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 const populateMeatsCollection = (state, data) => {
     state.meats = data;
 };
@@ -54172,82 +54134,20 @@ const populatePlansCollection = (state, data) => {
 /* harmony export (immutable) */ __webpack_exports__["populatePlansCollection"] = populatePlansCollection;
 
 
-const populatePetsCollection = (state, data) => {
-    state.pets = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populatePetsCollection"] = populatePetsCollection;
-
-
-const addToPetsCollection = (state, pet) => {
-    state.pets.unshift(pet);
-};
-/* harmony export (immutable) */ __webpack_exports__["addToPetsCollection"] = addToPetsCollection;
-
-
-const addToUsersCollection = (state, user) => {
-    state.users.unshift(user);
-};
-/* harmony export (immutable) */ __webpack_exports__["addToUsersCollection"] = addToUsersCollection;
-
-
-const populateUsersCollection = (state, data) => {
-    state.users = data.map(user => {
-        if (!user.pets) {
-            return user;
-        }
-        let pets = user.pets.reduce(function (carry, pet) {
-            if (carry == '') return pet.name;
-            return carry + ", " + pet.name;
-        }, '');
-        return _extends({}, user, { pets });
-    });
-};
-/* harmony export (immutable) */ __webpack_exports__["populateUsersCollection"] = populateUsersCollection;
-
-
-const showPetCreatorModal = state => {
-    state.show.petCreatorModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPetCreatorModal"] = showPetCreatorModal;
-
-
-const hidePetCreatorModal = state => {
-    state.show.petCreatorModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePetCreatorModal"] = hidePetCreatorModal;
-
-
-const showUserCreatorModal = state => {
-    state.show.userCreatorModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showUserCreatorModal"] = showUserCreatorModal;
-
-
-const hideUserCreatorModal = state => {
-    state.show.userCreatorModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
-
-
 /***/ }),
 /* 190 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    customers: [],
     meats: [],
-    pets: [],
     plans: [],
-    users: [],
 
     selected: {
         plan: null
     },
     show: {
-        noteModal: false,
-        petCreatorModal: false,
-        userCreatorModal: false
+        noteModal: false
     }
 });
 
@@ -54265,11 +54165,15 @@ const hideUserCreatorModal = state => {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__ = __webpack_require__(290);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_purchase_orders_store__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_pets_store__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_purchase_orders_store__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__modules_users_store__ = __webpack_require__(302);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+
 
 
 
@@ -54288,7 +54192,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         couriers: __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__["a" /* default */],
         orders: __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__["a" /* default */],
         packages: __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__["a" /* default */],
-        purchaseOrders: __WEBPACK_IMPORTED_MODULE_8__modules_purchase_orders_store__["a" /* default */]
+        pets: __WEBPACK_IMPORTED_MODULE_8__modules_pets_store__["a" /* default */],
+        purchaseOrders: __WEBPACK_IMPORTED_MODULE_9__modules_purchase_orders_store__["a" /* default */],
+        users: __WEBPACK_IMPORTED_MODULE_10__modules_users_store__["a" /* default */]
     }
 }));
 
@@ -54353,7 +54259,7 @@ exports.push([module.i, "\n#loading-img {\n    background: url(http://preloaders
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 201 */
@@ -54423,7 +54329,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 211 */
@@ -74099,12 +74005,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "fa",
       class: _vm.sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'
     })])
-  }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.pets)), function(pet) {
+  }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.collection)), function(pet) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(pet.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(pet.breed))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(pet.owner_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(pet.weight) + " lb")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(pet.activity_level) + " %")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(pet.birthday))]), _vm._v(" "), _vm._m(1, true)])
   }))]), _vm._v(" "), (_vm.show.petCreatorModal) ? _c('admin-common-modal', {
     on: {
       "close": function($event) {
-        _vm.closeCreatorModal()
+        _vm.closePetCreatorModal()
       }
     }
   }, [_c('p', {
@@ -76981,6 +76887,180 @@ const couriersModule = {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (couriersModule);
+
+/***/ }),
+/* 297 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const openPetCreatorModal = context => {
+    context.commit('showPetCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPetCreatorModal"] = openPetCreatorModal;
+
+
+const closePetCreatorModal = context => {
+    context.commit('hidePetCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePetCreatorModal"] = closePetCreatorModal;
+
+
+const loadPets = context => {
+    axios.get('/admin/api/pets').then(response => context.commit('populatePetsCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadPets"] = loadPets;
+
+
+/***/ }),
+/* 298 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populatePetsCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populatePetsCollection"] = populatePetsCollection;
+
+
+const addToPetsCollection = (state, pet) => {
+    console.log(pet);
+    state.collection.unshift(pet);
+};
+/* harmony export (immutable) */ __webpack_exports__["addToPetsCollection"] = addToPetsCollection;
+
+
+const showPetCreatorModal = state => {
+    state.show.petCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPetCreatorModal"] = showPetCreatorModal;
+
+
+const hidePetCreatorModal = state => {
+    state.show.petCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePetCreatorModal"] = hidePetCreatorModal;
+
+
+/***/ }),
+/* 299 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(298);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        petCreatorModal: false
+    }
+};
+
+const petsModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (petsModule);
+
+/***/ }),
+/* 300 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const openUserCreatorModal = context => {
+    context.commit('showUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openUserCreatorModal"] = openUserCreatorModal;
+
+
+const closeUserCreatorModal = context => {
+    context.commit('hideUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
+
+
+const loadUsers = context => {
+    axios.get('/admin/api/users').then(response => context.commit('populateUsersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadUsers"] = loadUsers;
+
+
+/***/ }),
+/* 301 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+const populateUsersCollection = (state, data) => {
+    state.collection = data.map(user => {
+        if (!user.pets) {
+            return user;
+        }
+        let pets = user.pets.reduce(function (carry, pet) {
+            if (carry == '') return pet.name;
+            return carry + ", " + pet.name;
+        }, '');
+        return _extends({}, user, { pets });
+    });
+};
+/* harmony export (immutable) */ __webpack_exports__["populateUsersCollection"] = populateUsersCollection;
+
+
+const addToUsersCollection = (state, user) => {
+    state.collection.unshift(user);
+};
+/* harmony export (immutable) */ __webpack_exports__["addToUsersCollection"] = addToUsersCollection;
+
+
+const showUserCreatorModal = state => {
+    state.show.userCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showUserCreatorModal"] = showUserCreatorModal;
+
+
+const hideUserCreatorModal = state => {
+    state.show.userCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
+
+
+/***/ }),
+/* 302 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(301);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        userCreatorModal: false
+    }
+};
+
+const usersModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (usersModule);
 
 /***/ })
 /******/ ]);

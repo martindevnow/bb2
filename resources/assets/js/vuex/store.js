@@ -10,7 +10,9 @@ import * as actions from './actions'
 import couriers from './modules/couriers/store';
 import orders from './modules/orders/store';
 import packages from './modules/packages/store';
+import pets from './modules/pets/store';
 import purchaseOrders from './modules/purchase-orders/store';
+import users from './modules/users/store';
 
 export default new Vuex.Store({
     state,
@@ -20,6 +22,8 @@ export default new Vuex.Store({
         couriers,
         orders,
         packages,
+        pets,
         purchaseOrders,
+        users,
     }
 })
