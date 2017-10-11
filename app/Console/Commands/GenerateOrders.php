@@ -48,13 +48,8 @@ class GenerateOrders extends Command
         $weekFromToday = Carbon::now()->addDays($leadTimeInDays);
         $this->line('Will generate orders up to '. $weekFromToday->format('Y-m-d'));
 
-        // First, get all plans with their latest order
-        /** @var Collection $plans */
-        $plans = Plan::active()->needsOrder()->get();
-        $this->line('There are '. $plans->count() . ' active plans...');
-
         // Check if a new order needs to be generated
-        $plansNeedingNewOrders = Plan::needOrders($leadTimeInDays);
+        $plansNeedingNewOrders = Plan::needsOrder($leadTimeInDays)->get();
         $this->line('There are '. $plansNeedingNewOrders->count() . ' orders to be made...');
 
         // Generate the orders for the plans needing one.

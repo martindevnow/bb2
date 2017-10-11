@@ -767,13 +767,63 @@ class PlansUnitTest extends TestCase
         $plan = $plan->fresh(['orders']);
         $this->assertCount(3, $plan->orders);
 
+        $thirdOrder = $plan->orders()
+            ->orderBy('deliver_by', 'DESC')
+            ->first();
+
+        $this->assertEquals(
+            $thirdOrder->deliver_by->format('Y-m-d'),
+            Carbon::now()->addDays(4 + 28)->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function a_plan_sets_the_deliver_by_of_a_new_order_properly__weekly__last_delivered_at() {
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
+
+        $plan->generateOrder();
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+        $delivery = factory(Delivery::class)->create();
+
+        $order->markAsShipped($delivery);
+
+        $this->assertEquals(
+            $order->deliver_by->format('Y-m-d'),
+            Carbon::now()->addDays(4)->format('Y-m-d')
+        );
+
+        // Second Order
+        $plan->generateOrder();
+
+        $plan = $plan->fresh(['orders']);
+        $this->assertCount(2, $plan->orders);
+
         $secondOrder = $plan->orders()
             ->orderBy('deliver_by', 'DESC')
             ->first();
 
         $this->assertEquals(
             $secondOrder->deliver_by->format('Y-m-d'),
-            Carbon::now()->addDays(4 + 28)->format('Y-m-d')
+            Carbon::now()->addDays(4 + 7)->format('Y-m-d')
+        );
+
+        // Third Order
+        $plan->generateOrder();
+
+        $plan = $plan->fresh(['orders']);
+        $this->assertCount(3, $plan->orders);
+
+        $thirdOrder = $plan->orders()
+            ->orderBy('deliver_by', 'DESC')
+            ->first();
+
+        $this->assertEquals(
+            $thirdOrder->deliver_by->format('Y-m-d'),
+            Carbon::now()->addDays(4 + 14)->format('Y-m-d')
         );
     }
 }

@@ -327,6 +327,7 @@ class Plan extends Model
         $delivery_date = $this->getNextDeliveryDate();
 
         $subtotal = $this->calculateSubtotal();
+
         $tax = $this->deliveryAddress->getTax();
 
         return $this->orders()->create([
@@ -375,25 +376,20 @@ class Plan extends Model
      * @return mixed
      */
     public function getNextDeliveryDate() {
-        // TODO: Make the lead time take weekends and holidays into account
-        // AND consider the delivery address for this plan too...
         $lead_time_in_days = 4;
 
-        // First Order Ever
-        if ( ! $this->orders()->count() && ! $this->latest_delivery_at)
-            return $this->created_at
-                ->addDays($lead_time_in_days);
+        if ( ! $this->orders()->count())
+            return $this->created_at->addDays($lead_time_in_days);
 
-        // Second Order Ever
-        if ($this->orders()->count() && ! $this->latest_delivery_at) {
-            $latestOrder = $this->getLatestOrder();
 
-            $weeks_delay = $latestOrder->weeks_shipped ?:
-                 $latestOrder->weeks_packed ?:
-                 $this->ships_every_x_weeks;
+        $latestOrder = $this->getLatestOrder();
 
-            return $latestOrder->deliver_by->addDays($weeks_delay * 7);
-        }
+        $weeks_delay = $latestOrder->weeks_shipped ?:
+             $latestOrder->weeks_packed ?:
+             $this->ships_every_x_weeks;
+
+        return $latestOrder->deliver_by->addDays($weeks_delay * 7);
+
 
         return $this->latest_delivery_at
             ->addDays($this->weeks_of_food_per_shipment * 7);
