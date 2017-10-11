@@ -14,12 +14,6 @@ export const closeUserCreatorModal = (context) => {
     context.commit('hideUserCreatorModal');
 };
 
-export const loadCouriers = (context) => {
-    axios.get('/admin/api/couriers')
-        .then(response => context.commit('populateCouriersCollection', response.data))
-        .catch(error => console.log(error));
-};
-
 export const loadMeats = (context) => {
     axios.get('/admin/api/meats')
         .then(response => context.commit('populateMeatsCollection', response.data))

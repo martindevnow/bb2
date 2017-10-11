@@ -1,7 +1,3 @@
-export const populateCouriersCollection = (state, data) => {
-    state.couriers = data;
-};
-
 export const populateMeatsCollection = (state, data) => {
     state.meats = data;
 };

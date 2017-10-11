@@ -33,7 +33,7 @@
                             id="shipped_package_id"
                     >
                         <option v-for="package in packages"
-                                :selected="selected.order.plan.package_id == package.id"
+                                :selected="selected.plan.package_id == package.id"
                                 :value="package.id"
                         >{{ package.label }}</option>
                     </select>
@@ -97,7 +97,7 @@
 
 
 //import Errors from '../../../models/Errors'
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
@@ -118,9 +118,17 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'closeShippedModal',
+        ]),
+        ...mapMutations('orders', [
+            'updateSelectedOrder'
+        ]),
+        ...mapActions('couriers', [
             'loadCouriers',
+        ]),
+        ...mapActions('packages', [
+            'loadPackages',
         ]),
         hasErrorClass(field) {
             return this.errors.has(field) ? 'has-error' : '';
@@ -128,39 +136,44 @@ export default {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/shipped', {
+            return axios.post('/admin/api/orders/'+ this.selected.id +'/shipped', {
                 courier_id: this.courier_id,
                 shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),
                 weeks_shipped: this.weeks_shipped,
                 shipped_package_id: this.shipped_package_id,
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+                vm.updateSelectedOrder({
                     shipped: true,
                     shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),
                     weeks_shipped: this.weeks_shipped,
                     shipped_package_id: this.shipped_package_id,
                 });
-                vm.$store.dispatch('closeShippedModal');
+                vm.closeShippedModal();
             }).catch(function(error) {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState([
+        ...mapState('orders', [
             'show',
             'selected',
-            'packages',
-            'couriers',
         ]),
+        ...mapState('couriers', {
+            'couriers': 'collection',
+        }),
+        ...mapState('packages', {
+            'packages': 'collection',
+        }),
     },
     mounted() {
         this.loadCouriers();
+        this.loadPackages();
         this.shipped_at = new Date();
-        this.shipped_package_id = this.selected.order.packed_package_id
-            || this.selected.order.plan.package_id;
-        this.weeks_shipped = this.selected.order.weeks_packed
-            || this.selected.order.plan.weeks_of_food_per_shipment;
+        this.shipped_package_id = this.selected.packed_package_id
+            || this.selected.plan.package_id;
+        this.weeks_shipped = this.selected.weeks_packed
+            || this.selected.plan.weeks_of_food_per_shipment;
     }
 }
 </script>

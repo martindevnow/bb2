@@ -51620,37 +51620,42 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             courier_id: null
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['closeShippedModal', 'loadCouriers']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('orders', ['closeShippedModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapMutations */])('orders', ['updateSelectedOrder']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('couriers', ['loadCouriers']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('packages', ['loadPackages']), {
         hasErrorClass(field) {
             return this.errors.has(field) ? 'has-error' : '';
         },
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/shipped', {
+            return axios.post('/admin/api/orders/' + this.selected.id + '/shipped', {
                 courier_id: this.courier_id,
                 shipped_at: __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.shipped_at).format('YYYY-MM-DD'),
                 weeks_shipped: this.weeks_shipped,
                 shipped_package_id: this.shipped_package_id
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+                vm.updateSelectedOrder({
                     shipped: true,
                     shipped_at: __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.shipped_at).format('YYYY-MM-DD'),
                     weeks_shipped: this.weeks_shipped,
                     shipped_package_id: this.shipped_package_id
                 });
-                vm.$store.dispatch('closeShippedModal');
+                vm.closeShippedModal();
             }).catch(function (error) {
                 vm.errors.record(error.response.data.errors);
             });
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['show', 'selected', 'packages', 'couriers'])),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('orders', ['show', 'selected']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('couriers', {
+        'couriers': 'collection'
+    }), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('packages', {
+        'packages': 'collection'
+    })),
     mounted() {
         this.loadCouriers();
+        this.loadPackages();
         this.shipped_at = new Date();
-        this.shipped_package_id = this.selected.order.packed_package_id || this.selected.order.plan.package_id;
-        this.weeks_shipped = this.selected.order.weeks_packed || this.selected.order.plan.weeks_of_food_per_shipment;
+        this.shipped_package_id = this.selected.packed_package_id || this.selected.plan.package_id;
+        this.weeks_shipped = this.selected.weeks_packed || this.selected.plan.weeks_of_food_per_shipment;
     }
 });
 
@@ -54003,12 +54008,6 @@ const closeUserCreatorModal = context => {
 /* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
 
 
-const loadCouriers = context => {
-    axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadCouriers"] = loadCouriers;
-
-
 const loadMeats = context => {
     axios.get('/admin/api/meats').then(response => context.commit('populateMeatsCollection', response.data)).catch(error => console.log(error));
 };
@@ -54161,12 +54160,6 @@ const purchaseOrdersModule = {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-const populateCouriersCollection = (state, data) => {
-    state.couriers = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populateCouriersCollection"] = populateCouriersCollection;
-
-
 const populateMeatsCollection = (state, data) => {
     state.meats = data;
 };
@@ -54273,13 +54266,15 @@ const hideUserCreatorModal = state => {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(190);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mutations__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_orders_store__ = __webpack_require__(290);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_packages_store__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_purchase_orders_store__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_purchase_orders_store__ = __webpack_require__(188);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
 
 
 
@@ -54294,9 +54289,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
     mutations: __WEBPACK_IMPORTED_MODULE_3__mutations__,
     actions: __WEBPACK_IMPORTED_MODULE_4__actions__,
     modules: {
-        orders: __WEBPACK_IMPORTED_MODULE_5__modules_orders_store__["a" /* default */],
-        packages: __WEBPACK_IMPORTED_MODULE_6__modules_packages_store__["a" /* default */],
-        purchaseOrders: __WEBPACK_IMPORTED_MODULE_7__modules_purchase_orders_store__["a" /* default */]
+        couriers: __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__["a" /* default */],
+        orders: __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__["a" /* default */],
+        packages: __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__["a" /* default */],
+        purchaseOrders: __WEBPACK_IMPORTED_MODULE_8__modules_purchase_orders_store__["a" /* default */]
     }
 }));
 
@@ -73814,7 +73810,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.packages), function(package) {
     return _c('option', {
       domProps: {
-        "selected": _vm.selected.order.plan.package_id == package.id,
+        "selected": _vm.selected.plan.package_id == package.id,
         "value": package.id
       }
     }, [_vm._v(_vm._s(package.label))])
@@ -76940,6 +76936,55 @@ const packagesModule = {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (packagesModule);
+
+/***/ }),
+/* 294 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const loadCouriers = context => {
+    axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadCouriers"] = loadCouriers;
+
+
+/***/ }),
+/* 295 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populateCouriersCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populateCouriersCollection"] = populateCouriersCollection;
+
+
+/***/ }),
+/* 296 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(295);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {}
+};
+
+const couriersModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (couriersModule);
 
 /***/ })
 /******/ ]);
