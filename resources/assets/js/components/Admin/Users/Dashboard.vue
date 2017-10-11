@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in filteredData(users)">
+            <tr v-for="user in filteredData(collection)">
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.pets }}</td>
@@ -95,14 +95,14 @@
             this.loadUsers();
         },
         methods: {
-            ...mapActions([
+            ...mapActions('users', [
                 'loadUsers',
                 'openUserCreatorModal',
                 'closeUserCreatorModal',
             ]),
         },
         computed: {
-            ...mapState(['users', 'show'])
+            ...mapState('users', ['collection', 'show'])
         }
     }
 </script>

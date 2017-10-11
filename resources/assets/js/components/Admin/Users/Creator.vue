@@ -123,7 +123,7 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
-    import { mapGetters, mapState, mapActions } from 'vuex';
+    import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
     mixins: [
@@ -133,11 +133,6 @@ export default {
     },
     data() {
         return {
-            ownerSearchText: '',
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
                 name: '',
                 email: '',
@@ -149,28 +144,28 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
-            'closeUserCreatorModal',
+        ...mapActions('users', [
+            'closeUserCreatorModal'
+        ]),
+        ...mapMutations('users', [
             'addToUsersCollection',
-            'loadUsers',
         ]),
         save() {
             let vm = this;
 
             return axios.post('/admin/api/users', this.form
             ).then(response => {
-                vm.$store.commit('addToUsersCollection', { user: response.data });
-                vm.$store.dispatch('closeUserCreatorModal');
+                vm.addToUsersCollection(response.data);
+                vm.closeUserCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState(['show', 'selected', 'users']),
+        ...mapState('users', ['show', 'selected', 'collection']),
     },
     mounted() {
-        this.loadUsers();
     }
 }
 </script>

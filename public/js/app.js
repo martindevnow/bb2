@@ -52747,11 +52747,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     components: {},
     data() {
         return {
-            ownerSearchText: '',
-            owner: {
-                value: '',
-                text: ''
-            },
             form: {
                 name: '',
                 email: '',
@@ -52762,22 +52757,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(['closeUserCreatorModal', 'addToUsersCollection', 'loadUsers']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('users', ['closeUserCreatorModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["d" /* mapMutations */])('users', ['addToUsersCollection']), {
         save() {
             let vm = this;
 
             return axios.post('/admin/api/users', this.form).then(response => {
-                vm.$store.commit('addToUsersCollection', { user: response.data });
-                vm.$store.dispatch('closeUserCreatorModal');
+                vm.addToUsersCollection(response.data);
+                vm.closeUserCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])(['show', 'selected', 'users'])),
-    mounted() {
-        this.loadUsers();
-    }
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])('users', ['show', 'selected', 'collection'])),
+    mounted() {}
 });
 
 /***/ }),
@@ -52880,8 +52873,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.loadUsers();
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['loadUsers', 'openUserCreatorModal', 'closeUserCreatorModal'])),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['users', 'show']))
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('users', ['loadUsers', 'openUserCreatorModal', 'closeUserCreatorModal'])),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('users', ['collection', 'show']))
 });
 
 /***/ }),
@@ -54322,7 +54315,7 @@ exports.push([module.i, "\n.modal-body[data-v-4cee06e3] {\n    margin-top: 0;\n}
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 210 */
@@ -74255,7 +74248,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "fa",
       class: _vm.sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'
     })])
-  }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.users)), function(user) {
+  }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.collection)), function(user) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.pets))]), _vm._v(" "), _vm._m(1, true)])
   }))]), _vm._v(" "), (_vm.show.userCreatorModal) ? _c('admin-common-modal', {
     on: {
