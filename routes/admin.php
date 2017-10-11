@@ -18,9 +18,7 @@ Route::post('/meals/{meal}/addTopping', 'MealsController@addTopping');
 Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 
 // Meats
-Route::get('/purchase-orders/{id}', 'PurchaseOrdersController@show');
-Route::get('/purchase-orders', 'PurchaseOrdersController@create');
-Route::post('/purchase-orders', 'PurchaseOrdersController@store');
+
 Route::resource('/meats', 'MeatsController');
 
 // Order Exporter
@@ -59,6 +57,11 @@ Route::resource('/pets', 'PetsController');
 
 // Plans
 Route::resource('/plans', 'PlansController');
+
+// Purchase Orders
+Route::get('/purchase-orders/{id}', 'PurchaseOrdersController@show');
+Route::get('/purchase-orders', 'PurchaseOrdersController@create');
+Route::post('/purchase-orders', 'PurchaseOrdersController@store');
 
 // Toppings
 Route::resource('/toppings', 'ToppingsController');

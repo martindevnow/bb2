@@ -161,6 +161,16 @@
                             <small id="weeks_of_food_per_shipmentHelp" class="form-text text-muted">The number of weeks to be delivered at a time.</small>
                         </section>
 
+
+                        <section class="col col-6">
+                            <label class="label">Active Status</label>
+                                  <label class="checkbox">
+                                <input type="checkbox" name="active" checked="{{ old('active') ? 'checked' : '' }}">
+                                <i></i>Active</label>
+
+                        </section>
+
+
                         <section class="col col-6">
                             <label class="label" for="active">Active</label>
                             <label class="input">

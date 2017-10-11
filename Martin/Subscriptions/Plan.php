@@ -103,38 +103,61 @@ class Plan extends Model
      */
 
     /**
-     * @param $query
+     * @param Builder $query
+     * @param int $leadTimeInDays
      * @return mixed
      */
-    public function scopeNeedsOrder(Builder $query) {
+    public function scopeNeedsOrder(Builder $query, $leadTimeInDays = 18) {
         // 1 week at a time, will be all orders
         //      as long as there are no orders with....
         //          deliver_by is within the next two weeks
         // 2 weeks at a time, will be all orders, as long as there isn't an order already made for that day
         // 3 weeks at a time will be if the latest_delivery_at is older than 1 week
         // 4 weeks at a time will be if the latest_delivery_at delivery_at is older than 2 weeks
-        return $query->where(function (Builder $sQ) {
-            $sQ->where('latest_delivery_at', '<=', Carbon::now())
-                ->where('weeks_of_food_per_shipment', '<=', 2)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-            ;
-        })->orWhere(function (Builder $sQ) {
-            $sQ->where('latest_delivery_at', '<=', Carbon::now()->subDays(7))
-                ->where('weeks_of_food_per_shipment', '=', 3)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-        })->orWhere(function (Builder $sQ) {
-            $sQ->where('latest_delivery_at', '<=', Carbon::now()->subDays(14))
-                ->where('weeks_of_food_per_shipment', '=', 4)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-        });
+        return $query
+            ->active()
+            ->where(function(Builder $activeBuilder) use ($leadTimeInDays) {
+                $activeBuilder
+                    ->doesntHave('orders')
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 1)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 7)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 2)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 14)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 3)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 21)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 4)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 28)->toDateString());
+                            });
+                    });
+            });
     }
 
+    /**
+     * @param Builder $query
+     * @return $this
+     */
     public function scopeActive(Builder $query) {
         return $query->where('active', true);
     }

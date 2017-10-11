@@ -60,8 +60,12 @@
                     <span class="menu-item-parent">Pets</span></a>
             </li>
             <li>
-                <a href="/admin/plans"><i class="fa fa-repeat"></i>
+                <a href="/admin/plans"><i class="fa fa-money"></i>
                     <span class="menu-item-parent">Plans</span></a>
+            </li>
+            <li>
+                <a href="/admin/plans"><i class="fa fa-repeat"></i>
+                    <span class="menu-item-parent">Purchase Orders</span></a>
             </li>
             <li>
                 <a href="/admin/toppings"><i class="fa fa-tint"></i>
