@@ -23,6 +23,14 @@ class Package extends Model
         'level',
     ];
 
+    protected $appends = [
+        'cost_per_lb'
+    ];
+
+    public function getCostPerLbAttribute() {
+        return $this->costPerLb();
+    }
+
     /**
      * Get the average cost per pound of food for this package
      *

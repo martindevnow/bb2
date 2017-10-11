@@ -1,26 +1,33 @@
 <template>
-
-    <div class="modal fade in" role="dialog" style="padding-right: 15px; display: block;">
+    <div class="modal fade in"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true"
+         style="padding-right: 15px;
+         display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" @click="closeModal()">
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                            @click="$emit('close')">
                         ×
                     </button>
-                    <h4 class="modal-title">
-                        <slot name="title"></slot>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <slot name="header">
+                            MODAL HEADER
+                        </slot>
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <slot name="body"></slot>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="closeModal()">
-                        Cancel
-                    </button>
-                    <button type="button" class="btn btn-primary" @click="processChildForm()">
-                        <slot name="submit">Submit</slot>
-                    </button>
+
+                    <slot name="body">
+                        MODAL BODY
+                    </slot>
+
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -29,45 +36,19 @@
 </template>
 
 <script>
-    import eventBus from '../../../events/eventBus';
+    import { mapState } from 'vuex';
 
-export default {
-    props: ['model_type', 'model_id'],
-    data() {
-        return {};
-    },
-    methods: {
-        processChildForm() {
-            console.log('body', this.$slots.body);
-            // TODO
-            // This should return a promise.... then i can handle closing the form here FFS....
-            // and Then, i can avoid all of this $emitting BS...
-            this.$slots.body[0].componentInstance.processForm();
+    export default {
+        props: [],
+        data() {
+            return {};
         },
-        closeModal(params) {
-
-            if (!params) {
-                return this.$emit('close');
-            } else {
-                console.log ('event received');
-                console.log('params', params);
-                console.log('this', this.model_id, this.model_type);
-            }
-            if (params.model_type == this.model_type && params.model_id == this.model_id) {
-                this.$emit('close');
-            }
-        }
-    },
-    mounted() {
-        eventBus.$on('close-modal', this.closeModal);
-    },
-    beforeDestroy() {
-        eventBus.$off('close-modal', this.closeModal);
+        computed: mapState(['selected', 'show'])
     }
-
-}
 </script>
 
-<style>
-
+<style scoped>
+.modal-body {
+    margin-top: 0;
+}
 </style>

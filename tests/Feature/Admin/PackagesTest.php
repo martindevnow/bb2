@@ -46,7 +46,7 @@ class PackagesTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: Replace with tests for Vue */
     public function an_admin_can_see_existing_packages_on_the_index() {
         $package = factory(Package::class)->create();
         $this->loginAsAdmin();
