@@ -17,7 +17,7 @@ class GenerateOrdersTest extends TestCase
     /** @test */
     public function it_can_be_run() {
         $plan = factory(Plan::class)->create();
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
 
         $this->assertTrue($plan->hasOrders());
     }
@@ -25,7 +25,7 @@ class GenerateOrdersTest extends TestCase
     /** @test */
     public function it_can_be_called_and_confirms_output() {
         $plan = factory(Plan::class)->create();
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
         $result = Artisan::output();
 
         // TODO: Research the best way to test console commands...
@@ -35,7 +35,7 @@ class GenerateOrdersTest extends TestCase
 
     /** @test */
     public function it_can_be_called_when_no_orders_are_pending_and_confirms_output() {
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
         $result = Artisan::output();
 
         // TODO: Research the best way to test console commands...

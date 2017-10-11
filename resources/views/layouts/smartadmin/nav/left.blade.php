@@ -64,7 +64,7 @@
                     <span class="menu-item-parent">Plans</span></a>
             </li>
             <li>
-                <a href="/admin/plans"><i class="fa fa-repeat"></i>
+                <a href="/admin/purchase-orders"><i class="fa fa-repeat"></i>
                     <span class="menu-item-parent">Purchase Orders</span></a>
             </li>
             <li>
