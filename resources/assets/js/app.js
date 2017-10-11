@@ -48,6 +48,8 @@ Vue.component('admin-packages-dashboard', require('./components/Admin/Packages/D
 Vue.component('admin-packages-creator', require('./components/Admin/Packages/Creator.vue'));
 Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboard.vue'));
 Vue.component('admin-users-creator', require('./components/Admin/Users/Creator.vue'));
+Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
+
 
 /**
  * Common Components
@@ -60,6 +62,8 @@ Vue.component('admin-common-modal', require('./components/Admin/Common/Modal.vue
 Vue.component('admin-payment-logger', require('./components/Admin/Orders/PaymentLogger.vue'));
 Vue.component('admin-packed-logger', require('./components/Admin/Orders/PackedLogger.vue'));
 Vue.component('admin-shipped-logger', require('./components/Admin/Orders/ShippedLogger.vue'));
+Vue.component('admin-received-logger', require('./components/Admin/PurchaseOrders/ReceivedLogger.vue'));
+Vue.component('admin-ordered-logger', require('./components/Admin/PurchaseOrders/OrderedLogger.vue'));
 
 import store from './store';
 

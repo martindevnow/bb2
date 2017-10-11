@@ -17,6 +17,14 @@ class Meat extends Model
         'cost_per_lb',
     ];
 
+    protected $appends = [
+        'cost_per_quantity',
+    ];
+
+    public function getCostPerQuantityAttribute() {
+        return $this->costPerQuantity();
+    }
+
     /**
      * Mutators
      */

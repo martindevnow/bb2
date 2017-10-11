@@ -32,36 +32,26 @@
             <tr v-for="purchaseOrder in filteredData(purchaseOrders)">
                 <td>{{ purchaseOrder.id }}</td>
                 <td>{{ purchaseOrder.created_at }}</td>
-                <td>{{ getVendorName(purchaseOrder) }}</td>
-                <td>{{ purchaseOrder.total_cost }}</td>
-                <td>{{ purchaseOrder.deliver_by }}</td>
+                <td>{{ purchaseOrder.vendor_name }}</td>
+                <td>${{ purchaseOrder.total_cost.toFixed(2) }}</td>
                 <td>
-                    <button @click="openPaymentModal(purchaseOrder)"
+                    <button @click="openOrderedModal(purchaseOrder)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! purchaseOrder.paid,
-                            'btn-success': purchaseOrder.paid
+                            'btn-danger': ! purchaseOrder.ordered,
+                            'btn-success': purchaseOrder.ordered
                         }"
                     >
-                        Paid
+                        Ordered
                     </button>
-                    <button @click="openPackedModal(purchaseOrder)"
+                    <button @click="openReceivedModal(purchaseOrder)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! purchaseOrder.packed,
-                            'btn-success': purchaseOrder.packed
+                            'btn-danger': ! purchaseOrder.received,
+                            'btn-success': purchaseOrder.received
                         }"
                     >
-                        Packed
-                    </button>
-                    <button @click="openShippedModal(purchaseOrder)"
-                            class="btn btn-xs"
-                            :class="{
-                            'btn-danger': ! purchaseOrder.shipped,
-                            'btn-success': purchaseOrder.shipped
-                        }"
-                    >
-                        Shipped
+                        Received
                     </button>
                 </td>
             </tr>
@@ -69,32 +59,24 @@
         </table>
 
 
-        <admin-common-modal v-if="show.paymentModal"
-                             @close="closePaymentModal()"
+        <admin-common-modal v-if="show.orderedModal"
+                             @close="closeOrderedModal()"
         >
-            <p slot="header">Log a Payment</p>
-            <admin-payment-logger @close="$emit('close')"
+            <p slot="header">Ordered</p>
+            <admin-ordered-logger @close="$emit('close')"
                                   slot="body"
-            ></admin-payment-logger>
+            ></admin-ordered-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.packedModal"
-                            @close="closePackedModal()"
+        <admin-common-modal v-if="show.receivedModal"
+                            @close="closeReceivedModal()"
         >
-            <p slot="header">Log Packing an Order</p>
-            <admin-packed-logger @close="$emit('close')"
+            <p slot="header">Received</p>
+            <admin-received-logger @close="$emit('close')"
                                  slot="body"
-            ></admin-packed-logger>
+            ></admin-received-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.shippedModal"
-                            @close="closeShippedModal()"
-        >
-            <p slot="header">Log a Shipment</p>
-            <admin-shipped-logger @close="$emit('close')"
-                                  slot="body"
-            ></admin-shipped-logger>
-        </admin-common-modal>
     </div>
 </template>
 
@@ -108,11 +90,10 @@ export default {
     ],
     data() {
         let columns = [
-            'pet_breed_customer',
-            'meal_size',
-            'package_label',
-            '# of Weeks',
-            'deliver_by',
+            'id',
+            'date',
+            'vendor_name',
+            'total_cost',
         ];
         let numColumns = columns.length;
         let sortOrders = {};
@@ -127,28 +108,20 @@ export default {
         }
     },
     mounted() {
-        this.loadOrders();
-        this.loadPackages();
+        this.loadPurchaseOrders();
     },
     methods: {
         ...mapActions([
-            'openPaymentModal',
-            'closePaymentModal',
-            'openPackedModal',
-            'closePackedModal',
-            'openShippedModal',
-            'closeShippedModal',
+            'openOrderedModal',
+            'closeOrderedModal',
+            'openReceivedModal',
+            'closeReceivedModal',
             'loadPurchaseOrders',
-            'loadPackages',
         ]),
-        getVendorName(purchaseOrder) {
-            return purchaseOrder.vendor ? purchaseOrder.vendor.name : '';
-        }
     },
     computed: {
         ...mapState(['purchaseOrders', 'show'])
     },
-
 
 }
 </script>

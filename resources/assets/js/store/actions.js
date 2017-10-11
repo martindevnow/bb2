@@ -72,7 +72,8 @@ export const closeUserCreatorModal = (context) => {
     context.commit('hideUserCreatorModal');
 };
 
-export const openOrderedModal = (context) => {
+export const openOrderedModal = (context, purchaseOrder) => {
+    context.commit('setSelectedPurchaseOrder', purchaseOrder);
     context.commit('showOrderedModal');
 };
 
@@ -80,7 +81,8 @@ export const closeOrderedModal = (context) => {
     context.commit('hideOrderedModal');
 };
 
-export const openReceivedModal = (context) => {
+export const openReceivedModal = (context, purchaseOrder) => {
+    context.commit('setSelectedPurchaseOrder', purchaseOrder);
     context.commit('showReceivedModal');
 };
 

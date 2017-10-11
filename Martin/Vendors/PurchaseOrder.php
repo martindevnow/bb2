@@ -22,6 +22,31 @@ class PurchaseOrder extends Model
         'received_at',
     ];
 
+    protected $appends = [
+        'total_cost',
+        'vendor_name',
+    ];
+
+    public function getTotalCostAttribute() {
+        return $this->totalCost();
+    }
+
+    public function getVendorNameAttribute() {
+        if ($this->vendor)
+            return $this->vendor->name;
+
+        return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function totalCost() {
+        return $this->details->reduce(function($carry, $item) {
+            return $carry += $item->quantity * $item->purchasable->costPerQuantity();
+        }, 0);
+    }
+
     /**
      * @param $total
      * @return float|int
@@ -35,6 +60,20 @@ class PurchaseOrder extends Model
      */
     public function setTotalAttribute($total) {
         $this->attributes['total'] = round($total * 100);
+    }
+
+    /**
+     * @param $item
+     * @return bool|PurchaseOrder
+     */
+    public function hasItem($item) {
+        $items = $this->details()->where('purchasable_type', get_class($item))
+            ->where('purchasable_id', $item->id);
+
+        if ($items->count() !== 1)
+            return false;
+
+        return $items->first();
     }
 
     /**
@@ -82,28 +121,33 @@ class PurchaseOrder extends Model
         }
     }
 
+
     /**
-     * @param $item
-     * @return bool|PurchaseOrder
+     * @param $data
+     * @return $this
      */
-    public function hasItem($item) {
-        $items = $this->details()->where('purchasable_type', get_class($item))
-            ->where('purchasable_id', $item->id);
-
-        if ($items->count() !== 1)
-            return false;
-
-        return $items->first();
+    public function markAsReceived($data) {
+        $this->received = true;
+        $this->received_at = $data['received_at'];
+        $this->save();
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @param $data
+     * @return $this
      */
-    public function totalCost() {
-        return $this->details->reduce(function($carry, $item) {
-            return $carry += $item->quantity * $item->purchasable->costPerQuantity();
-        }, 0);
+    public function markAsOrdered($data) {
+        $this->ordered = true;
+        $this->ordered_at = $data['ordered_at'];
+        $this->save();
+        return $this;
     }
+
+
+    /**
+     * Relationships
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

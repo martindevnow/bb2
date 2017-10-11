@@ -26,36 +26,10 @@
         <!-- widget div-->
         <div role="content">
 
-            <div class="widget-body no-padding smart-form">
+            <div class="widget-body no-padding">
 
-                <table class="table table-bordered table-striped table-responsive">
-                    <thead>
-                    <tr>
-                        <th>PO ID#</th>
-                        <th>Date</th>
-                        <th>Vendor</th>
-                        <th>Total Cost</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($pos as $po)
-                    <tr>
-                        <td>{{ $po->id }}</td>
-                        <td>{{ $po->created_at }}</td>
-                        <td>{{ optional($po->vendor)->name }}</td>
-                        <td>${{ round($po->totalCost(),2) }}</td>
-                        <td>
-                            <button class="btn">Ordered</button>
-                            <button class="btn">Received</button>
-                            <button class="btn btn-xs btn-primary">Edit</button>
-                            <button class="btn btn-xs btn-primary">Delete</button>
-                        </td>
-                    </tr>
-                        @endforeach
-                    </tbody>
+                <admin-purchase-orders-dashboard></admin-purchase-orders-dashboard>
 
-                </table>
             </div>
         </div>
     </div>

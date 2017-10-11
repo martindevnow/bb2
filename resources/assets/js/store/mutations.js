@@ -25,21 +25,11 @@ export const populatePlansCollection = (state, data) => {
 };
 
 export const populatePetsCollection = (state, data) => {
-    state.pets = data.map(pet => {
-        let owner_name = pet.owner.name;
-        return {...pet, owner_name };
-    });
+    state.pets = data;
 };
 
 export const populatePurchaseOrdersCollection = (state, data) => {
-    state.purchaseOrders = data.map(po => {
-
-        let total_cost = po.details.reduce(function (carry, item) {
-            return item.quantity * item.costPerQuantity;
-        }, 0);
-
-        return {...po, total_cost };
-    });
+    state.purchaseOrders = data;
 };
 
 export const addToPetsCollection = (state, pet) => {
@@ -66,6 +56,10 @@ export const populateUsersCollection = (state, data) => {
 
 export const setSelectedOrder = (state, order) => {
     state.selected.order = order;
+};
+
+export const setSelectedPurchaseOrder = (state, purchaseOrder) => {
+    state.selected.purchaseOrder = purchaseOrder;
 };
 
 export const deselectOrder = (state) => {
@@ -148,4 +142,10 @@ export const updateSelectedOrder = (state, payload) => {
     state.selected.order = { ...state.selected.order, ...payload };
     state.orders = state.orders.filter(order => order.id !== state.selected.order.id);
     state.orders.unshift(state.selected.order);
+};
+
+export const updateSelectedPurchaseOrder = (state, payload) => {
+    state.selected.purchaseOrder = { ...state.selected.purchaseOrder, ...payload };
+    state.purchaseOrders = state.purchaseOrders.filter(purchaseOrder => purchaseOrder.id !== state.selected.purchaseOrder.id);
+    state.purchaseOrders.unshift(state.selected.purchaseOrder);
 };

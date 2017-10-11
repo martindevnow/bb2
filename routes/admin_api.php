@@ -39,4 +39,14 @@ Route::get('meats', function() {
     return Meat::all();
 });
 
+Route::get('purchase-orders', function() {
+    return \Martin\Vendors\PurchaseOrder::with([
+        'details',
+        'details.purchasable',
+        'vendor',
+    ])->get();
+});
+Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
+Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');
+
 Route::resource('users', 'UsersController');

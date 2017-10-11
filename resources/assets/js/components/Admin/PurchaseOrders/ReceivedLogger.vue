@@ -3,25 +3,6 @@
           @submit.prevent=""
     >
         <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group"
-                     v-bind:class="{'has-error': errors.has('amount_paid') }"
-                >
-                    <label for="amount_paid">Amount Paid</label>
-                    <div class="input-group">
-                        <span class="input-group-addon">$</span>
-                        <input type="text"
-                               class="form-control"
-                               placeholder="10"
-                               id="amount_paid"
-                               name="amount_paid"
-                               v-model="amount_paid"
-                        >
-                    </div>
-                    <span class="help-block">{{ errors.get('amount_paid') }}</span>
-
-                </div>
-            </div>
 
             <div class="col-sm-6">
                 <div class="form-group"
@@ -38,27 +19,7 @@
                     <span class="help-block">{{ errors.get('received_at') }}</span>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group"
-                     v-bind:class="{'has-error': errors.has('format') }"
-                >
-                    <label for="format">Format</label>
-                    <select v-model="format"
-                            class="form-control"
-                            id="format"
-                            name="format"
-                            @change="errors.clear('format')"
-                    >
-                        <option v-for="format in paymentFormats">{{ format }}</option>
-                    </select>
-                    <span class="help-block">{{ errors.get('format') }}</span>
-
-                </div>
-            </div>
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-6">
@@ -73,7 +34,7 @@
                     <div class="col-sm-6">
                         <label>&nbsp;</label>
                         <button class="btn btn-default btn-block"
-                                @click="closePaymentModal()"
+                                @click="closeReceivedModal()"
                         >
                             Cancel
                         </button>
@@ -81,6 +42,7 @@
                 </div>
             </div>
         </div>
+
     </form>
 </template>
 
@@ -99,32 +61,25 @@ export default {
     },
     data() {
         return {
-            amount_paid: null,
             received_at: null,
-            format: '',
-            paymentFormats: [
-                'cash',
-                'e-transfer',
-                'stripe',
-                'paypal',
-                'interac',
-            ],
         };
     },
     methods: {
         ...mapActions([
-            'closePaymentModal',
+            'closeReceivedModal',
         ]),
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/paid', {
-                format:      this.format,
-                amount_paid: this.amount_paid,
-                received_at: moment(this.received_at).format('YYYY-MM-DD'),
+            return axios.post('/admin/api/purchase-orders/' + this.$store.state.selected.purchaseOrder.id + '/received', {
+                received_at: moment(vm.received_at).format('YYYY-MM-DD'),
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', { paid: true });
-                vm.$store.dispatch('closePaymentModal');
+                console.log('api request done...');
+                vm.$store.commit('updateSelectedPurchaseOrder', { received: true });
+                console.log('committed change to selected Purchase Order');
+                vm.$store.dispatch('closeReceivedModal');
+                console.log('closed Modal');
+
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -137,9 +92,7 @@ export default {
         ]),
     },
     mounted() {
-        this.format = 'cash';
         this.received_at = new Date();
-        this.amount_paid = this.selected.order.plan.weekly_cost;
     }
 }
 </script>
