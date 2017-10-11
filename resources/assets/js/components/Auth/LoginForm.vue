@@ -54,7 +54,7 @@ import eventBus from '../../events/eventBus';
 import swal from 'sweetalert2'
 
 export default {
-    props: ['hash'],
+    props: ['cart_hash'],
     data() {
         return {
             user: {},
@@ -76,22 +76,19 @@ export default {
             axios.post('/api/login', {email: this.email, password: this.password})
                 .then(function(response) {
                     eventBus.$emit('user-logged-in', response.data.user);
-                    console.log('Login was successful');
-                    window.location = ('/quote/details/' + vm.hash);
+                    window.location = ('/quote/details/' + vm.cart_hash);
                 })
                 .catch(function(error) {
                     console.log(error);
-                    swal('there was an error....');
+                    swal('Unable to Login...');
                 });
             this.loading = false;
         },
     },
     mounted() {
-        console.log('loginForm MOUNTED');
     },
     created() {
         eventBus.$on('user-logged-in', this.loadUser);
-        console.log('loginForm CREATED');
     },
     beforeDestroy() {
         eventBus.$off('user-logged-in', this.loadUser);

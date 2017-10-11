@@ -44,6 +44,14 @@ class PurchaseOrderDetail extends Model
 
     /**
      * @param $quantity
+     */
+    public function addToQuantity($quantity) {
+        $this->quantity += $quantity;
+        $this->save();
+    }
+
+    /**
+     * @param $quantity
      * @return float|int
      */
     public function getQuantityAttribute($quantity) {

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Martin\Geo\GeoHelperMultiGeocoder;
+use Martin\Transactions\Order;
 use Martin\Transactions\ShoppingCart;
 
 /*
@@ -33,11 +34,20 @@ Route::post('/stripe/webhook', 'WebhooksController@handle');
 // Confirm is applying this middleware here is required...
 // Probably need to put some of these behind the AUTH middleware...
 // No need to expose every endpoint.. many will fail if there is no user() object.
-Route::middleware('auth:api')
-     ->get('/user', 'UsersController@user');
+Route::get('/user', 'UsersController@user');
 Route::get('/user/addresses', 'UsersController@addresses');
 Route::get('/user/pets', 'UsersController@pets');
+Route::post('/user/pets', function(Request $request) {
 
+    $requestData = $request->validate([
+        'name'  => 'required',
+        'breed' => 'required',
+        'weight'    => 'required|numeric',
+    ]);
+
+    $request->user()->pets()->create($requestData);
+    return $request->user()->pets;
+});
 /**
  * Shopping Cart Functions
  */
@@ -58,6 +68,8 @@ Route::get('/sizes', 'SubscriptionsController@sizes');
  * GitHub WebHook Endpoint
  */
 Route::post('github', 'GitHubController@handle');
+
+
 
 
 
@@ -82,4 +94,15 @@ Route::get('packages', function() {
  */
 Route::get('pricing', function() {
     return \Martin\Subscriptions\CostModel::all();
+});
+
+
+
+
+/**
+ * Admin Specific
+ */
+
+Route::get('orders', function () {
+    return Order::with('customer', 'plan.pet', 'plan', 'plan.package', 'deliveryAddress')->get();
 });

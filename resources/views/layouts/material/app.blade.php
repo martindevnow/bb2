@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/material/css/style.light-blue-500.min.css" />
     <link rel="stylesheet" href="/barfbento/css/app.css" />
     <link rel="stylesheet" href="/barfbento/css/barf.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css" />
+    <link rel="stylesheet" href="/css/sweetalert2.min.css" />
 
     <!--[if lt IE 9]>
     <script src="/material/js/html5shiv.min.js"></script>

@@ -26,18 +26,16 @@ class CreatePlansTable extends Migration
 
             $table->integer('package_id');
 
-            // TODO: Remove or change this
-            $table->string('package_stripe_code')->nullable();
-
-            // TODO: Make this seedable??
-            $table->integer('package_base')->nullable();
-
+            $table->integer('internal_cost')->nullable();
             $table->integer('weekly_cost');
-            $table->integer('weeks_at_a_time');
-            $table->dateTime('last_delivery_at')->nullable();
+            $table->integer('weeks_of_food_per_shipment');
+            $table->integer('ships_every_x_weeks')->nullable();
+            $table->dateTime('first_delivery_at')->nullable();
+            $table->dateTime('latest_delivery_at')->nullable();
 
             $table->boolean('active')->default(true);
             $table->string('hash')->nullable();
+            $table->mediumText('comment')->nullable();
 
             $table->enum('payment_method', [
                 'cash',

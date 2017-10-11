@@ -60,17 +60,21 @@ class PlansController extends Controller
             'package_id'            => 'required|exists:packages,id',
 
             'shipping_cost'         => 'required|numeric',
+            'internal_cost'           => 'required|numeric',
             'weekly_cost'           => 'required|numeric',
-            'weeks_at_a_time'       => 'required|integer',
+            'weeks_of_food_per_shipment'       => 'required|integer',
+            'ships_every_x_weeks'       => 'required|integer',
             'active'                => 'required'
         ]);
 
         $planData = $request->only([
-            'shipping_cost',
             'pet_id',
             'package_id',
+            'shipping_cost',
+            'internal_cost',
             'weekly_cost',
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
+            'ships_every_x_weeks',
             'active'
         ]);
 
@@ -119,11 +123,11 @@ class PlansController extends Controller
             'pet_activity_level'    => 'required|numeric',
 
             'package_id'            => 'required|exists:packages,id',
-            'package_stripe_code'   => 'required',
-            'package_base'          => 'required|numeric',
-
+            'internal_cost'         => 'required|numeric',
             'weekly_cost'           => 'required|numeric',
-            'weeks_at_a_time'       => 'required|integer',
+
+            'weeks_of_food_per_shipment'    => 'required|integer',
+            'ships_every_x_weeks'           => 'required|integer',
         ]);
 
         $planData = $request->only([
@@ -136,18 +140,18 @@ class PlansController extends Controller
             'pet_activity_level',
 
             'package_id',
-            'package_stripe_code',
-            'package_base',
+            'internal_cost',
 
             'weekly_cost',
 
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
+            'ships_every_x_weeks',
             'active']);
 
         $plan->fill($planData);
         $plan->save();
 
-        flash('The plan of $' . $plan->amount_paid . ' was updated.')->success();
+        flash('The plan of $' . $plan->weekly_cost . ' was updated.')->success();
 
         return redirect('/admin/plans');
     }
@@ -161,7 +165,7 @@ class PlansController extends Controller
     public function destroy(Plan $plan) {
         $plan->delete();
 
-        flash('The plan of $' . $plan->amount_paid . ' has been deleted.')->success();
+        flash('The plan of $' . $plan->weekly_cost . ' has been deleted.')->success();
 
         return redirect()->back();
     }

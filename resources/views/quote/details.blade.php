@@ -18,7 +18,7 @@
                     <div class="ms-paper-content">
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
-                            <details-collector hash="{{ $hash }}"></details-collector>
+                            <details-collector cart_hash="{{ $hash }}"></details-collector>
                         </section>
 
                     </div>

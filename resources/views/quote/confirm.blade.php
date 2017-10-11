@@ -13,7 +13,7 @@
 
     <div class="container">
         <h1 class="right-line mb-4">Cart</h1>
-        <quotes-checkout hash="{{ $hash }}"></quotes-checkout>
+        <quotes-checkout cart_hash="{{ $hash }}"></quotes-checkout>
     </div>
 
 @endsection

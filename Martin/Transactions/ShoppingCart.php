@@ -45,6 +45,11 @@ class ShoppingCart extends Model
             ->firstOrFail();
     }
 
+    /**
+     * The subscription package in the user's cart
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function subPackage() {
         return $this->belongsTo(Package::class, 'sub_package_id');
     }

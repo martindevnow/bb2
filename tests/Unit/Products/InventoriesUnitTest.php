@@ -26,7 +26,7 @@ class InventoriesUnitTest extends TestCase
         $inventoryData = [
             'inventoryable_type' => get_class($meat),
             'inventoryable_id' => $meat->id,
-            'size' => null,
+            'size' => 0,
             'change' => -14,
             'changeable_type' => get_class($order),
             'changeable_id' => $order->id,

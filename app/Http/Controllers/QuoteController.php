@@ -42,7 +42,7 @@ class QuoteController extends Controller
         session(['cart.hash' => $hash]);
 
         if (auth()->user())
-            redirect('/quote/details');
+            return redirect('/quote/details/' . $hash);
 
         return view('quote.subscribe')
             ->with(compact('cart', 'hash'));

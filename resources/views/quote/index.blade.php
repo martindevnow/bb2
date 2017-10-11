@@ -17,11 +17,6 @@
                     <div class="ms-paper-content">
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
-                            {{--<div class="alert alert-info">--}}
-                                {{--<p>--}}
-                                    {{--<i class="zmdi zmdi-info-outline"></i> Simply fill out the fields below to get your--}}
-                                    {{--<strong>quote</strong> to being the B.A.R.F. diet</p>--}}
-                            {{--</div>--}}
                             <quotes-calculator></quotes-calculator>
                         </section>
 

@@ -25,6 +25,14 @@ class Pet extends Model
         'birthday',
     ];
 
+    protected $appends = [
+        'owner_name'
+    ];
+
+    public function getOwnerNameAttribute() {
+        return $this->owner->name;
+    }
+
     /**
      * All Plans are priced at intervals of 5lbs
      *
@@ -34,6 +42,11 @@ class Pet extends Model
         return round($this->weight / 5);
     }
 
+    /**
+     * Meal Size in LBs
+     *
+     * @return float
+     */
     public function mealSize() {
         return $this->weight * $this->activity_level / 100 / 2;
     }

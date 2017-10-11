@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Martin\Products\Meat;
+use Martin\Subscriptions\Plan;
 
 class MeatsController extends Controller
 {
@@ -69,6 +70,18 @@ class MeatsController extends Controller
         flash('The meat: ' . $meat->type .' - '. $meat->variety . ' has been deleted.')->success();
 
         return redirect()->back();
+    }
+
+    /**
+     * Show the form to generate a meat order
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function orderCreate() {
+        $plans = Plan::all();
+
+        return view('admin.meats.order.create')
+            ->with(compact('plans'));
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Transactions;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
@@ -157,7 +158,7 @@ class OrdersUnitTest extends TestCase
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
                 'change'                => 1400,         // this is 14 meals * 100
-                'size'                  => $order->plan->pet->mealSize(),
+                'size'                  => $order->plan->pet->mealSize() * 100,
             ]);
         }
     }
@@ -180,7 +181,7 @@ class OrdersUnitTest extends TestCase
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
                 'change'                => -1400,         // this is 14 meals * 100
-                'size'                  => $order->plan->pet->mealSize(),
+                'size'                  => $order->plan->pet->mealSize() * 100,
             ]);
         }
     }
@@ -287,5 +288,54 @@ class OrdersUnitTest extends TestCase
         $order = $order->fresh();
         $this->assertTrue($order->delivery instanceof Delivery);
         $this->assertEquals(1, $order->shipped);
+    }
+
+    /** @test */
+    public function shipping_an_uniquely_large_order_affects_the_deliver_by_date_of_existing_orders() {
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
+
+        /** @var Plan $plan */
+        $order = $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->format('Y-m-d'),
+            $order->deliver_by->format('Y-m-d')
+        );
+
+        $order2 = $plan->generateOrder();
+        $order3 = $plan->generateOrder();
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 7)->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 14)->format('Y-m-d'),
+            $order3->deliver_by->format('Y-m-d')
+        );
+
+        $order->markAsPaid(factory(Payment::class)->create());
+        $order->markAsPacked([
+            'weeks_packed'  => 2,
+        ]);
+
+        $order->markAsShipped(factory(Delivery::class)->create([
+            'weeks_shipped' => 2,
+            'shipped_at'    => Carbon::now()->addDays(4),
+        ]));
+
+        $order2 = $order2->fresh();
+        $order3 = $order3->fresh();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 14)->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 21)->format('Y-m-d'),
+            $order3->deliver_by->format('Y-m-d')
+        );
     }
 }

@@ -255,4 +255,18 @@ class MealsUnitTest extends TestCase
             $this->assertCount(1, $meal->inventories);
         }
     }
+
+    /** @test */
+    public function a_meal_can_get_a_list_of_meats_in_string_format() {
+        /** @var Meal $meal */
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class)->create([
+            'type'  => 'Chicken',
+            'variety'   => 'Bone In',
+        ]);
+        $meal->addMeat($meat);
+
+        $meal = $meal->fresh(['meats']);
+        $this->assertEquals('Chicken [Bone In]', $meal->meatsToString());
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Delivery\Courier;
 use Martin\Delivery\Delivery;
+use Martin\Transactions\Order;
 use Tests\TestCase;
 
 class DeliveriesUnitTest extends TestCase
@@ -75,6 +76,25 @@ class DeliveriesUnitTest extends TestCase
         ]);
 
         $this->assertEquals($delivery->courier->id, $courier->id);
+    }
+
+    /** @test */
+    public function a_delivery_can_be_associated_to_an_order() {
+        /** @var Order $order */
+        $order = $this->createOrderForBasicPlan();
+        $delivery = factory(Delivery::class)->make([
+            'shipped_at'  => Carbon::now(),
+        ]);
+        $order->markAsPicked();
+        $order->markAsShipped($delivery);
+
+        $delivery = $order->delivery;
+        $this->assertTrue($delivery instanceof Delivery);
+
+        // There is one inventory change for each Meal type associated to the Plan/Package
+        $invs = $order->inventoryChanges;
+        $this->assertCount(2, $invs);
+
     }
 
 
