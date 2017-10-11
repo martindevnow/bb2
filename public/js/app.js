@@ -54235,18 +54235,14 @@ const hideUserCreatorModal = state => {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    couriers: [],
     customers: [],
     meats: [],
-    packages: [],
     pets: [],
     plans: [],
     users: [],
 
     selected: {
-        order: null,
-        plan: null,
-        package: null
+        plan: null
     },
     show: {
         noteModal: false,
