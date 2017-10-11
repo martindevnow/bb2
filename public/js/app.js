@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 287);
+/******/ 	return __webpack_require__(__webpack_require__.s = 303);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(216)("./" + name);
+            __webpack_require__(232)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4669,7 +4669,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(286)
+var listToStyles = __webpack_require__(302)
 
 /*
 type StyleObject = {
@@ -49952,7 +49952,7 @@ module.exports = function(module) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vuex_store__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vuex_store__ = __webpack_require__(207);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -49976,16 +49976,16 @@ $.ajaxSetup({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('quotes-calculator', __webpack_require__(237));
-Vue.component('customers-pet-selector', __webpack_require__(236));
-Vue.component('auth-login-form', __webpack_require__(233));
-Vue.component('auth-registration-form', __webpack_require__(234));
-Vue.component('details-collector', __webpack_require__(239));
-Vue.component('quotes-checkout', __webpack_require__(238));
+Vue.component('quotes-calculator', __webpack_require__(253));
+Vue.component('customers-pet-selector', __webpack_require__(252));
+Vue.component('auth-login-form', __webpack_require__(249));
+Vue.component('auth-registration-form', __webpack_require__(250));
+Vue.component('details-collector', __webpack_require__(255));
+Vue.component('quotes-checkout', __webpack_require__(254));
 
-Vue.component('cart-summary', __webpack_require__(235));
+Vue.component('cart-summary', __webpack_require__(251));
 
-Vue.component('admin-meals-select-box', __webpack_require__(218));
+Vue.component('admin-meals-select-box', __webpack_require__(234));
 
 /**
  * Modernized.. (somewhat)
@@ -49994,29 +49994,29 @@ Vue.component('admin-meals-select-box', __webpack_require__(218));
 /**
  * Dashboards
  */
-Vue.component('admin-meats-dashboard', __webpack_require__(219));
-Vue.component('admin-orders-dashboard', __webpack_require__(220));
-Vue.component('admin-pets-dashboard', __webpack_require__(227));
-Vue.component('admin-pets-creator', __webpack_require__(226));
-Vue.component('admin-packages-dashboard', __webpack_require__(225));
-Vue.component('admin-packages-creator', __webpack_require__(224));
-Vue.component('admin-users-dashboard', __webpack_require__(232));
-Vue.component('admin-users-creator', __webpack_require__(231));
-Vue.component('admin-purchase-orders-dashboard', __webpack_require__(228));
+Vue.component('admin-meats-dashboard', __webpack_require__(235));
+Vue.component('admin-orders-dashboard', __webpack_require__(236));
+Vue.component('admin-pets-dashboard', __webpack_require__(243));
+Vue.component('admin-pets-creator', __webpack_require__(242));
+Vue.component('admin-packages-dashboard', __webpack_require__(241));
+Vue.component('admin-packages-creator', __webpack_require__(240));
+Vue.component('admin-users-dashboard', __webpack_require__(248));
+Vue.component('admin-users-creator', __webpack_require__(247));
+Vue.component('admin-purchase-orders-dashboard', __webpack_require__(244));
 
 /**
  * Common Components
  */
-Vue.component('admin-common-modal', __webpack_require__(217));
+Vue.component('admin-common-modal', __webpack_require__(233));
 
 /**
  * Forms for Modals
  */
-Vue.component('admin-payment-logger', __webpack_require__(222));
-Vue.component('admin-packed-logger', __webpack_require__(221));
-Vue.component('admin-shipped-logger', __webpack_require__(223));
-Vue.component('admin-received-logger', __webpack_require__(230));
-Vue.component('admin-ordered-logger', __webpack_require__(229));
+Vue.component('admin-payment-logger', __webpack_require__(238));
+Vue.component('admin-packed-logger', __webpack_require__(237));
+Vue.component('admin-shipped-logger', __webpack_require__(239));
+Vue.component('admin-received-logger', __webpack_require__(246));
+Vue.component('admin-ordered-logger', __webpack_require__(245));
 
 
 
@@ -51612,10 +51612,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
     data() {
         return {
-            weeks_shipped: null,
-            shipped_package_id: null,
-            shipped_at: null,
-            courier_id: null
+            form: {
+                weeks_shipped: null,
+                shipped_package_id: null,
+                shipped_at: null,
+                courier_id: null
+            }
         };
     },
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('orders', ['closeShippedModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapMutations */])('orders', ['updateSelectedOrder']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('couriers', ['loadCouriers']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('packages', ['loadPackages']), {
@@ -51625,12 +51627,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.selected.id + '/shipped', {
-                courier_id: this.courier_id,
-                shipped_at: __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.shipped_at).format('YYYY-MM-DD'),
-                weeks_shipped: this.weeks_shipped,
-                shipped_package_id: this.shipped_package_id
-            }).then(response => {
+            let requestBody = _extends({}, this.form, { shipped_at: __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.shipped_at).format('YYYY-MM-DD') });
+            return axios.post('/admin/api/orders/' + this.selected.id + '/shipped', requestBody).then(response => {
                 vm.updateSelectedOrder({
                     shipped: true,
                     shipped_at: __WEBPACK_IMPORTED_MODULE_3_moment___default()(this.shipped_at).format('YYYY-MM-DD'),
@@ -53879,7 +53877,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(215);
+window._ = __webpack_require__(231);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -53975,14 +53973,445 @@ class Errors {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-
 const loadMeats = context => {
     axios.get('/admin/api/meats').then(response => context.commit('populateMeatsCollection', response.data)).catch(error => console.log(error));
 };
 /* harmony export (immutable) */ __webpack_exports__["loadMeats"] = loadMeats;
 
 
+/***/ }),
+/* 184 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const loadCouriers = context => {
+    axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadCouriers"] = loadCouriers;
+
+
+/***/ }),
+/* 185 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populateCouriersCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populateCouriersCollection"] = populateCouriersCollection;
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(185);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {}
+};
+
+const couriersModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (couriersModule);
+
+/***/ }),
+/* 187 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const openPaymentModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showPaymentModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPaymentModal"] = openPaymentModal;
+
+
+const closePaymentModal = context => {
+    context.commit('hidePaymentModal');
+    context.commit('deselectOrder');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePaymentModal"] = closePaymentModal;
+
+
+const openPackedModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showPackedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPackedModal"] = openPackedModal;
+
+
+const closePackedModal = context => {
+    context.commit('hidePackedModal');
+    context.commit('deselectOrder');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePackedModal"] = closePackedModal;
+
+
+const openPickedModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showPickedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPickedModal"] = openPickedModal;
+
+
+const closePickedModal = context => {
+    context.commit('hidePickedModal');
+    context.commit('deselectOrder');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePickedModal"] = closePickedModal;
+
+
+const openShippedModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showShippedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openShippedModal"] = openShippedModal;
+
+
+const closeShippedModal = context => {
+    context.commit('hideShippedModal');
+    context.commit('deselectOrder');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeShippedModal"] = closeShippedModal;
+
+
+const openDeliveredModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showDeliveredModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openDeliveredModal"] = openDeliveredModal;
+
+
+const closeDeliveredModal = context => {
+    context.commit('hideDeliveredModal');
+    context.commit('deselectOrder');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeDeliveredModal"] = closeDeliveredModal;
+
+
+const loadOrders = context => {
+    axios.get('/admin/api/orders').then(response => context.commit('populateOrdersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadOrders"] = loadOrders;
+
+
+/***/ }),
+/* 188 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+const populateOrdersCollection = (state, data) => {
+    state.collection = data.map(order => {
+        let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+        let package_label = order.plan.package.label;
+        let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
+        let deliver_by = order.deliver_by.slice(0, 10);
+        return _extends({}, order, { package_label, pet_breed_customer, meal_size, deliver_by });
+    });
+};
+/* harmony export (immutable) */ __webpack_exports__["populateOrdersCollection"] = populateOrdersCollection;
+
+
+/*
+ * Selected
+ */
+
+const setSelectedOrder = (state, order) => {
+    state.selected = order;
+};
+/* harmony export (immutable) */ __webpack_exports__["setSelectedOrder"] = setSelectedOrder;
+
+
+const deselectOrder = state => {
+    state.selected = null;
+};
+/* harmony export (immutable) */ __webpack_exports__["deselectOrder"] = deselectOrder;
+
+
+const updateSelectedOrder = (state, payload) => {
+    state.selected = _extends({}, state.selected, payload);
+    state.collection = state.collection.filter(order => order.id !== state.selected.id);
+    state.collection.unshift(state.selected);
+};
+/* harmony export (immutable) */ __webpack_exports__["updateSelectedOrder"] = updateSelectedOrder;
+
+
+/*
+ * Modals
+ */
+
+const showPaymentModal = state => {
+    state.show.paymentModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPaymentModal"] = showPaymentModal;
+
+
+const hidePaymentModal = state => {
+    state.show.paymentModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePaymentModal"] = hidePaymentModal;
+
+
+const showPackedModal = state => {
+    state.show.packedModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPackedModal"] = showPackedModal;
+
+
+const hidePackedModal = state => {
+    state.show.packedModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePackedModal"] = hidePackedModal;
+
+
+const showPickedModal = state => {
+    state.show.pickedModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPickedModal"] = showPickedModal;
+
+
+const hidePickedModal = state => {
+    state.show.pickedModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePickedModal"] = hidePickedModal;
+
+
+const showShippedModal = state => {
+    state.show.shippedModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showShippedModal"] = showShippedModal;
+
+
+const hideShippedModal = state => {
+    state.show.shippedModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideShippedModal"] = hideShippedModal;
+
+
+const showDeliveredModal = state => {
+    state.show.deliveredModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showDeliveredModal"] = showDeliveredModal;
+
+
+const hideDeliveredModal = state => {
+    state.show.deliveredModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideDeliveredModal"] = hideDeliveredModal;
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(188);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        paymentModal: false,
+        packedModal: false,
+        pickedModal: false,
+        shippedModal: false,
+        deliveredModal: false
+    }
+};
+
+const ordersModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (ordersModule);
+
+/***/ }),
+/* 190 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const loadPackages = context => {
+    axios.get('/admin/api/packages').then(response => context.commit('populatePackagesCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadPackages"] = loadPackages;
+
+
+const openPackageCreatorModal = context => {
+    context.commit('showPackageCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPackageCreatorModal"] = openPackageCreatorModal;
+
+
+const closePackageCreatorModal = context => {
+    context.commit('hidePackageCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePackageCreatorModal"] = closePackageCreatorModal;
+
+
+/***/ }),
+/* 191 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populatePackagesCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populatePackagesCollection"] = populatePackagesCollection;
+
+
+const showPackageCreatorModal = state => {
+    state.show.packageCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPackageCreatorModal"] = showPackageCreatorModal;
+
+
+const hidePackageCreatorModal = state => {
+    state.show.packageCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePackageCreatorModal"] = hidePackageCreatorModal;
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(191);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        packageCreatorModal: false
+    }
+};
+
+const packagesModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (packagesModule);
+
+/***/ }),
+/* 193 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const openPetCreatorModal = context => {
+    context.commit('showPetCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openPetCreatorModal"] = openPetCreatorModal;
+
+
+const closePetCreatorModal = context => {
+    context.commit('hidePetCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closePetCreatorModal"] = closePetCreatorModal;
+
+
+const loadPets = context => {
+    axios.get('/admin/api/pets').then(response => context.commit('populatePetsCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadPets"] = loadPets;
+
+
+/***/ }),
+/* 194 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populatePetsCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populatePetsCollection"] = populatePetsCollection;
+
+
+const addToPetsCollection = (state, pet) => {
+    console.log(pet);
+    state.collection.unshift(pet);
+};
+/* harmony export (immutable) */ __webpack_exports__["addToPetsCollection"] = addToPetsCollection;
+
+
+const showPetCreatorModal = state => {
+    state.show.petCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showPetCreatorModal"] = showPetCreatorModal;
+
+
+const hidePetCreatorModal = state => {
+    state.show.petCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hidePetCreatorModal"] = hidePetCreatorModal;
+
+
+/***/ }),
+/* 195 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(194);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        petCreatorModal: false
+    }
+};
+
+const petsModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (petsModule);
+
+/***/ }),
+/* 196 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const loadPlans = context => {
     axios.get('/admin/api/plans').then(response => context.commit('populatePlansCollection', response.data)).catch(error => console.log(error));
 };
@@ -53990,8 +54419,46 @@ const loadPlans = context => {
 
 
 /***/ }),
-/* 184 */,
-/* 185 */
+/* 197 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const populatePlansCollection = (state, data) => {
+    state.collection = data;
+};
+/* harmony export (immutable) */ __webpack_exports__["populatePlansCollection"] = populatePlansCollection;
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(197);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        planCreatorModal: false
+    }
+};
+
+const plansModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (plansModule);
+
+/***/ }),
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54029,7 +54496,7 @@ const closeReceivedModal = context => {
 
 
 /***/ }),
-/* 186 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54081,13 +54548,12 @@ const populatePurchaseOrdersCollection = (state, data) => {
 
 
 /***/ }),
-/* 187 */,
-/* 188 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(200);
 
 
 
@@ -54110,7 +54576,99 @@ const purchaseOrdersModule = {
 /* harmony default export */ __webpack_exports__["a"] = (purchaseOrdersModule);
 
 /***/ }),
-/* 189 */
+/* 202 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const openUserCreatorModal = context => {
+    context.commit('showUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openUserCreatorModal"] = openUserCreatorModal;
+
+
+const closeUserCreatorModal = context => {
+    context.commit('hideUserCreatorModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
+
+
+const loadUsers = context => {
+    axios.get('/admin/api/users').then(response => context.commit('populateUsersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadUsers"] = loadUsers;
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+const populateUsersCollection = (state, data) => {
+    state.collection = data.map(user => {
+        if (!user.pets) {
+            return user;
+        }
+        let pets = user.pets.reduce(function (carry, pet) {
+            if (carry == '') return pet.name;
+            return carry + ", " + pet.name;
+        }, '');
+        return _extends({}, user, { pets });
+    });
+};
+/* harmony export (immutable) */ __webpack_exports__["populateUsersCollection"] = populateUsersCollection;
+
+
+const addToUsersCollection = (state, user) => {
+    state.collection.unshift(user);
+};
+/* harmony export (immutable) */ __webpack_exports__["addToUsersCollection"] = addToUsersCollection;
+
+
+const showUserCreatorModal = state => {
+    state.show.userCreatorModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showUserCreatorModal"] = showUserCreatorModal;
+
+
+const hideUserCreatorModal = state => {
+    state.show.userCreatorModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(203);
+
+
+
+const state = {
+    collection: [],
+    selected: null,
+    show: {
+        userCreatorModal: false
+    }
+};
+
+const usersModule = {
+    namespaced: true,
+    state,
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (usersModule);
+
+/***/ }),
+/* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54121,14 +54679,8 @@ const populateMeatsCollection = (state, data) => {
 /* harmony export (immutable) */ __webpack_exports__["populateMeatsCollection"] = populateMeatsCollection;
 
 
-const populatePlansCollection = (state, data) => {
-    state.plans = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populatePlansCollection"] = populatePlansCollection;
-
-
 /***/ }),
-/* 190 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54145,26 +54697,28 @@ const populatePlansCollection = (state, data) => {
 });
 
 /***/ }),
-/* 191 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mutations__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mutations__ = __webpack_require__(205);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__ = __webpack_require__(290);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_pets_store__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_purchase_orders_store__ = __webpack_require__(188);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__modules_users_store__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_couriers_store__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_pets_store__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_plans_store__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__modules_purchase_orders_store__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__modules_users_store__ = __webpack_require__(204);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
 
 
 
@@ -54186,174 +54740,175 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         orders: __WEBPACK_IMPORTED_MODULE_6__modules_orders_store__["a" /* default */],
         packages: __WEBPACK_IMPORTED_MODULE_7__modules_packages_store__["a" /* default */],
         pets: __WEBPACK_IMPORTED_MODULE_8__modules_pets_store__["a" /* default */],
-        purchaseOrders: __WEBPACK_IMPORTED_MODULE_9__modules_purchase_orders_store__["a" /* default */],
-        users: __WEBPACK_IMPORTED_MODULE_10__modules_users_store__["a" /* default */]
+        plans: __WEBPACK_IMPORTED_MODULE_9__modules_plans_store__["a" /* default */],
+        purchaseOrders: __WEBPACK_IMPORTED_MODULE_10__modules_purchase_orders_store__["a" /* default */],
+        users: __WEBPACK_IMPORTED_MODULE_11__modules_users_store__["a" /* default */]
     }
 }));
-
-/***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 194 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n#loading-img {\n    background: url(http://preloaders.net/preloaders/360/Velocity.gif) center center no-repeat;\n    height: 100%;\n    z-index: 20;\n}\n.overlay {\n    background: #e9e9e9;\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    opacity: 0.5;\n}\n", ""]);
-
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.btn-total {\n    font-size: 2rem;\n}\n.btn-cost:hover {\n    cursor: auto;\n}\n.btn-label {\n    border-radius: 0;\n    box-shadow: none;\n}\n\n", ""]);
-
-/***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\nspan.label {\n    color: black;\n}\n", ""]);
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n#loading-img {\n    background: url(http://preloaders.net/preloaders/360/Velocity.gif) center center no-repeat;\n    height: 100%;\n    z-index: 20;\n}\n.overlay {\n    background: #e9e9e9;\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    opacity: 0.5;\n}\n", ""]);
-
-/***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    background: #c3eca5;\n    border: 1px solid rgba(150, 177, 132, 0.38);\n    position: fixed;\n    right: 20px;\n    bottom: 40px;\n    height: 6rem;\n    width: 20rem;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding: 1rem;\n}\n", ""]);
-
-/***/ }),
-/* 203 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 206 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 207 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.modal-body[data-v-4cee06e3] {\n    margin-top: 0;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n#loading-img {\n    background: url(http://preloaders.net/preloaders/360/Velocity.gif) center center no-repeat;\n    height: 100%;\n    z-index: 20;\n}\n.overlay {\n    background: #e9e9e9;\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    opacity: 0.5;\n}\n", ""]);
 
 /***/ }),
 /* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.btn-total {\n    font-size: 2rem;\n}\n.btn-cost:hover {\n    cursor: auto;\n}\n.btn-label {\n    border-radius: 0;\n    box-shadow: none;\n}\n\n", ""]);
 
 /***/ }),
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\nspan.label {\n    color: black;\n}\n", ""]);
+exports.push([module.i, "\nspan.label {\r\n    color: black;\n}\r\n", ""]);
 
 /***/ }),
 /* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n#loading-img {\n    background: url(http://preloaders.net/preloaders/360/Velocity.gif) center center no-repeat;\n    height: 100%;\n    z-index: 20;\n}\n.overlay {\n    background: #e9e9e9;\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    opacity: 0.5;\n}\n", ""]);
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    background: #c3eca5;\n    border: 1px solid rgba(150, 177, 132, 0.38);\n    position: fixed;\n    right: 20px;\n    bottom: 40px;\n    height: 6rem;\n    width: 20rem;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding: 1rem;\n}\n", ""]);
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n.modal-body[data-v-4cee06e3] {\r\n    margin-top: 0;\n}\r\n", ""]);
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\nspan.label {\r\n    color: black;\n}\r\n", ""]);
+
+/***/ }),
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -71445,7 +72000,7 @@ exports.push([module.i, "\nspan.label {\n    color: black;\n}\n", ""]);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(137), __webpack_require__(138)(module)))
 
 /***/ }),
-/* 216 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -71694,27 +72249,27 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 216;
+webpackContext.id = 232;
 
 /***/ }),
-/* 217 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(279)
+__webpack_require__(295)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(158),
   /* template */
-  __webpack_require__(256),
+  __webpack_require__(272),
   /* scopeId */
   "data-v-4cee06e3",
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Common/Modal.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Common\\Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71735,24 +72290,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 218 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(273)
+__webpack_require__(289)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(159),
   /* template */
-  __webpack_require__(250),
+  __webpack_require__(266),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meals/SelectBox.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meals\\SelectBox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SelectBox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71773,24 +72328,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 219 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(284)
+__webpack_require__(300)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(160),
   /* template */
-  __webpack_require__(261),
+  __webpack_require__(277),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Meats/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Meats\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71811,24 +72366,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 220 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(283)
+__webpack_require__(299)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(161),
   /* template */
-  __webpack_require__(260),
+  __webpack_require__(276),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71849,24 +72404,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 221 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(285)
+__webpack_require__(301)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(162),
   /* template */
-  __webpack_require__(262),
+  __webpack_require__(278),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PackedLogger.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\PackedLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PackedLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71887,24 +72442,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 222 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(267)
+__webpack_require__(283)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(163),
   /* template */
-  __webpack_require__(244),
+  __webpack_require__(260),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/PaymentLogger.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\PaymentLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PaymentLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71925,24 +72480,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 223 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(269)
+__webpack_require__(285)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(164),
   /* template */
-  __webpack_require__(246),
+  __webpack_require__(262),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Orders/ShippedLogger.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Orders\\ShippedLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ShippedLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71963,24 +72518,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 224 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(278)
+__webpack_require__(294)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(165),
   /* template */
-  __webpack_require__(255),
+  __webpack_require__(271),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Packages/Creator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Packages\\Creator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Creator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72001,24 +72556,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 225 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(272)
+__webpack_require__(288)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(166),
   /* template */
-  __webpack_require__(249),
+  __webpack_require__(265),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Packages/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Packages\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72039,24 +72594,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 226 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(281)
+__webpack_require__(297)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(167),
   /* template */
-  __webpack_require__(258),
+  __webpack_require__(274),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Pets/Creator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Pets\\Creator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Creator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72077,24 +72632,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 227 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(271)
+__webpack_require__(287)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(168),
   /* template */
-  __webpack_require__(248),
+  __webpack_require__(264),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Pets/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Pets\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72115,24 +72670,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 228 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(263)
+__webpack_require__(279)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(169),
   /* template */
-  __webpack_require__(240),
+  __webpack_require__(256),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/PurchaseOrders/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\PurchaseOrders\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72153,24 +72708,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 229 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(276)
+__webpack_require__(292)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(170),
   /* template */
-  __webpack_require__(253),
+  __webpack_require__(269),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/PurchaseOrders/OrderedLogger.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\PurchaseOrders\\OrderedLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] OrderedLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72191,24 +72746,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 230 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(277)
+__webpack_require__(293)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(171),
   /* template */
-  __webpack_require__(254),
+  __webpack_require__(270),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/PurchaseOrders/ReceivedLogger.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\PurchaseOrders\\ReceivedLogger.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ReceivedLogger.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72229,24 +72784,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 231 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(280)
+__webpack_require__(296)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(172),
   /* template */
-  __webpack_require__(257),
+  __webpack_require__(273),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Users/Creator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Users\\Creator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Creator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72267,24 +72822,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 232 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(274)
+__webpack_require__(290)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(173),
   /* template */
-  __webpack_require__(251),
+  __webpack_require__(267),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Admin/Users/Dashboard.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Users\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72305,24 +72860,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 233 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(270)
+__webpack_require__(286)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(174),
   /* template */
-  __webpack_require__(247),
+  __webpack_require__(263),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Auth/LoginForm.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Auth\\LoginForm.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] LoginForm.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72343,24 +72898,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 234 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(265)
+__webpack_require__(281)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(175),
   /* template */
-  __webpack_require__(242),
+  __webpack_require__(258),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Auth/RegistrationForm.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Auth\\RegistrationForm.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] RegistrationForm.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72381,24 +72936,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 235 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(268)
+__webpack_require__(284)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(176),
   /* template */
-  __webpack_require__(245),
+  __webpack_require__(261),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Cart/Summary.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Cart\\Summary.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Summary.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72419,24 +72974,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 236 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(275)
+__webpack_require__(291)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(177),
   /* template */
-  __webpack_require__(252),
+  __webpack_require__(268),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Customers/PetSelector.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Customers\\PetSelector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PetSelector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72457,24 +73012,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 237 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(266)
+__webpack_require__(282)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(178),
   /* template */
-  __webpack_require__(243),
+  __webpack_require__(259),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Calculator.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Calculator.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Calculator.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72495,24 +73050,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 238 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(282)
+__webpack_require__(298)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(179),
   /* template */
-  __webpack_require__(259),
+  __webpack_require__(275),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/Checkout.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\Checkout.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Checkout.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72533,24 +73088,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 239 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(264)
+__webpack_require__(280)
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(180),
   /* template */
-  __webpack_require__(241),
+  __webpack_require__(257),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/bmartin/Web/bb2/resources/assets/js/components/Quotes/DetailsCollector.vue"
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Quotes\\DetailsCollector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] DetailsCollector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -72571,7 +73126,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 240 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -72688,7 +73243,7 @@ if (false) {
 }
 
 /***/ }),
-/* 241 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73119,7 +73674,7 @@ if (false) {
 }
 
 /***/ }),
-/* 242 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73280,7 +73835,7 @@ if (false) {
 }
 
 /***/ }),
-/* 243 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73451,7 +74006,7 @@ if (false) {
 }
 
 /***/ }),
-/* 244 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73607,7 +74162,7 @@ if (false) {
 }
 
 /***/ }),
-/* 245 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73622,7 +74177,7 @@ if (false) {
 }
 
 /***/ }),
-/* 246 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73652,8 +74207,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.weeks_shipped),
-      expression: "weeks_shipped"
+      value: (_vm.form.weeks_shipped),
+      expression: "form.weeks_shipped"
     }],
     staticClass: "form-control",
     attrs: {
@@ -73661,12 +74216,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "weeks_shipped"
     },
     domProps: {
-      "value": (_vm.weeks_shipped)
+      "value": (_vm.form.weeks_shipped)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.weeks_shipped = $event.target.value
+        _vm.form.weeks_shipped = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
@@ -73684,8 +74239,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.shipped_package_id),
-      expression: "shipped_package_id"
+      value: (_vm.form.shipped_package_id),
+      expression: "form.shipped_package_id"
     }],
     staticClass: "form-control",
     attrs: {
@@ -73699,7 +74254,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.shipped_package_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.form.shipped_package_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
   }, _vm._l((_vm.packages), function(package) {
@@ -73725,11 +74280,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input-class": "form-control"
     },
     model: {
-      value: (_vm.shipped_at),
+      value: (_vm.form.shipped_at),
       callback: function($$v) {
-        _vm.shipped_at = $$v
+        _vm.form.shipped_at = $$v
       },
-      expression: "shipped_at"
+      expression: "form.shipped_at"
     }
   })], 1)]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -73746,8 +74301,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.courier_id),
-      expression: "courier_id"
+      value: (_vm.form.courier_id),
+      expression: "form.courier_id"
     }],
     staticClass: "form-control",
     attrs: {
@@ -73761,7 +74316,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.courier_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.form.courier_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }, function($event) {
         _vm.errors.clear('courier_id')
       }]
@@ -73811,7 +74366,7 @@ if (false) {
 }
 
 /***/ }),
-/* 247 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -73945,7 +74500,7 @@ if (false) {
 }
 
 /***/ }),
-/* 248 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74042,7 +74597,7 @@ if (false) {
 }
 
 /***/ }),
-/* 249 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74139,7 +74694,7 @@ if (false) {
 }
 
 /***/ }),
-/* 250 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74189,7 +74744,7 @@ if (false) {
 }
 
 /***/ }),
-/* 251 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74292,7 +74847,7 @@ if (false) {
 }
 
 /***/ }),
-/* 252 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74493,7 +75048,7 @@ if (false) {
 }
 
 /***/ }),
-/* 253 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74567,7 +75122,7 @@ if (false) {
 }
 
 /***/ }),
-/* 254 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74641,7 +75196,7 @@ if (false) {
 }
 
 /***/ }),
-/* 255 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74900,7 +75455,7 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -74952,7 +75507,7 @@ if (false) {
 }
 
 /***/ }),
-/* 257 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75211,7 +75766,7 @@ if (false) {
 }
 
 /***/ }),
-/* 258 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75485,7 +76040,7 @@ if (false) {
 }
 
 /***/ }),
-/* 259 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75551,7 +76106,7 @@ if (false) {
 }
 
 /***/ }),
-/* 260 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75694,7 +76249,7 @@ if (false) {
 }
 
 /***/ }),
-/* 261 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75769,7 +76324,7 @@ if (false) {
 }
 
 /***/ }),
-/* 262 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -75899,13 +76454,13 @@ if (false) {
 }
 
 /***/ }),
-/* 263 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(192);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -75925,13 +76480,13 @@ if(false) {
 }
 
 /***/ }),
-/* 264 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(193);
+var content = __webpack_require__(209);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -75951,13 +76506,13 @@ if(false) {
 }
 
 /***/ }),
-/* 265 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(194);
+var content = __webpack_require__(210);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -75977,13 +76532,13 @@ if(false) {
 }
 
 /***/ }),
-/* 266 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(195);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76003,13 +76558,13 @@ if(false) {
 }
 
 /***/ }),
-/* 267 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(196);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76029,13 +76584,13 @@ if(false) {
 }
 
 /***/ }),
-/* 268 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(197);
+var content = __webpack_require__(213);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76055,13 +76610,13 @@ if(false) {
 }
 
 /***/ }),
-/* 269 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(198);
+var content = __webpack_require__(214);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76081,13 +76636,13 @@ if(false) {
 }
 
 /***/ }),
-/* 270 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(199);
+var content = __webpack_require__(215);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76107,13 +76662,13 @@ if(false) {
 }
 
 /***/ }),
-/* 271 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(200);
+var content = __webpack_require__(216);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76133,13 +76688,13 @@ if(false) {
 }
 
 /***/ }),
-/* 272 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(201);
+var content = __webpack_require__(217);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76159,13 +76714,13 @@ if(false) {
 }
 
 /***/ }),
-/* 273 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(218);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76185,13 +76740,13 @@ if(false) {
 }
 
 /***/ }),
-/* 274 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(219);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76211,13 +76766,13 @@ if(false) {
 }
 
 /***/ }),
-/* 275 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(220);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76237,13 +76792,13 @@ if(false) {
 }
 
 /***/ }),
-/* 276 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(221);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76263,13 +76818,13 @@ if(false) {
 }
 
 /***/ }),
-/* 277 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(206);
+var content = __webpack_require__(222);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76289,13 +76844,13 @@ if(false) {
 }
 
 /***/ }),
-/* 278 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(223);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76315,13 +76870,13 @@ if(false) {
 }
 
 /***/ }),
-/* 279 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(224);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76341,13 +76896,13 @@ if(false) {
 }
 
 /***/ }),
-/* 280 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(209);
+var content = __webpack_require__(225);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76367,13 +76922,13 @@ if(false) {
 }
 
 /***/ }),
-/* 281 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(210);
+var content = __webpack_require__(226);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76393,13 +76948,13 @@ if(false) {
 }
 
 /***/ }),
-/* 282 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(211);
+var content = __webpack_require__(227);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76419,13 +76974,13 @@ if(false) {
 }
 
 /***/ }),
-/* 283 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(212);
+var content = __webpack_require__(228);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76445,13 +77000,13 @@ if(false) {
 }
 
 /***/ }),
-/* 284 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(213);
+var content = __webpack_require__(229);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76471,13 +77026,13 @@ if(false) {
 }
 
 /***/ }),
-/* 285 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(214);
+var content = __webpack_require__(230);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76497,7 +77052,7 @@ if(false) {
 }
 
 /***/ }),
-/* 286 */
+/* 302 */
 /***/ (function(module, exports) {
 
 /**
@@ -76530,530 +77085,11 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 287 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(139);
 
-
-/***/ }),
-/* 288 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const openPaymentModal = (context, order) => {
-    context.commit('setSelectedOrder', order);
-    context.commit('showPaymentModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPaymentModal"] = openPaymentModal;
-
-
-const closePaymentModal = context => {
-    context.commit('hidePaymentModal');
-    context.commit('deselectOrder');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePaymentModal"] = closePaymentModal;
-
-
-const openPackedModal = (context, order) => {
-    context.commit('setSelectedOrder', order);
-    context.commit('showPackedModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPackedModal"] = openPackedModal;
-
-
-const closePackedModal = context => {
-    context.commit('hidePackedModal');
-    context.commit('deselectOrder');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePackedModal"] = closePackedModal;
-
-
-const openPickedModal = (context, order) => {
-    context.commit('setSelectedOrder', order);
-    context.commit('showPickedModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPickedModal"] = openPickedModal;
-
-
-const closePickedModal = context => {
-    context.commit('hidePickedModal');
-    context.commit('deselectOrder');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePickedModal"] = closePickedModal;
-
-
-const openShippedModal = (context, order) => {
-    context.commit('setSelectedOrder', order);
-    context.commit('showShippedModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openShippedModal"] = openShippedModal;
-
-
-const closeShippedModal = context => {
-    context.commit('hideShippedModal');
-    context.commit('deselectOrder');
-};
-/* harmony export (immutable) */ __webpack_exports__["closeShippedModal"] = closeShippedModal;
-
-
-const openDeliveredModal = (context, order) => {
-    context.commit('setSelectedOrder', order);
-    context.commit('showDeliveredModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openDeliveredModal"] = openDeliveredModal;
-
-
-const closeDeliveredModal = context => {
-    context.commit('hideDeliveredModal');
-    context.commit('deselectOrder');
-};
-/* harmony export (immutable) */ __webpack_exports__["closeDeliveredModal"] = closeDeliveredModal;
-
-
-const loadOrders = context => {
-    axios.get('/admin/api/orders').then(response => context.commit('populateOrdersCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadOrders"] = loadOrders;
-
-
-/***/ }),
-/* 289 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-const populateOrdersCollection = (state, data) => {
-    state.collection = data.map(order => {
-        let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
-        let package_label = order.plan.package.label;
-        let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
-        let deliver_by = order.deliver_by.slice(0, 10);
-        return _extends({}, order, { package_label, pet_breed_customer, meal_size, deliver_by });
-    });
-};
-/* harmony export (immutable) */ __webpack_exports__["populateOrdersCollection"] = populateOrdersCollection;
-
-
-/*
- * Selected
- */
-
-const setSelectedOrder = (state, order) => {
-    state.selected = order;
-};
-/* harmony export (immutable) */ __webpack_exports__["setSelectedOrder"] = setSelectedOrder;
-
-
-const deselectOrder = state => {
-    state.selected = null;
-};
-/* harmony export (immutable) */ __webpack_exports__["deselectOrder"] = deselectOrder;
-
-
-const updateSelectedOrder = (state, payload) => {
-    state.selected = _extends({}, state.selected, payload);
-    state.collection = state.collection.filter(order => order.id !== state.selected.id);
-    state.collection.unshift(state.selected);
-};
-/* harmony export (immutable) */ __webpack_exports__["updateSelectedOrder"] = updateSelectedOrder;
-
-
-/*
- * Modals
- */
-
-const showPaymentModal = state => {
-    state.show.paymentModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPaymentModal"] = showPaymentModal;
-
-
-const hidePaymentModal = state => {
-    state.show.paymentModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePaymentModal"] = hidePaymentModal;
-
-
-const showPackedModal = state => {
-    state.show.packedModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPackedModal"] = showPackedModal;
-
-
-const hidePackedModal = state => {
-    state.show.packedModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePackedModal"] = hidePackedModal;
-
-
-const showPickedModal = state => {
-    state.show.pickedModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPickedModal"] = showPickedModal;
-
-
-const hidePickedModal = state => {
-    state.show.pickedModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePickedModal"] = hidePickedModal;
-
-
-const showShippedModal = state => {
-    state.show.shippedModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showShippedModal"] = showShippedModal;
-
-
-const hideShippedModal = state => {
-    state.show.shippedModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hideShippedModal"] = hideShippedModal;
-
-
-const showDeliveredModal = state => {
-    state.show.deliveredModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showDeliveredModal"] = showDeliveredModal;
-
-
-const hideDeliveredModal = state => {
-    state.show.deliveredModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hideDeliveredModal"] = hideDeliveredModal;
-
-
-/***/ }),
-/* 290 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(288);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(289);
-
-
-
-const state = {
-    collection: [],
-    selected: null,
-    show: {
-        paymentModal: false,
-        packedModal: false,
-        pickedModal: false,
-        shippedModal: false,
-        deliveredModal: false
-    }
-};
-
-const ordersModule = {
-    namespaced: true,
-    state,
-    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
-    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (ordersModule);
-
-/***/ }),
-/* 291 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const loadPackages = context => {
-    axios.get('/admin/api/packages').then(response => context.commit('populatePackagesCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadPackages"] = loadPackages;
-
-
-const openPackageCreatorModal = context => {
-    context.commit('showPackageCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPackageCreatorModal"] = openPackageCreatorModal;
-
-
-const closePackageCreatorModal = context => {
-    context.commit('hidePackageCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePackageCreatorModal"] = closePackageCreatorModal;
-
-
-/***/ }),
-/* 292 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const populatePackagesCollection = (state, data) => {
-    state.collection = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populatePackagesCollection"] = populatePackagesCollection;
-
-
-const showPackageCreatorModal = state => {
-    state.show.packageCreatorModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPackageCreatorModal"] = showPackageCreatorModal;
-
-
-const hidePackageCreatorModal = state => {
-    state.show.packageCreatorModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePackageCreatorModal"] = hidePackageCreatorModal;
-
-
-/***/ }),
-/* 293 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(292);
-
-
-
-const state = {
-    collection: [],
-    selected: null,
-    show: {
-        packageCreatorModal: false
-    }
-};
-
-const packagesModule = {
-    namespaced: true,
-    state,
-    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
-    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (packagesModule);
-
-/***/ }),
-/* 294 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const loadCouriers = context => {
-    axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadCouriers"] = loadCouriers;
-
-
-/***/ }),
-/* 295 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const populateCouriersCollection = (state, data) => {
-    state.collection = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populateCouriersCollection"] = populateCouriersCollection;
-
-
-/***/ }),
-/* 296 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(294);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(295);
-
-
-
-const state = {
-    collection: [],
-    selected: null,
-    show: {}
-};
-
-const couriersModule = {
-    namespaced: true,
-    state,
-    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
-    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (couriersModule);
-
-/***/ }),
-/* 297 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const openPetCreatorModal = context => {
-    context.commit('showPetCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openPetCreatorModal"] = openPetCreatorModal;
-
-
-const closePetCreatorModal = context => {
-    context.commit('hidePetCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["closePetCreatorModal"] = closePetCreatorModal;
-
-
-const loadPets = context => {
-    axios.get('/admin/api/pets').then(response => context.commit('populatePetsCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadPets"] = loadPets;
-
-
-/***/ }),
-/* 298 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const populatePetsCollection = (state, data) => {
-    state.collection = data;
-};
-/* harmony export (immutable) */ __webpack_exports__["populatePetsCollection"] = populatePetsCollection;
-
-
-const addToPetsCollection = (state, pet) => {
-    console.log(pet);
-    state.collection.unshift(pet);
-};
-/* harmony export (immutable) */ __webpack_exports__["addToPetsCollection"] = addToPetsCollection;
-
-
-const showPetCreatorModal = state => {
-    state.show.petCreatorModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showPetCreatorModal"] = showPetCreatorModal;
-
-
-const hidePetCreatorModal = state => {
-    state.show.petCreatorModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hidePetCreatorModal"] = hidePetCreatorModal;
-
-
-/***/ }),
-/* 299 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(298);
-
-
-
-const state = {
-    collection: [],
-    selected: null,
-    show: {
-        petCreatorModal: false
-    }
-};
-
-const petsModule = {
-    namespaced: true,
-    state,
-    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
-    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (petsModule);
-
-/***/ }),
-/* 300 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-const openUserCreatorModal = context => {
-    context.commit('showUserCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["openUserCreatorModal"] = openUserCreatorModal;
-
-
-const closeUserCreatorModal = context => {
-    context.commit('hideUserCreatorModal');
-};
-/* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
-
-
-const loadUsers = context => {
-    axios.get('/admin/api/users').then(response => context.commit('populateUsersCollection', response.data)).catch(error => console.log(error));
-};
-/* harmony export (immutable) */ __webpack_exports__["loadUsers"] = loadUsers;
-
-
-/***/ }),
-/* 301 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-const populateUsersCollection = (state, data) => {
-    state.collection = data.map(user => {
-        if (!user.pets) {
-            return user;
-        }
-        let pets = user.pets.reduce(function (carry, pet) {
-            if (carry == '') return pet.name;
-            return carry + ", " + pet.name;
-        }, '');
-        return _extends({}, user, { pets });
-    });
-};
-/* harmony export (immutable) */ __webpack_exports__["populateUsersCollection"] = populateUsersCollection;
-
-
-const addToUsersCollection = (state, user) => {
-    state.collection.unshift(user);
-};
-/* harmony export (immutable) */ __webpack_exports__["addToUsersCollection"] = addToUsersCollection;
-
-
-const showUserCreatorModal = state => {
-    state.show.userCreatorModal = true;
-};
-/* harmony export (immutable) */ __webpack_exports__["showUserCreatorModal"] = showUserCreatorModal;
-
-
-const hideUserCreatorModal = state => {
-    state.show.userCreatorModal = false;
-};
-/* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
-
-
-/***/ }),
-/* 302 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions__ = __webpack_require__(300);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(301);
-
-
-
-const state = {
-    collection: [],
-    selected: null,
-    show: {
-        userCreatorModal: false
-    }
-};
-
-const usersModule = {
-    namespaced: true,
-    state,
-    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
-    actions: __WEBPACK_IMPORTED_MODULE_0__actions__
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (usersModule);
 
 /***/ })
 /******/ ]);

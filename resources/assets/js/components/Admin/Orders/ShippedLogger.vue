@@ -18,7 +18,7 @@
                     <label for="weeks_shipped">Weeks Shipped</label>
                     <input type="text" class="form-control"
                            id="weeks_shipped"
-                           v-model="weeks_shipped"
+                           v-model="form.weeks_shipped"
                     >
                 </div>
 
@@ -28,7 +28,7 @@
                      v-bind:class="{'has-error': errors.has('shipped_package_id') }"
                 >
                     <label for="shipped_package_id">Package</label>
-                    <select v-model="shipped_package_id"
+                    <select v-model="form.shipped_package_id"
                             class="form-control"
                             id="shipped_package_id"
                     >
@@ -47,7 +47,7 @@
                      v-bind:class="{'has-error': errors.has('shipped_at') }"
                 >
                     <label>Date Shipped</label>
-                    <datepicker v-model="shipped_at"
+                    <datepicker v-model="form.shipped_at"
                                 id="shipped_at"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
@@ -60,7 +60,7 @@
                      v-bind:class="{'has-error': errors.has('courier_id') }"
                 >
                     <label for="courier_id">Courier</label>
-                    <select v-model="courier_id"
+                    <select v-model="form.courier_id"
                             class="form-control"
                             id="courier_id"
                             @change="errors.clear('courier_id')"
@@ -111,10 +111,12 @@ export default {
     },
     data() {
         return {
-            weeks_shipped: null,
-            shipped_package_id: null,
-            shipped_at: null,
-            courier_id: null,
+            form: {
+                weeks_shipped: null,
+                shipped_package_id: null,
+                shipped_at: null,
+                courier_id: null,
+            }
         };
     },
     methods: {
@@ -136,12 +138,10 @@ export default {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.selected.id +'/shipped', {
-                courier_id: this.courier_id,
-                shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),
-                weeks_shipped: this.weeks_shipped,
-                shipped_package_id: this.shipped_package_id,
-            }).then(response => {
+            let requestBody = {...this.form, shipped_at: moment(this.shipped_at).format('YYYY-MM-DD') };
+            return axios.post('/admin/api/orders/'+ this.selected.id +'/shipped',
+                requestBody
+            ).then(response => {
                 vm.updateSelectedOrder({
                     shipped: true,
                     shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),

@@ -11,6 +11,7 @@ import couriers from './modules/couriers/store';
 import orders from './modules/orders/store';
 import packages from './modules/packages/store';
 import pets from './modules/pets/store';
+import plans from './modules/plans/store';
 import purchaseOrders from './modules/purchase-orders/store';
 import users from './modules/users/store';
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         orders,
         packages,
         pets,
+        plans,
         purchaseOrders,
         users,
     }
