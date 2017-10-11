@@ -826,4 +826,22 @@ class PlansUnitTest extends TestCase
             Carbon::now()->addDays(4 + 14)->format('Y-m-d')
         );
     }
+
+    /** @test */
+    public function a_plan_sets_the_deliver_by_of_a_new_order_properly__weekly__last_delivered_at__no_orders() {
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+            'latest_delivery_at'            => Carbon::now()->subDays(7),
+        ]);
+
+        $plan->generateOrder();
+        /** @var Order $order */
+        $order = $plan->orders()->first();
+
+        $this->assertEquals(
+            $order->deliver_by->format('Y-m-d'),
+            Carbon::now()->format('Y-m-d')
+        );
+    }
 }

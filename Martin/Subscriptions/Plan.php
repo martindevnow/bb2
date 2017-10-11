@@ -2,11 +2,10 @@
 
 namespace Martin\Subscriptions;
 
-use App\Http\Controllers\PackagesController;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Martin\ACL\User;
 use Martin\Core\Address;
@@ -14,7 +13,6 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
-use Martin\Products\Meat;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 
@@ -378,9 +376,12 @@ class Plan extends Model
     public function getNextDeliveryDate() {
         $lead_time_in_days = 4;
 
-        if ( ! $this->orders()->count())
-            return $this->created_at->addDays($lead_time_in_days);
+        if ( ! $this->orders()->count()) {
+            if ($this->latest_delivery_at)
+                return $this->latest_delivery_at->addDays($this->ships_every_x_weeks * 7);
 
+            return $this->created_at->addDays($lead_time_in_days);
+        }
 
         $latestOrder = $this->getLatestOrder();
 
