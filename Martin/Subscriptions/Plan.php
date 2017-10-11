@@ -390,26 +390,6 @@ class Plan extends Model
              $this->ships_every_x_weeks;
 
         return $latestOrder->deliver_by->addDays($weeks_delay * 7);
-
-
-        return $this->latest_delivery_at
-            ->addDays($this->weeks_of_food_per_shipment * 7);
-
-        if (! $this->orders()->count())
-            return $this->getFirstDeliveryDate();
-
-        return $this->getLatestOrder()
-            ->deliver_by
-            ->addDays($this->weeks_of_food_per_shipment * 7);
-    }
-
-    /**
-     * TODO: Make this 'smarter'
-     *
-     * @return mixed
-     */
-    public function getFirstDeliveryDate() {
-        return $this->created_at;
     }
 
     /**
