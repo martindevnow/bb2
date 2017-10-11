@@ -81,7 +81,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('purchaseOrders', [
             'closePackedModal',
         ]),
         save() {
@@ -103,11 +103,13 @@ export default {
         },
     },
     computed: {
-        ...mapState([
+        ...mapState('purchaseOrders', [
             'show',
             'selected',
-            'packages',
         ]),
+        ...mapState('packages', {
+            'packages': 'collection'
+        })
     },
     mounted() {
         this.weeks_packed = this.selected.order.plan.weeks_of_food_per_shipment;

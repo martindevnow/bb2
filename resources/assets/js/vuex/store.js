@@ -4,20 +4,20 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import state from './state'
-import * as getters from './getters'
 import * as mutations from './mutations'
 import * as actions from './actions'
 
-// import auth from './modules/auth'
-// import shopping from './modules/shopping'
+import orders from './modules/orders/store';
+import packages from './modules/packages/store';
+import purchaseOrders from './modules/purchase-orders/store';
 
 export default new Vuex.Store({
     state,
-    getters,
     mutations,
     actions,
     modules: {
-        // auth,
-        // shopping
+        orders,
+        packages,
+        purchaseOrders,
     }
 })

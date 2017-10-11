@@ -29,7 +29,7 @@
             </thead>
 
             <tbody>
-            <tr v-for="order in filteredData(orders)">
+            <tr v-for="order in filteredData(collection)">
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
                 <td>{{ order.package_label }}</td>
@@ -128,10 +128,9 @@ export default {
     },
     mounted() {
         this.loadOrders();
-        this.loadPackages();
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'openPaymentModal',
             'closePaymentModal',
             'openPackedModal',
@@ -139,14 +138,17 @@ export default {
             'openShippedModal',
             'closeShippedModal',
             'loadOrders',
-            'loadPackages',
         ]),
         mealSize(order) {
             return (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
         }
     },
     computed: {
-        ...mapState(['orders', 'show'])
+        ...mapState('orders', [
+            'collection',
+            'show',
+            'selected'
+        ])
     },
 
 

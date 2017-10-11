@@ -65,7 +65,7 @@ Vue.component('admin-shipped-logger', require('./components/Admin/Orders/Shipped
 Vue.component('admin-received-logger', require('./components/Admin/PurchaseOrders/ReceivedLogger.vue'));
 Vue.component('admin-ordered-logger', require('./components/Admin/PurchaseOrders/OrderedLogger.vue'));
 
-import store from './store';
+import store from './vuex/store';
 
 const app = new Vue({
     el: '#content',
