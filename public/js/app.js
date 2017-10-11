@@ -54038,12 +54038,14 @@ const updateSelectedOrder = (state, payload) => {
     packages: [],
     pets: [],
     plans: [],
+    purchaseOrders: [],
     users: [],
 
     selected: {
         order: null,
         plan: null,
-        package: null
+        package: null,
+        purchaseOrder: null
     },
     show: {
         paymentModal: false,
@@ -54053,7 +54055,9 @@ const updateSelectedOrder = (state, payload) => {
         deliveredModal: false,
         noteModal: false,
         petCreatorModal: false,
-        userCreatorModal: false
+        userCreatorModal: false,
+        orderedModal: false,
+        receivedModal: false
     }
 });
 

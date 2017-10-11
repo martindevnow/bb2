@@ -36,6 +36,10 @@ class Meat extends Model
         $this->attributes['cost_per_lb'] = round($value * 100);
     }
 
+    public function costPerQuantity() {
+        return $this->cost_per_lb / 454;
+    }
+
     /**
      * Relationships
      */

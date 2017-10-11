@@ -59,9 +59,6 @@ Route::resource('/plans', 'PlansController');
 
 // Purchase Orders
 Route::resource('/purchase-orders', 'PurchaseOrdersController');
-Route::get('/purchase-orders/{id}', 'PurchaseOrdersController@show');
-Route::get('/purchase-orders', 'PurchaseOrdersController@create');
-Route::post('/purchase-orders', 'PurchaseOrdersController@store');
 
 // Toppings
 Route::resource('/toppings', 'ToppingsController');

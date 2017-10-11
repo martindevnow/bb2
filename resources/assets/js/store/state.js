@@ -6,12 +6,14 @@ export default {
     packages: [],
     pets: [],
     plans: [],
+    purchaseOrders: [],
     users: [],
 
     selected: {
         order: null,
         plan: null,
         package: null,
+        purchaseOrder: null,
     },
     show: {
         paymentModal: false,
@@ -22,5 +24,7 @@ export default {
         noteModal: false,
         petCreatorModal: false,
         userCreatorModal: false,
+        orderedModal: false,
+        receivedModal: false,
     }
 }

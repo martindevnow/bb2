@@ -43,6 +43,9 @@ class PurchaseOrder extends Model
      * @return Model
      */
     public function addItem(Model $model, $quantity) {
+        if ($detail = $this->hasItem($model))
+            return $detail->addQuantity($quantity);
+
         $details = PurchaseOrderDetail::byPurchasable($model, $quantity);
         return $this->details()->save($details);
     }
@@ -61,7 +64,10 @@ class PurchaseOrder extends Model
         return false;
     }
 
-
+    /**
+     * @param Plan $plan
+     * @param int $number_of_weeks
+     */
     public function addPlanToOrder(Plan $plan, $number_of_weeks = 1) {
         $meatWeights = $plan->getMeatWeightsByCode();
 
@@ -76,28 +82,28 @@ class PurchaseOrder extends Model
         }
     }
 
+    /**
+     * @param $item
+     * @return bool|PurchaseOrder
+     */
     public function hasItem($item) {
         $items = $this->details()->where('purchasable_type', get_class($item))
             ->where('purchasable_id', $item->id);
 
-        if (! $items->count())
+        if ($items->count() !== 1)
             return false;
 
         return $items->first();
     }
 
-//    public function totalsByItem() {
-//        $keyed = $this->details->map(function($detail) {
-//            $detail->uniqueKey = $detail->purchasable_id . "---". $detail->purchasable_type;
-//            return $detail;
-//        });
-//
-//        $items = $keyed->unique('uniqueKey')->pluck('uniqueKey');
-//
-//
-//        return $items;
-//    }
-
+    /**
+     * @return mixed
+     */
+    public function totalCost() {
+        return $this->details->reduce(function($carry, $item) {
+            return $carry += $item->quantity * $item->purchasable->costPerQuantity();
+        }, 0);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -31,6 +31,17 @@ export const populatePetsCollection = (state, data) => {
     });
 };
 
+export const populatePurchaseOrdersCollection = (state, data) => {
+    state.purchaseOrders = data.map(po => {
+
+        let total_cost = po.details.reduce(function (carry, item) {
+            return item.quantity * item.costPerQuantity;
+        }, 0);
+
+        return {...po, total_cost };
+    });
+};
+
 export const addToPetsCollection = (state, pet) => {
     state.pets.unshift(pet);
 };
@@ -115,6 +126,22 @@ export const showUserCreatorModal = (state) => {
 
 export const hideUserCreatorModal = (state) => {
     state.show.userCreatorModal = false;
+};
+
+export const showOrderedModal = (state) => {
+    state.show.orderedModal = true;
+};
+
+export const hideOrderedModal = (state) => {
+    state.show.orderedModal = false;
+};
+
+export const showReceivedModal = (state) => {
+    state.show.receivedModal = true;
+};
+
+export const hideReceivedModal = (state) => {
+    state.show.receivedModal = false;
 };
 
 export const updateSelectedOrder = (state, payload) => {

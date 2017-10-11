@@ -72,6 +72,22 @@ export const closeUserCreatorModal = (context) => {
     context.commit('hideUserCreatorModal');
 };
 
+export const openOrderedModal = (context) => {
+    context.commit('showOrderedModal');
+};
+
+export const closeOrderedModal = (context) => {
+    context.commit('hideOrderedModal');
+};
+
+export const openReceivedModal = (context) => {
+    context.commit('showReceivedModal');
+};
+
+export const closeReceivedModal = (context) => {
+    context.commit('hideReceivedModal');
+};
+
 export const loadCouriers = (context) => {
     axios.get('/admin/api/couriers')
         .then(response => context.commit('populateCouriersCollection', response.data))
@@ -105,6 +121,12 @@ export const loadPlans = (context) => {
 export const loadPets = (context) => {
     axios.get('/admin/api/pets')
         .then(response => context.commit('populatePetsCollection', response.data))
+        .catch(error => console.log(error));
+};
+
+export const loadPurchaseOrders = (context) => {
+    axios.get('/admin/api/purchase-orders')
+        .then(response => context.commit('populatePurchaseOrdersCollection', response.data))
         .catch(error => console.log(error));
 };
 

@@ -12,6 +12,15 @@ use Martin\Vendors\PurchaseOrder;
 class PurchaseOrdersController extends Controller
 {
     /**
+     * @return $this
+     */
+    public function index() {
+        $pos = PurchaseOrder::all();
+        return view('admin.purchase-orders.index')
+            ->with(compact('pos'));
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
