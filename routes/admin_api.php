@@ -1,10 +1,21 @@
 <?php
 
 // Orders
+use Martin\ACL\User;
+use Martin\Customers\Pet;
+use Martin\Delivery\Courier;
+use Martin\Products\Meat;
+use Martin\Subscriptions\Package;
 use Martin\Transactions\Order;
 
 Route::get('orders', function () {
-    return Order::with('customer', 'plan.pet', 'plan', 'plan.package', 'deliveryAddress')->get();
+    return Order::with([
+        'customer',
+        'plan.pet',
+        'plan',
+        'plan.package',
+        'deliveryAddress'
+    ])->get();
 });
 
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
@@ -14,3 +25,28 @@ Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 
 
+Route::get('couriers', function() {
+    return Courier::all();
+});
+
+Route::get('packages', function() {
+    return Package::all();
+});
+
+Route::resource('pets', 'PetsController');
+
+Route::get('meats', function() {
+    return Meat::all();
+});
+
+Route::get('purchase-orders', function() {
+    return \Martin\Vendors\PurchaseOrder::with([
+        'details',
+        'details.purchasable',
+        'vendor',
+    ])->get();
+});
+Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
+Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');
+
+Route::resource('users', 'UsersController');

@@ -59,17 +59,32 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
-    public function createOrderForBasicPlan() {
-        $package = factory(Package::class)->create();
+    /**
+     * @return mixed
+     */
+    public function createPlanForBasicBento($overrides = []) {
+        $package = factory(Package::class)->create([
+            'code'  => 'Basic Package',
+        ]);
 
-        $chkMeal = factory(Meal::class)->create();
-        $turkMeal = factory(Meal::class)->create();
+        $chkMeal = factory(Meal::class)->create([
+            'code'  => 'chickenMeal',
+        ]);
+        $turkMeal = factory(Meal::class)->create([
+            'code'  => 'chickenMeal',
+        ]);
 
         $chickenCost = 1;
         $turkeyCost = 6;
 
-        $chicken = factory(Meat::class)->create(['cost_per_lb' => $chickenCost]);
-        $turkey = factory(Meat::class)->create(['cost_per_lb' => $turkeyCost]);
+        $chicken = factory(Meat::class)->create([
+            'code'  => 'chicken',
+            'cost_per_lb' => $chickenCost
+        ]);
+        $turkey = factory(Meat::class)->create([
+            'code'  => 'turkey',
+            'cost_per_lb' => $turkeyCost
+        ]);
 
         $chkMeal->addMeat($chicken);
         $turkMeal->addMeat($turkey);
@@ -92,15 +107,25 @@ abstract class TestCase extends BaseTestCase
 
         $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level'=> 2]);
 
-        /** @var Plan $plan */
-        $plan = factory(Plan::class)->create([
+        $data = array_merge([
             'package_id'    => $package->id,
-            'weeks_at_a_time'   => 2,
+            'weeks_of_food_per_shipment'   => 2,
+            'ships_every_x_weeks'   => 2,
             'pet_weight'    => $pet->weight,
             'pet_id'    => $pet->id,
             'pet_activity_level'    => $pet->activity_level,
+        ], $overrides);
 
-        ]);
+        /** @var Plan $plan */
+        return factory(Plan::class)->create($data);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function createOrderForBasicPlan() {
+        /** @var Plan $plan */
+        $plan = $this->createPlanForBasicBento();
 
         $plan->generateOrder();
         return $plan->orders->first();
