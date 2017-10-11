@@ -53756,6 +53756,30 @@ const closeUserCreatorModal = context => {
 /* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
 
 
+const openOrderedModal = context => {
+    context.commit('showOrderedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openOrderedModal"] = openOrderedModal;
+
+
+const closeOrderedModal = context => {
+    context.commit('hideOrderedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeOrderedModal"] = closeOrderedModal;
+
+
+const openReceivedModal = context => {
+    context.commit('showReceivedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["openReceivedModal"] = openReceivedModal;
+
+
+const closeReceivedModal = context => {
+    context.commit('hideReceivedModal');
+};
+/* harmony export (immutable) */ __webpack_exports__["closeReceivedModal"] = closeReceivedModal;
+
+
 const loadCouriers = context => {
     axios.get('/admin/api/couriers').then(response => context.commit('populateCouriersCollection', response.data)).catch(error => console.log(error));
 };
@@ -53790,6 +53814,12 @@ const loadPets = context => {
     axios.get('/admin/api/pets').then(response => context.commit('populatePetsCollection', response.data)).catch(error => console.log(error));
 };
 /* harmony export (immutable) */ __webpack_exports__["loadPets"] = loadPets;
+
+
+const loadPurchaseOrders = context => {
+    axios.get('/admin/api/purchase-orders').then(response => context.commit('populatePurchaseOrdersCollection', response.data)).catch(error => console.log(error));
+};
+/* harmony export (immutable) */ __webpack_exports__["loadPurchaseOrders"] = loadPurchaseOrders;
 
 
 const loadUsers = context => {
@@ -53892,6 +53922,19 @@ const populatePetsCollection = (state, data) => {
     });
 };
 /* harmony export (immutable) */ __webpack_exports__["populatePetsCollection"] = populatePetsCollection;
+
+
+const populatePurchaseOrdersCollection = (state, data) => {
+    state.purchaseOrders = data.map(po => {
+
+        let total_cost = po.details.reduce(function (carry, item) {
+            return item.quantity * item.costPerQuantity;
+        }, 0);
+
+        return _extends({}, po, { total_cost });
+    });
+};
+/* harmony export (immutable) */ __webpack_exports__["populatePurchaseOrdersCollection"] = populatePurchaseOrdersCollection;
 
 
 const addToPetsCollection = (state, pet) => {
@@ -54015,6 +54058,30 @@ const hideUserCreatorModal = state => {
     state.show.userCreatorModal = false;
 };
 /* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
+
+
+const showOrderedModal = state => {
+    state.show.orderedModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showOrderedModal"] = showOrderedModal;
+
+
+const hideOrderedModal = state => {
+    state.show.orderedModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideOrderedModal"] = hideOrderedModal;
+
+
+const showReceivedModal = state => {
+    state.show.receivedModal = true;
+};
+/* harmony export (immutable) */ __webpack_exports__["showReceivedModal"] = showReceivedModal;
+
+
+const hideReceivedModal = state => {
+    state.show.receivedModal = false;
+};
+/* harmony export (immutable) */ __webpack_exports__["hideReceivedModal"] = hideReceivedModal;
 
 
 const updateSelectedOrder = (state, payload) => {
