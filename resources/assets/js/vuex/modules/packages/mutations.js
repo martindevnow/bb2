@@ -1,5 +1,5 @@
 export const populatePackagesCollection = (state, data) => {
-    state.packages = data;
+    state.collection = data;
 };
 
 export const showPackageCreatorModal = (state) => {

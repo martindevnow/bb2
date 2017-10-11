@@ -36,7 +36,7 @@
                             name="packed_package_id"
                     >
                         <option v-for="package in packages"
-                                :selected="selected.order.plan.package_id == package.id"
+                                :selected="selected.plan.package_id == package.id"
                                 :value="package.id"
                         >{{ package.label }}</option>
                     </select>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
 
@@ -81,29 +81,35 @@ export default {
         };
     },
     methods: {
-        ...mapActions('purchaseOrders', [
+        ...mapActions('orders', [
             'closePackedModal',
+        ]),
+        ...mapActions('packages', [
+            'loadPackages',
+        ]),
+        ...mapMutations('orders', [
+            'updateSelectedOrder',
         ]),
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/packed', {
+            return axios.post('/admin/api/orders/'+ this.selected.id +'/packed', {
                 weeks_packed:      this.weeks_packed,
                 packed_package_id: this.packed_package_id,
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+                vm.updateSelectedOrder({
                     packed: true,
                     weeks_packed: vm.weeks_packed,
                     packed_package_id: vm.packed_package_id,
                 });
-                vm.$store.dispatch('closePackedModal');
+                vm.closePackedModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState('purchaseOrders', [
+        ...mapState('orders', [
             'show',
             'selected',
         ]),
@@ -112,8 +118,9 @@ export default {
         })
     },
     mounted() {
-        this.weeks_packed = this.selected.order.plan.weeks_of_food_per_shipment;
-        this.packed_package_id = this.selected.order.plan.package_id;
+        this.loadPackages();
+        this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
+        this.packed_package_id = this.selected.plan.package_id;
     }
 }
 </script>

@@ -51317,31 +51317,32 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             packed_package_id: null
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('purchaseOrders', ['closePackedModal']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('orders', ['closePackedModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('packages', ['loadPackages']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapMutations */])('orders', ['updateSelectedOrder']), {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/packed', {
+            return axios.post('/admin/api/orders/' + this.selected.id + '/packed', {
                 weeks_packed: this.weeks_packed,
                 packed_package_id: this.packed_package_id
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+                vm.updateSelectedOrder({
                     packed: true,
                     weeks_packed: vm.weeks_packed,
                     packed_package_id: vm.packed_package_id
                 });
-                vm.$store.dispatch('closePackedModal');
+                vm.closePackedModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('purchaseOrders', ['show', 'selected']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('packages', {
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('orders', ['show', 'selected']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('packages', {
         'packages': 'collection'
     })),
     mounted() {
-        this.weeks_packed = this.selected.order.plan.weeks_of_food_per_shipment;
-        this.packed_package_id = this.selected.order.plan.package_id;
+        this.loadPackages();
+        this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
+        this.packed_package_id = this.selected.plan.package_id;
     }
 });
 
@@ -75964,7 +75965,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.packages), function(package) {
     return _c('option', {
       domProps: {
-        "selected": _vm.selected.order.plan.package_id == package.id,
+        "selected": _vm.selected.plan.package_id == package.id,
         "value": package.id
       }
     }, [_vm._v(_vm._s(package.label))])
@@ -76896,7 +76897,7 @@ const closePackageCreatorModal = context => {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const populatePackagesCollection = (state, data) => {
-    state.packages = data;
+    state.collection = data;
 };
 /* harmony export (immutable) */ __webpack_exports__["populatePackagesCollection"] = populatePackagesCollection;
 
