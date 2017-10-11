@@ -183,6 +183,9 @@ class Order extends Model
 
         $this->shipped = true;
         $this->save();
+
+        $this->plan->updateForShipped($this);
+
         return $this;
     }
 
