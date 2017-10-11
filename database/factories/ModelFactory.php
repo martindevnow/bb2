@@ -160,7 +160,7 @@ $factory->define(\Martin\Products\Inventory::class, function(Faker\Generator $fa
         'changeable_id'  => $changeable->id,
         'changeable_type'  => get_class($changeable),
         'size'  => $inventoryable instanceof \Martin\Products\Meat
-            ? null
+            ? $faker->numberBetween(150, 400)
             : $inventoryable instanceof \Martin\Products\Product
                 ? $inventoryable->size
                 : $faker->numberBetween(150, 400),

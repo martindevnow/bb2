@@ -56,7 +56,10 @@ class MeatsUnitTest extends TestCase
             'code'=> 'THISMEAT',
             'cost_per_lb' => $costInCents
         ]);
-        DB::table('meats')->insert($meat->toArray());
+        $meatData = $meat->toArray();
+        unset($meatData['cost_per_quantity']);
+
+        DB::table('meats')->insert($meatData);
         $meat_clone = Meat::whereCode('THISMEAT')->firstOrFail();
         $this->assertEquals($costInDollars, $meat_clone->cost_per_lb);
     }
