@@ -1,15 +1,5 @@
 export const populateUsersCollection = (state, data) => {
-    state.collection = data.map(user => {
-        if (! user.pets) {
-            return user;
-        }
-        let pets = user.pets.reduce(function(carry, pet) {
-            if (carry == '')
-                return pet.name;
-            return carry + ", " + pet.name
-        }, '');
-        return {...user, pets};
-    });
+    state.collection = data;
 };
 
 export const addToUsersCollection = (state, user) => {
@@ -40,8 +30,11 @@ export const disableEditMode = (state) => {
 };
 
 export const updateUser = (state, payload) => {
-    state.collection = state.collection.filter(model => model.id !== payload.id);
+    console.log(payload.pets);
+    let pets = {...payload.pets};
+    let user = {...payload, pets};
+    state.collection = state.collection.filter(model => model.id !== user.id);
     console.log(3);
-    state.collection.unshift(payload);
+    state.collection.unshift(user);
     console.log(4);
 };
