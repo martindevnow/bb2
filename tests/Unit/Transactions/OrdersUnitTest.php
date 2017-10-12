@@ -338,4 +338,9 @@ class OrdersUnitTest extends TestCase
             $order3->deliver_by->format('Y-m-d')
         );
     }
+
+    /** @test */
+    public function generating_the_first_order_sets_the_first_delivery_at_for_the_plan() {
+
+    }
 }

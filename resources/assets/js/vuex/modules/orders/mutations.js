@@ -23,7 +23,7 @@ export const deselectOrder = (state) => {
 
 export const updateSelectedOrder = (state, payload) => {
     state.selected = { ...state.selected, ...payload };
-    state.collection = state.collection.filter(order => order.id !== state.selected.id);
+    state.collection = state.collection.filter(model => model.id !== state.selected.id);
     state.collection.unshift(state.selected);
 };
 

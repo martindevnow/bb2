@@ -43,7 +43,9 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.pets }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="editUser(user)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -55,9 +57,10 @@
         </table>
 
         <admin-common-modal v-if="show.userCreatorModal"
-                            @close="closeCreatorModal()"
+                            @close="closeUserCreatorModal()"
         >
-            <p slot="header">Add a User</p>
+            <p slot="header" v-if="! mode">Add a User</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
             <admin-users-creator @close="$emit('close')"
                                slot="body"
             ></admin-users-creator>
@@ -99,10 +102,11 @@
                 'loadUsers',
                 'openUserCreatorModal',
                 'closeUserCreatorModal',
+                'editUser',
             ]),
         },
         computed: {
-            ...mapState('users', ['collection', 'show'])
+            ...mapState('users', ['collection', 'show', 'mode', 'selected'])
         }
     }
 </script>

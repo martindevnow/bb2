@@ -25,6 +25,7 @@ use Martin\Transactions\Order;
  */
 $factory->define(\Martin\Core\Address::class, function (Faker\Generator $faker) {
     return [
+        'active'    => 1,
         'name' => $faker->word,
         'description' => $faker->word,
         'company' => $faker->word,
@@ -92,15 +93,18 @@ $factory->define(\Martin\Subscriptions\CostModel::class, function(Faker\Generato
  */
 $factory->define(\Martin\Delivery\Delivery::class, function(Faker\Generator $faker) {
     $user = factory(\Martin\ACL\User::class)->create();
+    $package = factory(\Martin\Subscriptions\Package::class)->create();
     $order = factory(\Martin\Transactions\Order::class)->create(['customer_id' => $user->id]);
     return [
-        'recipient_id' => $user->id,
-        'shipped_at' => $faker->dateTime,
-        'delivered_at' => $faker->dateTime,
-        'courier_id'    => factory(\Martin\Delivery\Courier::class)->create()->id,
-        'tracking_number' => "".$faker->numberBetween(1000,5000),
-        'instructions' => $faker->sentence,
-        'order_id' => $order->id,
+        'recipient_id'          => $user->id,
+        'order_id'              => $order->id,
+        'courier_id'            => factory(\Martin\Delivery\Courier::class)->create()->id,
+        'weeks_shipped'         => 1,
+        'shipped_package_id'    => $package->id,
+        'shipped_at'            => $faker->dateTime,
+        'delivered_at'          => $faker->dateTime,
+        'tracking_number'       => "".$faker->numberBetween(1000,5000),
+        'instructions'          => $faker->sentence,
     ];
 });
 
@@ -159,13 +163,13 @@ $factory->define(\Martin\Products\Inventory::class, function(Faker\Generator $fa
     return [
         'changeable_id'  => $changeable->id,
         'changeable_type'  => get_class($changeable),
+        'inventoryable_id'  => $inventoryable->id,
+        'inventoryable_type'  => get_class($inventoryable),
         'size'  => $inventoryable instanceof \Martin\Products\Meat
             ? $faker->numberBetween(150, 400)
             : $inventoryable instanceof \Martin\Products\Product
                 ? $inventoryable->size
                 : $faker->numberBetween(150, 400),
-        'inventoryable_id'  => $inventoryable->id,
-        'inventoryable_type'  => get_class($inventoryable),
         'change' => $faker->numberBetween(1,500) * -1,
         'current'   => $faker->numberBetween(200,500),
     ];
@@ -191,6 +195,7 @@ $factory->define(\Martin\Products\Meat::class, function (Faker\Generator $faker)
         'type'  => $faker->word,
         'variety'   => $faker->word,
         'cost_per_lb'   => $faker->numberBetween(99, 300) / 100,
+        'has_bone'  => 1,
     ];
 });
 
@@ -220,10 +225,11 @@ $factory->define(\Martin\Transactions\Order::class, function(Faker\Generator $fa
         'plan_id'  => factory(\Martin\Subscriptions\Plan::class)->create()->id,
         'customer_id'  => factory(\Martin\ACL\User::class)->create()->id,
         'delivery_address_id' => factory(\Martin\Core\Address::class)->create()->id,
+        'deliver_by' => Carbon::now()->addDays(3),
         'subtotal' => $faker->numberBetween(1000,5000),
         'tax' => $faker->numberBetween(1000,5000),
         'total_cost' => $faker->numberBetween(1000,5000),
-        'deliver_by' => Carbon::now()->addDays(3),
+        'plan_order'    => 1,
     ];
 });
 
@@ -232,10 +238,12 @@ $factory->define(\Martin\Transactions\Order::class, function(Faker\Generator $fa
  */
 $factory->define(\Martin\Subscriptions\Package::class, function (Faker\Generator $faker) {
     return [
-        'code'  => ucwords($faker->word),
-        'label'  => $faker->word,
+        'code'      => ucwords($faker->word),
+        'label'     => $faker->word,
+        'active'    => 1,
+        'public'    => 1,
         'customization' => $faker->randomElement([0,1]),
-        'level' => $faker->randomElement([0,1,2]),
+        'level'     => $faker->randomElement([0,1,2]),
     ];
 });
 

@@ -6,7 +6,8 @@ const state = {
     selected: null,
     show: {
         userCreatorModal: false,
-    }
+    },
+    mode: null,
 };
 
 const usersModule = {

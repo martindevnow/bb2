@@ -50918,7 +50918,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data() {
         return {};
     },
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])(['selected', 'show'])
+    mounted() {
+        let vm = this;
+        document.addEventListener("keydown", e => {
+            if (e.keyCode == 27) {
+                vm.$emit('close');
+            }
+        });
+    }
 });
 
 /***/ }),
@@ -52735,6 +52742,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -52755,7 +52772,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('users', ['closeUserCreatorModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["d" /* mapMutations */])('users', ['addToUsersCollection']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('users', ['closeUserCreatorModal']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["d" /* mapMutations */])('users', ['addToUsersCollection', 'updateUser']), {
         save() {
             let vm = this;
 
@@ -52765,10 +52782,40 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
+        },
+        update() {
+            let vm = this;
+
+            return axios.patch('/admin/api/users/' + this.selected.id, this.form).then(response => {
+                console.log(response);
+                console.log(response.data);
+                vm.updateUser(response.data);
+                vm.closeUserCreatorModal();
+            }).catch(error => {
+                vm.errors.record(error.response.data.errors);
+            });
+        },
+        populateFormFromUser(user) {
+            console.log('Populating the form with ...' + user.name + ' s data');
+            this.form.name = user.name;
+            this.form.email = user.email;
+            this.form.password = '';
+            this.form.first_name = user.first_name;
+            this.form.last_name = user.last_name;
+            this.form.phone_number = user.phone_number;
         }
     }),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])('users', ['show', 'selected', 'collection'])),
-    mounted() {}
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])('users', ['show', 'selected', 'collection', 'mode'])),
+    mounted() {
+        if (this.mode == 'EDIT') {
+            this.populateFormFromUser(this.selected);
+        }
+    },
+    watch: {
+        selected(newSelected) {
+            this.populateFormFromUser(newSelected);
+        }
+    }
 });
 
 /***/ }),
@@ -52781,6 +52828,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_isSortable__ = __webpack_require__(9);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
 //
 //
 //
@@ -52871,8 +52921,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.loadUsers();
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('users', ['loadUsers', 'openUserCreatorModal', 'closeUserCreatorModal'])),
-    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('users', ['collection', 'show']))
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('users', ['loadUsers', 'openUserCreatorModal', 'closeUserCreatorModal', 'editUser'])),
+    computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('users', ['collection', 'show', 'mode', 'selected']))
 });
 
 /***/ }),
@@ -54148,7 +54198,7 @@ const deselectOrder = state => {
 
 const updateSelectedOrder = (state, payload) => {
     state.selected = _extends({}, state.selected, payload);
-    state.collection = state.collection.filter(order => order.id !== state.selected.id);
+    state.collection = state.collection.filter(model => model.id !== state.selected.id);
     state.collection.unshift(state.selected);
 };
 /* harmony export (immutable) */ __webpack_exports__["updateSelectedOrder"] = updateSelectedOrder;
@@ -54589,6 +54639,8 @@ const openUserCreatorModal = context => {
 
 const closeUserCreatorModal = context => {
     context.commit('hideUserCreatorModal');
+    context.commit('deselectUser');
+    context.commit('disableEditMode');
 };
 /* harmony export (immutable) */ __webpack_exports__["closeUserCreatorModal"] = closeUserCreatorModal;
 
@@ -54597,6 +54649,14 @@ const loadUsers = context => {
     axios.get('/admin/api/users').then(response => context.commit('populateUsersCollection', response.data)).catch(error => console.log(error));
 };
 /* harmony export (immutable) */ __webpack_exports__["loadUsers"] = loadUsers;
+
+
+const editUser = (context, user) => {
+    context.commit('setSelectedUser', user);
+    context.commit('showUserCreatorModal');
+    context.commit('enableEditMode');
+};
+/* harmony export (immutable) */ __webpack_exports__["editUser"] = editUser;
 
 
 /***/ }),
@@ -54640,6 +54700,38 @@ const hideUserCreatorModal = state => {
 /* harmony export (immutable) */ __webpack_exports__["hideUserCreatorModal"] = hideUserCreatorModal;
 
 
+const setSelectedUser = (state, user) => {
+    state.selected = user;
+};
+/* harmony export (immutable) */ __webpack_exports__["setSelectedUser"] = setSelectedUser;
+
+
+const deselectUser = state => {
+    state.selected = null;
+};
+/* harmony export (immutable) */ __webpack_exports__["deselectUser"] = deselectUser;
+
+
+const enableEditMode = state => {
+    state.mode = 'EDIT';
+};
+/* harmony export (immutable) */ __webpack_exports__["enableEditMode"] = enableEditMode;
+
+const disableEditMode = state => {
+    state.mode = null;
+};
+/* harmony export (immutable) */ __webpack_exports__["disableEditMode"] = disableEditMode;
+
+
+const updateUser = (state, payload) => {
+    state.collection = state.collection.filter(model => model.id !== payload.id);
+    console.log(3);
+    state.collection.unshift(payload);
+    console.log(4);
+};
+/* harmony export (immutable) */ __webpack_exports__["updateUser"] = updateUser;
+
+
 /***/ }),
 /* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -54655,7 +54747,8 @@ const state = {
     selected: null,
     show: {
         userCreatorModal: false
-    }
+    },
+    mode: null
 };
 
 const usersModule = {
@@ -54828,7 +54921,7 @@ exports.push([module.i, "\n.ajax-success-message {\n    display: none;\n    back
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 220 */
@@ -54870,7 +54963,7 @@ exports.push([module.i, "\n.modal-body[data-v-4cee06e3] {\r\n    margin-top: 0;\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 226 */
@@ -74804,16 +74897,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'
     })])
   }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.collection)), function(user) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.pets))]), _vm._v(" "), _vm._m(1, true)])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.pets))]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-primary btn-xs",
+      on: {
+        "click": function($event) {
+          _vm.editUser(user)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-pencil"
+    })]), _vm._v(" "), _vm._m(1, true)])])
   }))]), _vm._v(" "), (_vm.show.userCreatorModal) ? _c('admin-common-modal', {
     on: {
       "close": function($event) {
-        _vm.closeCreatorModal()
+        _vm.closeUserCreatorModal()
       }
     }
-  }, [_c('p', {
+  }, [(!_vm.mode) ? _c('p', {
     slot: "header"
-  }, [_vm._v("Add a User")]), _vm._v(" "), _c('admin-users-creator', {
+  }, [_vm._v("Add a User")]) : _vm._e(), _vm._v(" "), (_vm.mode == 'EDIT') ? _c('p', {
+    slot: "header"
+  }, [_vm._v("Edit User: " + _vm._s(_vm.selected.name))]) : _vm._e(), _vm._v(" "), _c('admin-users-creator', {
     on: {
       "close": function($event) {
         _vm.$emit('close')
@@ -74828,15 +74932,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-search"
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('td', [_c('button', {
-    staticClass: "btn btn-primary btn-xs"
-  }, [_c('i', {
-    staticClass: "fa fa-pencil"
-  })]), _vm._v(" "), _c('button', {
+  return _c('button', {
     staticClass: "btn btn-danger btn-xs"
   }, [_c('i', {
     staticClass: "fa fa-trash"
-  })])])
+  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -75512,6 +75612,9 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('form', {
+    attrs: {
+      "autocomplete": "off"
+    },
     on: {
       "keydown": function($event) {
         _vm.errors.clear($event.target.name)
@@ -75579,7 +75682,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "email",
       "id": "email",
-      "name": "email"
+      "name": "email",
+      "autocomplete": "off"
     },
     domProps: {
       "value": (_vm.form.email)
@@ -75616,7 +75720,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "password",
       "id": "password",
-      "name": "password"
+      "name": "password",
+      "autocomplete": "off"
     },
     domProps: {
       "value": (_vm.form.password)
@@ -75736,7 +75841,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_c('label', [_vm._v(" ")]), _vm._v(" "), _c('button', {
+  }, [_c('label', [_vm._v(" ")]), _vm._v(" "), (!_vm.mode) ? _c('button', {
     staticClass: "btn btn-primary btn-block",
     attrs: {
       "disabled": _vm.errors.any()
@@ -75746,7 +75851,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.save()
       }
     }
-  }, [_vm._v("\n                Save\n            ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Save\n            ")]) : _vm._e(), _vm._v(" "), (_vm.mode == 'EDIT') ? _c('button', {
+    staticClass: "btn btn-primary btn-block",
+    attrs: {
+      "disabled": _vm.errors.any()
+    },
+    on: {
+      "click": function($event) {
+        _vm.update()
+      }
+    }
+  }, [_vm._v("\n                Update\n            ")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('label', [_vm._v(" ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-default btn-block",

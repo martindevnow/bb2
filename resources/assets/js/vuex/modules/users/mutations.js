@@ -23,3 +23,25 @@ export const showUserCreatorModal = (state) => {
 export const hideUserCreatorModal = (state) => {
     state.show.userCreatorModal = false;
 };
+
+export const setSelectedUser = (state, user) => {
+    state.selected = user;
+};
+
+export const deselectUser = (state) => {
+    state.selected = null;
+};
+
+export const enableEditMode = (state) => {
+    state.mode = 'EDIT';
+};
+export const disableEditMode = (state) => {
+    state.mode = null;
+};
+
+export const updateUser = (state, payload) => {
+    state.collection = state.collection.filter(model => model.id !== payload.id);
+    console.log(3);
+    state.collection.unshift(payload);
+    console.log(4);
+};

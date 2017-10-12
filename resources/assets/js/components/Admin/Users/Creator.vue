@@ -1,8 +1,8 @@
 <template>
     <form @keydown="errors.clear($event.target.name)"
           @submit.prevent=""
+          autocomplete="off"
     >
-
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
@@ -28,6 +28,7 @@
                            id="email"
                            name="email"
                            v-model="form.email"
+                           autocomplete="off"
                     >
                     <span class="help-block">{{ errors.get('email') }}</span>
                 </div>
@@ -45,6 +46,7 @@
                            id="password"
                            name="password"
                            v-model="form.password"
+                           autocomplete="off"
                     >
                     <span class="help-block">{{ errors.get('password') }}</span>
                 </div>
@@ -102,8 +104,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -149,6 +159,7 @@ export default {
         ]),
         ...mapMutations('users', [
             'addToUsersCollection',
+            'updateUser',
         ]),
         save() {
             let vm = this;
@@ -161,11 +172,41 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
+        update() {
+            let vm = this;
+
+            return axios.patch('/admin/api/users/' + this.selected.id, this.form
+            ).then(response => {
+                console.log(response);
+                console.log(response.data);
+                vm.updateUser(response.data);
+                vm.closeUserCreatorModal();
+            }).catch(error => {
+                vm.errors.record(error.response.data.errors);
+            });
+        },
+        populateFormFromUser(user) {
+            console.log('Populating the form with ...' + user.name + ' s data');
+            this.form.name = user.name;
+            this.form.email = user.email;
+            this.form.password = '';
+            this.form.first_name = user.first_name;
+            this.form.last_name = user.last_name;
+            this.form.phone_number = user.phone_number;
+        }
     },
     computed: {
-        ...mapState('users', ['show', 'selected', 'collection']),
+        ...mapState('users', ['show', 'selected', 'collection', 'mode']),
     },
     mounted() {
+        if (this.mode == 'EDIT') {
+            this.populateFormFromUser(this.selected);
+        }
+    },
+    watch: {
+        selected(newSelected) {
+            this.populateFormFromUser(newSelected);
+        }
     }
 }
 </script>
