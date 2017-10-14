@@ -116,8 +116,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -138,7 +146,7 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
-    import { mapGetters, mapState, mapActions } from 'vuex';
+    import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import moment from 'moment';
     import Datepicker from 'vuejs-datepicker';
     import { BasicSelect } from 'vue-search-select'
@@ -169,9 +177,13 @@ export default {
         };
     },
     methods: {
+        ...mapMutations('packages', [
+            'addToPackagesCollection',
+            'updatePackage',
+        ]),
         ...mapActions('packages', [
             'closePackageCreatorModal',
-            'addToPackagesCollection',
+            'editPackage',
         ]),
         ...mapActions('meals', [
             'loadMeals'
@@ -181,7 +193,7 @@ export default {
             return axios.post('/admin/api/packages', {
                 ...this.form
             }).then(response => {
-                vm.addToPackagesCollection({ package: response.data });
+                vm.addToPackagesCollection(response.data);
                 vm.closePackageCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -190,12 +202,10 @@ export default {
         update() {
             let vm = this;
 
-            return axios.patch('/admin/api/users/' + this.selected.id, this.form
+            return axios.patch('/admin/api/packages/' + this.selected.id, this.form
             ).then(response => {
-                console.log(response);
-                console.log(response.data);
-                vm.updateUser(response.data);
-                vm.closeUserCreatorModal();
+                vm.updatePackage(response.data);
+                vm.closePackageCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

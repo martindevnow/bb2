@@ -30,9 +30,8 @@ Route::get('couriers', function() {
     return Courier::all();
 });
 
-Route::get('packages', function() {
-    return Package::all();
-});
+Route::resource('packages', 'PackagesController');
+
 
 Route::resource('pets', 'PetsController');
 

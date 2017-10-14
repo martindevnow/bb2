@@ -3,6 +3,7 @@ export const populatePackagesCollection = (state, data) => {
 };
 
 export const addToPackagesCollection = (state, pkg) => {
+    console.log(pkg);
     state.collection.unshift(pkg);
 };
 
@@ -31,6 +32,7 @@ export const disableEditMode = (state) => {
 };
 
 export const updatePackage = (state, payload) => {
+    console.log(payload);
     state.collection = state.collection.filter(model => model.id !== payload.id);
     state.collection.unshift(payload);
 };

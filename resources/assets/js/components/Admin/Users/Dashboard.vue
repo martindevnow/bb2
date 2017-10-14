@@ -5,7 +5,7 @@
             <tr>
                 <th v-bind:colspan="numColumns + 1">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             <div class="input-group">
                                 <input type="text"
                                        class="form-control"
@@ -16,7 +16,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             <button class="btn btn-primary"
                                     @click="openUserCreatorModal()"
                             >

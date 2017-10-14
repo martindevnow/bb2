@@ -51816,6 +51816,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -51847,11 +51855,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
         };
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('packages', ['closePackageCreatorModal', 'addToPackagesCollection']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('meals', ['loadMeals']), {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["d" /* mapMutations */])('packages', ['addToPackagesCollection', 'updatePackage']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('packages', ['closePackageCreatorModal', 'editPackage']), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])('meals', ['loadMeals']), {
         save() {
             let vm = this;
             return axios.post('/admin/api/packages', _extends({}, this.form)).then(response => {
-                vm.addToPackagesCollection({ package: response.data });
+                vm.addToPackagesCollection(response.data);
                 vm.closePackageCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -51860,11 +51868,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         update() {
             let vm = this;
 
-            return axios.patch('/admin/api/users/' + this.selected.id, this.form).then(response => {
-                console.log(response);
-                console.log(response.data);
-                vm.updateUser(response.data);
-                vm.closeUserCreatorModal();
+            return axios.patch('/admin/api/packages/' + this.selected.id, this.form).then(response => {
+                vm.updatePackage(response.data);
+                vm.closePackageCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -51980,6 +51986,36 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -51987,7 +52023,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_isSortable__["a" /* default */]],
     data() {
-        let columns = ['code', 'label', 'active', 'public', 'customization', 'level'];
+        let columns = ['label', 'code', 'active', 'public', 'custom', 'level'];
         let numColumns = columns.length;
         let sortOrders = {};
         columns.forEach(function (key) {
@@ -52003,7 +52039,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.loadPackages();
     },
-    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('packages', ['loadPackages', 'openPackageCreatorModal', 'closePackageCreatorModal', 'editPackage'])),
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('packages', ['loadPackages', 'openPackageCreatorModal', 'closePackageCreatorModal', 'editPackage']), {
+        boolIconClass(val) {
+            if (val) return 'fa-check';
+            return 'fa-times';
+        },
+        boolBtnClass(val) {
+            if (val) return 'btn-success';
+            return 'btn-danger';
+        }
+    }),
     computed: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('packages', ['collection', 'show', 'selected', 'mode']))
 });
 
@@ -54468,6 +54513,7 @@ const populatePackagesCollection = (state, data) => {
 
 
 const addToPackagesCollection = (state, pkg) => {
+    console.log(pkg);
     state.collection.unshift(pkg);
 };
 /* harmony export (immutable) */ __webpack_exports__["addToPackagesCollection"] = addToPackagesCollection;
@@ -54510,6 +54556,7 @@ const disableEditMode = state => {
 
 
 const updatePackage = (state, payload) => {
+    console.log(payload);
     state.collection = state.collection.filter(model => model.id !== payload.id);
     state.collection.unshift(payload);
 };
@@ -55074,7 +55121,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 221 */
@@ -55116,7 +55163,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 227 */
@@ -74868,6 +74915,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "colspan": _vm.numColumns + 1
     }
   }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-6"
+  }, [_c('div', {
     staticClass: "input-group"
   }, [_c('input', {
     directives: [{
@@ -74889,14 +74940,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.sortable.filterKey = $event.target.value
       }
     }
-  }), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('button', {
+  }), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6"
+  }, [_c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
         _vm.openPackageCreatorModal()
       }
     }
-  }, [_vm._v("\n                    New\n                ")])])]), _vm._v(" "), _c('tr', [_vm._l((_vm.columns), function(key) {
+  }, [_vm._v("\n                            New\n                        ")])])])])]), _vm._v(" "), _c('tr', [_vm._l((_vm.columns), function(key) {
     return _c('th', {
       class: {
         active: _vm.sortable.sortKey == key
@@ -74911,7 +74964,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'
     })])
   }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.collection)), function(package) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(package.code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.label))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.active))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.public))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.customization))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.level))]), _vm._v(" "), _c('td', [_c('button', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(package.label))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.code))]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-circle btn-xs",
+      class: _vm.boolBtnClass(package.active)
+    }, [_c('i', {
+      staticClass: "fa",
+      class: _vm.boolIconClass(package.active)
+    })])]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-circle btn-xs",
+      class: _vm.boolBtnClass(package.public)
+    }, [_c('i', {
+      staticClass: "fa",
+      class: _vm.boolIconClass(package.public)
+    })])]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-circle btn-xs",
+      class: _vm.boolBtnClass(package.customization)
+    }, [_c('i', {
+      staticClass: "fa",
+      class: _vm.boolIconClass(package.customization)
+    })])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(package.level))]), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-primary btn-xs",
       on: {
         "click": function($event) {
@@ -75024,7 +75095,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-6"
+    staticClass: "col-xs-6"
   }, [_c('div', {
     staticClass: "input-group"
   }, [_c('input', {
@@ -75048,7 +75119,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
+    staticClass: "col-xs-6"
   }, [_c('button', {
     staticClass: "btn btn-primary",
     on: {
@@ -75729,7 +75800,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_c('label', [_vm._v(" ")]), _vm._v(" "), _c('button', {
+  }, [_c('label', [_vm._v(" ")]), _vm._v(" "), (!_vm.mode) ? _c('button', {
     staticClass: "btn btn-primary btn-block",
     attrs: {
       "disabled": _vm.errors.any()
@@ -75739,7 +75810,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.save()
       }
     }
-  }, [_vm._v("\n                Save\n            ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Save\n            ")]) : _vm._e(), _vm._v(" "), (_vm.mode == 'EDIT') ? _c('button', {
+    staticClass: "btn btn-primary btn-block",
+    attrs: {
+      "disabled": _vm.errors.any()
+    },
+    on: {
+      "click": function($event) {
+        _vm.update()
+      }
+    }
+  }, [_vm._v("\n                Update\n            ")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('label', [_vm._v(" ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-default btn-block",

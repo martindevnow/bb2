@@ -4,20 +4,26 @@
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               v-model="sortable.filterKey"
-                        />
-                        <span class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </span>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="sortable.filterKey"
+                                />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary"
+                                    @click="openPackageCreatorModal()"
+                            >
+                                New
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary"
-                            @click="openPackageCreatorModal()"
-                    >
-                        New
-                    </button>
                 </th>
             </tr>
             <tr>
@@ -33,11 +39,35 @@
             </thead>
             <tbody>
             <tr v-for="package in filteredData(collection)">
-                <td>{{ package.code }}</td>
                 <td>{{ package.label }}</td>
-                <td>{{ package.active }}</td>
-                <td>{{ package.public }}</td>
-                <td>{{ package.customization }}</td>
+                <td>{{ package.code }}</td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.active)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.active)"
+                        ></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.public)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.public)"
+                        ></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.customization)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.customization)"
+                        ></i>
+                    </button>
+                </td>
                 <td>{{ package.level }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
@@ -75,11 +105,11 @@
         ],
         data() {
             let columns = [
-                'code',
                 'label',
+                'code',
                 'active',
                 'public',
-                'customization',
+                'custom',
                 'level',
             ];
             let numColumns = columns.length;
@@ -104,6 +134,16 @@
                 'closePackageCreatorModal',
                 'editPackage',
             ]),
+            boolIconClass(val) {
+                if (val)
+                    return 'fa-check';
+                return 'fa-times';
+            },
+            boolBtnClass(val) {
+                if (val)
+                    return 'btn-success';
+                return 'btn-danger';
+            }
         },
         computed: {
             ...mapState('packages', [
