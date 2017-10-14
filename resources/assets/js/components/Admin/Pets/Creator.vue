@@ -207,8 +207,8 @@ export default {
             'users': 'collection'
         }),
         ownersSelect() {
-            return this.users.map(user => {
-                return { value: user.id, text: user.name + ' (' + user.id + ')' };
+            return this.users.map(model => {
+                return { value: model.id, text: model.name + ' (' + model.id + ')' };
             });
         }
     },

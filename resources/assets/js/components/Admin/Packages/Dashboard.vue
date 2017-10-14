@@ -71,6 +71,13 @@
                 <td>{{ package.level }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
+                            @click="openMealPlanEditorModal(package)"
+                    >
+                        Meals
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-xs"
                             @click="editPackage(package)"
                     >
                         <i class="fa fa-pencil"></i>
@@ -92,6 +99,15 @@
                                slot="body"
             ></admin-packages-creator>
         </admin-common-modal>
+
+        <admin-common-modal v-if="show.mealPlanEditorModal"
+                            @close="closeMealPlanEditorModal()"
+        >
+            <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>
+            <admin-meal-plan-editor @close="$emit('close')"
+                               slot="body"
+            ></admin-meal-plan-editor>
+        </admin-common-modal>
     </div>
 </template>
 
@@ -111,6 +127,7 @@
                 'public',
                 'custom',
                 'level',
+                'meals',
             ];
             let numColumns = columns.length;
             let sortOrders = {};
@@ -133,6 +150,8 @@
                 'openPackageCreatorModal',
                 'closePackageCreatorModal',
                 'editPackage',
+                'openMealPlanEditorModal',
+                'closeMealPlanEditorModal',
             ]),
             boolIconClass(val) {
                 if (val)

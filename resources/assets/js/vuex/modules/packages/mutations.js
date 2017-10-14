@@ -15,6 +15,14 @@ export const hidePackageCreatorModal = (state) => {
     state.show.packageCreatorModal = false;
 };
 
+export const showMealPlanEditorModal = (state) => {
+    state.show.mealPlanEditorModal = true;
+};
+
+export const hideMealPlanEditorModal = (state) => {
+    state.show.mealPlanEditorModal = false;
+};
+
 export const setSelectedPackage = (state, pkg) => {
     state.selected = pkg;
 };

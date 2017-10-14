@@ -6,6 +6,7 @@ const state = {
     selected: null,
     show: {
         packageCreatorModal: false,
+        mealPlanEditorModal: false,
     },
     mode: null,
 };
