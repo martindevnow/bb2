@@ -77,12 +77,15 @@ export default {
         this.loadMeats();
     },
     methods: {
-        ...mapActions([
+        ...mapActions('meats', [
             'loadMeats',
         ]),
     },
     computed: {
-        ...mapState(['meats', 'show'])
+        ...mapState('meats', [
+            'collection',
+            'show']
+        )
     }
 }
 </script>
