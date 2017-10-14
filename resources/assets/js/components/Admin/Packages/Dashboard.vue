@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="package in filteredData(packages)">
+            <tr v-for="package in filteredData(collection)">
                 <td>{{ package.code }}</td>
                 <td>{{ package.label }}</td>
                 <td>{{ package.active }}</td>
@@ -40,7 +40,9 @@
                 <td>{{ package.customization }}</td>
                 <td>{{ package.level }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="editPackage(package)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -52,9 +54,10 @@
         </table>
 
         <admin-common-modal v-if="show.packageCreatorModal"
-                            @close="closeCreatorModal()"
+                            @close="closePackageCreatorModal()"
         >
-            <p slot="header">Add a Package</p>
+            <p slot="header" v-if="! mode">Add a Package</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Package: {{ selected.label }}</p>
             <admin-packages-creator @close="$emit('close')"
                                slot="body"
             ></admin-packages-creator>
@@ -95,14 +98,20 @@
             this.loadPackages();
         },
         methods: {
-            ...mapActions([
+            ...mapActions('packages', [
                 'loadPackages',
                 'openPackageCreatorModal',
                 'closePackageCreatorModal',
+                'editPackage',
             ]),
         },
         computed: {
-            ...mapState(['packages', 'show'])
+            ...mapState('packages', [
+                'collection',
+                'show',
+                'selected',
+                'mode'
+            ])
         }
     }
 </script>

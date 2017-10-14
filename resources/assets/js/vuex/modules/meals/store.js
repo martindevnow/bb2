@@ -5,16 +5,15 @@ const state = {
     collection: [],
     selected: null,
     show: {
-        packageCreatorModal: false,
-    },
-    mode: null,
+        petCreatorModal: false,
+    }
 };
 
-const packagesModule = {
+const mealsModule = {
     namespaced: true,
     state,
     mutations,
     actions,
 };
 
-export default packagesModule;
+export default mealsModule;

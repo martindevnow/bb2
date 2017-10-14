@@ -1,3 +1,15 @@
+export const closePackageCreatorModal = (context) => {
+    context.commit('hidePackageCreatorModal');
+    context.commit('deselectPackage');
+    context.commit('disableEditMode');
+};
+
+export const editPackage = (context, pkg) => {
+    context.commit('setSelectedPackage', pkg);
+    context.commit('showPackageCreatorModal');
+    context.commit('enableEditMode');
+};
+
 export const loadPackages = (context) => {
     axios.get('/admin/api/packages')
         .then(response => context.commit('populatePackagesCollection', response.data))
@@ -6,8 +18,4 @@ export const loadPackages = (context) => {
 
 export const openPackageCreatorModal = (context) => {
     context.commit('showPackageCreatorModal');
-};
-
-export const closePackageCreatorModal = (context) => {
-    context.commit('hidePackageCreatorModal');
 };
