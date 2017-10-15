@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\ContactReceived;
+use App\Mail\ContactReceivedConfirmation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -39,5 +40,9 @@ class SendContactUsEmail implements ShouldQueue
             ->cc('benm@barfbento.com')
             ->send(new ContactReceived($this->contactUsData));
 
+        if ($this->contactUsData['email']) {
+            Mail::to($this->contactUsData['email'])
+                ->send(new ContactReceivedConfirmation($this->contactUsData));
+        }
     }
 }
