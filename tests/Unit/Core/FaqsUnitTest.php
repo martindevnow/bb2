@@ -2,15 +2,14 @@
 
 namespace Tests\Unit\Core;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Core\Faq;
 use Martin\Core\FaqCategory;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FaqsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function faqs_have_a_model_factory() {
@@ -70,10 +69,11 @@ class FaqsUnitTest extends TestCase
         $faq = $faq->fresh(['category']);
 
         $faq->assignCategory($faq_category[1]->code);
-        $this->assertFalse($faq->assignCategory(true));
         $faq = $faq->fresh(['category']);
 
         $this->assertEquals($faq_category[1]->id, $faq->category->id);
+
+        $this->assertFalse($faq->assignCategory(true));
     }
 
     /** @test */

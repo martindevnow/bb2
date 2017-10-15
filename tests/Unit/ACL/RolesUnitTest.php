@@ -2,16 +2,15 @@
 
 namespace Tests\Unit\ACL;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\Permission;
 use Martin\ACL\Role;
 use Martin\ACL\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RolesUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function roles_have_a_model_factory() {

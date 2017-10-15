@@ -13,8 +13,8 @@ class DeliveriesTableSeeder extends Seeder
      */
     public function run()
     {
+        echo "Loading \"Deliveries\"...\r\n";
         DB::table('deliveries')->truncate();
-
         $this->seedFromCSV('deliveries', '/seeds/csv/deliveries.csv', \Martin\Delivery\Delivery::class);
     }
 }

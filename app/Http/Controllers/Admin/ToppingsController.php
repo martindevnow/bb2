@@ -50,7 +50,7 @@ class ToppingsController extends Controller
         $this->validate($request, [
             'code'          => 'required|unique:toppings',
             'label'         => 'required',
-            'cost_per_kg'   => 'required',
+            'cost_per_kg'   => 'required|numeric',
         ]);
 
         $topping = Topping::create($request->only(['label', 'code', 'cost_per_kg']));
@@ -81,9 +81,9 @@ class ToppingsController extends Controller
      */
     public function update(Topping $topping, Request $request) {
         $this->validate($request, [
-            'code'      => 'required',
-            'label'      => 'required',
-            'cost_per_kg'   => 'required',
+            'code'          => 'required',
+            'label'         => 'required',
+            'cost_per_kg'   => 'required|numeric',
         ]);
 
         $topping->fill($request->only(['code', 'label', 'cost_per_kg']));

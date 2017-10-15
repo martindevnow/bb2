@@ -3,17 +3,16 @@
 namespace Tests\Unit\ACL;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function users_have_a_model_factory() {

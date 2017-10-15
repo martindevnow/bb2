@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Vendors;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\Core\Image;
 use Martin\Products\Meat;
@@ -9,12 +10,10 @@ use Martin\Vendors\PurchaseOrder;
 use Martin\Vendors\PurchaseOrderDetail;
 use Martin\Vendors\Vendor;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PurchaseOrdersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function purchase_orders_have_a_model_factory() {

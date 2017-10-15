@@ -51,10 +51,10 @@ class PetsController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'name'      => 'required',
-            'weight'    => 'required',
-            'activity_level'    => 'required',
-            'owner_id'    => 'required|exists:users,id',
+            'name'              => 'required',
+            'weight'            => 'required|integer',
+            'activity_level'    => 'required|numeric',
+            'owner_id'          => 'required|exists:users,id',
         ]);
 
         $pet = Pet::create($request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday', 'owner_id']));
@@ -86,10 +86,10 @@ class PetsController extends Controller
      */
     public function update(Pet $pet, Request $request) {
         $this->validate($request, [
-            'name'      => 'required',
-            'weight'    => 'required',
-            'activity_level'    => 'required',
-            'owner_id'    => 'required|exists:users,id',
+            'name'              => 'required',
+            'weight'            => 'required|integer',
+            'activity_level'    => 'required|numeric',
+            'owner_id'          => 'required|exists:users,id',
         ]);
 
         $petData = $request->only(['name', 'weight', 'species', 'breed', 'activity_level', 'birthday', 'owner_id']);

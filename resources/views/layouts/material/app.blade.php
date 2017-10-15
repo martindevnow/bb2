@@ -21,60 +21,22 @@
     <link rel="stylesheet" href="/material/css/plugins.min.css" />
     <link rel="stylesheet" href="/material/css/style.light-blue-500.min.css" />
     <link rel="stylesheet" href="/barfbento/css/app.css" />
+    <link rel="stylesheet" href="/barfbento/css/barf.css" />
+    <link rel="stylesheet" href="/css/sweetalert2.min.css" />
+
     <!--[if lt IE 9]>
     <script src="/material/js/html5shiv.min.js"></script>
     <script src="/material/js/respond.min.js"></script>
     <![endif]-->
 
+    <script>
+        window.BarfBento = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+            'stripeKey' => config('services.stripe.key'),
+//            'user' => auth()->user()
+        ]); ?>
+    </script>
 
-    <style>
-.ms-hero-img-barfhome {
-    background-image: url(/barfbento/img/raw.JPG);
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-}
-
-.ms-hero-img-farm {
-    background-image: url(/barfbento/img/large/farm.jpg);
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-}
-
-.ms-footbar {
-    margin-top: 0;
-}
-.help-block {
-    color: red;
-}
-
-@media screen and (max-width: 767px) {
-
-    .navbar-header {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .navbar .container-full {
-        display: flex;
-        align-items: center;
-    }
-}
-
-        .ms-slidebar .ms-slidebar-header {
-            background-image: none;
-            background-color: #7f7f7f;
-        }
-
-        @media screen and (max-width: 992px) {
-            .price-table > h3 {
-                padding-top: 2rem;
-            }
-        }
-
-
-    </style>
 </head>
 <body>
 <div id="ms-preload" class="ms-preload">
@@ -92,7 +54,9 @@
     @yield('content')
 
     @include('layouts.material.footbar')
+
     @include('layouts.material.copyright')
+
     <div class="btn-back-top">
         <a href="#" data-scroll id="back-top" class="btn-circle btn-circle-primary btn-circle-sm btn-circle-raised ">
             <i class="zmdi zmdi-long-arrow-up"></i>
@@ -104,6 +68,7 @@
 <script src="/material/js/plugins.min.js"></script>
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
 <script src="/js/app.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -115,5 +80,6 @@
     ga('send', 'pageview');
 
 </script>
+
 </body>
 </html>

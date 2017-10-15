@@ -19,6 +19,7 @@ class CreateMeatsTable extends Migration
             $table->string('type');
             $table->string('variety');
             $table->string('code');
+            $table->boolean('has_bone')->default(0);
             $table->integer('cost_per_lb');
 
             $table->timestamps();

@@ -1,5 +1,52 @@
 <?php
 
+use Martin\Subscriptions\CostModel;
+use Martin\Subscriptions\Package;
+
+function getSizes(): \Illuminate\Database\Eloquent\Collection {
+    return CostModel::all();
+}
+
+function getSize($weight) {
+    return getSizes()
+        ->filter(function($size) use ($weight) {
+            return $size->min_weight <= $weight
+                && $size->max_weight >= $weight;
+        })->first();
+}
+
+function weeksAtATime($shipping_modifier) {
+    switch ($shipping_modifier) {
+        case 0:
+            return 4;
+        case 1:
+            return 2;
+        case 2:
+        default:
+            return 1;
+    }
+}
+
+function roundToNearestFive($num) {
+    return round($num / 5) * 5;
+}
+
+function calculateCost($weight, Package $package) {
+    if ($weight < 5)
+        return 0;
+
+    if (!$package)
+        return 0;
+
+    $size = getSize($weight);
+
+    return $size->base_cost
+        + (roundToNearestFive($weight) - $size->min_weight) / 5 * $size->incremental_cost
+        + $package->level * $size->upgrade_cost
+        + $package->customization * $size->customization_cost;
+}
+
+
 class Columns {
     public $fields = array();
 

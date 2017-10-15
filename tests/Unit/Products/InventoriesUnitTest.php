@@ -2,16 +2,15 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Inventory;
 use Martin\Products\Meat;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class InventoriesUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {
@@ -27,7 +26,7 @@ class InventoriesUnitTest extends TestCase
         $inventoryData = [
             'inventoryable_type' => get_class($meat),
             'inventoryable_id' => $meat->id,
-            'size' => null,
+            'size' => 0,
             'change' => -14,
             'changeable_type' => get_class($order),
             'changeable_id' => $order->id,

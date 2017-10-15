@@ -2,17 +2,16 @@
 
 namespace Tests\Unit\Products;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Products\Topping;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MealsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {
@@ -255,5 +254,19 @@ class MealsUnitTest extends TestCase
         foreach($order->plan->package->meals as $meal) {
             $this->assertCount(1, $meal->inventories);
         }
+    }
+
+    /** @test */
+    public function a_meal_can_get_a_list_of_meats_in_string_format() {
+        /** @var Meal $meal */
+        $meal = factory(Meal::class)->create();
+        $meat = factory(Meat::class)->create([
+            'type'  => 'Chicken',
+            'variety'   => 'Bone In',
+        ]);
+        $meal->addMeat($meat);
+
+        $meal = $meal->fresh(['meats']);
+        $this->assertEquals('Chicken [Bone In]', $meal->meatsToString());
     }
 }

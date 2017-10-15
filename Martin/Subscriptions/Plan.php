@@ -2,11 +2,11 @@
 
 namespace Martin\Subscriptions;
 
-use App\Http\Controllers\PackagesController;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Traits\CoreRelations;
@@ -20,6 +20,16 @@ class Plan extends Model
 {
     const HOURLY_RATE_FOR_PACKING_ORDERS = 25;
     const MINUTES_REQUIRED_TO_PACK_A_WEEK = 20;
+
+//    const PRICING_BY_SIZE = [
+//        ['label' => 'S', 'min' => 5, 'max' => 14, 'base' => 39, 'inc' => 1.95],
+//        ['label' => 'M', 'min' => 15, 'max' => 49, 'base' => 44.85, 'inc' => 1.625],
+//        ['label' => 'L', 'min' => 50, 'max' => 94, 'base' => 65, 'inc' => 1.755],
+//        ['label' => 'XL', 'min' => 95, 'max' => 139, 'base' => 87.1, 'inc' => 1.95],
+//        ['label' => 'XXL', 'min' => 140, 'max' => 220, 'base' => 104, 'inc' => 2.145],
+//    ];
+
+    const SHIPPING_COST = 20;
 
     use SoftDeletes;
     use CoreRelations;
@@ -39,15 +49,15 @@ class Plan extends Model
         'pet_activity_level',
 
         'package_id',
-        'package_stripe_code',
-        'package_base',     // cents
-
+        'internal_cost',     // cents
         'weekly_cost',
 
-        'last_delivery_at',
-        'weeks_at_a_time',
+        'latest_delivery_at',
+        'weeks_of_food_per_shipment',
+        'ships_every_x_weeks',
         'active',
         'payment_method',
+        'hash',
     ];
 
     /**
@@ -56,46 +66,110 @@ class Plan extends Model
      * @var array
      */
     protected $dates = [
-        'last_delivery_at',
+        'latest_delivery_at',
+        'first_delivery_at'
     ];
+
+    public static function byHash($hash) {
+        return Plan::where('hash', $hash)->firstOrFail();
+    }
+
+    public function updateForShipped(Order $order) {
+        $this->latest_delivery_at = $order->shipped_at;
+        if ($order->weeks_shipped > $this->ships_every_x_weeks) {
+            $futureOrders = $this->orders()->where('deliver_by', '>', $order->deliver_by)->get();
+            foreach ($futureOrders as $fOrder) {
+                $fOrder->deliver_by = $fOrder->deliver_by->addWeeks($order->weeks_shipped - $this->ships_every_x_weeks);
+                $fOrder->save();
+            }
+        }
+    }
+
+    public static function getPrice($pet_weight, Package $package, $shipping_modifier) {
+        /** @var Collection $costModels */
+        $costModels = CostModel::all();
+
+        $costModel = $costModels->filter(function($costModel) use ($pet_weight) {
+            return $pet_weight >= $costModel['min_weight'] && $pet_weight <= $costModel['max_weight'];
+        });
+        if (! $costModel->count()) {
+            // TODO: Throw error here
+            return false;
+        }
+        /** @var CostModel $costModel */
+        $costModel = $costModel->first();
+
+        $weight = round($pet_weight / 5, 0) * 5;
+        return $costModel->base_cost
+            + ($weight - $costModel->min_weight) / 5 * $costModel->incremental_cost
+            + $package->level * $costModel->upgrade_cost
+            + $package->customization * $costModel->customization_cost
+            + 5 * ($shipping_modifier) ;
+    }
 
     /**
      * Scopes
      */
 
     /**
-     * @param $query
+     * @param Builder $query
+     * @param int $leadTimeInDays
      * @return mixed
      */
-    public function scopeNeedsOrder(Builder $query) {
+    public function scopeNeedsOrder(Builder $query, $leadTimeInDays = 18) {
         // 1 week at a time, will be all orders
         //      as long as there are no orders with....
         //          deliver_by is within the next two weeks
         // 2 weeks at a time, will be all orders, as long as there isn't an order already made for that day
-        // 3 weeks at a time will be if the last_delivery_at is older than 1 week
-        // 4 weeks at a time will be if the last delivery_at is older than 2 weeks
-        return $query->where(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now())
-                ->where('weeks_at_a_time', '<=', 2)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-            ;
-        })->orWhere(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(7))
-                ->where('weeks_at_a_time', '=', 3)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-        })->orWhere(function (Builder $sQ) {
-            $sQ->where('last_delivery_at', '<=', Carbon::now()->subDays(14))
-                ->where('weeks_at_a_time', '=', 4)
-                ->whereDoesntHave('orders', function (Builder $ssQ) {
-                    $ssQ->where('deliver_by', '<=', Carbon::now()->addDays(14));
-                });
-        });
+        // 3 weeks at a time will be if the latest_delivery_at is older than 1 week
+        // 4 weeks at a time will be if the latest_delivery_at delivery_at is older than 2 weeks
+        return $query
+            ->active()
+            ->where(function(Builder $activeBuilder) use ($leadTimeInDays) {
+                $activeBuilder
+                    ->doesntHave('orders')
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 1)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 7)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 2)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 14)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 3)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 21)->toDateString());
+                            });
+                    })
+                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                        $subQ1
+                            ->where('ships_every_x_weeks', '=', 4)
+                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                                $subQ
+                                    ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 28)->toDateString());
+                            });
+                    });
+            });
     }
 
+    /**
+     * @param Builder $query
+     * @return $this
+     */
+    public function scopeActive(Builder $query) {
+        return $query->where('active', true);
+    }
 
     /**
      * Mutators
@@ -105,15 +179,15 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getPackageBaseAttribute($value) {
+    public function getInternalCostAttribute($value) {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setPackageBaseAttribute($value) {
-        $this->attributes['package_base'] = round($value * 100);
+    public function setInternalCostAttribute($value) {
+        $this->attributes['internal_cost'] = round($value * 100);
     }
 
     /**
@@ -229,27 +303,15 @@ class Plan extends Model
     }
 
     /**
-     * @return Carbon
-     */
-    public function getNextOrderDate() {
-        if (! $this->hasOrders())
-            return Carbon::now();
-
-        return $this->getLatestOrder()
-            ->created_at
-            ->addDays(7 * $this->weeks_at_a_time);
-    }
-
-    /**
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
-        $weeks_at_a_time = $this->weeks_at_a_time;
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+        $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $grouped =  $this->package->meals->groupBy('id')
-            ->map(function($group, $key) use ($weeks_at_a_time) {
+            ->map(function($group, $key) use ($weeks_of_food_per_shipment) {
                 $item = $group->first();
-                $item->count = $group->count() * $weeks_at_a_time;
+                $item->count = $group->count() * $weeks_of_food_per_shipment;
                 return $item;
             });
 
@@ -274,6 +336,7 @@ class Plan extends Model
         $delivery_date = $this->getNextDeliveryDate();
 
         $subtotal = $this->calculateSubtotal();
+
         $tax = $this->deliveryAddress->getTax();
 
         return $this->orders()->create([
@@ -289,6 +352,24 @@ class Plan extends Model
         ]);
     }
 
+    public function getMeatWeightsByCode() {
+
+        $packageMealWeights = [$this->package->code => 0];
+        $meatWeights = [];
+
+        $mealSize = $this->pet->mealSizeInGrams();
+        $packageMealWeights[$this->package->code] += $mealSize / 454 * 14;
+
+        foreach ($this->package->meals as $meal) {
+            foreach ($meal->meats as $meat) {
+                if ( ! isset($meatWeights[$meat->code]))
+                    $meatWeights[$meat->code] = 0;
+
+                $meatWeights[$meat->code] += $mealSize;
+            }
+        }
+        return $meatWeights;
+    }
 
 
     /**
@@ -296,40 +377,37 @@ class Plan extends Model
      */
 
     /**
-     * @return mixed
-     */
-    public function getNextDeliveryDate() {
-        if (! $this->last_delivery_at)
-            return $this->created_at
-                ->addDays(4);
-
-        return $this->last_delivery_at
-            ->addDays($this->weeks_at_a_time * 7);
-
-        if (! $this->orders()->count())
-            return $this->getFirstDeliveryDate();
-
-        return $this->getLatestOrder()
-            ->deliver_by
-            ->addDays($this->weeks_at_a_time * 7);
-    }
-
-    /**
-     * TODO: Make this 'smarter'
+     * TODO: Seriously think about the data flow here and how
+     * each part will know the status of each other.. what happens in the flow
+     * and when to notify each other that more food needs to be packed
+     * or whatnot
      *
      * @return mixed
      */
-    public function getFirstDeliveryDate() {
-        return $this->created_at;
+    public function getNextDeliveryDate() {
+        $lead_time_in_days = 4;
+
+        if ( ! $this->orders()->count()) {
+            if ($this->latest_delivery_at)
+                return $this->latest_delivery_at->addDays($this->ships_every_x_weeks * 7);
+
+            return $this->created_at->addDays($lead_time_in_days);
+        }
+
+        $latestOrder = $this->getLatestOrder();
+
+        $weeks_delay = $latestOrder->weeks_shipped ?:
+             $latestOrder->weeks_packed ?:
+             $this->ships_every_x_weeks;
+
+        return $latestOrder->deliver_by->addDays($weeks_delay * 7);
     }
 
     /**
      * @return mixed
      */
     public function calculateSubtotal() {
-        return $this->weeks_at_a_time *
-            ($this->package->costPerWeek($this->pet)
-                + $this->packagingCost());
+        return self::getPrice($this->pet_weight, $this->package, $this->weeks_of_food_per_shipment === 4 ? 0 : 1);
     }
 
     /**

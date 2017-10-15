@@ -33,7 +33,7 @@ class PackagesController extends Controller
 
     public function store(Request $request) {
         $this->validate($request, [
-            'code'  => 'required|unique:packages',
+            'code'  => 'required|unique:packages,code',
             'label' => 'required',
             'level' => 'required|integer',  // TODO: Make sure single digit only... less than 10 levels, lol
         ]);
@@ -85,7 +85,7 @@ class PackagesController extends Controller
      */
     public function setMeal(Package $package, Request $request) {
         $this->validate($request, [
-            'meal_id'   => 'required|integer',
+            'meal_id'       => 'required|exists:meals,id',
             'calendar_code' => 'required'
         ]);
 

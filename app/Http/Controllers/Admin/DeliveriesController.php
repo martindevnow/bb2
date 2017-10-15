@@ -60,7 +60,7 @@ class DeliveriesController extends Controller
             'recipient_id'  => 'required|exists:users,id',
             'order_id'      => 'required|exists:orders,id',
             'courier_id'    => 'required|exists:couriers,id',
-            'shipped_at'    => 'required',
+            'shipped_at'    => 'required|date_format:Y-m-d',
         ]);
 
         $deliveryData = $request->only([
@@ -107,7 +107,7 @@ class DeliveriesController extends Controller
             'recipient_id'  => 'required|exists:users,id',
             'order_id'      => 'required|exists:orders,id',
             'courier_id'    => 'required|exists:couriers,id',
-            'shipped_at'    => 'required',
+            'shipped_at'    => 'required|date_format:Y-m-d',
         ]);
 
         $deliveryData = $request->only([

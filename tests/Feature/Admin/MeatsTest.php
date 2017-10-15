@@ -2,16 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
-use Martin\ACL\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meat;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MeatsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_meats_page() {
@@ -48,7 +45,7 @@ class MeatsTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_existing_meats_on_the_index() {
         $meat = factory(Meat::class)->create();
         $this->loginAsAdmin();
@@ -57,7 +54,7 @@ class MeatsTest extends TestCase
             ->assertSee($meat->type);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_view_a_single_meat() {
         $this->loginAsAdmin();
 
@@ -69,7 +66,7 @@ class MeatsTest extends TestCase
             ->assertSee($meat->variety);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_the_form_to_add_a_meat() {
         $this->loginAsAdmin();
 
@@ -78,7 +75,7 @@ class MeatsTest extends TestCase
             ->assertSee('<form');
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_submit_a_form_to_add_a_meat() {
         $this->loginAsAdmin();
 
@@ -92,7 +89,7 @@ class MeatsTest extends TestCase
         $this->assertDatabaseHas('meats', $meat->toArray());
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_edit_a_meat() {
         $this->loginAsAdmin();
 
@@ -104,7 +101,7 @@ class MeatsTest extends TestCase
             ->assertSee($meat->type);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_save_changes_to_a_meat() {
         $this->loginAsAdmin();
 
@@ -126,7 +123,7 @@ class MeatsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_delete_a_meat_from_the_db() {
         $this->loginAsAdmin();
 

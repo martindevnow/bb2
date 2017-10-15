@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Martin\Products\Meat;
+use Martin\Subscriptions\Plan;
 
 class MeatsController extends Controller
 {
@@ -30,7 +31,7 @@ class MeatsController extends Controller
             'code'          => 'required|unique:meats',
             'type'          => 'required',
             'variety'       => 'required',
-            'cost_per_lb'   => 'required',
+            'cost_per_lb'   => 'required|numeric',
         ]);
 
 
@@ -49,10 +50,10 @@ class MeatsController extends Controller
 
     public function update(Meat $meat, Request $request) {
         $this->validate($request, [
-            'code'      => 'required',
-            'type'      => 'required',
-            'variety'   => 'required',
-            'cost_per_lb'   => 'required',
+            'code'          => 'required',
+            'type'          => 'required',
+            'variety'       => 'required',
+            'cost_per_lb'   => 'required|numeric',
         ]);
 
         $meat->fill($request->only(['code', 'type', 'variety', 'cost_per_lb']));
@@ -69,6 +70,18 @@ class MeatsController extends Controller
         flash('The meat: ' . $meat->type .' - '. $meat->variety . ' has been deleted.')->success();
 
         return redirect()->back();
+    }
+
+    /**
+     * Show the form to generate a meat order
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function orderCreate() {
+        $plans = Plan::all();
+
+        return view('admin.meats.order.create')
+            ->with(compact('plans'));
     }
 }
 

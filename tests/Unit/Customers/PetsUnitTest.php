@@ -2,18 +2,17 @@
 
 namespace Tests\Unit\Customers;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {

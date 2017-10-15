@@ -2,11 +2,14 @@
 
 namespace Tests\Unit\Transactions;
 
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\ACL\User;
 use Martin\Core\Address;
 use Martin\Core\Attachment;
 use Martin\Delivery\Courier;
+use Martin\Delivery\Delivery;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
@@ -14,12 +17,10 @@ use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class OrdersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_order_has_a_factory() {
@@ -157,7 +158,7 @@ class OrdersUnitTest extends TestCase
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
                 'change'                => 1400,         // this is 14 meals * 100
-                'size'                  => $order->plan->pet->mealSize(),
+                'size'                  => $order->plan->pet->mealSize() * 100,
             ]);
         }
     }
@@ -180,7 +181,7 @@ class OrdersUnitTest extends TestCase
                 'inventoryable_id'      => $meal->id,
                 'inventoryable_type'    => get_class($meal),
                 'change'                => -1400,         // this is 14 meals * 100
-                'size'                  => $order->plan->pet->mealSize(),
+                'size'                  => $order->plan->pet->mealSize() * 100,
             ]);
         }
     }
@@ -281,10 +282,60 @@ class OrdersUnitTest extends TestCase
 
         /** @var Order $order */
         $order = $plan->orders()->first();
-        $order->markAsShipped($courier, '1208801231');
+        $delivery = factory(Delivery::class)->create();
+        $order->markAsShipped($delivery);
 
         $order = $order->fresh();
         $this->assertTrue($order->delivery instanceof Delivery);
         $this->assertEquals(1, $order->shipped);
+    }
+
+    /** @test */
+    public function shipping_an_uniquely_large_order_affects_the_deliver_by_date_of_existing_orders() {
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
+
+        /** @var Plan $plan */
+        $order = $plan->generateOrder();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->format('Y-m-d'),
+            $order->deliver_by->format('Y-m-d')
+        );
+
+        $order2 = $plan->generateOrder();
+        $order3 = $plan->generateOrder();
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 7)->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 14)->format('Y-m-d'),
+            $order3->deliver_by->format('Y-m-d')
+        );
+
+        $order->markAsPaid(factory(Payment::class)->create());
+        $order->markAsPacked([
+            'weeks_packed'  => 2,
+        ]);
+
+        $order->markAsShipped(factory(Delivery::class)->create([
+            'weeks_shipped' => 2,
+            'shipped_at'    => Carbon::now()->addDays(4),
+        ]));
+
+        $order2 = $order2->fresh();
+        $order3 = $order3->fresh();
+
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 14)->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4 + 21)->format('Y-m-d'),
+            $order3->deliver_by->format('Y-m-d')
+        );
     }
 }

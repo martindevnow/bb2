@@ -77,8 +77,8 @@
                             <td>{{ $plan->package->label }}</td>
                         </tr>
                         <tr>
-                            <td>Package Base</td>
-                            <td>$ {{ $plan->package_base }}</td>
+                            <td>Internal Cost</td>
+                            <td>$ {{ $plan->internal_cost }}</td>
                         </tr>
                         <tr>
                             <td>Weekly Cost</td>

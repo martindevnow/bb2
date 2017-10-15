@@ -53,10 +53,10 @@ class PaymentsController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'customer_id'   => 'required|integer',
+            'customer_id'   => 'required|exists:users,id',
             'amount_paid'   => 'required|numeric',
             'format'        => 'required',
-            'received_at'   => 'required',
+            'received_at'   => 'required|date_format:Y-m-d',
         ]);
 
         $paymentData = $request->only(['customer_id', 'amount_paid', 'format']);
@@ -92,10 +92,10 @@ class PaymentsController extends Controller
      */
     public function update(Payment $payment, Request $request) {
         $this->validate($request, [
-            'customer_id'   => 'required|integer',
+            'customer_id'   => 'required|exists:users,id',
             'amount_paid'   => 'required|numeric',
             'format'        => 'required',
-            'received_at'   => 'required',
+            'received_at'   => 'required|date_format:Y-m-d',
         ]);
 
         $paymentData = $request->only(['customer_id', 'amount_paid', 'format']);

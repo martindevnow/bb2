@@ -20,6 +20,10 @@ Route::post('/meals/{meal}/removeTopping', 'MealsController@removeTopping');
 // Meats
 Route::resource('/meats', 'MeatsController');
 
+// Order Exporter
+Route::get('/orders/exporter', 'OrdersExporterController@index');
+Route::post('/orders/exporter/prepare', 'OrdersExporterController@prepare');
+
 // Orders
 Route::get('/orders/{order}/paid', 'OrdersController@createPayment');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
@@ -29,9 +33,14 @@ Route::get('/orders/{order}/picked', 'OrdersController@markAsPicked');
 Route::get('/orders/{order}/shipped', 'OrdersController@createShipment');
 Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 
-Route::get('/orders/export/{perPage}', 'OrdersController@export');
-Route::get('/orders/export/view/{perPage}', 'OrdersController@exportView');
+Route::get('/orders/{order}/delivered', 'OrdersController@createDelivery');
+Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+
+Route::get('/orders/export-view/{perPage}', 'OrdersController@exportView');
+Route::get('/orders/export/{status}/{perPage}', 'OrdersController@export');
+
 Route::post('/orders/{order}/packed', 'OrdersController@packed');
+Route::get('/orders_orig', 'OrdersController@index_orig');
 Route::resource('/orders', 'OrdersController');
 
 // Packages
@@ -48,10 +57,11 @@ Route::resource('/pets', 'PetsController');
 // Plans
 Route::resource('/plans', 'PlansController');
 
+// Purchase Orders
+Route::resource('/purchase-orders', 'PurchaseOrdersController');
+
 // Toppings
 Route::resource('/toppings', 'ToppingsController');
 
 // Users
 Route::resource('/users', 'UsersController');
-
-

@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Martin\Geo\GeoHelperMultiGeocoder;
+use Martin\Transactions\Order;
+use Martin\Transactions\ShoppingCart;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,25 +16,62 @@ use Illuminate\Support\Facades\Log;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('github', function(Request $request) {
+/**
+ * Authentication via Ajax request
+ */
+Route::post('login', 'LoginController@login');
+Route::post('register', 'RegisterController@register');
 
-    Log::info($request->all());
+/**
+ * Stripe's WebHook Endpoint
+ */
+Route::post('/stripe/webhook', 'WebhooksController@handle');
 
-    $requestData = $request->all();
-    if ($requestData['ref'] === env('GITHUB_REF')
-        && $requestData['repository']['full_name'] === env('GITHUB_FULL_NAME', 'martindevnow/bb2')
-    ) {
-        echo (`bash ../Martin/update.sh`);
-        echo (`echo "v1.0.1" >> version.html`);
-        return 'gotcha';
-    }
+/**
+ * User Related Functions
+ */
+// TODO: Double check all the middleware being applied to the API routes..
+// Confirm is applying this middleware here is required...
+// Probably need to put some of these behind the AUTH middleware...
+// No need to expose every endpoint.. many will fail if there is no user() object.
+Route::get('/user', 'UsersController@user');
+Route::get('/user/addresses', 'UsersController@addresses');
+Route::get('/user/pets', 'UsersController@pets');
+Route::post('/user/pets', function(Request $request) {
 
-    return "This branch for this Repo is not being deployed.";
+    $requestData = $request->validate([
+        'name'  => 'required',
+        'breed' => 'required',
+        'weight'    => 'required|numeric',
+    ]);
+
+    $request->user()->pets()->create($requestData);
+    return $request->user()->pets;
 });
+/**
+ * Shopping Cart Functions
+ */
+Route::get('cart/{hash}', 'ShoppingCartsController@cartByHash');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/**
+ * Subscription Specific Functions
+ */
+Route::post('/subscribe', 'SubscriptionsController@start');
+Route::post('/subscribe/details', 'SubscriptionsController@details');
+
+/**
+ * Used for Pricing Model
+ */
+Route::get('/sizes', 'SubscriptionsController@sizes');
+
+/**
+ * GitHub WebHook Endpoint
+ */
+Route::post('github', 'GitHubController@handle');
+
+
+
+
 
 Route::get('meats', function() {
     return \Martin\Products\Meat::all();
@@ -41,11 +81,28 @@ Route::get('meals', function() {
     return \Martin\Products\Meal::all();
 });
 
-
 Route::get('packages', function() {
     return \Martin\Subscriptions\Package::all()->map(function($pkg, $index) {
         /** @var \Martin\Subscriptions\Package $pkg */
         $pkg->costPerLb = round($pkg->costPerLb() * 1.2, 2);
         return $pkg;
     });
+});
+
+/**
+ * Return the cost model for the different sizes
+ */
+Route::get('pricing', function() {
+    return \Martin\Subscriptions\CostModel::all();
+});
+
+
+
+
+/**
+ * Admin Specific
+ */
+
+Route::get('orders', function () {
+    return Order::with('customer', 'plan.pet', 'plan', 'plan.package', 'deliveryAddress')->get();
 });

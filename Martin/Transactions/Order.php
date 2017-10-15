@@ -13,6 +13,7 @@ use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
+use Stripe\Collection;
 
 class Order extends Model
 {
@@ -44,6 +45,26 @@ class Order extends Model
     protected $dates = [
         'deliver_by'
     ];
+
+    /**
+     * @param $crudAction
+     * @return string
+     */
+    public function adminUrl($crudAction) {
+        switch ($crudAction) {
+            case 'index':
+            case 'store':
+                return "/admin/orders";
+            case 'show':
+            case 'update':
+            case 'destroy':
+                return "/admin/orders/$this->id";
+            case 'create':
+                return "/admin/orders/create";
+            case 'edit':
+                return "/admin/orders/$this->id/edit";
+        }
+    }
 
     /**
      * Mutators
@@ -117,11 +138,18 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsPacked() {
-        $this->reduceMeatInventory();
+    public function markAsPacked($data = null) {
+        $numberOfWeeks = isset($data['weeks_packed']) ? $data['weeks_packed'] : $this->plan->weeks_of_food_per_shipment;
+        $packageId = isset($data['packed_package_id']) ? $data['packed_package_id'] : $this->plan->package_id;
+
+        $this->reduceMeatInventory($numberOfWeeks, $packageId);
         $this->increaseMealInventory();
 
         $this->packed = true;
+
+        $this->weeks_packed = $numberOfWeeks;
+        $this->packed_package_id = $packageId;
+
         $this->save();
 
         return $this;
@@ -147,10 +175,17 @@ class Order extends Model
      */
     public function markAsShipped(Delivery $delivery) {
         $delivery->recipient_id = $this->customer_id;
-        $this->delivery->save($delivery);
+        $this->delivery()->save($delivery);
+
+        $this->shipped_at = $delivery->shipped_at;
+        $this->weeks_shipped = $delivery->weeks_shipped;
+        $this->shipped_package_id = $delivery->shipped_package_id;
 
         $this->shipped = true;
         $this->save();
+
+        $this->plan->updateForShipped($this);
+
         return $this;
     }
 
@@ -170,14 +205,14 @@ class Order extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
-        return $this->plan->mealCounts($meal);
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+        return $this->plan->mealCounts($meal, $number_of_weeks);
     }
 
     /**
      * TODO: Move to Plan
      */
-    private function reduceMeatInventory() {
+    private function reduceMeatInventory($number_of_weeks, $package_id) {
         $pet_meal_size = $this->plan->pet->mealSize();
 
         // TODO: This should be on the Plan model too.. no reason for it to be here....
@@ -188,7 +223,7 @@ class Order extends Model
 
         foreach($meals as $meal) {
             foreach ($meal->meats as $meat) {
-                $this->inventoryChange()->create([
+                $this->inventoryChanges()->create([
                     'inventoryable_id'      => $meat->id,
                     'inventoryable_type'    => get_class($meat),
                     'change'    => -1 * $meal->total_weight / $meal->meats()->count(),
@@ -199,12 +234,13 @@ class Order extends Model
 
     /**
      * TODO: Make it public and simply reference the plan.. these methods should be on Plan
+     * @param null $number_of_weeks
      */
-    private function increaseMealInventory() {
-        $meals = $this->mealCounts();
+    private function increaseMealInventory($number_of_weeks = null) {
+        $meals = $this->mealCounts(null, $number_of_weeks);
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -220,7 +256,7 @@ class Order extends Model
         $meals = $this->mealCounts();
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -240,6 +276,13 @@ class Order extends Model
      */
     public function scopeNeedsPacking(Builder $query) {
         return $query->where('packed', '=', 0);
+    }
+    /**
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeNeedsPicking(Builder $query) {
+        return $query->where('picked', '=', 0);
     }
 
 
@@ -278,7 +321,7 @@ class Order extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function inventoryChange() {
+    public function inventoryChanges() {
         return $this->morphMany(Inventory::class, 'changeable');
     }
 

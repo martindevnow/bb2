@@ -1,0 +1,56 @@
+.ms-hero-img-barfhome {
+    background-image: url(/barfbento/img/raw.JPG);
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
+
+.ms-hero-img-farm {
+    background-image: url(/barfbento/img/large/farm.jpg);
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
+
+.ms-footbar {
+    margin-top: 0;
+}
+.help-block {
+    color: red;
+}
+
+@media screen and (max-width: 767px) {
+
+    .navbar-header {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .navbar .container-full {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.ms-slidebar .ms-slidebar-header {
+    background-image: none;
+    background-color: #7f7f7f;
+}
+
+@media screen and (max-width: 992px) {
+    .price-table > h3 {
+        padding-top: 2rem;
+    }
+}
+
+.btn-total {
+    font-size: 2rem;
+}
+.btn.btn-cost:hover {
+    cursor: auto;
+    background-color: rgba(153,153,153,0.9)
+}
+.btn.btn-raised.btn-label {
+    border-radius: 0;
+    box-shadow: none;
+}

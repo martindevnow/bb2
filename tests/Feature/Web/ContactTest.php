@@ -3,16 +3,13 @@
 namespace Tests\Feature\Web;
 
 use App\Mail\ContactReceived;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase
 {
-
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_can_see_contact() {

@@ -2,16 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
-use Martin\ACL\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Core\Faq;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FaqsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_faqs_page() {

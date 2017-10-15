@@ -33,7 +33,7 @@ class Permission extends Model
      * @param Role $role
      */
     public function removeFromRole(Role $role) {
-        $role->permissions()->detach($role->id);
+        $this->roles()->detach($role->id);
     }
 
     /**
