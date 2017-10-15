@@ -50003,6 +50003,7 @@ Vue.component('admin-pets-creator', __webpack_require__(248));
 
 Vue.component('admin-packages-dashboard', __webpack_require__(246));
 Vue.component('admin-packages-creator', __webpack_require__(245));
+Vue.component('admin-package-selector', __webpack_require__(314));
 Vue.component('admin-meal-plan-editor', __webpack_require__(247));
 
 Vue.component('admin-users-dashboard', __webpack_require__(254));
@@ -51105,6 +51106,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_isSortable__ = __webpack_require__(9);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -54833,8 +54840,8 @@ const editPackage = (context, pkg) => {
 /* harmony export (immutable) */ __webpack_exports__["editPackage"] = editPackage;
 
 
-const loadPackages = context => {
-    axios.get('/admin/api/packages').then(response => context.commit('populatePackagesCollection', response.data)).catch(error => console.log(error));
+const loadPackages = (context, force = false) => {
+    if (force || !context.store.collection.length()) axios.get('/admin/api/packages').then(response => context.commit('populatePackagesCollection', response.data)).catch(error => console.log(error));
 };
 /* harmony export (immutable) */ __webpack_exports__["loadPackages"] = loadPackages;
 
@@ -55570,7 +55577,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 234 */
@@ -77289,7 +77296,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('table', {
+  return _c('div', [_vm._v("\n    New Package\n    "), _c('admin-package-selector'), _vm._v(" "), _c('table', {
     staticClass: "table table-bordered table-striped"
   }, [_c('thead', [_c('tr', [_c('th', {
     attrs: {
@@ -77332,7 +77339,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.sortOrders[key] > 0 ? 'fa-sort-asc' : 'fa-sort-desc'
     })])
   }), _vm._v(" "), _c('th', [_vm._v("Actions")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredData(_vm.collection)), function(order) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(order.pet_breed_customer))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.meal_size))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.package_label))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.plan.weeks_of_food_per_shipment))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.deliver_by))]), _vm._v(" "), _c('td', [_c('button', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(order.pet_breed_customer))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.meal_size))]), _vm._v(" "), _c('td', [_vm._v("\n                " + _vm._s(order.package_label) + "\n            ")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.plan.weeks_of_food_per_shipment))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(order.deliver_by))]), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-xs",
       class: {
         'btn-danger': !order.paid,
@@ -78295,6 +78302,110 @@ module.exports = function listToStyles (parentId, list) {
 
 module.exports = __webpack_require__(139);
 
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: SyntaxError: C:/Users/Ben/Code/bb2/resources/assets/js/components/Admin/Packages/PackageSelector.vue: Unexpected token, expected { (34:4)\n\n  32 |     methods: {\n  33 |         onSelect()\n> 34 |     },\n     |     ^\n  35 |     computed: {\n  36 |         ...mapState('packages', [\n  37 |             'collection',\n");
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(316)
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(312),
+  /* template */
+  __webpack_require__(315),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Ben\\Code\\bb2\\resources\\assets\\js\\components\\Admin\\Packages\\PackageSelector.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PackageSelector.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3eed3e7d", Component.options)
+  } else {
+    hotAPI.reload("data-v-3eed3e7d", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('basic-select', {
+    class: {
+      'has-error': _vm.errors.has('name')
+    },
+    attrs: {
+      "options": _vm.packageOptions,
+      "selected-option": _vm.selectedPackage,
+      "placeholder": "Select Package..."
+    },
+    on: {
+      "select": _vm.onSelect
+    }
+  })
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3eed3e7d", module.exports)
+  }
+}
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(313);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("3e644465", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-3eed3e7d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PackageSelector.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-3eed3e7d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PackageSelector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

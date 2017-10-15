@@ -1,5 +1,8 @@
 <template>
     <div>
+        New Package
+        <admin-package-selector></admin-package-selector>
+
 
         <table class="table table-bordered table-striped">
             <thead>
@@ -32,7 +35,9 @@
             <tr v-for="order in filteredData(collection)">
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
-                <td>{{ order.package_label }}</td>
+                <td>
+                    {{ order.package_label }}
+                </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
                 <td>
@@ -97,6 +102,7 @@
         </admin-common-modal>
     </div>
 </template>
+
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';

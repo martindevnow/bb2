@@ -15,7 +15,8 @@ export const editPackage = (context, pkg) => {
     context.commit('enableEditMode');
 };
 
-export const loadPackages = (context) => {
+export const loadPackages = (context, force = false) => {
+    if (force || ! context.store.collection.length() )
     axios.get('/admin/api/packages')
         .then(response => context.commit('populatePackagesCollection', response.data))
         .catch(error => console.log(error));
