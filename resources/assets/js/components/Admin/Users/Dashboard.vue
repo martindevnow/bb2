@@ -106,7 +106,12 @@
             ]),
         },
         computed: {
-            ...mapState('users', ['collection', 'show', 'mode', 'selected'])
+            ...mapState('users', [
+                'collection',
+                'show',
+                'mode',
+                'selected'
+            ])
         }
     }
 </script>

@@ -8,6 +8,7 @@ import * as mutations from './mutations'
 import * as actions from './actions'
 
 import couriers from './modules/couriers/store';
+import meals from './modules/meals/store';
 import orders from './modules/orders/store';
 import packages from './modules/packages/store';
 import pets from './modules/pets/store';
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     actions,
     modules: {
         couriers,
+        meals,
         orders,
         packages,
         pets,

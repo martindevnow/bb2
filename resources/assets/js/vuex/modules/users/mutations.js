@@ -25,16 +25,12 @@ export const deselectUser = (state) => {
 export const enableEditMode = (state) => {
     state.mode = 'EDIT';
 };
+
 export const disableEditMode = (state) => {
     state.mode = null;
 };
 
 export const updateUser = (state, payload) => {
-    console.log(payload.pets);
-    let pets = {...payload.pets};
-    let user = {...payload, pets};
-    state.collection = state.collection.filter(model => model.id !== user.id);
-    console.log(3);
-    state.collection.unshift(user);
-    console.log(4);
+    state.collection = state.collection.filter(model => model.id !== payload.id);
+    state.collection.unshift(payload);
 };

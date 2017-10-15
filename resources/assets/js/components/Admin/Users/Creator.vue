@@ -186,7 +186,6 @@ export default {
             });
         },
         populateFormFromUser(user) {
-            console.log('Populating the form with ...' + user.name + ' s data');
             this.form.name = user.name;
             this.form.email = user.email;
             this.form.password = '';
@@ -196,7 +195,12 @@ export default {
         }
     },
     computed: {
-        ...mapState('users', ['show', 'selected', 'collection', 'mode']),
+        ...mapState('users', [
+            'collection',
+            'mode',
+            'selected',
+            'show',
+        ]),
     },
     mounted() {
         if (this.mode == 'EDIT') {

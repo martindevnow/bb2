@@ -4,6 +4,7 @@
 use Martin\ACL\User;
 use Martin\Customers\Pet;
 use Martin\Delivery\Courier;
+use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;
 use Martin\Transactions\Order;
@@ -37,6 +38,10 @@ Route::resource('pets', 'PetsController');
 
 Route::get('meats', function() {
     return Meat::all();
+});
+
+Route::get('meals', function() {
+    return Meal::all();
 });
 
 Route::get('purchase-orders', function() {
