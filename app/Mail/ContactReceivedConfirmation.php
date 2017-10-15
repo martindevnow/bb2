@@ -14,11 +14,11 @@ class ContactReceivedConfirmation extends Mailable
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param $contactFormFields
      */
-    public function __construct()
+    public function __construct($contactFormFields)
     {
-        //
+        $this->contactFormFields = $contactFormFields;
     }
 
     /**
@@ -28,6 +28,7 @@ class ContactReceivedConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.contact.receivedConfirmation');
+        return $this->markdown('emails.contact.receivedConfirmation')
+            ->with(['contact' => $this->contactFormFields]);
     }
 }
