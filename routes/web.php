@@ -17,6 +17,10 @@ Route::get('/version', function () {
     return 'v1.0.0';
 });
 
+Route::get('confirmation', function () {
+    return new \App\Mail\ContactReceivedConfirmation();
+});
+
 Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@index');
 Route::get('/index', 'PagesController@index');

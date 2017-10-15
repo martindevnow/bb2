@@ -14,7 +14,7 @@
         <div class="card card-hero animated fadeInUp animation-delay-7">
             <div class="card-block">
 
-                <h1>Thank you.</h1>
+                <h1>Thank you. We will be contacting you shortly.</h1>
 
             </div>
         </div>
