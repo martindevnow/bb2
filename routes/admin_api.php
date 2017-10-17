@@ -1,24 +1,8 @@
 <?php
 
-// Orders
-use Martin\ACL\User;
-use Martin\Customers\Pet;
-use Martin\Delivery\Courier;
-use Martin\Products\Meal;
-use Martin\Products\Meat;
-use Martin\Subscriptions\Package;
-use Martin\Transactions\Order;
+use Illuminate\Http\Request;
 
-Route::get('orders', function () {
-    return Order::with([
-        'customer',
-        'plan.pet',
-        'plan',
-        'plan.package',
-        'deliveryAddress'
-    ])->get();
-});
-
+Route::get('orders', 'OrdersController@index');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
 Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
 Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
@@ -26,30 +10,21 @@ Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 
 
-Route::get('couriers', function() {
-    return Courier::all();
-});
+Route::get('couriers', 'CouriersController@index');
 
 Route::resource('packages', 'PackagesController');
 
-
 Route::resource('pets', 'PetsController');
 
-Route::get('meats', function() {
-    return Meat::all();
+Route::get('meats', 'MeatsController@index');
+
+Route::get('meals', 'MealsController@index');
+
+Route::post('plans/{id}/updatePackage', function(Request $request) {
+    return ($request->all());
 });
 
-Route::get('meals', function() {
-    return Meal::all();
-});
-
-Route::get('purchase-orders', function() {
-    return \Martin\Vendors\PurchaseOrder::with([
-        'details',
-        'details.purchasable',
-        'vendor',
-    ])->get();
-});
+Route::get('purchase-orders', 'PurchaseOrdersController@index');
 Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
 Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');
 

@@ -35,7 +35,12 @@
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
                 <td>
-                    <admin-package-selector @select="onSelect" :selected-package-id="order.plan.package_id"></admin-package-selector>
+                    <admin-package-selector @select="onSelect"
+                                            :selected-package-id="order.plan.package_id"
+                                            :autonomous="1"
+                                            model-api="plans"
+                                            :model="order.plan"
+                    ></admin-package-selector>
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
@@ -133,6 +138,7 @@ export default {
     },
     mounted() {
         this.loadOrders();
+        this.loadPackages();
     },
     methods: {
         ...mapActions('orders', [

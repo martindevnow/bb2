@@ -17,7 +17,12 @@
         mixins: [
             hasErrors
         ],
-        props: ['model', 'selectedPackageId'],
+        props: [
+            'model',
+            'modelApi',
+            'selectedPackageId',
+            'autonomous',
+        ],
         components: {
             BasicSelect,
         },
@@ -27,7 +32,7 @@
             };
         },
         mounted() {
-            this.loadPackages();
+//            this.loadPackages();
             this.selectedId = this.selectedPackageId;
         },
         methods: {
@@ -36,7 +41,19 @@
             ]),
             onSelect(pkg) {
                 this.selectedId = pkg.value;
-                return this.$emit('select', pkg);
+                if (! this.autonomous) {
+                    return this.$emit('select', pkg);
+                }
+                console.log('this is autonomous....');
+                let vm = this;
+                axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updatePackage', { package_id: pkg.id })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+
             }
         },
         computed: {
