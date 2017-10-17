@@ -1,7 +1,6 @@
 <template>
     <div>
         New Package
-        <admin-package-selector @select="onSelect" :selected-package-id="2"></admin-package-selector>
 
 
         <table class="table table-bordered table-striped">
@@ -36,7 +35,7 @@
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
                 <td>
-                    {{ order.package_label }}
+                    <admin-package-selector @select="onSelect" :selected-package-id="order.plan.package_id"></admin-package-selector>
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
