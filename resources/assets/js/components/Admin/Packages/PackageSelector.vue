@@ -17,20 +17,27 @@
         mixins: [
             hasErrors
         ],
-        props: ['model'],
+        props: ['model', 'selectedPackageId'],
         components: {
             BasicSelect,
         },
         data() {
             return {
-                selectedPackage: {
-                    text: '',
-                    value: ''
-                },
+                selectedId: null,
             };
         },
+        mounted() {
+            this.loadPackages();
+            this.selectedId = this.selectedPackageId;
+        },
         methods: {
-            onSelect()
+            ...mapActions('packages', [
+                'loadPackages'
+            ]),
+            onSelect(pkg) {
+                this.selectedId = pkg.value;
+                return this.$emit('select', pkg);
+            }
         },
         computed: {
             ...mapState('packages', [
@@ -38,8 +45,14 @@
             ]),
             packageOptions() {
                 return this.collection.map(model => {
-                    return { value: model.id, text: model.name + ' (' + model.id + ')' };
+                    return { value: model.id, text: model.label + ' (' + model.id + ')' };
                 });
+            },
+            selectedPackage() {
+                let vm = this;
+                return this.packageOptions.filter(pkg => {
+                    return pkg.value === vm.selectedId;
+                })[0];
             }
 
         }

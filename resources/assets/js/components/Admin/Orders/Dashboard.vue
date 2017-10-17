@@ -1,7 +1,7 @@
 <template>
     <div>
         New Package
-        <admin-package-selector></admin-package-selector>
+        <admin-package-selector @select="onSelect" :selected-package-id="2"></admin-package-selector>
 
 
         <table class="table table-bordered table-striped">
@@ -145,8 +145,16 @@ export default {
             'closeShippedModal',
             'loadOrders',
         ]),
+        ...mapActions('packages', [
+            'loadPackages',
+        ]),
         mealSize(order) {
             return (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+        },
+        onSelect(val) {
+            console.log('selected package...');
+            console.log(val);
+
         }
     },
     computed: {
