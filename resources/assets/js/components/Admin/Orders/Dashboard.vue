@@ -156,7 +156,6 @@ export default {
         onSelect(val) {
             console.log('selected package...');
             console.log(val);
-
         }
     },
     computed: {

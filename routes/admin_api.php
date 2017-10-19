@@ -34,6 +34,15 @@ Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request)
     if ($plan->updatePackage($validData['package_id']))
         return response('Success', 200);
 });
+Route::post('plans', function(Request $request) {
+    $validData = $request->validate([
+        'pet_id' => 'required|exists:pets,id',
+        'package_id'    => 'required|exists:packages,id',
+    ]);
+
+    $plan = Plan::create($validData);
+    return $plan;
+});
 
 Route::get('purchase-orders', 'PurchaseOrdersController@index');
 Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');

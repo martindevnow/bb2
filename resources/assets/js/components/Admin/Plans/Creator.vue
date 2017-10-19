@@ -11,10 +11,24 @@
                     <basic-select :options="petsSelect"
                                   :selected-option="pet"
                                   placeholder="Select Pet..."
-                                  @select="onSelect"
+                                  @select="onPetSelect"
                                   :class="{ 'has-error': errors.has('pet_id') }"
                     >
                     </basic-select>
+                    <span class="help-block">{{ errors.get('pet_id') }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group"
+                     :class="{ 'has-error': errors.has('pet_id') }"
+                >
+                    <label>Package</label>
+                    <admin-package-selector @select="onPackageSelect"
+                                            :autonomous="0"
+                                            :selected-package-id="pkg.value"
+                    ></admin-package-selector>
                     <span class="help-block">{{ errors.get('pet_id') }}</span>
                 </div>
             </div>
@@ -157,8 +171,13 @@ export default {
                 value: '',
                 text: '',
             },
+            pkg: {
+                value: '',
+                text: '',
+            },
             form: {
                 shipping_cost: 0,
+                package_id: 0,
                 weekly_cost: 0,
                 weeks_of_food_per_shipment: 1,
                 ships_every_x_weeks: null,
@@ -194,9 +213,14 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        onSelect(pet) {
+        onPetSelect(pet) {
             this.errors.clear('pet_id');
             this.pet = pet;
+            this.form.pet_id = pet.value;
+        },
+        onPackageSelect(pkg) {
+            this.pkg = pkg;
+            this.form.package_id = pkg.value;
         }
     },
     computed: {
