@@ -240,19 +240,19 @@
         methods: {
             nextStep() {
                 if ( ! this.form.pet.weight || ! this.form.pet.name || ! this.form.pet.breed) {
-                    return swal({
-                        type: 'error',
-                        text: 'Please fill in all of your dog\'s details',
-                        title: 'Missing Information',
-                    });
+//                    return swal({
+//                        type: 'error',
+//                        text: 'Please fill in all of your dog\'s details',
+//                        title: 'Missing Information',
+//                    });
                 }
 
                 if ( ! this.form.address.street_1 || ! this.form.address.city || ! this.form.address.postal) {
-                    return swal({
-                        type: 'error',
-                        text: 'Please fill in all of your address details',
-                        title: 'Missing Information',
-                    });
+//                    return swal({
+//                        type: 'error',
+//                        text: 'Please fill in all of your address details',
+//                        title: 'Missing Information',
+//                    });
                 }
                 let vm = this;
                 axios.post('/api/subscribe/details', {
@@ -263,11 +263,11 @@
                     console.log(response.data);
                     window.location = ('/quote/confirm/' + vm.cart_hash);
                 }).catch(function(error) {
-                    swal({
-                        title: 'Error',
-                        text: 'Could not save your details.. ' + error,
-                        type: 'error',
-                    });
+//                    swal({
+//                        title: 'Error',
+//                        text: 'Could not save your details.. ' + error,
+//                        type: 'error',
+//                    });
                 })
             },
         },

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Martin\Subscriptions\Plan;
 
 Route::get('orders', 'OrdersController@index');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
@@ -20,8 +21,13 @@ Route::get('meats', 'MeatsController@index');
 
 Route::get('meals', 'MealsController@index');
 
-Route::post('plans/{id}/updatePackage', function(Request $request) {
-    return ($request->all());
+Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
+    $validData = $request->validate([
+        'package_id'    => 'required|exists:packages,id',
+    ]);
+
+    if ($plan->updatePackage($validData['package_id']))
+        return response('Success', 200);
 });
 
 Route::get('purchase-orders', 'PurchaseOrdersController@index');

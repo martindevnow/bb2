@@ -467,4 +467,17 @@ class Plan extends Model
             ($this->totalPackingCost() + $this->costPerWeek());
     }
 
+    /**
+     * Update the Package for a Plan
+     *
+     * @param $package_id
+     * @param bool $propagate
+     * @return $this
+     */
+    public function updatePackage($package_id, $propagate = true) {
+        $this->package_id = $package_id;
+        $this->save();
+        return $this;
+    }
+
 }

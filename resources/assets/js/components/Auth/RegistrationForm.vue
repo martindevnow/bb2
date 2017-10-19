@@ -82,24 +82,24 @@ export default {
         register() {
             this.loading = true;
             let vm = this;
-            swal({
-                title: 'Please Confirm',
-                text: 'Please enter your password again to confirm',
-                type: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Register',
-
-                input: 'password',
-                inputAttributes: {
-                    'maxlength': 16,
-                    'autocapitalize': 'off',
-                    'autocorrect': 'off'
-                },
-            }).then(function(password) {
+//            swal({
+//                title: 'Please Confirm',
+//                text: 'Please enter your password again to confirm',
+//                type: 'question',
+//                showCancelButton: true,
+//                confirmButtonColor: '#3085d6',
+//                cancelButtonColor: '#d33',
+//                confirmButtonText: 'Register',
+//
+//                input: 'password',
+//                inputAttributes: {
+//                    'maxlength': 16,
+//                    'autocapitalize': 'off',
+//                    'autocorrect': 'off'
+//                },
+//            }).then(function(password) {
                 if ( ! password || vm.password != password)
-                    return swal('Please try again...');
+//                    return swal('Please try again...');
 
                 axios.post('/api/register', {
                     'name':             vm.name,
@@ -113,11 +113,11 @@ export default {
 
                     }, function(error) {
                         console.log(error);
-                        swal('Could not register.');
+//                        swal('Could not register.');
                     });
-            }, function(dismiss) {
-                swal('You must either register or login to subscribe to BARF Bento');
-            });
+//            }, function(dismiss) {
+////                swal('You must either register or login to subscribe to BARF Bento');
+//            });
             this.loading = false;
         }
     },

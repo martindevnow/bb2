@@ -80,7 +80,7 @@ export default {
                 })
                 .catch(function(error) {
                     console.log(error);
-                    swal('Unable to Login...');
+//                    swal('Unable to Login...');
                 });
             this.loading = false;
         },

@@ -115,11 +115,11 @@ export default {
                     vm.pets = response.data;
                 })
                 .catch(error => {
-                    swal({
-                        title: 'Error',
-                        text: 'Unable to fetch pets..',
-                        type: 'error',
-                    });
+//                    swal({
+//                        title: 'Error',
+//                        text: 'Unable to fetch pets..',
+//                        type: 'error',
+//                    });
                 })
         },
         createPet() {

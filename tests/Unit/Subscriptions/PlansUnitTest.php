@@ -844,4 +844,23 @@ class PlansUnitTest extends TestCase
             Carbon::now()->format('Y-m-d')
         );
     }
+
+    /** @test */
+    public function updating_a_package_on_a_plan_can_propogate_by_default() {
+        $package = factory(Package::class, 2)->create();
+
+        /** @var Plan $plan */
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+            'latest_delivery_at'            => Carbon::now()->subDays(7),
+            'package_id'                    => $package[0]->id,
+        ]);
+
+        $this->assertEquals($package[0]->id, $plan->package_id);
+        $plan->updatePackage($package[1]->id);
+
+        $plan = $plan->fresh(['package']);
+        $this->assertEquals($package[1]->id, $plan->package_id);
+    }
 }

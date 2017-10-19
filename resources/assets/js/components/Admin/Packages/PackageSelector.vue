@@ -44,15 +44,30 @@
                 if (! this.autonomous) {
                     return this.$emit('select', pkg);
                 }
-                console.log('this is autonomous....');
                 let vm = this;
-                axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updatePackage', { package_id: pkg.id })
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
+//                swal({
+//                    title: 'Are you sure?',
+//                    text: "Changing the plan will affect all open orders...",
+//                    type: 'warning',
+//                    showCancelButton: true,
+//                    confirmButtonColor: '#3085d6',
+//                    cancelButtonColor: '#d33',
+//                    confirmButtonText: 'Yes, update it!'
+//                }).then(function () {
+                    axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updatePackage',
+                        { package_id: pkg.value }
+                    )
+                        .then(response => {
+                            alert('That package has been updated.');
+                            swal('Updated', 'The package has been updated.', 'success');
+                        })
+                        .catch(error => {
+                            alert('That package has been updated.');
+                            swal2('Failed...', 'The package could not be updated...', 'error');
+                        });
+//                }, function(dismiss) {
+//                    swal('You did not approve... ');
+//                });
 
             }
         },
