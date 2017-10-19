@@ -31,7 +31,7 @@
             </thead>
 
             <tbody>
-            <tr v-for="order in filteredData(collection)">
+            <tr v-for="order in filteredData(collection)" :key="order.id">
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
                 <td>
