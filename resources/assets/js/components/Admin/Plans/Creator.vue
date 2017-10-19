@@ -2,21 +2,20 @@
     <form @keydown="errors.clear($event.target.name)"
           @submit.prevent=""
     >
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('owner_id') }"
+                     :class="{ 'has-error': errors.has('pet_id') }"
                 >
                     <label>Owner</label>
-                    <basic-select :options="ownersSelect"
-                                  :selected-option="owner"
-                                  placeholder="Select Owner..."
+                    <basic-select :options="petsSelect"
+                                  :selected-option="pet"
+                                  placeholder="Select Pet..."
                                   @select="onSelect"
-                                  :class="{ 'has-error': errors.has('owner_id') }"
+                                  :class="{ 'has-error': errors.has('pet_id') }"
                     >
                     </basic-select>
-                    <span class="help-block">{{ errors.get('owner_id') }}</span>
+                    <span class="help-block">{{ errors.get('pet_id') }}</span>
                 </div>
             </div>
         </div>
@@ -84,17 +83,17 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('birthday') }"
+                     :class="{ 'has-error': errors.has('first_delivery_at') }"
                 >
-                    <label>Birthday</label>
-                    <datepicker v-model="form.birthday"
-                                id="birthday"
-                                name="birthday"
+                    <label>First Delivery At</label>
+                    <datepicker v-model="form.first_delivery_at"
+                                id="first_delivery_at"
+                                name="first_delivery_at"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
                     >
                     </datepicker>
-                    <span class="help-block">{{ errors.get('birthday') }}</span>
+                    <span class="help-block">{{ errors.get('first_delivery_at') }}</span>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -127,14 +126,12 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePetCreatorModal()"
+                        @click="closePlanCreatorModal()"
                 >
                     Cancel
                 </button>
             </div>
         </div>
-
-
     </form>
 </template>
 
@@ -156,38 +153,40 @@ export default {
     },
     data() {
         return {
-            owner: {
+            pet: {
                 value: '',
                 text: '',
             },
             form: {
-                name: '',
-                breed: '',
-                species: 'dog',
-                weight: null,
-                activity_level: null,
-                birthday: null,
+                shipping_cost: 0,
+                weekly_cost: 0,
+                weeks_of_food_per_shipment: 1,
+                ships_every_x_weeks: null,
+                first_delivery_at: null,
+                comment: null,
+                payment_method: 'cash',
+                active: null,
             }
         };
     },
     methods: {
+        ...mapActions('plans', [
+            'closePlanCreatorModal',
+        ]),
+        ...mapMutations('plans', [
+            'addToPlansCollection',
+        ]),
         ...mapActions('pets', [
-            'closePetCreatorModal',
-        ]),
-        ...mapMutations('pets', [
-            'addToPetsCollection',
-        ]),
-        ...mapActions('users', [
-            'loadUsers',
+            'loadPets',
         ]),
         save() {
             let vm = this;
-            let birthday = this.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
-            let owner_id = this.owner.value;
-            return axios.post('/admin/api/pets', {
+            let first_delivery_at = this.first_delivery_at ? moment(this.first_delivery_at).format('YYYY-MM-DD') : null;
+            let pet_id = this.pet.value;
+            return axios.post('/admin/api/plans', {
                 ...this.form,
-                birthday,
-                owner_id,
+                first_delivery_at,
+                pet_id,
             }).then(response => {
                 vm.addToPetsCollection(response.data);
                 vm.closePetCreatorModal();
@@ -195,24 +194,24 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        onSelect(owner) {
-            this.errors.clear('owner_id');
-            this.owner = owner;
+        onSelect(pet) {
+            this.errors.clear('pet_id');
+            this.pet = pet;
         }
     },
     computed: {
-        ...mapState('pets', ['show', 'selected']),
-        ...mapState('users', {
-            'users': 'collection'
+        ...mapState('plans', ['show', 'selected']),
+        ...mapState('pets', {
+            'pets': 'collection'
         }),
-        ownersSelect() {
-            return this.users.map(model => {
+        petsSelect() {
+            return this.pets.map(model => {
                 return { value: model.id, text: model.name + ' (' + model.id + ')' };
             });
         }
     },
     mounted() {
-        this.loadUsers();
+        this.loadPets();
     }
 }
 </script>

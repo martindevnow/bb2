@@ -62,13 +62,13 @@
         </table>
 
 
-        <admin-common-modal v-if="show.paymentModal"
+        <admin-common-modal v-if="show.planCreatorModal"
                             @close="closePlanCreatorModal()"
         >
             <p slot="header">Create a New Plan</p>
-            <admin-plan-creator @close="$emit('close')"
+            <admin-plans-creator @close="$emit('close')"
                                   slot="body"
-            ></admin-plan-creator>
+            ></admin-plans-creator>
         </admin-common-modal>
     </div>
 </template>
