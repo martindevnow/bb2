@@ -30,9 +30,6 @@ Vue.component('quotes-checkout', require('./components/Quotes/Checkout.vue'));
 
 Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
 
-Vue.component('admin-meals-select-box', require('./components/Admin/Meals/SelectBox.vue'));
-
-
 /**
  * Modernized.. (somewhat)
  */

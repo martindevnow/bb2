@@ -223,7 +223,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePackageCreatorModal()"
+                        @click="closeMealPlanEditorModal()"
                 >
                     Cancel
                 </button>
@@ -262,6 +262,9 @@
             ...mapActions('meals', [
                 'loadMeals',
             ]),
+            ...mapActions('packages', [
+                'closeMealPlanEditorModal'
+            ]),
             onSelect(meal, calendar_code) {
                 this.errors.clear('meal_id_' + calendar_code);
                 this.form.meals[this.reverseString(calendar_code)] = {...meal,  calendar_code };
@@ -278,6 +281,17 @@
                     })
                 );
 
+            },
+            save() {
+                let vm = this;
+                axios.post('/admin/api/packages/' + vm.form.package_id + '/mealPlan', this.form)
+                    .then(response => {
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                alert('done');
             },
             toMealPlanObject(mealsArray) {
                 let rv = {};

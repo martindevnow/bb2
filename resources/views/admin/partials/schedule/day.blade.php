@@ -22,16 +22,6 @@
             @endforeach
         </select>
     </div>
-
-        {{--<admin-meals-select-box day="{{ $day }}B"--}}
-                                {{--label="Breakfast"--}}
-                                {{--package_id="{{ $package->id }}"--}}
-                                {{--:preset_meal_id="{{ $package->hasMeal($day . 'B')--}}
-                                        {{--? $package->getMeal($day . 'B')->id--}}
-                                        {{--: '0' }}"--}}
-        {{-->--}}
-
-        {{--</admin-meals-select-box>--}}
 </div>
 <div class="schedule-day-dinner">
     <div class="form-group">
