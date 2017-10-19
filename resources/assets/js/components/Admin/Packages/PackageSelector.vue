@@ -9,6 +9,7 @@
 </template>
 
 <script>
+    import swal from 'sweetalert2'
     import { BasicSelect } from 'vue-search-select'
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import hasErrors from '../../../mixins/hasErrors';
@@ -41,33 +42,36 @@
             ]),
             onSelect(pkg) {
                 this.selectedId = pkg.value;
+                if (this.selectedId === this.selectedPackageId) {
+                    return null;
+                }
+
                 if (! this.autonomous) {
                     return this.$emit('select', pkg);
                 }
+
                 let vm = this;
-//                swal({
-//                    title: 'Are you sure?',
-//                    text: "Changing the plan will affect all open orders...",
-//                    type: 'warning',
-//                    showCancelButton: true,
-//                    confirmButtonColor: '#3085d6',
-//                    cancelButtonColor: '#d33',
-//                    confirmButtonText: 'Yes, update it!'
-//                }).then(function () {
-                    axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updatePackage',
+                swal({
+                    title: 'Are you sure?',
+                    text: "Changing the plan will affect all open orders...",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then(function () {
+                    axios.post('/admin/api/'+ vm.modelApi + '/' + vm.model.id + '/updatePackage',
                         { package_id: pkg.value }
                     )
                         .then(response => {
-                            alert('That package has been updated.');
                             swal('Updated', 'The package has been updated.', 'success');
                         })
                         .catch(error => {
-                            alert('That package has been updated.');
-                            swal2('Failed...', 'The package could not be updated...', 'error');
+                            swal('Failed...', 'The package could not be updated...', 'error');
                         });
-//                }, function(dismiss) {
-//                    swal('You did not approve... ');
-//                });
+                }, function(dismiss) {
+                    swal('You did not approve... ');
+                });
 
             }
         },

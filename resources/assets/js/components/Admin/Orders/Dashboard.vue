@@ -1,7 +1,5 @@
 <template>
     <div>
-        New Package
-
         <table class="table table-bordered table-striped">
             <thead>
             <tr>

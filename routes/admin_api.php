@@ -21,6 +21,11 @@ Route::get('meats', 'MeatsController@index');
 
 Route::get('meals', 'MealsController@index');
 
+Route::get('plans', function() {
+    return Plan::active()
+        ->with(['customer', 'package', 'pet'])
+        ->get();
+});
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
     $validData = $request->validate([
         'package_id'    => 'required|exists:packages,id',

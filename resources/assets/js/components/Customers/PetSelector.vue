@@ -97,6 +97,7 @@
 <script>
 import eventBus from '../../events/eventBus';
 import swal from 'sweetalert2';
+
 export default {
     data() {
         return {
@@ -115,11 +116,11 @@ export default {
                     vm.pets = response.data;
                 })
                 .catch(error => {
-//                    swal({
-//                        title: 'Error',
-//                        text: 'Unable to fetch pets..',
-//                        type: 'error',
-//                    });
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to fetch pets..',
+                        type: 'error',
+                    });
                 })
         },
         createPet() {

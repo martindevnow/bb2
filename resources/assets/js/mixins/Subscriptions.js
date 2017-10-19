@@ -120,11 +120,11 @@ export default {
                     vm.user.addresses = response.data.map(addressData => new Address(addressData));
                 })
                 .catch(error => {
-                    // swal({
-                    //     title: 'Error',
-                    //     text: 'Unable to fetch addresses..',
-                    //     type: 'error',
-                    // });
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to fetch addresses..',
+                        type: 'error',
+                    });
                 })
         },
         getPets() {
@@ -134,11 +134,11 @@ export default {
                     vm.pets = response.data.map(petData => new Pet(petData));
                 })
                 .catch(error => {
-                    // swal({
-                    //     title: 'Error',
-                    //     text: 'Unable to fetch pets..',
-                    //     type: 'error',
-                    // });
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to fetch pets..',
+                        type: 'error',
+                    });
                 })
         },
         getSubscriptionPrices() {
@@ -151,7 +151,7 @@ export default {
                 })
                 .catch(function(error) {
                     console.log(error);
-                    // swal('There was an unknown error.')
+                    swal('There was an unknown error.')
                 })
         },
         getSubscriptionPrice(weight) {
@@ -193,11 +193,11 @@ export default {
                     vm.form.pet.weight = vm.form.cart.sub_weight;
                 })
                 .catch(function(error) {
-                    // swal({
-                    //     title: 'Error',
-                    //     text: 'Unable to retrieve your cart..',
-                    //     type: 'error',
-                    // });
+                    swal({
+                        title: 'Error',
+                        text: 'Unable to retrieve your cart..',
+                        type: 'error',
+                    });
                 });
         },
         getSubscriptionPackage(id = null) {

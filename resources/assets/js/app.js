@@ -9,6 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -43,6 +44,8 @@ Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashb
 
 Vue.component('admin-pets-dashboard', require('./components/Admin/Pets/Dashboard.vue'));
 Vue.component('admin-pets-creator', require('./components/Admin/Pets/Creator.vue'));
+
+Vue.component('admin-plans-dashboard', require('./components/Admin/Plans/Dashboard.vue'));
 
 Vue.component('admin-packages-dashboard', require('./components/Admin/Packages/Dashboard.vue'));
 Vue.component('admin-packages-creator', require('./components/Admin/Packages/Creator.vue'));

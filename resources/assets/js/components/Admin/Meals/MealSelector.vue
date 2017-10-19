@@ -12,6 +12,7 @@
     import { BasicSelect } from 'vue-search-select'
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import hasErrors from '../../../mixins/hasErrors';
+    import swal from 'sweetalert2'
 
     export default {
         mixins: [
@@ -45,29 +46,27 @@
                     return this.$emit('select', meal);
                 }
                 let vm = this;
-//                swal({
-//                    title: 'Are you sure?',
-//                    text: "Changing the plan will affect all open orders...",
-//                    type: 'warning',
-//                    showCancelButton: true,
-//                    confirmButtonColor: '#3085d6',
-//                    cancelButtonColor: '#d33',
-//                    confirmButtonText: 'Yes, update it!'
-//                }).then(function () {
+                swal({
+                    title: 'Are you sure?',
+                    text: "Changing the plan will affect all open orders...",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then(function () {
                     axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updateMeal',
                         { meal_id: meal.value }
                     )
                         .then(response => {
-                            alert('That meal has been updated.');
                             swal('Updated', 'The meal has been updated.', 'success');
                         })
                         .catch(error => {
-                            alert('That meal has been updated.');
-                            swal2('Failed...', 'The meal could not be updated...', 'error');
+                            swal('Failed...', 'The meal could not be updated...', 'error');
                         });
-//                }, function(dismiss) {
-//                    swal('You did not approve... ');
-//                });
+                }, function(dismiss) {
+                    swal('You did not approve... ');
+                });
 
             }
         },
