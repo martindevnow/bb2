@@ -218,6 +218,7 @@ export default {
             this.form.pet_id = pet.value;
         },
         onPackageSelect(pkg) {
+            this.errors.clear('package_id');
             this.pkg = pkg;
             this.form.package_id = pkg.value;
         }

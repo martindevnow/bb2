@@ -53,7 +53,7 @@ Route::post('plans', function(Request $request) {
     $validData['pet_activity_level'] = $pet->activity_level;
 
     $plan = Plan::create($validData);
-    return $plan;
+    return $plan->fresh(['customer', 'pet', 'package']);
 });
 
 Route::get('purchase-orders', 'PurchaseOrdersController@index');
