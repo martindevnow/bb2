@@ -5,7 +5,7 @@ const state = {
     collection: [],
     selected: null,
     show: {
-        petCreatorModal: false,
+        mealCreatorModal: false,
     }
 };
 

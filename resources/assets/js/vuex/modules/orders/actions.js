@@ -1,10 +1,10 @@
 export const openPaymentModal = (context, order) => {
     context.commit('setSelectedOrder', order);
-    context.commit('showPaymentModal');
+    context.commit('showPaymentsModal');
 };
 
 export const closePaymentModal = (context) => {
-    context.commit('hidePaymentModal');
+    context.commit('hidePaymentsModal');
     context.commit('deselectOrder');
 };
 

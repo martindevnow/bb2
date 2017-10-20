@@ -14,3 +14,15 @@ export const showMealCreatorModal = (state) => {
 export const hideMealCreatorModal = (state) => {
     state.show.mealCreatorModal = false;
 };
+
+export const enableEditMode = (state) => {
+    state.mode = 'EDIT';
+};
+
+export const disableEditMode = (state) => {
+    state.mode = null;
+};
+
+export const setSelectedMeal = (state, meal) => {
+    state.selected = meal;
+};
