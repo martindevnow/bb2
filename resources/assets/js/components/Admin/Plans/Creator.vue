@@ -117,12 +117,14 @@
                      :class="{ 'has-error': errors.has('payment_method') }"
                 >
                     <label for="payment_method">payment_method</label>
-                    <input type="text"
-                           class="form-control"
-                           id="payment_method"
-                           name="payment_method"
-                           v-model="form.payment_method"
+                    <select v-model="form.payment_method"
+                            class="form-control"
+                            id="payment_method"
+                            name="payment_method"
+                            @change="errors.clear('payment_method')"
                     >
+                        <option v-for="format in paymentFormats">{{ format }}</option>
+                    </select>
                     <span class="help-block">{{ errors.get('payment_method') }}</span>
                 </div>
             </div>
@@ -186,7 +188,14 @@ export default {
                 ships_every_x_weeks: null,
                 first_delivery_at: null,
                 payment_method: 'cash',
-            }
+            },
+            paymentFormats: [
+                'cash',
+                'e-transfer',
+                'stripe',
+                'paypal',
+                'interac',
+            ],
         };
     },
     methods: {
