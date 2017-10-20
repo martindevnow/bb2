@@ -3,7 +3,6 @@
                   :selected-option="selectedPackage"
                   placeholder="Select Package..."
                   @select="onSelect"
-                  :class="{ 'has-error': errors.has('name') }"
     >
     </basic-select>
 </template>
@@ -23,6 +22,7 @@
             'modelApi',
             'selectedPackageId',
             'autonomous',
+            'errorsObj'
         ],
         components: {
             BasicSelect,
@@ -35,6 +35,7 @@
         mounted() {
 //            this.loadPackages();
             this.selectedId = this.selectedPackageId;
+            this.errors = this.errorsObj;
         },
         methods: {
             ...mapActions('packages', [

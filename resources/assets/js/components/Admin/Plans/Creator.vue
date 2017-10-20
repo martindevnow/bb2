@@ -28,6 +28,7 @@
                     <admin-package-selector @select="onPackageSelect"
                                             :autonomous="0"
                                             :selected-package-id="pkg.value"
+                                            :errorsObj="errors"
                     ></admin-package-selector>
                     <span class="help-block">{{ errors.get('pet_id') }}</span>
                 </div>

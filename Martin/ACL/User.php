@@ -17,8 +17,10 @@ class User extends Authenticatable
     use HasRoles;
     use SoftDeletes;
     use Notifiable;
-    use LogsActivity;
     use CoreRelations;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     /**
      * The attributes that are mass assignable.
