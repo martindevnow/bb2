@@ -33,7 +33,6 @@
             };
         },
         mounted() {
-//            this.loadPackages();
             this.selectedId = this.selectedPackageId;
             this.errors = this.errorsObj;
         },
@@ -91,9 +90,7 @@
                     return pkg.value === vm.selectedId;
                 })[0];
             }
-
         }
-
     }
 </script>
 

@@ -8,6 +8,10 @@ export const populatePlansCollection = (state, data) => {
     });
 };
 
+export const addToPlansCollection = (state, plan) => {
+    state.collection.unshift(plan);
+};
+
 export const showPlanCreatorModal = (state) => {
     state.show.planCreatorModal = true;
 };

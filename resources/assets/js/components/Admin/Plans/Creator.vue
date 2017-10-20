@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('pet_id') }"
+                     :class="{ 'has-error': errors.has('package_id') }"
                 >
                     <label>Package</label>
                     <admin-package-selector @select="onPackageSelect"
@@ -30,37 +30,37 @@
                                             :selected-package-id="pkg.value"
                                             :errorsObj="errors"
                     ></admin-package-selector>
-                    <span class="help-block">{{ errors.get('pet_id') }}</span>
+                    <span class="help-block">{{ errors.get('package_id') }}</span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('name') }"
+                     :class="{ 'has-error': errors.has('shipping_cost') }"
                 >
-                    <label for="name">Name</label>
+                    <label for="shipping_cost">shipping_cost</label>
                     <input type="text"
                            class="form-control"
-                           id="name"
-                           name="name"
-                           v-model="form.name"
+                           id="shipping_cost"
+                           name="shipping_cost"
+                           v-model="form.shipping_cost"
                     >
-                    <span class="help-block">{{ errors.get('name') }}</span>
+                    <span class="help-block">{{ errors.get('shipping_cost') }}</span>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('breed') }"
+                     :class="{ 'has-error': errors.has('weekly_cost') }"
                 >
-                    <label for="breed">Breed</label>
+                    <label for="weekly_cost">weekly_cost</label>
                     <input type="text"
                            class="form-control"
-                           id="breed"
-                           name="breed"
-                           v-model="form.breed"
+                           id="weekly_cost"
+                           name="weekly_cost"
+                           v-model="form.weekly_cost"
                     >
-                    <span class="help-block">{{ errors.get('breed') }}</span>
+                    <span class="help-block">{{ errors.get('weekly_cost') }}</span>
                 </div>
             </div>
         </div>
@@ -68,30 +68,30 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('species') }"
+                     :class="{ 'has-error': errors.has('weeks_of_food_per_shipment') }"
                 >
-                    <label for="species">Species</label>
+                    <label for="weeks_of_food_per_shipment">weeks_of_food_per_shipment</label>
                     <input type="text"
                            class="form-control"
-                           id="species"
-                           name="species"
-                           v-model="form.species"
+                           id="weeks_of_food_per_shipment"
+                           name="weeks_of_food_per_shipment"
+                           v-model="form.weeks_of_food_per_shipment"
                     >
-                    <span class="help-block">{{ errors.get('species') }}</span>
+                    <span class="help-block">{{ errors.get('weeks_of_food_per_shipment') }}</span>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('activity_level') }"
+                     :class="{ 'has-error': errors.has('ships_every_x_weeks') }"
                 >
-                    <label for="activity_level">Activity Level</label>
+                    <label for="ships_every_x_weeks">ships_every_x_weeks</label>
                     <input type="text"
                            class="form-control"
-                           id="activity_level"
-                           name="activity_level"
-                           v-model="form.activity_level"
+                           id="ships_every_x_weeks"
+                           name="ships_every_x_weeks"
+                           v-model="form.ships_every_x_weeks"
                     >
-                    <span class="help-block">{{ errors.get('activity_level') }}</span>
+                    <span class="help-block">{{ errors.get('ships_every_x_weeks') }}</span>
                 </div>
             </div>
         </div>
@@ -106,6 +106,7 @@
                                 name="first_delivery_at"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
+                                @selected="errors.clear('first_delivery_at')"
                     >
                     </datepicker>
                     <span class="help-block">{{ errors.get('first_delivery_at') }}</span>
@@ -113,16 +114,16 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('weight') }"
+                     :class="{ 'has-error': errors.has('payment_method') }"
                 >
-                    <label for="weight">Weight</label>
+                    <label for="payment_method">payment_method</label>
                     <input type="text"
                            class="form-control"
-                           id="weight"
-                           name="weight"
-                           v-model="form.weight"
+                           id="payment_method"
+                           name="payment_method"
+                           v-model="form.payment_method"
                     >
-                    <span class="help-block">{{ errors.get('weight') }}</span>
+                    <span class="help-block">{{ errors.get('payment_method') }}</span>
                 </div>
             </div>
         </div>
@@ -179,19 +180,18 @@ export default {
             form: {
                 shipping_cost: 0,
                 package_id: 0,
+                pet_id: 0,
                 weekly_cost: 0,
                 weeks_of_food_per_shipment: 1,
                 ships_every_x_weeks: null,
                 first_delivery_at: null,
-                comment: null,
                 payment_method: 'cash',
-                active: null,
             }
         };
     },
     methods: {
         ...mapActions('plans', [
-            'closePlanCreatorModal',
+            'closePlanCreatorModal'
         ]),
         ...mapMutations('plans', [
             'addToPlansCollection',
@@ -201,15 +201,13 @@ export default {
         ]),
         save() {
             let vm = this;
-            let first_delivery_at = this.first_delivery_at ? moment(this.first_delivery_at).format('YYYY-MM-DD') : null;
-            let pet_id = this.pet.value;
+            let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
             return axios.post('/admin/api/plans', {
                 ...this.form,
                 first_delivery_at,
-                pet_id,
             }).then(response => {
-                vm.addToPetsCollection(response.data);
-                vm.closePetCreatorModal();
+                vm.addToPlansCollection(response.data);
+                vm.closePlanCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
