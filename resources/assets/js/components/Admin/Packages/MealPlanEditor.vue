@@ -12,13 +12,12 @@
                      :class="{ 'has-error': errors.has('meal_id_' + bfast) }"
                 >
                     <label>Day {{ index + 1 }}</label>
-                    <basic-select :options="mealsSelect"
-                                  :selected-option="form.meals[bfast]"
-                                  placeholder="Select Meal..."
-                                  @select="onSelect($event, bfast)"
-                                  :class="{ 'has-error': errors.has('meal_id_' + bfast) }"
+                    <admin-meal-selector @select="onSelect($event, bfast)"
+                                         :autonomous="0"
+                                         :selected-meal-id="mealByCalendarCode(bfast).value"
+                                         :hasError="errors.has('meal_id_' + bfast)"
                     >
-                    </basic-select>
+                    </admin-meal-selector>
                     <span class="help-block">{{ errors.get('meal_id_' + bfast) }}</span>
                 </div>
 
@@ -32,13 +31,12 @@
                      :class="{ 'has-error': errors.has('meal_id_' + dinner) }"
                 >
                     <label>Day {{ index + 1 }}</label>
-                    <basic-select :options="mealsSelect"
-                                  :selected-option="form.meals[dinner]"
-                                  placeholder="Select Meal..."
-                                  @select="onSelect($event, dinner)"
-                                  :class="{ 'has-error': errors.has('meal_id_' + dinner) }"
+                    <admin-meal-selector @select="onSelect($event, dinner)"
+                                         :autonomous="0"
+                                         :selected-meal-id="mealByCalendarCode(dinner).value"
+                                         :hasError="errors.has('meal_id_' + dinner)"
                     >
-                    </basic-select>
+                    </admin-meal-selector>
                     <span class="help-block">{{ errors.get('meal_id_' + dinner) }}</span>
                 </div>
 
@@ -87,10 +85,6 @@
         },
         data() {
             return {
-                meal: {
-                    value: '',
-                    text: '',
-                },
                 form: {
                     package_id: null,
                     meals: [],
@@ -147,7 +141,23 @@
                 let rv = {};
                 for (let i = 0; i < mealsArray.length; ++i)
                     rv[(mealsArray[i].calendar_code)] = mealsArray[i];
+                for (let bfast of this.breakfasts) {
+                    if (! rv.hasOwnProperty(bfast)) {
+                        rv[bfast] = {text: 'None', value: 0, calendar_code: bfast}
+                    }
+                }
+                for (let dinner of this.dinners) {
+                    if (! rv.hasOwnProperty(dinner)) {
+                        rv[dinner] = {text: 'None', value: 0, calendar_code: dinner}
+                    }
+                }
                 return rv;
+            },
+            mealByCalendarCode(calCode) {
+                if (! this.form.meals.hasOwnProperty(calCode) )
+                    return {text: 'None', value: 0, calendar_code: calCode};
+
+                return this.form.meals[calCode];
             }
         },
         computed: {
@@ -162,7 +172,7 @@
                 return this.meals.map(model => {
                     return { value: model.id, text: model.label + ' (' + model.id + ')' };
                 });
-            }
+            },
         },
         mounted() {
             this.loadMeals();

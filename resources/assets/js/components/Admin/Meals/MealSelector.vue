@@ -27,22 +27,14 @@
             BasicSelect,
         },
         data() {
-            return {
-                selectedId: null,
-            };
-        },
-        mounted() {
-            this.selectedId = this.selectedMealId;
+            return {};
         },
         methods: {
             ...mapActions('meals', [
                 'loadMeals'
             ]),
             onSelect(meal) {
-                this.selectedId = meal.value;
-                if (this.selectedId === this.selectedMealId) {
-                    return null;
-                }
+                this.selectedMealId = meal.value;
 
                 if (! this.autonomous) {
                     return this.$emit('select', meal);
@@ -77,14 +69,16 @@
                 'collection',
             ]),
             mealOptions() {
-                return this.collection.map(model => {
+                let arr = this.collection.map(model => {
                     return { value: model.id, text: model.label + ' (' + model.id + ')' };
                 });
+                arr.unshift({value: 0, text: 'None'});
+                return arr;
             },
             selectedMeal() {
                 let vm = this;
                 return this.mealOptions.filter(meal => {
-                    return meal.value === vm.selectedId;
+                    return meal.value === vm.selectedMealId;
                 })[0];
             }
         }

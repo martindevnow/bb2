@@ -51,6 +51,7 @@ Vue.component('admin-plans-creator', require('./components/Admin/Plans/Creator.v
 Vue.component('admin-packages-dashboard', require('./components/Admin/Packages/Dashboard.vue'));
 Vue.component('admin-packages-creator', require('./components/Admin/Packages/Creator.vue'));
 Vue.component('admin-package-selector', require('./components/Admin/Packages/PackageSelector.vue'));
+Vue.component('admin-meal-selector', require('./components/Admin/Meals/MealSelector.vue'));
 Vue.component('admin-meal-plan-editor', require('./components/Admin/Packages/MealPlanEditor.vue'));
 
 Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboard.vue'));
