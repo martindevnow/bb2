@@ -9,6 +9,7 @@ import * as actions from './actions'
 
 import couriers from './modules/couriers/store';
 import meals from './modules/meals/store';
+import meats from './modules/meats/store';
 import orders from './modules/orders/store';
 import packages from './modules/packages/store';
 import pets from './modules/pets/store';
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     modules: {
         couriers,
         meals,
+        meats,
         orders,
         packages,
         pets,

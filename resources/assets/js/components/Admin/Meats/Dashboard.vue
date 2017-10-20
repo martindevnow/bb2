@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="meat in filteredData(meats)">
+            <tr v-for="meat in filteredData(collection)">
                 <td>{{ meat.type }}</td>
                 <td>{{ meat.variety }}</td>
                 <td>{{ meat.code }}</td>

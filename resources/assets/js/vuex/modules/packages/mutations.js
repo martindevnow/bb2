@@ -3,7 +3,6 @@ export const populatePackagesCollection = (state, data) => {
 };
 
 export const addToPackagesCollection = (state, pkg) => {
-    console.log(pkg);
     state.collection.unshift(pkg);
 };
 
