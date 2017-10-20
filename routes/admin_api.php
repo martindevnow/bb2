@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Martin\Customers\Pet;
+use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 
 Route::get('orders', 'OrdersController@index');
@@ -15,6 +16,13 @@ Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 Route::get('couriers', 'CouriersController@index');
 
 Route::resource('packages', 'PackagesController');
+Route::patch('packages/{package}/mealPlan', function(Package $package, Request $request) {
+    $meals = $request->get('meals');
+    foreach ($meals as $meal) {
+        $package->addMeal($meal['value'], $meal['calendar_code']);
+    }
+    return $package->fresh(['meals']);
+});
 
 Route::resource('pets', 'PetsController');
 
