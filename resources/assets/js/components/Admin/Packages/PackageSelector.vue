@@ -3,6 +3,7 @@
                   :selected-option="selectedPackage"
                   placeholder="Select Package..."
                   @select="onSelect"
+                  :isError="hasError"
     >
     </basic-select>
 </template>
@@ -11,18 +12,16 @@
     import swal from 'sweetalert2'
     import { BasicSelect } from 'vue-search-select'
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import hasErrors from '../../../mixins/hasErrors';
 
     export default {
         mixins: [
-            hasErrors
         ],
         props: [
             'model',
             'modelApi',
             'selectedPackageId',
             'autonomous',
-            'errorsObj'
+            'hasError',
         ],
         components: {
             BasicSelect,
@@ -34,7 +33,6 @@
         },
         mounted() {
             this.selectedId = this.selectedPackageId;
-            this.errors = this.errorsObj;
         },
         methods: {
             ...mapActions('packages', [
@@ -72,7 +70,6 @@
                 }, function(dismiss) {
                     swal('You did not approve... ');
                 });
-
             }
         },
         computed: {

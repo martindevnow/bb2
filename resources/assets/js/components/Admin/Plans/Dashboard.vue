@@ -44,12 +44,12 @@
                 <td>{{ plan.customer_name }}</td>
                 <td>{{ plan.pet_name }}</td>
                 <td>
-                    <admin-package-selector @select="onSelect"
-                                            :selected-package-id="plan.package_id"
-                                            :autonomous="1"
-                                            model-api="plans"
-                                            :model="plan"
-                    ></admin-package-selector>
+                    <!--<admin-package-selector @select="onSelect"-->
+                                            <!--:selected-package-id="plan.package_id"-->
+                                            <!--:autonomous="1"-->
+                                            <!--model-api="plans"-->
+                                            <!--:model="plan"-->
+                    <!--&gt;</admin-package-selector>-->
                 </td>
                 <td>{{ plan.weeks_of_food }}</td>
                 <td>{{ plan.weeks_per_shipment }}</td>

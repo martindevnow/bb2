@@ -3,26 +3,25 @@
                   :selected-option="selectedMeal"
                   placeholder="Select Meal..."
                   @select="onSelect"
-                  :class="{ 'has-error': errors.has('name') }"
+                  :isError="hasError"
     >
     </basic-select>
 </template>
 
 <script>
+    import swal from 'sweetalert2'
     import { BasicSelect } from 'vue-search-select'
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import hasErrors from '../../../mixins/hasErrors';
-    import swal from 'sweetalert2'
 
     export default {
         mixins: [
-            hasErrors
         ],
         props: [
             'model',
             'modelApi',
             'selectedMealId',
             'autonomous',
+            'hasError',
         ],
         components: {
             BasicSelect,
@@ -33,7 +32,6 @@
             };
         },
         mounted() {
-//            this.loadMeals();
             this.selectedId = this.selectedMealId;
         },
         methods: {
@@ -42,20 +40,25 @@
             ]),
             onSelect(meal) {
                 this.selectedId = meal.value;
+                if (this.selectedId === this.selectedMealId) {
+                    return null;
+                }
+
                 if (! this.autonomous) {
                     return this.$emit('select', meal);
                 }
+
                 let vm = this;
                 swal({
                     title: 'Are you sure?',
-                    text: "Changing the plan will affect all open orders...",
+                    text: "Changing the meal will affect all Plans using this ...",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, update it!'
                 }).then(function () {
-                    axios.post('/admin/api/'+ this.modelApi + '/' + this.model.id + '/updateMeal',
+                    axios.post('/admin/api/'+ vm.modelApi + '/' + vm.model.id + '/updateMeal',
                         { meal_id: meal.value }
                     )
                         .then(response => {
@@ -67,7 +70,6 @@
                 }, function(dismiss) {
                     swal('You did not approve... ');
                 });
-
             }
         },
         computed: {
@@ -85,9 +87,7 @@
                     return meal.value === vm.selectedId;
                 })[0];
             }
-
         }
-
     }
 </script>
 

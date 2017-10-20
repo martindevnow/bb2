@@ -12,7 +12,7 @@
                                   :selected-option="pet"
                                   placeholder="Select Pet..."
                                   @select="onPetSelect"
-                                  :class="{ 'has-error': errors.has('pet_id') }"
+                                  :isError="errors.has('pet_id')"
                     >
                     </basic-select>
                     <span class="help-block">{{ errors.get('pet_id') }}</span>
@@ -28,7 +28,7 @@
                     <admin-package-selector @select="onPackageSelect"
                                             :autonomous="0"
                                             :selected-package-id="pkg.value"
-                                            :errorsObj="errors"
+                                            :hasError="errors.has('package_id')"
                     ></admin-package-selector>
                     <span class="help-block">{{ errors.get('package_id') }}</span>
                 </div>
