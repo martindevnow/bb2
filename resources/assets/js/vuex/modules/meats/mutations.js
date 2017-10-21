@@ -1,4 +1,4 @@
-import Meat from '../../../models/Meat';
+// import Meat from '../../../models/Meat';
 
 export const populateMeatsCollection = (state, data) => {
     state.collection = data;

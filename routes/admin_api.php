@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Martin\Customers\Pet;
+use Martin\Products\Topping;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 
@@ -31,7 +32,7 @@ Route::resource('pets', 'PetsController');
 
 Route::get('meats', 'MeatsController@index');
 
-Route::get('meals', 'MealsController@index');
+Route::resource('meals', 'MealsController');
 
 Route::get('plans', function() {
     return Plan::active()
@@ -70,5 +71,9 @@ Route::post('plans', function(Request $request) {
 Route::get('purchase-orders', 'PurchaseOrdersController@index');
 Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
 Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');
+
+Route::get('toppings', function() {
+    return Topping::all();
+});
 
 Route::resource('users', 'UsersController');
