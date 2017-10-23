@@ -1,5 +1,9 @@
+import {loadUserFromData} from "../../../models/User";
+
 export const populateUsersCollection = (state, data) => {
-    state.collection = data;
+    state.collection = data.map(userData => {
+        return loadUserFromData(userData);
+    });
 };
 
 export const addToUsersCollection = (state, user) => {

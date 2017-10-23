@@ -41,7 +41,7 @@
             <tr v-for="user in filteredData(collection)">
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.pets_string }}</td>
+                <td>{{ user.getPets() }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
                             @click="editUser(user)"
