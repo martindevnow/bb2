@@ -1,3 +1,4 @@
+import {loadMealFromData} from "./Meal";
 
 export class Pkg {
 }

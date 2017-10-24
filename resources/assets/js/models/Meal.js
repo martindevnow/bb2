@@ -24,6 +24,8 @@ export const loadMealFromData = function(data) {
     meal.meal_value = data.meal_value;
     meal.has_bone = data.has_bone;
 
+    meal.calendar_code = data.pivot ? data.pivot.calendar_code : null;
+
     meal.meats = data.meats ? data.meats.map(meat => loadMeatFromData(meat)) : null;
     meal.toppings = data.toppings ? data.toppings.map(topping => loadToppingFromData(topping)) : null;
     return meal;

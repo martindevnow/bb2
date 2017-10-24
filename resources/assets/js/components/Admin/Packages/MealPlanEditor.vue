@@ -113,12 +113,14 @@
             },
             populateFormFromPackage(pkg) {
                 this.form.package_id = pkg.id;
+                console.log('pkg.meals');
+                console.log(pkg.meals);
                 this.form.meals =
                     this.toMealPlanObject(pkg.meals.map(meal => {
                          return {
                             text: meal.label + ' (' + meal.id + ')',
                             value: meal.id,
-                            calendar_code: meal.pivot.calendar_code,
+                            calendar_code: meal.calendar_code,
                         };
                     })
                 );
@@ -141,16 +143,23 @@
                 let rv = {};
                 for (let i = 0; i < mealsArray.length; ++i)
                     rv[(mealsArray[i].calendar_code)] = mealsArray[i];
+                console.log('rv -- 1');
+                console.log(rv);
+
                 for (let bfast of this.breakfasts) {
                     if (! rv.hasOwnProperty(bfast)) {
                         rv[bfast] = {text: 'None', value: 0, calendar_code: bfast}
                     }
                 }
+                console.log('rv -- 2');
+                console.log(rv);
                 for (let dinner of this.dinners) {
                     if (! rv.hasOwnProperty(dinner)) {
                         rv[dinner] = {text: 'None', value: 0, calendar_code: dinner}
                     }
                 }
+                console.log('rv -- 3');
+                console.log(rv);
                 return rv;
             },
             mealByCalendarCode(calCode) {

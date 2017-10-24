@@ -1,10 +1,7 @@
-// import Topping from '../../../models/Topping';
+import {loadToppingFromData} from "../../../models/Topping";
 
 export const populateToppingsCollection = (state, data) => {
-    state.collection = data;
-    //     .map(toppingData => {
-    //     return new Topping(toppingData);
-    // });
+    state.collection = data.map(toppingData => loadToppingFromData(toppingData));
 };
 
 export const addToToppingCollection = (state, topping) => {

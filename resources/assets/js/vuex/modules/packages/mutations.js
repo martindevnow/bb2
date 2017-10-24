@@ -1,5 +1,7 @@
+import {loadPkgFromData} from "../../../models/Package";
+
 export const populatePackagesCollection = (state, data) => {
-    state.collection = data;
+    state.collection = data.map(pkgData => loadPkgFromData(pkgData));
 };
 
 export const addToPackagesCollection = (state, pkg) => {
@@ -39,7 +41,6 @@ export const disableEditMode = (state) => {
 };
 
 export const updatePackage = (state, payload) => {
-    console.log(payload);
     state.collection = state.collection.filter(model => model.id !== payload.id);
     state.collection.unshift(payload);
 };
