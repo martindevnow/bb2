@@ -1,9 +1,10 @@
+import {loadMealFromData} from "../../../models/Meal";
+
 export const populateMealsCollection = (state, data) => {
-    state.collection = data;
+    state.collection = data.map(mealData => loadMealFromData(mealData));
 };
 
 export const addToMealCollection = (state, meal) => {
-    console.log(meal);
     state.collection.unshift(meal);
 };
 

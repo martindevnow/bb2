@@ -42,6 +42,7 @@
                 <td>{{ meal.label }}</td>
                 <td>{{ meal.code }}</td>
                 <td>{{ meal.meal_value }}</td>
+                <td>${{ meal.costPerLb().toFixed(2) }}</td>
 
                 <td>
                     <button class="btn btn-primary btn-xs"
@@ -83,6 +84,7 @@
                 'label',
                 'code',
                 'meal_value',
+                'costPerLb',
             ];
             let numColumns = columns.length;
             let sortOrders = {};

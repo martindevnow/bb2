@@ -14,6 +14,8 @@ export class User {
 
 export const loadUserFromData = function(data) {
     let user = new User();
+
+    user.id = data.id;
     user.name = data.name;
     user.email = data.email;
     user.first_name = data.first_name;

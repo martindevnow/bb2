@@ -1,10 +1,7 @@
-// import Meat from '../../../models/Meat';
+import {loadMeatFromData} from "../../../models/Meat";
 
 export const populateMeatsCollection = (state, data) => {
-    state.collection = data;
-    //     .map(meatData => {
-    //     return new Meat(meatData);
-    // });
+    state.collection = data.map(meatData => loadMeatFromData(meatData));
 };
 
 export const addToMeatCollection = (state, meat) => {

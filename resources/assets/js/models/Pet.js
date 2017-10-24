@@ -6,6 +6,8 @@ export class Pet {
 
 export const loadPetFromData = function (data) {
     let pet = new Pet();
+
+    pet.id = data.id;
     pet.name = data.name;
     pet.breed = data.breed;
     pet.weight = data.weight;
