@@ -22,14 +22,33 @@ class MeatsController extends Controller {
      */
     public function store(Request $request) {
         $validData = $request->validate([
-            'code'  => 'required|unique:meats,code',
-            'type'  => 'required',
+            'code'          => 'required|unique:meats,code',
+            'type'          => 'required',
             'variety'       => 'required',
             'cost_per_lb'   => 'required|numeric',
             'has_bone'      => 'nullable',
         ]);
 
         $meat = Meat::create($validData);
+
+        return $meat;
+    }
+
+    /**
+     * @param Meat $meat
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(Meat $meat, Request $request) {
+        $validData = $request->validate([
+            'code'          => 'required',
+            'type'          => 'required',
+            'variety'       => 'required',
+            'cost_per_lb'   => 'required|numeric',
+            'has_bone'      => 'nullable',
+        ]);
+
+        $meat->update($validData);
 
         return $meat;
     }
