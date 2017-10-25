@@ -14,6 +14,19 @@ use mikehaertl\wkhtmlto\Pdf;
 class OrdersController extends Controller
 {
     /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function index() {
+        return Order::with([
+            'customer',
+            'plan.pet',
+            'plan',
+            'plan.package',
+            'deliveryAddress'
+        ])->get();
+    }
+
+    /**
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      */

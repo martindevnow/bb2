@@ -4,20 +4,26 @@
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               v-model="sortable.filterKey"
-                        />
-                        <span class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </span>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="sortable.filterKey"
+                                />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary"
+                                    @click="openPackageCreatorModal()"
+                            >
+                                New
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary"
-                            @click="openPackageCreatorModal()"
-                    >
-                        New
-                    </button>
                 </th>
             </tr>
             <tr>
@@ -32,15 +38,48 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="package in filteredData(packages)">
-                <td>{{ package.code }}</td>
+            <tr v-for="package in filteredData(collection)">
                 <td>{{ package.label }}</td>
-                <td>{{ package.active }}</td>
-                <td>{{ package.public }}</td>
-                <td>{{ package.customization }}</td>
+                <td>{{ package.code }}</td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.active)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.active)"
+                        ></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.public)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.public)"
+                        ></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-circle btn-xs"
+                            :class="boolBtnClass(package.customization)"
+                    >
+                        <i class="fa"
+                           :class="boolIconClass(package.customization)"
+                        ></i>
+                    </button>
+                </td>
                 <td>{{ package.level }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="openMealPlanEditorModal(package)"
+                    >
+                        Meals
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-xs"
+                            @click="editPackage(package)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -52,12 +91,22 @@
         </table>
 
         <admin-common-modal v-if="show.packageCreatorModal"
-                            @close="closeCreatorModal()"
+                            @close="closePackageCreatorModal()"
         >
-            <p slot="header">Add a Package</p>
+            <p slot="header" v-if="! mode">Add a Package</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Package: {{ selected.label }}</p>
             <admin-packages-creator @close="$emit('close')"
                                slot="body"
             ></admin-packages-creator>
+        </admin-common-modal>
+
+        <admin-common-modal v-if="show.mealPlanEditorModal"
+                            @close="closeMealPlanEditorModal()"
+        >
+            <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>
+            <admin-meal-plan-editor @close="$emit('close')"
+                               slot="body"
+            ></admin-meal-plan-editor>
         </admin-common-modal>
     </div>
 </template>
@@ -72,12 +121,13 @@
         ],
         data() {
             let columns = [
-                'code',
                 'label',
+                'code',
                 'active',
                 'public',
-                'customization',
+                'custom',
                 'level',
+                'meals',
             ];
             let numColumns = columns.length;
             let sortOrders = {};
@@ -95,14 +145,32 @@
             this.loadPackages();
         },
         methods: {
-            ...mapActions([
+            ...mapActions('packages', [
                 'loadPackages',
                 'openPackageCreatorModal',
                 'closePackageCreatorModal',
+                'editPackage',
+                'openMealPlanEditorModal',
+                'closeMealPlanEditorModal',
             ]),
+            boolIconClass(val) {
+                if (val)
+                    return 'fa-check';
+                return 'fa-times';
+            },
+            boolBtnClass(val) {
+                if (val)
+                    return 'btn-success';
+                return 'btn-danger';
+            }
         },
         computed: {
-            ...mapState(['packages', 'show'])
+            ...mapState('packages', [
+                'collection',
+                'show',
+                'selected',
+                'mode'
+            ])
         }
     }
 </script>

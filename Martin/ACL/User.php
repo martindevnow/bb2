@@ -17,8 +17,10 @@ class User extends Authenticatable
     use HasRoles;
     use SoftDeletes;
     use Notifiable;
-    use LogsActivity;
     use CoreRelations;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     /**
      * The attributes that are mass assignable.
@@ -69,12 +71,10 @@ class User extends Authenticatable
         if (! $this->pets()->count())
             return '';
 
-        $result = '';
-        foreach($this->pets as $pet) {
-            $result .= $pet->name . ', ';
-        }
-
-        return substr($result, 0, -2);
+        return implode(
+            ', ',
+            $this->pets->pluck('name')->toArray()
+        );
     }
 
     /**

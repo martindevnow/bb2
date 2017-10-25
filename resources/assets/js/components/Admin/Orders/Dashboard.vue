@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -29,10 +28,17 @@
             </thead>
 
             <tbody>
-            <tr v-for="order in filteredData(orders)">
+            <tr v-for="order in filteredData(collection)" :key="order.id">
                 <td>{{ order.pet_breed_customer }}</td>
                 <td>{{ order.meal_size }}</td>
-                <td>{{ order.package_label }}</td>
+                <td>
+                    <admin-package-selector @select="onSelect"
+                                            :selected-package-id="order.plan.package_id"
+                                            :autonomous="1"
+                                            model-api="plans"
+                                            :model="order.plan"
+                    ></admin-package-selector>
+                </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
                 <td>
@@ -98,6 +104,7 @@
     </div>
 </template>
 
+
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
@@ -131,7 +138,7 @@ export default {
         this.loadPackages();
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'openPaymentModal',
             'closePaymentModal',
             'openPackedModal',
@@ -139,14 +146,24 @@ export default {
             'openShippedModal',
             'closeShippedModal',
             'loadOrders',
+        ]),
+        ...mapActions('packages', [
             'loadPackages',
         ]),
         mealSize(order) {
             return (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+        },
+        onSelect(val) {
+            console.log('selected package...');
+            console.log(val);
         }
     },
     computed: {
-        ...mapState(['orders', 'show'])
+        ...mapState('orders', [
+            'collection',
+            'show',
+            'selected'
+        ])
     },
 
 
