@@ -139,13 +139,10 @@ export default {
     },
     data() {
         return {
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
                 code: '',
                 label: '',
+                meal_value: null,
                 meats: [],
                 toppings: [],
             },
@@ -173,6 +170,7 @@ export default {
         populateFormFromMeal(meal) {
             this.form.code = meal.code;
             this.form.label = meal.label;
+            this.form.meal_value = meal.meal_value;
             this.form.meats = meal.meats;
             this.form.toppings = meal.toppings;
         },
