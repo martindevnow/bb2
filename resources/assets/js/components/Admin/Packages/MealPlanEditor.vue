@@ -113,8 +113,6 @@
             },
             populateFormFromPackage(pkg) {
                 this.form.package_id = pkg.id;
-                console.log('pkg.meals');
-                console.log(pkg.meals);
                 this.form.meals =
                     this.toMealPlanObject(pkg.meals.map(meal => {
                          return {
@@ -129,7 +127,6 @@
                 let vm = this;
                 axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', this.form)
                     .then(response => {
-                        console.log(response.data);
                         vm.updatePackage(response.data);
                         vm.closeMealPlanEditorModal();
                         swal('Done', 'Thank you', 'success');
@@ -143,23 +140,17 @@
                 let rv = {};
                 for (let i = 0; i < mealsArray.length; ++i)
                     rv[(mealsArray[i].calendar_code)] = mealsArray[i];
-                console.log('rv -- 1');
-                console.log(rv);
 
                 for (let bfast of this.breakfasts) {
                     if (! rv.hasOwnProperty(bfast)) {
                         rv[bfast] = {text: 'None', value: 0, calendar_code: bfast}
                     }
                 }
-                console.log('rv -- 2');
-                console.log(rv);
                 for (let dinner of this.dinners) {
                     if (! rv.hasOwnProperty(dinner)) {
                         rv[dinner] = {text: 'None', value: 0, calendar_code: dinner}
                     }
                 }
-                console.log('rv -- 3');
-                console.log(rv);
                 return rv;
             },
             mealByCalendarCode(calCode) {

@@ -102,8 +102,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -151,9 +159,11 @@ export default {
     methods: {
         ...mapActions('meals', [
             'closeMealCreatorModal',
+            'editMeal',
         ]),
         ...mapMutations('meals', [
             'addToMealsCollection',
+            'updateMeal',
         ]),
         ...mapActions('meats', [
             'loadMeats',
@@ -187,9 +197,22 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
+        update() {
+            let vm = this;
+            let meats = this.form.meats.map(meat => meat.id);
+            let toppings = this.form.toppings.map(topping => topping.id);
+            return axios.patch('/admin/api/meals/' + this.selected.id, {
+                ...this.form, meats, toppings
+            }).then(response => {
+                vm.updateMeal(response.data);
+                vm.closeMealCreatorModal();
+            }).catch(error => {
+                vm.errors.record(error.response.data.errors);
+            });
+        }
     },
     computed: {
-        ...mapState('meals', ['show', 'selected', 'mode']),
+        ...mapState('meals', ['show', 'selected', 'mode', 'collection']),
         ...mapState('meats', {
             'meats': 'collection'
         }),
