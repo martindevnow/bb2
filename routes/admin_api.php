@@ -30,7 +30,7 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
 
 Route::resource('pets', 'PetsController');
 
-Route::get('meats', 'MeatsController@index');
+Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
 

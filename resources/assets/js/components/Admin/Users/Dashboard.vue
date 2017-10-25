@@ -1,5 +1,6 @@
 <template>
     <div>
+        <input type="text" @focus="log('focus')">
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
@@ -104,6 +105,9 @@
                 'closeUserCreatorModal',
                 'editUser',
             ]),
+            log(message) {
+                console.log(message);
+            }
         },
         computed: {
             ...mapState('users', [

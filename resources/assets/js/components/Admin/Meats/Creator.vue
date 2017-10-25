@@ -20,16 +20,16 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('label') }"
+                     :class="{ 'has-error': errors.has('type') }"
                 >
-                    <label for="label">label</label>
+                    <label for="type">type</label>
                     <input type="text"
                            class="form-control"
-                           id="label"
-                           name="label"
-                           v-model="form.label"
+                           id="type"
+                           name="type"
+                           v-model="form.type"
                     >
-                    <span class="help-block">{{ errors.get('label') }}</span>
+                    <span class="help-block">{{ errors.get('type') }}</span>
                 </div>
             </div>
         </div>
@@ -37,16 +37,30 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('meal_value') }"
+                     :class="{ 'has-error': errors.has('variety') }"
                 >
-                    <label for="meal_value">meal_value</label>
+                    <label for="variety">variety</label>
                     <input type="text"
                            class="form-control"
-                           id="meal_value"
-                           name="meal_value"
-                           v-model="form.meal_value"
+                           id="variety"
+                           name="variety"
+                           v-model="form.variety"
                     >
-                    <span class="help-block">{{ errors.get('meal_value') }}</span>
+                    <span class="help-block">{{ errors.get('variety') }}</span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group"
+                     :class="{ 'has-error': errors.has('cost_per_lb') }"
+                >
+                    <label for="cost_per_lb">cost_per_lb</label>
+                    <input cost_per_lb="text"
+                           class="form-control"
+                           id="cost_per_lb"
+                           name="cost_per_lb"
+                           v-model="form.cost_per_lb"
+                    >
+                    <span class="help-block">{{ errors.get('cost_per_lb') }}</span>
                 </div>
             </div>
         </div>
@@ -54,47 +68,23 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
-                     :class="{ 'has-error': errors.has('meats') }"
+                     :class="{ 'has-error': errors.has('has_bone') }"
                 >
-                <h2>Meats</h2>
-                    <model-list-select v-for="(mealMeat, index) in form.meats"
-                                       :key="index"
-                                       :list="meats"
-                                       v-model="form.meats[index]"
-                                       option-value="code"
-                                       option-text="label"
-                                       :custom-text="meatLabel"
-                                       placeholder="select meat"
-                                       @input="errors.clear('meats')"
-                    >
-                    </model-list-select>
-                    <button class="btn btn-block"
-                            @click="form.meats.push({})"
-                    >+</button>
-                    <span class="help-block">{{ errors.get('meats') }}</span>
+                    <label>Status</label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   class="checkbox style-0"
+                                   name="has_bone"
+                                   id="has_bone"
+                                   v-model="form.has_bone">
+                            <span>Has Bone?</span>
+                        </label>
+                    </div>
+                    <span class="help-block">{{ errors.get('has_bone') }}</span>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <h2>Toppings</h2>
-                <model-list-select v-for="(mealTopping, index) in form.toppings"
-                                   :key="index"
-                                   :list="toppings"
-                                   v-model="form.toppings[index]"
-                                   option-value="code"
-                                   option-text="label"
-                                   :custom-text="toppingLabel"
-                                   placeholder="select topping"
-                                   @input="errors.clear('toppings')"
-                >
-                </model-list-select>
-                <button class="btn btn-block"
-                        @click="form.toppings.push({})"
-                >+</button>
-                <span class="help-block">{{ errors.get('toppings') }}</span>
-            </div>
         </div>
-
-
 
         <div class="row">
             <div class="col-sm-6">
@@ -109,7 +99,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeMealCreatorModal()"
+                        @click="closeMeatCreatorModal()"
                 >
                     Cancel
                 </button>
@@ -145,18 +135,19 @@ export default {
             },
             form: {
                 code: '',
-                label: '',
-                meats: [],
-                toppings: [],
+                type: '',
+                variety: '',
+                has_bone: '',
+                cost_per_lb: '',
             },
         };
     },
     methods: {
-        ...mapActions('meals', [
-            'closeMealCreatorModal',
+        ...mapActions('meats', [
+            'closeMeatCreatorModal',
         ]),
-        ...mapMutations('meals', [
-            'addToMealsCollection',
+        ...mapMutations('meats', [
+            'addToMeatsCollection',
         ]),
         ...mapActions('meats', [
             'loadMeats',
@@ -170,28 +161,27 @@ export default {
         toppingLabel (item) {
             return `${item.label} - ${item.code}`
         },
-        populateFormFromMeal(meal) {
-            this.form.code = meal.code;
-            this.form.label = meal.label;
-            this.form.meats = meal.meats;
-            this.form.toppings = meal.toppings;
+        populateFormFromMeat(meat) {
+            this.form.code = meat.code;
+            this.form.type = meat.type;
+            this.form.variety = meat.variety;
+            this.form.cost_per_lb = meat.cost_per_lb;
+            this.form.has_bone = meat.has_bone;
         },
         save() {
             let vm = this;
-            let meats = this.form.meats.map(meat => meat.id);
-            let toppings = this.form.toppings.map(topping => topping.id);
-            return axios.post('/admin/api/meals', {
-                ...this.form, meats, toppings
+            return axios.post('/admin/api/meats', {
+                ...this.form,
             }).then(response => {
-                vm.addToMealsCollection(response.data);
-                vm.closeMealCreatorModal();
+                vm.addToMeatsCollection(response.data);
+                vm.closeMeatCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState('meals', ['show', 'selected', 'mode']),
+        ...mapState('meats', ['show', 'selected', 'mode']),
         ...mapState('meats', {
             'meats': 'collection'
         }),
@@ -203,12 +193,12 @@ export default {
         this.loadMeats();
         this.loadToppings();
         if (this.mode == 'EDIT') {
-            this.populateFormFromMeal(this.selected);
+            this.populateFormFromMeat(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromMeal(newSelected);
+            this.populateFormFromMeat(newSelected);
         }
     }
 }

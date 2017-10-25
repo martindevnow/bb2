@@ -4,8 +4,8 @@ export const populateMeatsCollection = (state, data) => {
     state.collection = data.map(meatData => loadMeatFromData(meatData));
 };
 
-export const addToMeatCollection = (state, meat) => {
-    state.collection.unshift(meat);
+export const addToMeatsCollection = (state, meat) => {
+    state.collection.unshift(loadMeatFromData(meat));
 };
 
 export const showMeatCreatorModal = (state) => {

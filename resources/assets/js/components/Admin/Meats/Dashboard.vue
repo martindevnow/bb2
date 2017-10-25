@@ -4,14 +4,25 @@
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               v-model="sortable.filterKey"
-                        />
-                        <span class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </span>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="sortable.filterKey"
+                                />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary"
+                                    @click="openMeatCreatorModal()"
+                            >
+                                New
+                            </button>
+                        </div>
                     </div>
                 </th>
             </tr>
@@ -33,7 +44,9 @@
                 <td>{{ meat.code }}</td>
                 <td>${{ meat.cost_per_lb.toFixed(2) }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="editMeat(meat)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -43,6 +56,17 @@
             </tr>
             </tbody>
         </table>
+
+        <admin-common-modal v-if="show.meatCreatorModal"
+                            @close="closeMeatCreatorModal()"
+        >
+            <p slot="header" v-if="! mode">Add a Meat</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety</p>
+            <admin-meats-creator @close="$emit('close')"
+                                 slot="body"
+            ></admin-meats-creator>
+        </admin-common-modal>
+
     </div>
 </template>
 
@@ -79,13 +103,18 @@ export default {
     methods: {
         ...mapActions('meats', [
             'loadMeats',
+            'openMeatCreatorModal',
+            'closeMeatCreatorModal',
+            'editMeat',
         ]),
     },
     computed: {
         ...mapState('meats', [
             'collection',
-            'show']
-        )
+            'show',
+            'selected',
+            'mode'
+        ])
     }
 }
 </script>
