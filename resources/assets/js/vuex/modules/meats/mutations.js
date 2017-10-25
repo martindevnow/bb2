@@ -27,3 +27,12 @@ export const disableEditMode = (state) => {
 export const setSelectedMeat = (state, meat) => {
     state.selected = meat;
 };
+
+export const deselectMeat = (state) => {
+    state.selected = null;
+};
+
+export const updateMeat = (state, payload) => {
+    state.collection = state.collection.filter(model => model.id !== payload.id);
+    state.collection.unshift(loadMeatFromData(payload));
+};
