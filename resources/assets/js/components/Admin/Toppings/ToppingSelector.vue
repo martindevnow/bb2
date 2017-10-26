@@ -2,8 +2,8 @@
     <div class="input-group">
         <model-select :options="options"
                       @input="$emit('input', $event)"
-                      v-model="topping"
                       :isError="hasError"
+                      v-model="topping"
         >
         </model-select>
         <div class="input-group-btn">
@@ -45,12 +45,12 @@
             options() {
                 let arr = this.collection.map(item => {
                     return {
-                        value: item.id,
+                        ...item,
                         text: item.label + ' (' + item.id + ')',
                     };
                 });
                 arr.unshift({
-                    value: 0,
+                    id: 0,
                     text: "None",
                 });
                 return arr;
