@@ -74,10 +74,14 @@ class PetsUnitTest extends TestCase
         $activity_level_no_decimal = $activity_level * 100;
 
         $pet = factory(Pet::class)->make([
-            'name'=> 'THISMEAT',
-            'activity_level' => $activity_level_no_decimal
+            'name'              => 'THISMEAT',
+            'activity_level'    => $activity_level_no_decimal
         ]);
-        DB::table('pets')->insert($pet->toArray());
+        $petData = $pet->toArray();
+        unset($petData['owner']);
+        unset($petData['owner_name']);
+
+        DB::table('pets')->insert($petData);
         $pet_clone = Pet::whereName('THISMEAT')->firstOrFail();
         $this->assertEquals($activity_level, $pet_clone->activity_level);
     }

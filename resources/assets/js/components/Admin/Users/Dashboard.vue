@@ -1,11 +1,12 @@
 <template>
     <div>
+        <admin-topping-selector v-model="toppings[0]"></admin-topping-selector>
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             <div class="input-group">
                                 <input type="text"
                                        class="form-control"
@@ -16,7 +17,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             <button class="btn btn-primary"
                                     @click="openUserCreatorModal()"
                             >
@@ -38,12 +39,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in filteredData(users)">
+            <tr v-for="user in filteredData(collection)">
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.pets }}</td>
+                <td>{{ user.getPets() }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="editUser(user)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -55,9 +58,10 @@
         </table>
 
         <admin-common-modal v-if="show.userCreatorModal"
-                            @close="closeCreatorModal()"
+                            @close="closeUserCreatorModal()"
         >
-            <p slot="header">Add a User</p>
+            <p slot="header" v-if="! mode">Add a User</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
             <admin-users-creator @close="$emit('close')"
                                slot="body"
             ></admin-users-creator>
@@ -88,21 +92,31 @@
             return {
                 columns: columns,
                 numColumns: numColumns,
-                sortOrders: sortOrders
+                sortOrders: sortOrders,
+                toppings: [],
             }
         },
         mounted() {
             this.loadUsers();
         },
         methods: {
-            ...mapActions([
+            ...mapActions('users', [
                 'loadUsers',
                 'openUserCreatorModal',
                 'closeUserCreatorModal',
+                'editUser',
             ]),
+            log(message) {
+                console.log(message);
+            }
         },
         computed: {
-            ...mapState(['users', 'show'])
+            ...mapState('users', [
+                'collection',
+                'show',
+                'mode',
+                'selected'
+            ])
         }
     }
 </script>

@@ -15,6 +15,17 @@ use mikehaertl\wkhtmlto\Pdf;
 class PurchaseOrdersController extends Controller
 {
     /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function index() {
+        return \Martin\Vendors\PurchaseOrder::with([
+            'details',
+            'details.purchasable',
+            'vendor',
+        ])->get();
+    }
+
+    /**
      * @param PurchaseOrder $purchaseOrder
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse

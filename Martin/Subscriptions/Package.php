@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Traits\HasMeals;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Package extends Model
 {
     use SoftDeletes;
-
     use HasMeals;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     protected $fillable = [
         'label',

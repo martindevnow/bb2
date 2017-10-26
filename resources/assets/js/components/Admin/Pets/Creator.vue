@@ -13,7 +13,7 @@
                                   :selected-option="owner"
                                   placeholder="Select Owner..."
                                   @select="onSelect"
-                                  :class="{ 'has-error': errors.has('name') }"
+                                  :class="{ 'has-error': errors.has('owner_id') }"
                     >
                     </basic-select>
                     <span class="help-block">{{ errors.get('owner_id') }}</span>
@@ -139,12 +139,12 @@
 </template>
 
 <script>
-    import hasErrors from '../../../mixins/hasErrors';
-    import Form from '../../../models/Form';
-    import { mapGetters, mapState, mapActions } from 'vuex';
-    import moment from 'moment';
-    import Datepicker from 'vuejs-datepicker';
-    import { BasicSelect } from 'vue-search-select'
+import hasErrors from '../../../mixins/hasErrors';
+import Form from '../../../models/Form';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
+import Datepicker from 'vuejs-datepicker';
+import { BasicSelect } from 'vue-search-select'
 
 export default {
     mixins: [
@@ -156,7 +156,6 @@ export default {
     },
     data() {
         return {
-            ownerSearchText: '',
             owner: {
                 value: '',
                 text: '',
@@ -172,23 +171,26 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('pets', [
             'closePetCreatorModal',
+        ]),
+        ...mapMutations('pets', [
             'addToPetsCollection',
+        ]),
+        ...mapActions('users', [
             'loadUsers',
         ]),
         save() {
             let vm = this;
-
-            let birthday = moment(this.birthday).format('YYYY-MM-DD');
+            let birthday = this.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
             let owner_id = this.owner.value;
             return axios.post('/admin/api/pets', {
                 ...this.form,
                 birthday,
                 owner_id,
             }).then(response => {
-                vm.$store.commit('addToPetCollection', { pet: response.data });
-                vm.$store.dispatch('closePetCreatorModal');
+                vm.addToPetsCollection(response.data);
+                vm.closePetCreatorModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -199,10 +201,13 @@ export default {
         }
     },
     computed: {
-        ...mapState(['show', 'selected', 'users']),
+        ...mapState('pets', ['show', 'selected']),
+        ...mapState('users', {
+            'users': 'collection'
+        }),
         ownersSelect() {
-            return this.users.map(user => {
-                return { value: user.id, text: user.name + ' (' + user.id + ')' };
+            return this.users.map(model => {
+                return { value: model.id, text: model.name + ' (' + model.id + ')' };
             });
         }
     },

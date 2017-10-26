@@ -13,12 +13,16 @@ use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Stripe\Collection;
 
 class Order extends Model
 {
     use SoftDeletes;
     use CoreRelations;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     protected $fillable = [
         'plan_id',

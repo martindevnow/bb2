@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
@@ -112,26 +112,29 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'closePaymentModal',
+        ]),
+        ...mapMutations('orders', [
+            'updateSelectedOrder'
         ]),
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/' + this.$store.state.selected.order.id + '/paid', {
+            return axios.post('/admin/api/orders/' + this.selected.id + '/paid', {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: moment(this.received_at).format('YYYY-MM-DD'),
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', { paid: true });
-                vm.$store.dispatch('closePaymentModal');
+                vm.updateSelectedOrder({ paid: true });
+                vm.closePaymentModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState([
+        ...mapState('orders', [
             'show',
             'selected'
         ]),
@@ -139,7 +142,7 @@ export default {
     mounted() {
         this.format = 'cash';
         this.received_at = new Date();
-        this.amount_paid = this.selected.order.plan.weekly_cost;
+        this.amount_paid = this.selected.plan.weekly_cost;
     }
 }
 </script>

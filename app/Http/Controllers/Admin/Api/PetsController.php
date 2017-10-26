@@ -23,7 +23,7 @@ class PetsController extends Controller {
             'name'  => 'required',
             'breed' => '',
             'weight'    => 'required|integer|min:1',
-            'birthday'  => 'date_format:Y-m-d',
+            'birthday'  => 'nullable|date_format:Y-m-d',
             'activity_level'  => 'required|numeric|min:1',
             'owner_id'  => 'required|exists:users,id',
         ]);

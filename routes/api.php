@@ -69,6 +69,20 @@ Route::get('/sizes', 'SubscriptionsController@sizes');
  */
 Route::post('github', 'GitHubController@handle');
 
+Route::get('products', function() {
+    return [
+     'id' => 1,
+     'manId' => 3,
+     'name' => 'Samsung S7 Edge',
+     'price' => 659,
+     'image' => 'http://www.brandsmartusa.com/images/product/large/20208018.jpg',
+     'description' => '5.5" Quad HD Super AMOLED | 12 MP Phase Detection Autofocus Rear Camera / 5 MP Front Facing Camera | Android Marshmallow 6.0 | Wi-Fi 802.11 a/b/g/n/ac, Dual-Band, Wi-Fi Direct, Hotspot | Water-Resistant Features an IP68 Rating (30 Min. In 1m Of Water) | Low-Light Camera | Expandable Storage Up To 200 GB | Samsung Pay',
+     'manufacturer' => [
+       'id' => 3,
+       'name' => 'Samsung'
+     ]
+   ];
+});
 
 
 

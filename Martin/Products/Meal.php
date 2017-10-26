@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Products\Traits\HasMeats;
 use Martin\Products\Traits\HasToppings;
 use Martin\Subscriptions\Package;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Meal extends Model
 {
     use SoftDeletes;
-
     use HasMeats, HasToppings;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     protected $fillable = [
         'code', 'label', 'meal_value',

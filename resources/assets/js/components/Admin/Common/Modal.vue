@@ -43,7 +43,14 @@
         data() {
             return {};
         },
-        computed: mapState(['selected', 'show'])
+        mounted() {
+            let vm = this;
+            document.addEventListener("keydown", (e) => {
+                if (e.keyCode == 27) {
+                    vm.$emit('close');
+                }
+            });
+        }
     }
 </script>
 

@@ -89,20 +89,20 @@ abstract class TestCase extends BaseTestCase
         $chkMeal->addMeat($chicken);
         $turkMeal->addMeat($turkey);
 
-        $package->addMeal($chkMeal, '1B');
-        $package->addMeal($chkMeal, '2B');
-        $package->addMeal($chkMeal, '3B');
-        $package->addMeal($chkMeal, '4B');
-        $package->addMeal($chkMeal, '5B');
-        $package->addMeal($chkMeal, '6B');
-        $package->addMeal($chkMeal, '7B');
-        $package->addMeal($turkMeal, '1B');
-        $package->addMeal($turkMeal, '2B');
-        $package->addMeal($turkMeal, '3B');
-        $package->addMeal($turkMeal, '4B');
-        $package->addMeal($turkMeal, '5B');
-        $package->addMeal($turkMeal, '6B');
-        $package->addMeal($turkMeal, '7B');
+        $package->addMeal($chkMeal, 'B1');
+        $package->addMeal($chkMeal, 'B2');
+        $package->addMeal($chkMeal, 'B3');
+        $package->addMeal($chkMeal, 'B4');
+        $package->addMeal($chkMeal, 'B5');
+        $package->addMeal($chkMeal, 'B6');
+        $package->addMeal($chkMeal, 'B7');
+        $package->addMeal($turkMeal, 'D1');
+        $package->addMeal($turkMeal, 'D2');
+        $package->addMeal($turkMeal, 'D3');
+        $package->addMeal($turkMeal, 'D4');
+        $package->addMeal($turkMeal, 'D5');
+        $package->addMeal($turkMeal, 'D6');
+        $package->addMeal($turkMeal, 'D7');
         $package = $package->fresh(['meals']);
 
         $pet = factory(Pet::class)->create(['weight' => 50, 'activity_level'=> 2]);
