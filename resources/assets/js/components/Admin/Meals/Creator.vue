@@ -76,17 +76,13 @@
             </div>
             <div class="col-sm-6">
                 <h2>Toppings</h2>
-                <model-list-select v-for="(mealTopping, index) in form.toppings"
-                                   :key="index"
-                                   :list="toppings"
-                                   v-model="form.toppings[index]"
-                                   option-value="code"
-                                   option-text="label"
-                                   :custom-text="toppingLabel"
-                                   placeholder="select topping"
-                                   @input="errors.clear('toppings')"
+                <admin-topping-selector v-for="(mealTopping, index) in form.toppings"
+                                        :key="index"
+                                        v-model="form.toppings[index]"
+                                        :deletable="true"
+                                        @delete="removeTopping(index)"
                 >
-                </model-list-select>
+                </admin-topping-selector>
                 <button class="btn btn-block"
                         @click="form.toppings.push({})"
                 >+</button>
@@ -176,6 +172,9 @@ export default {
         },
         toppingLabel (item) {
             return `${item.label} - ${item.code}`
+        },
+        removeTopping(index) {
+            this.form.toppings.splice(index, 1);
         },
         populateFormFromMeal(meal) {
             this.form.code = meal.code;
