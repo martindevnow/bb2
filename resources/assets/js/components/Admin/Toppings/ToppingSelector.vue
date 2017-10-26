@@ -1,12 +1,12 @@
 <template>
-    <div class="input-group">
-        <model-select :options="options"
-                      @input="$emit('input', $event)"
+    <div :class="{ 'input-group' : deletable }">
+        <basic-select :options="options"
+                      :selected-option="value"
+                      @select="$emit('input', $event)"
                       :isError="hasError"
-                      v-model="topping"
         >
-        </model-select>
-        <div class="input-group-btn">
+        </basic-select>
+        <div class="input-group-btn" v-if="deletable">
             <button class="btn btn-danger"
                     type="button"
                     @click="$emit('delete')"
@@ -19,16 +19,16 @@
 </template>
 
 <script>
-    import { ModelSelect } from 'vue-search-select';
+    import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
-        props: ['value', 'hasError'],
+        props: ['value', 'hasError', 'deletable'],
         components: {
-            ModelSelect,
+            BasicSelect
         },
         data() {
-            return {topping: {}};
+            return {};
         },
         mounted() {
             this.loadToppings();
