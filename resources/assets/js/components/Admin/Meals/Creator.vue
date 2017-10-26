@@ -57,17 +57,13 @@
                      :class="{ 'has-error': errors.has('meats') }"
                 >
                 <h2>Meats</h2>
-                    <model-list-select v-for="(mealMeat, index) in form.meats"
-                                       :key="index"
-                                       :list="meats"
-                                       v-model="form.meats[index]"
-                                       option-value="code"
-                                       option-text="label"
-                                       :custom-text="meatLabel"
-                                       placeholder="select meat"
-                                       @input="errors.clear('meats')"
+                    <admin-meat-selector v-for="(mealMeat, index) in form.meats"
+                                         :key="index"
+                                         v-model="form.meats[index]"
+                                         :deletable="true"
+                                         @delete="removeMeat(index)"
                     >
-                    </model-list-select>
+                    </admin-meat-selector>
                     <button class="btn btn-block"
                             @click="form.meats.push({})"
                     >+</button>
@@ -130,7 +126,6 @@ import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
-import { BasicSelect, ModelListSelect } from 'vue-search-select'
 
 export default {
     mixins: [
@@ -138,8 +133,6 @@ export default {
     ],
     components: {
         Datepicker,
-        BasicSelect,
-        ModelListSelect,
     },
     data() {
         return {
@@ -161,20 +154,11 @@ export default {
             'addToMealsCollection',
             'updateMeal',
         ]),
-        ...mapActions('meats', [
-            'loadMeats',
-        ]),
-        ...mapActions('toppings', [
-            'loadToppings',
-        ]),
-        meatLabel (item) {
-            return `${item.type} - ${item.variety} - ${item.code}`
-        },
-        toppingLabel (item) {
-            return `${item.label} - ${item.code}`
-        },
         removeTopping(index) {
             this.form.toppings.splice(index, 1);
+        },
+        removeMeat(index) {
+            this.form.meats.splice(index, 1);
         },
         populateFormFromMeal(meal) {
             this.form.code = meal.code;
@@ -198,8 +182,9 @@ export default {
         },
         update() {
             let vm = this;
-            let meats = this.form.meats.map(meat => meat.id);
-            let toppings = this.form.toppings.map(topping => topping.id);
+            let meats = this.form.meats.filter(item => item.id).map(item => item.id);
+            let toppings = this.form.toppings.filter(item => item.id).map(item => item.id);
+
             return axios.patch('/admin/api/meals/' + this.selected.id, {
                 ...this.form, meats, toppings
             }).then(response => {
@@ -212,16 +197,8 @@ export default {
     },
     computed: {
         ...mapState('meals', ['show', 'selected', 'mode', 'collection']),
-        ...mapState('meats', {
-            'meats': 'collection'
-        }),
-        ...mapState('toppings', {
-            'toppings': 'collection'
-        }),
     },
     mounted() {
-        this.loadMeats();
-        this.loadToppings();
         if (this.mode == 'EDIT') {
             this.populateFormFromMeal(this.selected);
         }

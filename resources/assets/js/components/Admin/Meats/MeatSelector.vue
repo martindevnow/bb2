@@ -1,7 +1,7 @@
 <template>
     <div :class="{ 'input-group' : deletable }">
         <basic-select :options="options"
-                      :selected-option="value"
+                      :selected-option="selectedItem"
                       @select="$emit('input', $event)"
                       :isError="hasError"
         >
@@ -35,31 +35,41 @@
             return {};
         },
         mounted() {
-            this.loadToppings();
+            this.loadMeats();
         },
         methods: {
             ...mapActions('meats', [
-                'loadToppings',
+                'loadMeats',
             ]),
+            getText(item) {
+                return item.type + ' ' + item.variety + ' (' + item.id + ')';
+            }
         },
         computed: {
             ...mapState('meats', [
                 'collection',
             ]),
             options() {
+                let vm = this;
                 let arr = this.collection.map(item => {
                     return {
                         ...item,
-                        text: item.label + ' (' + item.id + ')',
+                        text: vm.getText(item),
                     };
                 });
-                arr.unshift({
-                    id: 0,
-                    text: "None",
-                });
                 return arr;
+            },
+            selectedItem() {
+                if ( ! this.value.id) {
+                    return { text: 'Select ...' };
+                }
+
+                return {
+                    ...this.value,
+                    text: this.getText(this.value),
+                };
             }
-        }
+        },
     }
 </script>
 
