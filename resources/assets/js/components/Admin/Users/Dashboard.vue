@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" @focus="log('focus')">
+        <admin-topping-selector v-model="toppings[0]"></admin-topping-selector>
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
@@ -92,7 +92,8 @@
             return {
                 columns: columns,
                 numColumns: numColumns,
-                sortOrders: sortOrders
+                sortOrders: sortOrders,
+                toppings: [],
             }
         },
         mounted() {

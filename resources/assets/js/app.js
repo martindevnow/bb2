@@ -60,6 +60,8 @@ Vue.component('admin-package-selector', require('./components/Admin/Packages/Pac
 Vue.component('admin-meal-selector', require('./components/Admin/Meals/MealSelector.vue'));
 Vue.component('admin-meal-plan-editor', require('./components/Admin/Packages/MealPlanEditor.vue'));
 
+Vue.component('admin-topping-selector', require('./components/Admin/Toppings/ToppingSelector.vue'));
+
 Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboard.vue'));
 Vue.component('admin-users-creator', require('./components/Admin/Users/Creator.vue'));
 
