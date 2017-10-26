@@ -60,6 +60,7 @@
                     <admin-meat-selector v-for="(mealMeat, index) in form.meats"
                                          :key="index"
                                          v-model="form.meats[index]"
+                                         @input="errors.clear('meats')"
                                          :deletable="true"
                                          @delete="removeMeat(index)"
                     >
@@ -75,6 +76,7 @@
                 <admin-topping-selector v-for="(mealTopping, index) in form.toppings"
                                         :key="index"
                                         v-model="form.toppings[index]"
+                                        @input="errors.clear('toppings')"
                                         :deletable="true"
                                         @delete="removeTopping(index)"
                 >

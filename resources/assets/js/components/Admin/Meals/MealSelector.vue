@@ -1,87 +1,75 @@
 <template>
-    <basic-select :options="mealOptions"
-                  :selected-option="selectedMeal"
-                  placeholder="Select Meal..."
-                  @select="onSelect"
-                  :isError="hasError"
-    >
-    </basic-select>
+    <div :class="{ 'input-group' : deletable }">
+        <basic-select :options="options"
+                      :selected-option="selectedItem"
+                      @select="$emit('input', $event)"
+                      :isError="hasError"
+        >
+        </basic-select>
+        <div class="input-group-btn" v-if="deletable">
+            <button class="btn btn-danger"
+                    type="button"
+                    @click="$emit('delete')"
+            >
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+
 </template>
 
 <script>
-    import swal from 'sweetalert2'
-    import { BasicSelect } from 'vue-search-select'
+    import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
-        mixins: [
-        ],
         props: [
-            'model',
-            'modelApi',
-            'selectedMealId',
-            'autonomous',
+            'value',
             'hasError',
+            'deletable'
         ],
         components: {
-            BasicSelect,
+            BasicSelect
         },
         data() {
             return {};
         },
+        mounted() {
+            this.loadMeals();
+        },
         methods: {
             ...mapActions('meals', [
-                'loadMeals'
+                'loadMeals',
             ]),
-            onSelect(meal) {
-                this.selectedMealId = meal.value;
-
-                if (! this.autonomous) {
-                    return this.$emit('select', meal);
-                }
-
-                let vm = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: "Changing the meal will affect all Plans using this ...",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, update it!'
-                }).then(function () {
-                    axios.post('/admin/api/'+ vm.modelApi + '/' + vm.model.id + '/updateMeal',
-                        { meal_id: meal.value }
-                    )
-                        .then(response => {
-                            swal('Updated', 'The meal has been updated.', 'success');
-                        })
-                        .catch(error => {
-                            swal('Failed...', 'The meal could not be updated...', 'error');
-                        });
-                }, function(dismiss) {
-                    swal('You did not approve... ');
-                });
+            getText(item) {
+                return item.label + ' (' + item.id + ')';
             }
         },
         computed: {
             ...mapState('meals', [
                 'collection',
             ]),
-            mealOptions() {
-                let arr = this.collection.map(model => {
-                    return { value: model.id, text: model.label + ' (' + model.id + ')' };
+            options() {
+                let vm = this;
+                let arr = this.collection.map(item => {
+                    return {
+                        ...item,
+                        text: vm.getText(item),
+                    };
                 });
-                arr.unshift({value: 0, text: 'None'});
                 return arr;
             },
-            selectedMeal() {
-                let vm = this;
-                return this.mealOptions.filter(meal => {
-                    return meal.value === vm.selectedMealId;
-                })[0];
+            selectedItem() {
+                if ( ! this.value.id) {
+                    return { text: 'Select ...' };
+                }
+
+                return {
+                    ...this.value,
+                    text: this.getText(this.value),
+                };
             }
-        }
+        },
     }
 </script>
 

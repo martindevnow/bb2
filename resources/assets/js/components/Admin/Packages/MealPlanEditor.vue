@@ -12,12 +12,14 @@
                      :class="{ 'has-error': errors.has('meal_id_' + bfast) }"
                 >
                     <label>Day {{ index + 1 }}</label>
-                    <admin-meal-selector @select="onSelect($event, bfast)"
-                                         :autonomous="0"
-                                         :selected-meal-id="mealByCalendarCode(bfast).value"
-                                         :hasError="errors.has('meal_id_' + bfast)"
+                    <admin-meal-selector :key="bfast"
+                                         v-model="form.meals[bfast]"
+                                         @input="errors.clear('meal_id_' + bfast)"
+                                         :deletable="true"
+                                         @delete="removeMeal(bfast)"
                     >
                     </admin-meal-selector>
+
                     <span class="help-block">{{ errors.get('meal_id_' + bfast) }}</span>
                 </div>
 
@@ -31,10 +33,11 @@
                      :class="{ 'has-error': errors.has('meal_id_' + dinner) }"
                 >
                     <label>Day {{ index + 1 }}</label>
-                    <admin-meal-selector @select="onSelect($event, dinner)"
-                                         :autonomous="0"
-                                         :selected-meal-id="mealByCalendarCode(dinner).value"
-                                         :hasError="errors.has('meal_id_' + dinner)"
+                    <admin-meal-selector :key="dinner"
+                                         v-model="form.meals[dinner]"
+                                         @input="errors.clear('meal_id_' + dinner)"
+                                         :deletable="true"
+                                         @delete="removeMeal(dinner)"
                     >
                     </admin-meal-selector>
                     <span class="help-block">{{ errors.get('meal_id_' + dinner) }}</span>
@@ -87,7 +90,22 @@
             return {
                 form: {
                     package_id: null,
-                    meals: [],
+                    meals: {
+                        B1: {},
+                        B2: {},
+                        B3: {},
+                        B4: {},
+                        B5: {},
+                        B6: {},
+                        B7: {},
+                        D1: {},
+                        D2: {},
+                        D3: {},
+                        D4: {},
+                        D5: {},
+                        D6: {},
+                        D7: {},
+                     },
                 },
                 breakfasts: [
                     'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7',
@@ -107,58 +125,44 @@
             ...mapMutations('packages', [
                 'updatePackage'
             ]),
-            onSelect(meal, calendar_code) {
-                this.errors.clear('meal_id_' + calendar_code);
-                this.form.meals[calendar_code] = {...meal,  calendar_code };
+            removeMeal(key) {
+                this.form.meals[key] = {};
             },
             populateFormFromPackage(pkg) {
+                let vm = this;
+
                 this.form.package_id = pkg.id;
-                this.form.meals =
-                    this.toMealPlanObject(pkg.meals.map(meal => {
-                         return {
-                            text: meal.label + ' (' + meal.id + ')',
-                            value: meal.id,
-                            calendar_code: meal.calendar_code,
-                        };
-                    })
-                );
+                pkg.meals.forEach(meal => {
+                    vm.form.meals[meal.calendar_code] = meal;
+                });
+            },
+            buildMealPlan() {
+                let meals = [];
+                for (let cal_code in this.form.meals) {
+                    if (this.form.meals[cal_code].id) {
+                        meals.push({
+                            ...this.form.meals[cal_code],
+                            calendar_code: cal_code,
+                        });
+                    }
+                }
+                return meals;
             },
             save() {
                 let vm = this;
-                axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', this.form)
-                    .then(response => {
-                        vm.updatePackage(response.data);
-                        vm.closeMealPlanEditorModal();
-                        swal('Done', 'Thank you', 'success');
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        swal('Error', 'Something went wrong...', 'error');
-                    });
+                let meals = this.buildMealPlan();
+                axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', {
+                    ...this.form, meals
+                }).then(response => {
+                    vm.updatePackage(response.data);
+                    vm.closeMealPlanEditorModal();
+                    swal('Done', 'Thank you', 'success');
+                })
+                .catch(error => {
+                    console.log(error);
+                    swal('Error', 'Something went wrong...', 'error');
+                });
             },
-            toMealPlanObject(mealsArray) {
-                let rv = {};
-                for (let i = 0; i < mealsArray.length; ++i)
-                    rv[(mealsArray[i].calendar_code)] = mealsArray[i];
-
-                for (let bfast of this.breakfasts) {
-                    if (! rv.hasOwnProperty(bfast)) {
-                        rv[bfast] = {text: 'None', value: 0, calendar_code: bfast}
-                    }
-                }
-                for (let dinner of this.dinners) {
-                    if (! rv.hasOwnProperty(dinner)) {
-                        rv[dinner] = {text: 'None', value: 0, calendar_code: dinner}
-                    }
-                }
-                return rv;
-            },
-            mealByCalendarCode(calCode) {
-                if (! this.form.meals.hasOwnProperty(calCode) )
-                    return {text: 'None', value: 0, calendar_code: calCode};
-
-                return this.form.meals[calCode];
-            }
         },
         computed: {
             ...mapState('packages', [
