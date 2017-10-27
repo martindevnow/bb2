@@ -32,11 +32,11 @@ export const updateSelectedOrder = (state, payload) => {
  * Modals
  */
 
-export const showPaymentModal = (state) => {
+export const showPaymentsModal = (state) => {
     state.show.paymentModal = true;
 };
 
-export const hidePaymentModal = (state) => {
+export const hidePaymentsModal = (state) => {
     state.show.paymentModal = false;
 };
 

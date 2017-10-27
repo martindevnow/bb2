@@ -1,5 +1,6 @@
 import * as actions from './actions';
 import * as mutations from './mutations';
+import * as getters from './getters';
 
 const state = {
     collection: [],
@@ -16,6 +17,7 @@ const packagesModule = {
     state,
     mutations,
     actions,
+    getters,
 };
 
 export default packagesModule;

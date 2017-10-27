@@ -29,17 +29,11 @@
                 <div class="form-group"
                      v-bind:class="{'has-error': errors.has('packed_package_id') }"
                 >
-                    <label for="packed_package_id">Package</label>
-                    <select v-model="packed_package_id"
-                            class="form-control"
-                            id="packed_package_id"
-                            name="packed_package_id"
+                    <label>Package</label>
+                    <admin-package-selector v-model="packed_package"
+                                            @input="errors.clear('packed_package_id')"
                     >
-                        <option v-for="package in packages"
-                                :selected="selected.plan.package_id == package.id"
-                                :value="package.id"
-                        >{{ package.label }}</option>
-                    </select>
+                    </admin-package-selector>
                     <span class="help-block">{{ errors.get('packed_package_id') }}</span>
                 </div>
             </div>
@@ -66,7 +60,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
 
@@ -77,7 +71,8 @@ export default {
     data() {
         return {
             weeks_packed: 0,
-            packed_package_id: null,
+            package_id: null,
+            packed_package: {},
         };
     },
     methods: {
@@ -95,12 +90,12 @@ export default {
 
             return axios.post('/admin/api/orders/'+ this.selected.id +'/packed', {
                 weeks_packed:      this.weeks_packed,
-                packed_package_id: this.packed_package_id,
+                packed_package_id: this.packed_package.id,
             }).then(response => {
                 vm.updateSelectedOrder({
                     packed: true,
                     weeks_packed: vm.weeks_packed,
-                    packed_package_id: vm.packed_package_id,
+                    packed_package_id: vm.packed_package.id,
                 });
                 vm.closePackedModal();
             }).catch(error => {
@@ -115,12 +110,17 @@ export default {
         ]),
         ...mapState('packages', {
             'packages': 'collection'
-        })
+        }),
+        ...mapGetters('packages', [
+            'getPackageById',
+        ]),
     },
     mounted() {
         this.loadPackages();
         this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
-        this.packed_package_id = this.selected.plan.package_id;
+        this.package_id = this.selected.packed_package_id
+            || this.selected.plan.package_id;
+        this.packed_package = this.getPackageById(this.package_id);
     }
 }
 </script>

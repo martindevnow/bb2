@@ -1,93 +1,75 @@
 <template>
-    <basic-select :options="packageOptions"
-                  :selected-option="selectedPackage"
-                  placeholder="Select Package..."
-                  @select="onSelect"
-                  :isError="hasError"
-    >
-    </basic-select>
+    <div :class="{ 'input-group' : deletable }">
+        <basic-select :options="options"
+                      :selected-option="selectedItem"
+                      @select="$emit('input', $event)"
+                      :isError="hasError"
+        >
+        </basic-select>
+        <div class="input-group-btn" v-if="deletable">
+            <button class="btn btn-danger"
+                    type="button"
+                    @click="$emit('delete')"
+            >
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+
 </template>
 
 <script>
-    import swal from 'sweetalert2'
-    import { BasicSelect } from 'vue-search-select'
+    import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
-        mixins: [
-        ],
         props: [
-            'model',
-            'modelApi',
-            'selectedPackageId',
-            'autonomous',
+            'value',
             'hasError',
+            'deletable'
         ],
         components: {
-            BasicSelect,
+            BasicSelect
         },
         data() {
-            return {
-                selectedId: null,
-            };
+            return {};
         },
         mounted() {
-            this.selectedId = this.selectedPackageId;
+            this.loadPackages();
         },
         methods: {
             ...mapActions('packages', [
-                'loadPackages'
+                'loadPackages',
             ]),
-            onSelect(pkg) {
-                this.selectedId = pkg.value;
-                if (this.selectedId === this.selectedPackageId) {
-                    return null;
-                }
-
-                if (! this.autonomous) {
-                    return this.$emit('select', pkg);
-                }
-
-                let vm = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: "Changing the plan will affect all open orders...",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, update it!'
-                }).then(function () {
-                    axios.post('/admin/api/'+ vm.modelApi + '/' + vm.model.id + '/updatePackage',
-                        { package_id: pkg.value }
-                    )
-                        .then(response => {
-                            swal('Updated', 'The package has been updated.', 'success');
-                        })
-                        .catch(error => {
-                            swal('Failed...', 'The package could not be updated...', 'error');
-                        });
-                }, function(dismiss) {
-                    swal('You did not approve... ');
-                });
+            getText(item) {
+                return item.label + ' (' + item.id + ')';
             }
         },
         computed: {
             ...mapState('packages', [
                 'collection',
             ]),
-            packageOptions() {
-                return this.collection.map(model => {
-                    return { value: model.id, text: model.label + ' (' + model.id + ')' };
-                });
-            },
-            selectedPackage() {
+            options() {
                 let vm = this;
-                return this.packageOptions.filter(pkg => {
-                    return pkg.value === vm.selectedId;
-                })[0];
+                let arr = this.collection.map(item => {
+                    return {
+                        ...item,
+                        text: vm.getText(item),
+                    };
+                });
+                return arr;
+            },
+            selectedItem() {
+                if ( ! this.value || ! this.value.id) {
+                    return { text: 'Select ...' };
+                }
+
+                return {
+                    ...this.value,
+                    text: this.getText(this.value),
+                };
             }
-        }
+        },
     }
 </script>
 
