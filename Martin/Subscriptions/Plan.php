@@ -319,18 +319,34 @@ class Plan extends Model
     }
 
 
-    public function getMeals() {
+    public function getMeals(Meal $meal = null) {
         $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
         $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
         $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
-            $meal->count = 1 + in_array($meal->pivot->calendar_code, $breakfasts) ? $breakfast_modifier : 0;
+            $meal->count = 1 + (in_array($meal->pivot->calendar_code, $breakfasts) ? $breakfast_modifier : 0);
             $meal->calendar_code = $meal->pivot->calendar_code;
+            unset($meal->pivot);
             return $meal;
         });
         $grouped = $counted->mapToGroups(function($meal, $key) {
             return [$meal->id => $meal];
+        })->map(function($group) {
+            return $group->reduce(function($carry, $meal) {
+                if (!$carry) {
+                    return $meal;
+                }
+                $carry->count += $meal->count;
+                return $carry;
+
+            }, null);
         });
-        return $grouped;
+
+        if (! $meal)
+            return $grouped;
+
+        return $grouped->where('id', $meal->id)
+            ->first()
+            ->count;
     }
 
     /**

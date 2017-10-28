@@ -872,8 +872,10 @@ class PlansUnitTest extends TestCase
         $pet->makePuppy();
         $pet = $pet->fresh();
         $plan = $plan->fresh(['pet']);
-        $meals = $plan->getMeals();
-        print_r($meals->toArray());
+
+        $breakfast = $plan->package->meals->where('calendar_code', '=', 'B1')->first();
+
+        $mealPlan = $plan->getMeals($breakfast);
 
     }
 }
