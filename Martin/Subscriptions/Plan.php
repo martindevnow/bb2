@@ -318,6 +318,21 @@ class Plan extends Model
             ->count;
     }
 
+
+    public function getMeals() {
+        $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
+        $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
+        $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
+            $meal->count = 1 + in_array($meal->pivot->calendar_code, $breakfasts) ? $breakfast_modifier : 0;
+            $meal->calendar_code = $meal->pivot->calendar_code;
+            return $meal;
+        });
+        $grouped = $counted->mapToGroups(function($meal, $key) {
+            return [$meal->id => $meal];
+        });
+        return $grouped;
+    }
+
     /**
      * Generators
      */

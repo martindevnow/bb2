@@ -863,4 +863,17 @@ class PlansUnitTest extends TestCase
         $plan = $plan->fresh(['package']);
         $this->assertEquals($package[1]->id, $plan->package_id);
     }
+
+    /** @test */
+    public function fetching_meals_for_a_puppy_results_in_twentyone_meals() {
+        $plan = $this->createPlanForBasicBento();
+        $pet = $plan->pet;
+
+        $pet->makePuppy();
+        $pet = $pet->fresh();
+        $plan = $plan->fresh(['pet']);
+        $meals = $plan->getMeals();
+        print_r($meals->toArray());
+
+    }
 }

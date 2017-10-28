@@ -49,7 +49,9 @@ class Pet extends Model
      * @return float
      */
     public function mealSize() {
-        return $this->weight * $this->activity_level / 100 / 2;
+        return $this->weight
+            * $this->activity_level / 100
+            / $this->daily_meals;
     }
 
     public function mealSizeInGrams() {
@@ -59,6 +61,16 @@ class Pet extends Model
     public function weeklyConsumption() {
         return $this->mealSize() * 14;
     }
+
+    public function makePuppy() {
+        $this->daily_meals = 3;
+        $this->save();
+        return $this;
+    }
+
+    /**
+     * Mutators
+     */
 
     /**
      * @param $activity_level
@@ -75,9 +87,6 @@ class Pet extends Model
         $this->attributes['activity_level'] = round($activity_level * 100);
     }
 
-    /**
-     * Mutators
-     */
     // TODO: Add a mutator for birthday so it removes the time portion of carbon... ?
     // I can use the Trait I made to remove the time from the Carbon instance..
     // It makes life easier as I can assume that it is coming as a date string in a
