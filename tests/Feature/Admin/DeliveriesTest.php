@@ -78,7 +78,7 @@ class DeliveriesTest extends TestCase
             ->assertSee('<form');
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_submit_a_form_to_add_a_delivery() {
         $this->loginAsAdmin();
 

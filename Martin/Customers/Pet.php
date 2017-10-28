@@ -19,6 +19,7 @@ class Pet extends Model
         'birthday',
         'activity_level',
         'owner_id',
+        'daily_meals',
     ];
 
     protected $dates = [

@@ -47,7 +47,7 @@ class PlansTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_see_existing_plans_on_the_index() {
         $plan = factory(Plan::class)->create();
         $this->loginAsAdmin();
