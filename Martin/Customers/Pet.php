@@ -26,13 +26,13 @@ class Pet extends Model
         'birthday',
     ];
 
-    protected $appends = [
-        'owner_name'
-    ];
-
-    public function getOwnerNameAttribute() {
-        return $this->owner->name;
-    }
+//    protected $appends = [
+//        'owner_name'
+//    ];
+//
+//    public function getOwnerNameAttribute() {
+//        return $this->owner->name;
+//    }
 
     /**
      * All Plans are priced at intervals of 5lbs
