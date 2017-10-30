@@ -298,16 +298,18 @@ class Plan extends Model
     }
 
     /**
-     * @param Meal|null $meal
+     * @param Meal|null $specificMeal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+    public function mealCounts(Meal $specificMeal = null, $number_of_weeks = null) {
         $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
         $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
         $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
-            $meal->count = 1 + (in_array($meal->pivot->calendar_code, $breakfasts) ? $breakfast_modifier : 0);
-            $meal->calendar_code = $meal->pivot->calendar_code;
+            $calendar_code = $meal->calendar_code ?: $meal->pivot->calendar_code;
+            $increment = in_array($calendar_code, $breakfasts) ? $breakfast_modifier : 0;
+            $meal->count = 1 + $increment;
+            $meal->calendar_code = $calendar_code;
             unset($meal->pivot);
             return $meal;
         });
@@ -330,10 +332,10 @@ class Plan extends Model
             });
         }
 
-        if (! $meal)
+        if (! $specificMeal)
             return $grouped;
 
-        return $grouped->where('id', $meal->id)
+        return $grouped->where('id', $specificMeal->id)
             ->first()
             ->count;
     }
