@@ -44,22 +44,41 @@ class Pet extends Model
     }
 
     /**
-     * Meal Size in LBs
+     * Meal weight in LBs for this pet
      *
      * @return float
      */
     public function mealSize() {
-        return $this->weight
-            * $this->activity_level / 100
+        return $this->dailyConsumption()
             / $this->daily_meals;
     }
 
+    /**
+     * Individual meal weight in Grams for this pet
+     *
+     * @return float
+     */
     public function mealSizeInGrams() {
         return $this->mealSize() * 454;
     }
 
+    /**
+     * Weight in LBs of total food eaten daily by this pet
+     *
+     * @return float|int
+     */
+    public function dailyConsumption() {
+        return $this->weight
+            * $this->activity_level / 100;
+    }
+
+    /**
+     * Weight in LBs of total food eaten weekly by this pet
+     *
+     * @return float|int
+     */
     public function weeklyConsumption() {
-        return $this->mealSize() * 14;
+        return $this->dailyConsumption() * 7;
     }
 
     public function makePuppy() {

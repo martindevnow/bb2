@@ -210,7 +210,7 @@ class Order extends Model
      * @return mixed
      */
     public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
-        return $this->plan->mealCounts($meal, $number_of_weeks);
+        return $this->plan->getMeals($meal, $number_of_weeks);
     }
 
     /**

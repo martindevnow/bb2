@@ -385,13 +385,16 @@ class Plan extends Model
         ]);
     }
 
+    /**
+     * @return array
+     */
     public function getMeatWeightsByCode() {
 
         $packageMealWeights = [$this->package->code => 0];
         $meatWeights = [];
 
         $mealSize = $this->pet->mealSizeInGrams();
-        $packageMealWeights[$this->package->code] += $mealSize / 454 * 14;
+        $packageMealWeights[$this->package->code] += $this->pet->weeklyConsumption();
 
         foreach ($this->package->meals as $meal) {
             foreach ($meal->meats as $meat) {
