@@ -865,8 +865,10 @@ class PlansUnitTest extends TestCase
     }
 
     /** @test */
-    public function fetching_meals_for_a_puppy_results_in_twentyone_meals() {
-        $plan = $this->createPlanForBasicBento();
+    public function fetching_meals_for_a_puppy_results_in_twenty_one_meals() {
+        $plan = $this->createPlanForBasicBento([
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
         $pet = $plan->pet;
 
         $pet->makePuppy();
@@ -876,6 +878,27 @@ class PlansUnitTest extends TestCase
         $breakfast = $plan->package->meals->where('calendar_code', '=', 'B1')->first();
 
         $mealPlan = $plan->getMeals($breakfast);
+        $this->assertCount(2, $mealPlan);
+        $this->assertEquals(14, $mealPlan->where('calendar_code', 'B1')->first()->count);
+        $this->assertEquals(7, $mealPlan->where('calendar_code', 'D1')->first()->count);
+    }
 
+    /** @test */
+    public function fetching_meals_for_a_puppy_results_in_fourty_two_meals() {
+        $plan = $this->createPlanForBasicBento([
+            'weeks_of_food_per_shipment'    => 2
+        ]);
+        $pet = $plan->pet;
+
+        $pet->makePuppy();
+        $pet = $pet->fresh();
+        $plan = $plan->fresh(['pet']);
+
+        $breakfast = $plan->package->meals->where('calendar_code', '=', 'B1')->first();
+
+        $mealPlan = $plan->getMeals($breakfast);
+        $this->assertCount(2, $mealPlan);
+        $this->assertEquals(28, $mealPlan->where('calendar_code', 'B1')->first()->count);
+        $this->assertEquals(14, $mealPlan->where('calendar_code', 'D1')->first()->count);
     }
 }

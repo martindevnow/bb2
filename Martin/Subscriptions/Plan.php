@@ -319,7 +319,8 @@ class Plan extends Model
     }
 
 
-    public function getMeals(Meal $meal = null) {
+    public function getMeals(Meal $meal = null, $number_of_weeks = null) {
+        $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
         $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
         $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
@@ -337,9 +338,15 @@ class Plan extends Model
                 }
                 $carry->count += $meal->count;
                 return $carry;
-
             }, null);
         });
+
+        if ($weeks_of_food_per_shipment > 1) {
+            $grouped->map(function($meal) use ($weeks_of_food_per_shipment) {
+                $meal->count *= $weeks_of_food_per_shipment;
+                return $meal;
+            });
+        }
 
         if (! $meal)
             return $grouped;
