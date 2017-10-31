@@ -291,6 +291,7 @@ $factory->define(\Martin\Customers\Pet::class, function (Faker\Generator $faker)
         'activity_level'   => $faker->randomElement([2.0, 2.5, 3.0]),
         'birthday'   => $faker->dateTime,
         'owner_id'   => factory(\Martin\ACL\User::class)->create()->id,
+        'daily_meals'   => 2,
     ];
 });
 

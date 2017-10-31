@@ -47,7 +47,7 @@ class MealsTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_see_existing_meals_on_the_index() {
         $meal = factory(Meal::class)->create();
         $this->loginAsAdmin();
