@@ -16,6 +16,14 @@ export const hideMealCreatorModal = (state) => {
     state.show.mealCreatorModal = false;
 };
 
+export const setSelectedMeal = (state, meal) => {
+    state.selected = meal;
+};
+
+export const deselectMeal = (state) => {
+    state.selected = null;
+};
+
 export const enableEditMode = (state) => {
     state.mode = 'EDIT';
 };
@@ -24,6 +32,7 @@ export const disableEditMode = (state) => {
     state.mode = null;
 };
 
-export const setSelectedMeal = (state, meal) => {
-    state.selected = meal;
+export const updateMeal = (state, payload) => {
+    state.collection = state.collection.filter(model => model.id !== payload.id);
+    state.collection.unshift(loadMealFromData(payload));
 };

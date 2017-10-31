@@ -18,11 +18,11 @@ class MealsController extends Controller {
 
     public function store(Request $request) {
         $validData = $request->validate([
-            'code'  => 'required|unique:meals,code',
-            'label' => 'required|unique:meals,label',
-            'meal_value' => 'required|numeric',
-            'meats' => 'required',
-            'toppings'  => '',
+            'code'          => 'required|unique:meals,code',
+            'label'         => 'required|unique:meals,label',
+            'meal_value'    => 'required|numeric',
+            'meats'         => 'required',
+            'toppings'      => 'nullable',
         ]);
 
         $meal = Meal::create($request->only(['code', 'label', 'meal_value']));
@@ -35,6 +35,22 @@ class MealsController extends Controller {
         }
         return $meal->fresh(['meats', 'toppings']);
 
+    }
+
+    public function update(Meal $meal, Request $request) {
+        $validData = $request->validate([
+            'code'          => 'required',
+            'label'         => 'required',
+            'meal_value'    => 'required|numeric',
+            'meats'         => 'required',
+            'toppings'      => 'nullable',
+        ]);
+
+        $meal->update($validData);
+        $meal->meats()->sync($validData['meats']);
+        $meal->toppings()->sync($validData['toppings']);
+
+        return $meal->fresh(['meats', 'toppings']);
     }
 
 }

@@ -42,5 +42,5 @@ export const disableEditMode = (state) => {
 
 export const updatePackage = (state, payload) => {
     state.collection = state.collection.filter(model => model.id !== payload.id);
-    state.collection.unshift(payload);
+    state.collection.unshift(loadPkgFromData(payload));
 };

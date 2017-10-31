@@ -1,7 +1,9 @@
 import {loadUserFromData} from "./User";
 
 export class Pet {
-
+    ownerName() {
+        return (!! this.owner) ? this.owner.name : '';
+    }
 }
 
 export const loadPetFromData = function (data) {

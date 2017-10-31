@@ -35,18 +35,18 @@
             return {};
         },
         mounted() {
-            this.loadPackages();
+            this.loadToppings();
         },
         methods: {
-            ...mapActions('packages', [
-                'loadPackages',
+            ...mapActions('toppings', [
+                'loadToppings',
             ]),
             getText(item) {
                 return item.label + ' (' + item.id + ')';
             }
         },
         computed: {
-            ...mapState('packages', [
+            ...mapState('toppings', [
                 'collection',
             ]),
             options() {
@@ -60,7 +60,7 @@
                 return arr;
             },
             selectedItem() {
-                if ( ! this.value || ! this.value.id) {
+                if ( ! this.value.id) {
                     return { text: 'Select ...' };
                 }
 

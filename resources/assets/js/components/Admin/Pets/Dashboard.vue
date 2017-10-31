@@ -35,7 +35,7 @@
             <tr v-for="pet in filteredData(collection)">
                 <td>{{ pet.name }}</td>
                 <td>{{ pet.breed }}</td>
-                <td>{{ pet.owner_name }}</td>
+                <td>{{ pet.ownerName() }}</td>
                 <td>{{ pet.weight }} lb</td>
                 <td>{{ pet.activity_level }} %</td>
                 <td>{{ pet.birthday }}</td>
@@ -74,7 +74,7 @@
             let columns = [
                 'name',
                 'breed',
-                'owner_name',
+                'ownerName',
                 'weight',
                 'activity_level',
                 'birthday',

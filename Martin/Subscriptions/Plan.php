@@ -298,22 +298,44 @@ class Plan extends Model
     }
 
     /**
-     * @param Meal|null $meal
+     * @param Meal|null $specificMeal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+    public function mealCounts(Meal $specificMeal = null, $number_of_weeks = null) {
         $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
-        $grouped =  $this->package->meals->groupBy('id')
-            ->map(function($group, $key) use ($weeks_of_food_per_shipment) {
-                $item = $group->first();
-                $item->count = $group->count() * $weeks_of_food_per_shipment;
-                return $item;
-            });
+        $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
+        $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
+        $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
+            $calendar_code = $meal->calendar_code ?: $meal->pivot->calendar_code;
+            $increment = in_array($calendar_code, $breakfasts) ? $breakfast_modifier : 0;
+            $meal->count = 1 + $increment;
+            $meal->calendar_code = $calendar_code;
+            unset($meal->pivot);
+            return $meal;
+        });
+        $grouped = $counted->mapToGroups(function($meal, $key) {
+            return [$meal->id => $meal];
+        })->map(function($group) {
+            return $group->reduce(function($carry, $meal) {
+                if (!$carry) {
+                    return $meal;
+                }
+                $carry->count += $meal->count;
+                return $carry;
+            }, null);
+        });
 
-        if (! $meal)
+        if ($weeks_of_food_per_shipment > 1) {
+            $grouped->map(function($meal) use ($weeks_of_food_per_shipment) {
+                $meal->count *= $weeks_of_food_per_shipment;
+                return $meal;
+            });
+        }
+
+        if (! $specificMeal)
             return $grouped;
 
-        return $grouped->where('label', $meal->label)
+        return $grouped->where('id', $specificMeal->id)
             ->first()
             ->count;
     }
@@ -347,13 +369,16 @@ class Plan extends Model
         ]);
     }
 
+    /**
+     * @return array
+     */
     public function getMeatWeightsByCode() {
 
         $packageMealWeights = [$this->package->code => 0];
         $meatWeights = [];
 
         $mealSize = $this->pet->mealSizeInGrams();
-        $packageMealWeights[$this->package->code] += $mealSize / 454 * 14;
+        $packageMealWeights[$this->package->code] += $this->pet->weeklyConsumption();
 
         foreach ($this->package->meals as $meal) {
             foreach ($meal->meats as $meat) {

@@ -57,17 +57,14 @@
                      :class="{ 'has-error': errors.has('meats') }"
                 >
                 <h2>Meats</h2>
-                    <model-list-select v-for="(mealMeat, index) in form.meats"
-                                       :key="index"
-                                       :list="meats"
-                                       v-model="form.meats[index]"
-                                       option-value="code"
-                                       option-text="label"
-                                       :custom-text="meatLabel"
-                                       placeholder="select meat"
-                                       @input="errors.clear('meats')"
+                    <admin-meat-selector v-for="(mealMeat, index) in form.meats"
+                                         :key="index"
+                                         v-model="form.meats[index]"
+                                         @input="errors.clear('meats')"
+                                         :deletable="true"
+                                         @delete="removeMeat(index)"
                     >
-                    </model-list-select>
+                    </admin-meat-selector>
                     <button class="btn btn-block"
                             @click="form.meats.push({})"
                     >+</button>
@@ -76,17 +73,14 @@
             </div>
             <div class="col-sm-6">
                 <h2>Toppings</h2>
-                <model-list-select v-for="(mealTopping, index) in form.toppings"
-                                   :key="index"
-                                   :list="toppings"
-                                   v-model="form.toppings[index]"
-                                   option-value="code"
-                                   option-text="label"
-                                   :custom-text="toppingLabel"
-                                   placeholder="select topping"
-                                   @input="errors.clear('toppings')"
+                <admin-topping-selector v-for="(mealTopping, index) in form.toppings"
+                                        :key="index"
+                                        v-model="form.toppings[index]"
+                                        @input="errors.clear('toppings')"
+                                        :deletable="true"
+                                        @delete="removeTopping(index)"
                 >
-                </model-list-select>
+                </admin-topping-selector>
                 <button class="btn btn-block"
                         @click="form.toppings.push({})"
                 >+</button>
@@ -102,8 +96,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -126,7 +128,6 @@ import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
-import { BasicSelect, ModelListSelect } from 'vue-search-select'
 
 export default {
     mixins: [
@@ -134,18 +135,13 @@ export default {
     ],
     components: {
         Datepicker,
-        BasicSelect,
-        ModelListSelect,
     },
     data() {
         return {
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
                 code: '',
                 label: '',
+                meal_value: null,
                 meats: [],
                 toppings: [],
             },
@@ -154,25 +150,22 @@ export default {
     methods: {
         ...mapActions('meals', [
             'closeMealCreatorModal',
+            'editMeal',
         ]),
         ...mapMutations('meals', [
             'addToMealsCollection',
+            'updateMeal',
         ]),
-        ...mapActions('meats', [
-            'loadMeats',
-        ]),
-        ...mapActions('toppings', [
-            'loadToppings',
-        ]),
-        meatLabel (item) {
-            return `${item.type} - ${item.variety} - ${item.code}`
+        removeTopping(index) {
+            this.form.toppings.splice(index, 1);
         },
-        toppingLabel (item) {
-            return `${item.label} - ${item.code}`
+        removeMeat(index) {
+            this.form.meats.splice(index, 1);
         },
         populateFormFromMeal(meal) {
             this.form.code = meal.code;
             this.form.label = meal.label;
+            this.form.meal_value = meal.meal_value;
             this.form.meats = meal.meats;
             this.form.toppings = meal.toppings;
         },
@@ -189,19 +182,25 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
+        update() {
+            let vm = this;
+            let meats = this.form.meats.filter(item => item.id).map(item => item.id);
+            let toppings = this.form.toppings.filter(item => item.id).map(item => item.id);
+
+            return axios.patch('/admin/api/meals/' + this.selected.id, {
+                ...this.form, meats, toppings
+            }).then(response => {
+                vm.updateMeal(response.data);
+                vm.closeMealCreatorModal();
+            }).catch(error => {
+                vm.errors.record(error.response.data.errors);
+            });
+        }
     },
     computed: {
-        ...mapState('meals', ['show', 'selected', 'mode']),
-        ...mapState('meats', {
-            'meats': 'collection'
-        }),
-        ...mapState('toppings', {
-            'toppings': 'collection'
-        }),
+        ...mapState('meals', ['show', 'selected', 'mode', 'collection']),
     },
     mounted() {
-        this.loadMeats();
-        this.loadToppings();
         if (this.mode == 'EDIT') {
             this.populateFormFromMeal(this.selected);
         }

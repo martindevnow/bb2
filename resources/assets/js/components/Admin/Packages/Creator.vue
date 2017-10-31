@@ -177,16 +177,16 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('packages', [
-            'addToPackagesCollection',
-            'updatePackage',
-        ]),
         ...mapActions('packages', [
             'closePackageCreatorModal',
             'editPackage',
         ]),
         ...mapActions('meals', [
             'loadMeals'
+        ]),
+        ...mapMutations('packages', [
+            'addToPackagesCollection',
+            'updatePackage',
         ]),
         save() {
             let vm = this;

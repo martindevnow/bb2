@@ -19,11 +19,12 @@ Route::get('couriers', 'CouriersController@index');
 Route::resource('packages', 'PackagesController');
 Route::patch('packages/{package}/mealPlan', function(Package $package, Request $request) {
     $meals = $request->get('meals');
+    $package->removeAllMeals();
     foreach ($meals as $meal) {
-        if ($meal['value'])
-            $package->addMeal($meal['value'], $meal['calendar_code']);
-        else
-            $package->removeMeal($meal['calendar_code']);
+        if ($meal['id'])
+            $package->addMeal($meal['id'], $meal['calendar_code']);
+//        else
+//            $package->removeMeal($meal['calendar_code']);
     }
     return $package->fresh(['meals']);
 });

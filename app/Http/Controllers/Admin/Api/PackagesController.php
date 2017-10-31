@@ -32,10 +32,6 @@ class PackagesController extends Controller {
             'public'        => 'nullable',
         ]);
 
-//        $validData['customization'] = $request->customization == 'on' ? 1 : 0;
-//        $validData['active'] = $request->active == 'on' ? 1 : 0;
-//        $validData['public'] = $request->public == 'on' ? 1 : 0;
-
         $package = Package::create($validData);
 
         return $package;
@@ -50,10 +46,6 @@ class PackagesController extends Controller {
             'active'        => 'nullable',
             'public'        => 'nullable',
         ]);
-
-//        $validData['customization'] = $request->customization == 'on' ? 1 : 0;
-//        $validData['active'] = $request->active == 'on' ? 1 : 0;
-//        $validData['public'] = $request->public == 'on' ? 1 : 0;
 
         $package->update($validData);
         return $package->fresh(['meals']);
