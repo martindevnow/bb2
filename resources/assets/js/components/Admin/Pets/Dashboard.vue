@@ -45,8 +45,11 @@
                 <td>{{ pet.weight }} lb</td>
                 <td>{{ pet.activity_level }} %</td>
                 <td>{{ pet.birthday }}</td>
+                <td>{{ pet.daily_meals }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs">
+                    <button class="btn btn-primary btn-xs"
+                            @click="editPet(pet)"
+                    >
                         <i class="fa fa-pencil"></i>
                     </button>
                     <button class="btn btn-danger btn-xs">
@@ -60,7 +63,8 @@
         <admin-common-modal v-if="show.petCreatorModal"
                             @close="closePetCreatorModal()"
         >
-            <p slot="header">Add a Pet</p>
+            <p slot="header" v-if="! mode">Add a Pet</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Pet: {{ selected.name }}</p>
             <admin-pets-creator @close="$emit('close')"
                                slot="body"
             ></admin-pets-creator>
@@ -84,6 +88,7 @@
                 'weight',
                 'activity_level',
                 'birthday',
+                'daily_meals',
             ];
             let numColumns = columns.length;
             let sortOrders = {};
@@ -105,12 +110,15 @@
                 'loadPets',
                 'openPetCreatorModal',
                 'closePetCreatorModal',
+                'editPet',
             ]),
         },
         computed: {
             ...mapState('pets', [
                 'collection',
-                'show'
+                'show',
+                'selected',
+                'mode',
             ])
         }
     }

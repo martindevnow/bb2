@@ -14,3 +14,9 @@ export const loadPets = ({commit, state}, force = false) => {
         .then(response => commit('populatePetsCollection', response.data))
         .catch(error => console.log(error));
 };
+
+export const editPet = (context, pet) => {
+    context.commit('setSelectedPet', pet);
+    context.commit('showPetCreatorModal');
+    context.commit('enableEditMode');
+};

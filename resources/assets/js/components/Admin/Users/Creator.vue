@@ -177,10 +177,9 @@ export default {
         update() {
             let vm = this;
 
-            return axios.patch('/admin/api/users/' + this.selected.id, this.form
+            return axios.patch('/admin/api/users/' + this.selected.id,
+                this.form
             ).then(response => {
-                console.log(response);
-                console.log(response.data);
                 vm.updateUser(response.data);
                 vm.closeUserCreatorModal();
             }).catch(error => {

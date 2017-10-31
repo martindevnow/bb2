@@ -67,6 +67,7 @@ Vue.component('admin-topping-selector', require('./components/Admin/Toppings/Top
 
 Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboard.vue'));
 Vue.component('admin-users-creator', require('./components/Admin/Users/Creator.vue'));
+Vue.component('admin-user-selector', require('./components/Admin/Users/UserSelector.vue'));
 
 Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
 

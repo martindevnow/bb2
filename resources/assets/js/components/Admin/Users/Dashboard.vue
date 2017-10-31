@@ -115,7 +115,7 @@
                 'collection',
                 'show',
                 'mode',
-                'selected'
+                'selected',
             ])
         }
     }
