@@ -194,6 +194,7 @@ export default {
         ]),
         ...mapMutations('pets', [
             'addToPetsCollection',
+            'updatePet',
         ]),
         ...mapActions('users', [
             'loadUsers',
@@ -207,9 +208,12 @@ export default {
                 birthday,
                 owner_id,
             }).then(response => {
+                console.log('api call done...');
                 vm.addToPetsCollection(response.data);
                 vm.closePetCreatorModal();
             }).catch(error => {
+                console.log('error in pet creator');
+                console.log(error);
                 vm.errors.record(error.response.data.errors);
             });
         },
@@ -222,9 +226,12 @@ export default {
                     birthday,
                     owner_id,
             }).then(response => {
+                console.log('api call done...');
                 vm.updatePet(response.data);
                 vm.closePetCreatorModal();
             }).catch(error => {
+                console.log('error in pet creator');
+                console.log(error);
                 vm.errors.record(error.response.data.errors);
             });
         },
