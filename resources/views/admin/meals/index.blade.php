@@ -23,11 +23,6 @@
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">
 
         <header role="heading">
-            <div class="jarviswidget-ctrls" role="menu">
-                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"><i class="fa fa-minus "></i></a>
-                <a href="javascript:void(0);" class="button-icon jarviswidget-fullscreen-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Fullscreen"><i class="fa fa-expand "></i></a>
-                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete"><i class="fa fa-times"></i></a>
-            </div>
             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
             <h2> Meals </h2>
             <span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span></header>
@@ -38,48 +33,8 @@
             <!-- widget content -->
             <div class="widget-body no-padding">
 
-                <div class="table-responsive">
+                <admin-meals-dashboard></admin-meals-dashboard>
 
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <td>Code</td>
-                            <td>Label</td>
-                            <td>Meal Value</td>
-                            <td>Avg Cost / lb</td>
-                            <td>Action</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($meals as $meal)
-                            <tr>
-                                <td><a href="/admin/meals/{{ $meal->id }}">{{ $meal->code }}</a></td>
-                                <td>{{ $meal->label }} ({{ $meal->toppingsToString() }})</td>
-                                <td>{{ $meal->meal_value }}</td>
-                                <td>{{ $meal->costPerLb() }}</td>
-                                <td>
-                                    <a href="/admin/meals/{{ $meal->id }}/edit">
-                                        <button class="btn btn-primary btn-xs">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                    </a>
-
-                                    <form action="/admin/meals/{{ $meal->id }}" method="POST">
-                                        <?= csrf_field() ?>
-                                        <input name="_method" type="hidden" value="DELETE">
-                                        <input name="meal_id" type="hidden" value="{{ $meal->id }}">
-                                        <button class="btn btn-xs btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-
-                </div>
             </div>
             <!-- end widget content -->
 

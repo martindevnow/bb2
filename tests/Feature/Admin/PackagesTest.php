@@ -96,7 +96,11 @@ class PackagesTest extends TestCase
         $packageData['customization'] = $packageData['customization'] ? 'on' : null;
 
         $this->post('/admin/packages', $packageData);  // STORE method
-        $this->assertDatabaseHas('packages', $package->toArray());
+
+        unset($packageData['cost_per_lb']);
+        $packageData['customization'] = $packageData['customization'] ? 1 : 0;
+
+        $this->assertDatabaseHas('packages', $packageData);
     }
 
     /** @test */

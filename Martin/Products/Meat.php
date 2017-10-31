@@ -15,6 +15,7 @@ class Meat extends Model
         'variety',
         'code',
         'cost_per_lb',
+        'has_bone',
     ];
 
     protected $appends = [

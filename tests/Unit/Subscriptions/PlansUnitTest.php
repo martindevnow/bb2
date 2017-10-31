@@ -844,4 +844,61 @@ class PlansUnitTest extends TestCase
             Carbon::now()->format('Y-m-d')
         );
     }
+
+    /** @test */
+    public function updating_a_package_on_a_plan_can_propogate_by_default() {
+        $package = factory(Package::class, 2)->create();
+
+        /** @var Plan $plan */
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'           => 1,
+            'weeks_of_food_per_shipment'    => 1,
+            'latest_delivery_at'            => Carbon::now()->subDays(7),
+            'package_id'                    => $package[0]->id,
+        ]);
+
+        $this->assertEquals($package[0]->id, $plan->package_id);
+        $plan->updatePackage($package[1]->id);
+
+        $plan = $plan->fresh(['package']);
+        $this->assertEquals($package[1]->id, $plan->package_id);
+    }
+
+    /** @test */
+    public function fetching_meals_for_a_puppy_results_in_twenty_one_meals() {
+        $plan = $this->createPlanForBasicBento([
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
+        $pet = $plan->pet;
+
+        $pet->makePuppy();
+        $pet = $pet->fresh();
+        $plan = $plan->fresh(['pet']);
+
+        $breakfast = $plan->package->meals->where('calendar_code', '=', 'B1')->first();
+
+        $mealPlan = $plan->mealCounts($breakfast);
+        $this->assertCount(2, $mealPlan);
+        $this->assertEquals(14, $mealPlan->where('calendar_code', 'B1')->first()->count);
+        $this->assertEquals(7, $mealPlan->where('calendar_code', 'D1')->first()->count);
+    }
+
+    /** @test */
+    public function fetching_meals_for_a_puppy_results_in_fourty_two_meals() {
+        $plan = $this->createPlanForBasicBento([
+            'weeks_of_food_per_shipment'    => 2
+        ]);
+        $pet = $plan->pet;
+
+        $pet->makePuppy();
+        $pet = $pet->fresh();
+        $plan = $plan->fresh(['pet']);
+
+        $breakfast = $plan->package->meals->where('calendar_code', '=', 'B1')->first();
+
+        $mealPlan = $plan->mealCounts($breakfast);
+        $this->assertCount(2, $mealPlan);
+        $this->assertEquals(28, $mealPlan->where('calendar_code', 'B1')->first()->count);
+        $this->assertEquals(14, $mealPlan->where('calendar_code', 'D1')->first()->count);
+    }
 }

@@ -7,6 +7,7 @@ export default {
         }
     },
     mounted() {
+        console.log('mounted the hasErrors mixin');
         this.errors = new Errors();
     }
 }

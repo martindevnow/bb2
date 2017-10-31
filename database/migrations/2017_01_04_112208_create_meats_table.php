@@ -16,11 +16,11 @@ class CreateMeatsTable extends Migration
         Schema::create('meats', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string('code');
             $table->string('type');
             $table->string('variety');
-            $table->string('code');
-            $table->boolean('has_bone')->default(0);
             $table->integer('cost_per_lb');
+            $table->boolean('has_bone')->default(0);
 
             $table->timestamps();
             $table->softDeletes();

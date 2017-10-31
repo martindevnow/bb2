@@ -29,17 +29,11 @@
                 <div class="form-group"
                      v-bind:class="{'has-error': errors.has('packed_package_id') }"
                 >
-                    <label for="packed_package_id">Package</label>
-                    <select v-model="packed_package_id"
-                            class="form-control"
-                            id="packed_package_id"
-                            name="packed_package_id"
+                    <label>Package</label>
+                    <admin-package-selector v-model="packed_package"
+                                            @input="errors.clear('packed_package_id')"
                     >
-                        <option v-for="package in packages"
-                                :selected="selected.order.plan.package_id == package.id"
-                                :value="package.id"
-                        >{{ package.label }}</option>
-                    </select>
+                    </admin-package-selector>
                     <span class="help-block">{{ errors.get('packed_package_id') }}</span>
                 </div>
             </div>
@@ -66,7 +60,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
 
@@ -77,41 +71,56 @@ export default {
     data() {
         return {
             weeks_packed: 0,
-            packed_package_id: null,
+            package_id: null,
+            packed_package: {},
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'closePackedModal',
+        ]),
+        ...mapActions('packages', [
+            'loadPackages',
+        ]),
+        ...mapMutations('orders', [
+            'updateSelectedOrder',
         ]),
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/packed', {
+            return axios.post('/admin/api/orders/'+ this.selected.id +'/packed', {
                 weeks_packed:      this.weeks_packed,
-                packed_package_id: this.packed_package_id,
+                packed_package_id: this.packed_package.id,
             }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+                vm.updateSelectedOrder({
                     packed: true,
                     weeks_packed: vm.weeks_packed,
-                    packed_package_id: vm.packed_package_id,
+                    packed_package_id: vm.packed_package.id,
                 });
-                vm.$store.dispatch('closePackedModal');
+                vm.closePackedModal();
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState([
+        ...mapState('orders', [
             'show',
             'selected',
-            'packages',
+        ]),
+        ...mapState('packages', {
+            'packages': 'collection'
+        }),
+        ...mapGetters('packages', [
+            'getPackageById',
         ]),
     },
     mounted() {
-        this.weeks_packed = this.selected.order.plan.weeks_of_food_per_shipment;
-        this.packed_package_id = this.selected.order.plan.package_id;
+        this.loadPackages();
+        this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
+        this.package_id = this.selected.packed_package_id
+            || this.selected.plan.package_id;
+        this.packed_package = this.getPackageById(this.package_id);
     }
 }
 </script>

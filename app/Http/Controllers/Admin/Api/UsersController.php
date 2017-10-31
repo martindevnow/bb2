@@ -38,4 +38,23 @@ class UsersController extends Controller {
 
         return $user;
     }
+
+    public function update(User $user, Request $request) {
+        $validData = $request->validate([
+            'name'  => 'required',
+            'email' => 'required|email',
+            'first_name'    => '',
+            'last_name'     => '',
+            'phone_number'  => '',
+            'password'      => '',
+        ]);
+
+        if ($validData['password'])
+            $validData['password'] = bcrypt($validData['password']);
+        else
+            unset($validData['password']);
+
+        $user->update($validData);
+        return $user->fresh(['pets']);
+    }
 }

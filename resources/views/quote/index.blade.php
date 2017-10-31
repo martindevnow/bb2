@@ -17,7 +17,9 @@
                     <div class="ms-paper-content">
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
+
                             <quotes-calculator></quotes-calculator>
+
                         </section>
 
                     </div>

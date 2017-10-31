@@ -90,4 +90,12 @@ trait HasMeals {
         return false;
     }
 
+    /**
+     * TODO: Add tests to make sure this ONLY removes the meals associated to this Package
+     */
+    public function removeAllMeals() {
+        MealPackage::where('package_id', $this->id)
+            ->delete();
+    }
+
 }

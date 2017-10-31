@@ -32,10 +32,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="pet in filteredData(pets)">
+            <tr v-for="pet in filteredData(collection)">
                 <td>{{ pet.name }}</td>
                 <td>{{ pet.breed }}</td>
-                <td>{{ pet.owner_name }}</td>
+                <td>{{ pet.ownerName() }}</td>
                 <td>{{ pet.weight }} lb</td>
                 <td>{{ pet.activity_level }} %</td>
                 <td>{{ pet.birthday }}</td>
@@ -52,7 +52,7 @@
         </table>
 
         <admin-common-modal v-if="show.petCreatorModal"
-                            @close="closeCreatorModal()"
+                            @close="closePetCreatorModal()"
         >
             <p slot="header">Add a Pet</p>
             <admin-pets-creator @close="$emit('close')"
@@ -74,7 +74,7 @@
             let columns = [
                 'name',
                 'breed',
-                'owner_name',
+                'ownerName',
                 'weight',
                 'activity_level',
                 'birthday',
@@ -95,14 +95,17 @@
             this.loadPets();
         },
         methods: {
-            ...mapActions([
+            ...mapActions('pets', [
                 'loadPets',
                 'openPetCreatorModal',
                 'closePetCreatorModal',
             ]),
         },
         computed: {
-            ...mapState(['pets', 'show'])
+            ...mapState('pets', [
+                'collection',
+                'show'
+            ])
         }
     }
 </script>

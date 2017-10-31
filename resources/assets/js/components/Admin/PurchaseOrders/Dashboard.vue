@@ -29,9 +29,10 @@
             </thead>
 
             <tbody>
-            <tr v-for="purchaseOrder in filteredData(purchaseOrders)">
+            <tr v-for="purchaseOrder in filteredData(collection)">
                 <td>{{ purchaseOrder.id }}</td>
                 <td>{{ purchaseOrder.created_at }}</td>
+                <td>{{ purchaseOrder.ordered_at }}</td>
                 <td>{{ purchaseOrder.vendor_name }}</td>
                 <td>${{ purchaseOrder.total_cost.toFixed(2) }}</td>
                 <td>
@@ -91,7 +92,8 @@ export default {
     data() {
         let columns = [
             'id',
-            'date',
+            'created_at',
+            'ordered_at',
             'vendor_name',
             'total_cost',
         ];
@@ -111,7 +113,7 @@ export default {
         this.loadPurchaseOrders();
     },
     methods: {
-        ...mapActions([
+        ...mapActions('purchaseOrders', [
             'openOrderedModal',
             'closeOrderedModal',
             'openReceivedModal',
@@ -120,7 +122,11 @@ export default {
         ]),
     },
     computed: {
-        ...mapState(['purchaseOrders', 'show'])
+        ...mapState('purchaseOrders', [
+            'show',
+            'collection',
+            'selected',
+        ])
     },
 
 }

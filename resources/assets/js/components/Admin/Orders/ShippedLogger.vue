@@ -18,7 +18,7 @@
                     <label for="weeks_shipped">Weeks Shipped</label>
                     <input type="text" class="form-control"
                            id="weeks_shipped"
-                           v-model="weeks_shipped"
+                           v-model="form.weeks_shipped"
                     >
                 </div>
 
@@ -27,16 +27,12 @@
                 <div class="form-group"
                      v-bind:class="{'has-error': errors.has('shipped_package_id') }"
                 >
-                    <label for="shipped_package_id">Package</label>
-                    <select v-model="shipped_package_id"
-                            class="form-control"
-                            id="shipped_package_id"
+                    <label>Package</label>
+                    <admin-package-selector v-model="form.shipped_package"
+                                            @input="errors.clear('shipped_package_id')"
                     >
-                        <option v-for="package in packages"
-                                :selected="selected.order.plan.package_id == package.id"
-                                :value="package.id"
-                        >{{ package.label }}</option>
-                    </select>
+                    </admin-package-selector>
+                    <span class="help-block">{{ errors.get('shipped_package_id') }}</span>
                 </div>
             </div>
         </div>
@@ -47,7 +43,7 @@
                      v-bind:class="{'has-error': errors.has('shipped_at') }"
                 >
                     <label>Date Shipped</label>
-                    <datepicker v-model="shipped_at"
+                    <datepicker v-model="form.shipped_at"
                                 id="shipped_at"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
@@ -60,7 +56,7 @@
                      v-bind:class="{'has-error': errors.has('courier_id') }"
                 >
                     <label for="courier_id">Courier</label>
-                    <select v-model="courier_id"
+                    <select v-model="form.courier_id"
                             class="form-control"
                             id="courier_id"
                             @change="errors.clear('courier_id')"
@@ -96,12 +92,12 @@
 <script>
 
 
-//import Errors from '../../../models/Errors'
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
+
 export default {
     mixins: [
         hasErrors
@@ -111,16 +107,27 @@ export default {
     },
     data() {
         return {
-            weeks_shipped: null,
-            shipped_package_id: null,
-            shipped_at: null,
-            courier_id: null,
+            form: {
+                weeks_shipped: null,
+                package_id: null,
+                shipped_package: {},
+                shipped_at: null,
+                courier_id: null,
+            }
         };
     },
     methods: {
-        ...mapActions([
+        ...mapActions('orders', [
             'closeShippedModal',
+        ]),
+        ...mapMutations('orders', [
+            'updateSelectedOrder'
+        ]),
+        ...mapActions('couriers', [
             'loadCouriers',
+        ]),
+        ...mapActions('packages', [
+            'loadPackages',
         ]),
         hasErrorClass(field) {
             return this.errors.has(field) ? 'has-error' : '';
@@ -128,39 +135,52 @@ export default {
         save() {
             let vm = this;
 
-            return axios.post('/admin/api/orders/'+ this.$store.state.selected.order.id +'/shipped', {
-                courier_id: this.courier_id,
-                shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),
-                weeks_shipped: this.weeks_shipped,
-                shipped_package_id: this.shipped_package_id,
-            }).then(response => {
-                vm.$store.commit('updateSelectedOrder', {
+            let requestBody = {
+                ...this.form,
+                shipped_at: moment(this.form.shipped_at).format('YYYY-MM-DD'),
+                shipped_package_id: this.form.shipped_package.id,
+            };
+            return axios.post('/admin/api/orders/'+ this.selected.id +'/shipped',
+                requestBody
+            ).then(response => {
+                vm.updateSelectedOrder({
                     shipped: true,
-                    shipped_at: moment(this.shipped_at).format('YYYY-MM-DD'),
-                    weeks_shipped: this.weeks_shipped,
-                    shipped_package_id: this.shipped_package_id,
+                    shipped_at: moment(this.form.shipped_at).format('YYYY-MM-DD'),
+                    weeks_shipped: this.form.weeks_shipped,
+                    shipped_package_id: this.form.shipped_package.id,
                 });
-                vm.$store.dispatch('closeShippedModal');
+                vm.closeShippedModal();
             }).catch(function(error) {
                 vm.errors.record(error.response.data.errors);
             });
         },
     },
     computed: {
-        ...mapState([
+        ...mapState('orders', [
             'show',
             'selected',
-            'packages',
-            'couriers',
+        ]),
+        ...mapState('couriers', {
+            'couriers': 'collection',
+        }),
+        ...mapState('packages', {
+            'packages': 'collection',
+        }),
+        ...mapGetters('packages', [
+            'getPackageById',
         ]),
     },
     mounted() {
         this.loadCouriers();
-        this.shipped_at = new Date();
-        this.shipped_package_id = this.selected.order.packed_package_id
-            || this.selected.order.plan.package_id;
-        this.weeks_shipped = this.selected.order.weeks_packed
-            || this.selected.order.plan.weeks_of_food_per_shipment;
+        this.loadPackages();
+        this.form.shipped_at = new Date();
+        this.form.package_id = this.selected.shipped_package_id
+            || this.selected.packed_package_id
+            || this.selected.plan.package_id;
+        this.form.weeks_shipped = this.selected.weeks_shipped
+            || this.selected.weeks_packed
+            || this.selected.plan.weeks_of_food_per_shipment;
+        this.form.shipped_package = this.getPackageById(this.form.package_id);
     }
 }
 </script>

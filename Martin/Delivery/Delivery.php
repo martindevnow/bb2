@@ -24,6 +24,7 @@ class Delivery extends Model
 
         'shipped_at',
         'delivered_at',
+        'weeks_shipped',
 
         'tracking_number',
         'instructions',
