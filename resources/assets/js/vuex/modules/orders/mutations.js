@@ -22,10 +22,12 @@ export const deselectOrder = (state) => {
 };
 
 export const updateSelectedOrder = (state, payload) => {
-    // TODO: Get the index of the
     state.selected = { ...state.selected, ...payload };
-    state.collection = state.collection.filter(model => model.id !== state.selected.id);
-    state.collection.unshift(state.selected);
+    state.collection = state.collection.map(model => {
+        if (model.id == state.selected.id)
+            return { ...state.selected };
+        return model;
+    });
 };
 
 

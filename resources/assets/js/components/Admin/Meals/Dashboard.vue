@@ -39,6 +39,7 @@
             </thead>
             <tbody>
             <tr v-for="meal in filteredData(collection)">
+                <td>{{ meal.id }}</td>
                 <td>{{ meal.label }}</td>
                 <td>{{ meal.code }}</td>
                 <td>{{ meal.meal_value }}</td>
@@ -81,6 +82,7 @@
         ],
         data() {
             let columns = [
+                'id',
                 'label',
                 'code',
                 'meal_value',

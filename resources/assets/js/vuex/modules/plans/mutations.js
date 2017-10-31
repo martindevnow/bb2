@@ -43,6 +43,9 @@ export const deselectPlan = (state) => {
 };
 
 export const updatePlan = (state, payload) => {
-    state.collection = state.collection.filter(model => model.id !== payload.id);
-    state.collection.unshift((payload));
+    state.collection = state.collection.map(model => {
+        if (model.id === payload.id)
+            return { ...payload };
+        return model;
+    });
 };
