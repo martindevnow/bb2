@@ -17,7 +17,7 @@ export const hideMealCreatorModal = (state) => {
 };
 
 export const setSelectedMeal = (state, meal) => {
-    state.selected = meal;
+    state.selected = { ...meal };
 };
 
 export const deselectMeal = (state) => {
@@ -34,7 +34,7 @@ export const disableEditMode = (state) => {
 
 export const updateMeal = (state, payload) => {
     state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
+        if (model.id == payload.id)
             return loadMealFromData(payload)
         return model;
     });
