@@ -33,6 +33,9 @@ export const deselectMeat = (state) => {
 };
 
 export const updateMeat = (state, payload) => {
-    state.collection = state.collection.filter(model => model.id !== payload.id);
-    state.collection.unshift(loadMeatFromData(payload));
+    state.collection = state.collection.map(model => {
+        if (model.id === payload.id)
+            return loadMeatFromData(payload);
+        return model;
+    });
 };

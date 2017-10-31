@@ -6,8 +6,11 @@ export const closePetCreatorModal = (context) => {
     context.commit('hidePetCreatorModal');
 };
 
-export const loadPets = (context) => {
+export const loadPets = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/pets')
-        .then(response => context.commit('populatePetsCollection', response.data))
+        .then(response => commit('populatePetsCollection', response.data))
         .catch(error => console.log(error));
 };

@@ -34,6 +34,9 @@ export const disableEditMode = (state) => {
 };
 
 export const updatePet = (state, payload) => {
-    state.collection = state.collection.filter(model => model.id !== payload.id);
-    state.collection.unshift(loadPetFromData(payload));
+    state.collection = state.collection.map(model => {
+        if (model.id === payload.id)
+            return loadPetFromData(payload);
+        return model;
+    });
 };

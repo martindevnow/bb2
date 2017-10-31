@@ -1,6 +1,9 @@
-export const loadMeats = (context) => {
+export const loadMeats = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/meats')
-        .then(response => context.commit('populateMeatsCollection', response.data))
+        .then(response => commit('populateMeatsCollection', response.data))
         .catch(error => console.log(error));
 };
 

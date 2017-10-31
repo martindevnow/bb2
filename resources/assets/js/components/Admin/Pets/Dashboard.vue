@@ -4,20 +4,26 @@
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               v-model="sortable.filterKey"
-                        />
-                        <span class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </span>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="sortable.filterKey"
+                                />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary"
+                                    @click="openPetCreatorModal()"
+                            >
+                                New
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary"
-                            @click="openPetCreatorModal()"
-                    >
-                        New
-                    </button>
                 </th>
             </tr>
             <tr>

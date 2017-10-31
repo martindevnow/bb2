@@ -20,8 +20,11 @@ export const setSelectedPurchaseOrder = (state, purchaseOrder) => {
 
 export const updateSelectedPurchaseOrder = (state, payload) => {
     state.selected = { ...state.selected, ...payload };
-    state.collection = state.collection.filter(po => po.id !== state.selected.id);
-    state.collection.unshift(state.selected.purchaseOrder);
+    state.collection = state.collection.map(po => {
+        if (po.id === state.selected.id)
+            return { ...state.selected };
+        return po;
+    });
 };
 
 export const populatePurchaseOrdersCollection = (state, data) => {

@@ -1,6 +1,9 @@
-export const loadPlans = (context) => {
+export const loadPlans = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/plans')
-        .then(response => context.commit('populatePlansCollection', response.data))
+        .then(response => commit('populatePlansCollection', response.data))
         .catch(error => console.log(error));
 };
 
