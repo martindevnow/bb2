@@ -52,6 +52,7 @@ Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashb
 
 Vue.component('admin-pets-dashboard', require('./components/Admin/Pets/Dashboard.vue'));
 Vue.component('admin-pets-creator', require('./components/Admin/Pets/Creator.vue'));
+Vue.component('admin-pet-selector', require('./components/Admin/Pets/PetSelector.vue'));
 
 Vue.component('admin-plans-dashboard', require('./components/Admin/Plans/Dashboard.vue'));
 Vue.component('admin-plans-creator', require('./components/Admin/Plans/Creator.vue'));

@@ -61,7 +61,7 @@
                             @close="closeMeatCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Meat</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
             <admin-meats-creator @close="$emit('close')"
                                  slot="body"
             ></admin-meats-creator>

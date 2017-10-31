@@ -44,6 +44,7 @@
                 <td>{{ plan.customer_name }}</td>
                 <td>{{ plan.pet_name }}</td>
                 <td>
+                    {{ plan.package_label }}
                     <!--<admin-package-selector @select="onSelect"-->
                                             <!--:selected-package-id="plan.package_id"-->
                                             <!--:autonomous="1"-->
@@ -55,7 +56,14 @@
                 <td>{{ plan.weeks_per_shipment }}</td>
                 <td>{{ plan.cost }}</td>
                 <td>
-                    ...
+                    <button class="btn btn-primary btn-xs"
+                            @click="editPlan(plan)"
+                    >
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger btn-xs">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -65,7 +73,8 @@
         <admin-common-modal v-if="show.planCreatorModal"
                             @close="closePlanCreatorModal()"
         >
-            <p slot="header">Create a New Plan</p>
+            <p slot="header" v-if="! mode">Add a Plan</p>
+            <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
             <admin-plans-creator @close="$emit('close')"
                                   slot="body"
             ></admin-plans-creator>
@@ -112,6 +121,7 @@
                 'openPlanCreatorModal',
                 'closePlanCreatorModal',
                 'loadPlans',
+                'editPlan',
             ]),
             ...mapActions('packages', [
                 'loadPackages',
@@ -129,7 +139,8 @@
             ...mapState('plans', [
                 'collection',
                 'show',
-                'selected'
+                'selected',
+                'mode',
             ])
         },
     }

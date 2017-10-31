@@ -7,14 +7,11 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('pet_id') }"
                 >
-                    <label>Owner</label>
-                    <basic-select :options="petsSelect"
-                                  :selected-option="pet"
-                                  placeholder="Select Pet..."
-                                  @select="onPetSelect"
-                                  :isError="errors.has('pet_id')"
+                    <label>Pet</label>
+                    <admin-pet-selector v-model="form.pet"
+                                            @input="errors.clear('pet_id')"
                     >
-                    </basic-select>
+                    </admin-pet-selector>
                     <span class="help-block">{{ errors.get('pet_id') }}</span>
                 </div>
             </div>
@@ -25,11 +22,10 @@
                      :class="{ 'has-error': errors.has('package_id') }"
                 >
                     <label>Package</label>
-                    <admin-package-selector @select="onPackageSelect"
-                                            :autonomous="0"
-                                            :selected-package-id="pkg.value"
-                                            :hasError="errors.has('package_id')"
-                    ></admin-package-selector>
+                    <admin-package-selector v-model="form.pkg"
+                                            @input="errors.clear('package_id')"
+                    >
+                    </admin-package-selector>
                     <span class="help-block">{{ errors.get('package_id') }}</span>
                 </div>
             </div>
@@ -167,22 +163,15 @@ export default {
     ],
     components: {
         Datepicker,
-        BasicSelect,
     },
     data() {
         return {
-            pet: {
-                value: '',
-                text: '',
-            },
-            pkg: {
-                value: '',
-                text: '',
-            },
             form: {
                 shipping_cost: 0,
                 package_id: 0,
+                pkg: {},
                 pet_id: 0,
+                pet: {},
                 weekly_cost: 0,
                 weeks_of_food_per_shipment: 1,
                 ships_every_x_weeks: null,
@@ -211,9 +200,12 @@ export default {
         save() {
             let vm = this;
             let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
+
             return axios.post('/admin/api/plans', {
                 ...this.form,
                 first_delivery_at,
+                package_id: this.form.pkg.id,
+                pet_id: this.form.pet.id,
             }).then(response => {
                 vm.addToPlansCollection(response.data);
                 vm.closePlanCreatorModal();
