@@ -44,8 +44,16 @@ export const deselectPlan = (state) => {
 
 export const updatePlan = (state, payload) => {
     state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
-            return { ...payload };
+        if (model.id === payload.id) {
+            let pet_name = payload.pet.name + ' (' + payload.pet_weight + ' lb)';
+            let customer_name = payload.customer.name;
+            let weeks_of_food = payload.weeks_of_food_per_shipment;
+            let weeks_per_shipment = payload.ships_every_x_weeks;
+            let package_label = payload.package.label;
+
+            return {...payload, customer_name, weeks_of_food, weeks_per_shipment, pet_name, package_label};
+
+        }
         return model;
     });
 };

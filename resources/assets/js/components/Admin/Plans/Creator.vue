@@ -9,7 +9,7 @@
                 >
                     <label>Pet</label>
                     <admin-pet-selector v-model="form.pet"
-                                            @input="errors.clear('pet_id')"
+                                        @input="errors.clear('pet_id')"
                     >
                     </admin-pet-selector>
                     <span class="help-block">{{ errors.get('pet_id') }}</span>
@@ -133,8 +133,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -193,9 +201,13 @@ export default {
         ]),
         ...mapMutations('plans', [
             'addToPlansCollection',
+            'updatePlan',
         ]),
         ...mapActions('pets', [
             'loadPets',
+        ]),
+        ...mapActions('packages', [
+            'loadPackages',
         ]),
         save() {
             let vm = this;
@@ -213,30 +225,60 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        onPetSelect(pet) {
-            this.errors.clear('pet_id');
-            this.pet = pet;
-            this.form.pet_id = pet.value;
+        update() {
+            let vm = this;
+            let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
+
+            return axios.patch('/admin/api/plans/' + this.selected.id, {
+                ...this.form,
+                first_delivery_at,
+                package_id: this.form.pkg.id,
+                pet_id: this.form.pet.id,
+            }).then(response => {
+                vm.updatePlan(response.data);
+                vm.closePlanCreatorModal();
+            }).catch(error => {
+                vm.errors.record(error.response.data.errors);
+            });
         },
-        onPackageSelect(pkg) {
-            this.errors.clear('package_id');
-            this.pkg = pkg;
-            this.form.package_id = pkg.value;
+        populateFormFromPlan(plan) {
+            this.form.pet = plan.pet;
+            this.form.pkg = plan.package;
+
+            this.form.shipping_cost = plan.shipping_cost;
+            this.form.weekly_cost = plan.weekly_cost;
+            this.form.weeks_of_food_per_shipment = plan.weeks_of_food_per_shipment;
+            this.form.ships_every_x_weeks = plan.ships_every_x_weeks;
+            this.form.activity_level = plan.activity_level;
+            this.form.first_delivery_at = plan.first_delivery_at;
+            this.form.payment_method = plan.payment_method;
         }
     },
     computed: {
-        ...mapState('plans', ['show', 'selected']),
+        ...mapState('plans', [
+            'collection',
+            'mode',
+            'selected',
+            'show',
+        ]),
         ...mapState('pets', {
             'pets': 'collection'
         }),
-        petsSelect() {
-            return this.pets.map(model => {
-                return { value: model.id, text: model.name + ' (' + model.id + ')' };
-            });
-        }
+        ...mapState('packages', {
+            'packages': 'collection'
+        }),
     },
     mounted() {
         this.loadPets();
+        this.loadPackages();
+        if (this.mode == 'EDIT') {
+            this.populateFormFromPlan(this.selected);
+        }
+    },
+    watch: {
+        selected(newSelected) {
+            this.populateFormFromPlan(newSelected);
+        }
     }
 }
 </script>

@@ -257,11 +257,6 @@ export default {
         ...mapState('users', {
             'users': 'collection'
         }),
-        ownersSelect() {
-            return this.users.map(model => {
-                return { value: model.id, text: model.name + ' (' + model.id + ')' };
-            });
-        }
     },
     mounted() {
         this.loadUsers();
