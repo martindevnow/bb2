@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table table-bordered table-responsive table-striped">
+        <table class="table table-bordered table-responsive">
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
@@ -38,7 +38,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="pet in filteredData(collection)">
+            <tr v-for="pet in filteredData(collection)"
+                :class="{'in-active': getActivePlanCount(pet) == 0 }"
+            >
                 <td>{{ pet.name }}</td>
                 <td>{{ pet.breed }}</td>
                 <td>{{ pet.ownerName() }}</td>
@@ -46,6 +48,7 @@
                 <td>{{ pet.activity_level }} %</td>
                 <td>{{ pet.birthday }}</td>
                 <td>{{ pet.daily_meals }}</td>
+                <td>{{ getActivePlanCount(pet) }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
                             @click="editPet(pet)"
@@ -89,6 +92,7 @@
                 'activity_level',
                 'birthday',
                 'daily_meals',
+                'active_plans',
             ];
             let numColumns = columns.length;
             let sortOrders = {};
@@ -112,9 +116,12 @@
                 'closePetCreatorModal',
                 'editPet',
             ]),
+            getActivePlanCount(pet) {
+                return pet.plans.length ? pet.plans.filter((plan) => plan.active == 1).length : 0;
+            }
         },
         computed: {
-            ...mapState('pets', [
+            ...mapState( 'pets', [
                 'collection',
                 'show',
                 'selected',
@@ -124,6 +131,8 @@
     }
 </script>
 
-<style>
-
+<style scoped>
+.in-active {
+    background-color: orange;
+}
 </style>
