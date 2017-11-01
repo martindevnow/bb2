@@ -29,6 +29,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('queue:checkup')
             ->everyFiveMinutes();
+
+        $schedule->command('backup:database --email=1')
+            ->dailyAt('1:00');
     }
 
     /**
