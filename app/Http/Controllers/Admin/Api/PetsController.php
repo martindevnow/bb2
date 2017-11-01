@@ -19,7 +19,7 @@ class PetsController extends Controller {
      * @return mixed
      */
     public function store(Request $request) {
-        $post = $request->validate([
+        $validData = $request->validate([
             'name'  => 'required',
             'breed' => '',
             'weight'    => 'required|integer|min:1',
@@ -28,8 +28,29 @@ class PetsController extends Controller {
             'owner_id'  => 'required|exists:users,id',
         ]);
 
-        $pet = Pet::create($post);
+        $pet = Pet::create($validData);
 
         return $pet;
+    }
+
+    /**
+     * Add a new Pet. Their owner must exist
+     *
+     * @param Pet $pet
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(Pet $pet, Request $request) {
+        $validData = $request->validate([
+            'name'  => 'required',
+            'breed' => '',
+            'weight'    => 'required|integer|min:1',
+            'birthday'  => 'nullable|date_format:Y-m-d',
+            'activity_level'  => 'required|numeric|min:1',
+            'owner_id'  => 'required|exists:users,id',
+        ]);
+
+        $pet->update($validData);
+        return $pet->fresh(['owner']);
     }
 }

@@ -12,8 +12,11 @@ export const editMeal = (context, meal) => {
     context.commit('enableEditMode');
 };
 
-export const loadMeals = (context) => {
+export const loadMeals = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/meals')
-        .then(response => context.commit('populateMealsCollection', response.data))
+        .then(response => commit('populateMealsCollection', response.data))
         .catch(error => console.log(error));
 };

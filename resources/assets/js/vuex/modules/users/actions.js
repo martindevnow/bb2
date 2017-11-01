@@ -10,9 +10,12 @@ export const editUser = (context, user) => {
     context.commit('enableEditMode');
 };
 
-export const loadUsers = (context) => {
+export const loadUsers = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/users')
-        .then(response => context.commit('populateUsersCollection', response.data))
+        .then(response => commit('populateUsersCollection', response.data))
         .catch(error => console.log(error));
 };
 

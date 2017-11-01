@@ -1,3 +1,12 @@
+export const loadMeats = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
+    axios.get('/admin/api/meats')
+        .then(response => commit('populateMeatsCollection', response.data))
+        .catch(error => console.log(error));
+};
+
 export const openMeatCreatorModal = (context) => {
     context.commit('showMeatCreatorModal');
 };
@@ -10,10 +19,4 @@ export const editMeat = (context, meat) => {
     context.commit('setSelectedMeat', meat);
     context.commit('showMeatCreatorModal');
     context.commit('enableEditMode');
-};
-
-export const loadMeats = (context) => {
-    axios.get('/admin/api/meats')
-        .then(response => context.commit('populateMeatsCollection', response.data))
-        .catch(error => console.log(error));
 };

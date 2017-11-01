@@ -48,8 +48,11 @@ export const closeDeliveredModal = (context) => {
     context.commit('deselectOrder');
 };
 
-export const loadOrders = (context) => {
+export const loadOrders = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/orders')
-        .then(response => context.commit('populateOrdersCollection', response.data))
+        .then(response => commit('populateOrdersCollection', response.data))
         .catch(error => console.log(error));
 };

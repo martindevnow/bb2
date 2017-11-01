@@ -1,6 +1,9 @@
-export const loadPurchaseOrders = (context) => {
+export const loadPurchaseOrders = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
     axios.get('/admin/api/purchase-orders')
-        .then(response => context.commit('populatePurchaseOrdersCollection', response.data))
+        .then(response => commit('populatePurchaseOrdersCollection', response.data))
         .catch(error => console.log(error));
 };
 

@@ -1,93 +1,74 @@
 <template>
-    <basic-select :options="petOptions"
-                  :selected-option="selectedPet"
-                  placeholder="Select Pet..."
-                  @select="onSelect"
-                  :isError="hasError"
-    >
-    </basic-select>
+    <div :class="{ 'input-group' : deletable }">
+        <basic-select :options="options"
+                      :selected-option="selectedItem"
+                      @select="$emit('input', $event)"
+                      :isError="hasError"
+        >
+        </basic-select>
+        <div class="input-group-btn" v-if="deletable">
+            <button class="btn btn-danger"
+                    type="button"
+                    @click="$emit('delete')"
+            >
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
 </template>
 
 <script>
-    import swal from 'sweetalert2'
-    import { BasicSelect } from 'vue-search-select'
+    import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
-        mixins: [
-        ],
         props: [
-            'model',
-            'modelApi',
-            'selectedPetId',
-            'autonomous',
+            'value',
             'hasError',
+            'deletable'
         ],
         components: {
-            BasicSelect,
+            BasicSelect
         },
         data() {
-            return {
-                selectedId: null,
-            };
+            return {};
         },
         mounted() {
-            this.selectedId = this.selectedPetId;
+            this.loadPets();
         },
         methods: {
             ...mapActions('pets', [
-                'loadPets'
+                'loadPets',
             ]),
-            onSelect(pet) {
-                this.selectedId = pet.value;
-                if (this.selectedId === this.selectedPetId) {
-                    return null;
-                }
-
-                if (! this.autonomous) {
-                    return this.$emit('select', pet);
-                }
-
-                let vm = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: "Changing the plan will affect all open orders...",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, update it!'
-                }).then(function () {
-                    axios.post('/admin/api/'+ vm.modelApi + '/' + vm.model.id + '/updatePet',
-                        { pet_id: pet.value }
-                    )
-                        .then(response => {
-                            swal('Updated', 'The pet has been updated.', 'success');
-                        })
-                        .catch(error => {
-                            swal('Failed...', 'The pet could not be updated...', 'error');
-                        });
-                }, function(dismiss) {
-                    swal('You did not approve... ');
-                });
+            getText(item) {
+                return item.name + ' (' + item.owner.name + ')';
             }
         },
         computed: {
             ...mapState('pets', [
                 'collection',
             ]),
-            petOptions() {
-                return this.collection.map(model => {
-                    return { value: model.id, text: model.label + ' (' + model.id + ')' };
-                });
-            },
-            selectedPet() {
+            options() {
                 let vm = this;
-                return this.petOptions.filter(pet => {
-                    return pet.value === vm.selectedId;
-                })[0];
+                let arr = this.collection.map(item => {
+                    return {
+                        ...item,
+                        text: vm.getText(item),
+                    };
+                });
+                return arr;
+            },
+            selectedItem() {
+                if ( ! this.value.id) {
+                    return { text: 'Select ...' };
+                }
+
+                return {
+                    ...this.value,
+                    text: this.getText(this.value),
+                };
             }
-        }
+        },
     }
 </script>
 

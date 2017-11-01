@@ -16,6 +16,7 @@ export const loadPetFromData = function (data) {
     pet.species = data.species;
     pet.activity_level = data.activity_level;
     pet.birthday = data.birthday;
+    pet.daily_meals = data.daily_meals;
     pet.owner = data.owner ? loadUserFromData(data.owner) : null;
     return pet;
 };

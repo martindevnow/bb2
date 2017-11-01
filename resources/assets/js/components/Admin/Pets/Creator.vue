@@ -9,13 +9,9 @@
                      :class="{ 'has-error': errors.has('owner_id') }"
                 >
                     <label>Owner</label>
-                    <basic-select :options="ownersSelect"
-                                  :selected-option="owner"
-                                  placeholder="Select Owner..."
-                                  @select="onSelect"
-                                  :class="{ 'has-error': errors.has('owner_id') }"
-                    >
-                    </basic-select>
+                    <admin-user-selector v-model="form.owner"
+                                         @input="errors.clear('owner_id')"
+                    ></admin-user-selector>
                     <span class="help-block">{{ errors.get('owner_id') }}</span>
                 </div>
             </div>
@@ -112,6 +108,22 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group"
+                     :class="{ 'has-error': errors.has('daily_meals') }"
+                >
+                    <label for="daily_meals">Daily Meals</label>
+                    <input type="text"
+                           class="form-control"
+                           id="daily_meals"
+                           name="daily_meals"
+                           v-model="form.daily_meals"
+                    >
+                    <span class="help-block">{{ errors.get('daily_meals') }}</span>
+                </div>
+            </div>
+        </div>
 
 
         <div class="row">
@@ -120,8 +132,16 @@
                 <button class="btn btn-primary btn-block"
                         :disabled="errors.any()"
                         @click="save()"
+                        v-if="! mode"
                 >
                     Save
+                </button>
+                <button class="btn btn-primary btn-block"
+                        :disabled="errors.any()"
+                        @click="update()"
+                        v-if="mode == 'EDIT'"
+                >
+                    Update
                 </button>
             </div>
             <div class="col-sm-6">
@@ -152,21 +172,19 @@ export default {
     ],
     components: {
         Datepicker,
-        BasicSelect,
     },
     data() {
         return {
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
+                owner: {},
+                owner_id: null,
                 name: '',
                 breed: '',
                 species: 'dog',
                 weight: null,
                 activity_level: null,
                 birthday: null,
+                daily_meals: 2,
             }
         };
     },
@@ -176,32 +194,66 @@ export default {
         ]),
         ...mapMutations('pets', [
             'addToPetsCollection',
+            'updatePet',
         ]),
         ...mapActions('users', [
             'loadUsers',
         ]),
         save() {
             let vm = this;
-            let birthday = this.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
-            let owner_id = this.owner.value;
+            let birthday = this.form.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
+            let owner_id = this.form.owner.id;
             return axios.post('/admin/api/pets', {
                 ...this.form,
                 birthday,
                 owner_id,
             }).then(response => {
+                console.log('api call done...');
                 vm.addToPetsCollection(response.data);
                 vm.closePetCreatorModal();
             }).catch(error => {
+                console.log('error in pet creator');
+                console.log(error);
                 vm.errors.record(error.response.data.errors);
             });
         },
-        onSelect(owner) {
-            this.errors.clear('owner_id');
-            this.owner = owner;
+        update() {
+            let vm = this;
+            let birthday = this.form.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
+            let owner_id = this.form.owner.id;
+            return axios.patch('/admin/api/pets/' + this.selected.id, {
+                    ...this.form,
+                    birthday,
+                    owner_id,
+            }).then(response => {
+                console.log('api call done...');
+                vm.updatePet(response.data);
+                vm.closePetCreatorModal();
+            }).catch(error => {
+                console.log('error in pet creator');
+                console.log(error);
+                vm.errors.record(error.response.data.errors);
+            });
+        },
+        populateFormFromPet(pet) {
+            this.form.owner = pet.owner;
+
+            this.form.name = pet.name;
+            this.form.breed = pet.breed;
+            this.form.species = pet.species;
+            this.form.weight = pet.weight;
+            this.form.activity_level = pet.activity_level;
+            this.form.birthday = pet.birthday;
+            this.form.daily_meals = pet.daily_meals;
         }
     },
     computed: {
-        ...mapState('pets', ['show', 'selected']),
+        ...mapState('pets', [
+            'collection',
+            'mode',
+            'selected',
+            'show',
+        ]),
         ...mapState('users', {
             'users': 'collection'
         }),
@@ -213,6 +265,14 @@ export default {
     },
     mounted() {
         this.loadUsers();
+        if (this.mode == 'EDIT') {
+            this.populateFormFromPet(this.selected);
+        }
+    },
+    watch: {
+        selected(newSelected) {
+            this.populateFormFromPet(newSelected);
+        }
     }
 }
 </script>

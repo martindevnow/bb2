@@ -15,11 +15,13 @@ export const editPackage = (context, pkg) => {
     context.commit('enableEditMode');
 };
 
-export const loadPackages = (context, force = false) => {
-    if (force || context.state.collection.length == 0)
-        axios.get('/admin/api/packages')
-            .then(response => context.commit('populatePackagesCollection', response.data))
-            .catch(error => console.log(error));
+export const loadPackages = ({commit, state}, force = false) => {
+    if (! force && state.collection.length)
+        return;
+
+    axios.get('/admin/api/packages')
+        .then(response => commit('populatePackagesCollection', response.data))
+        .catch(error => console.log(error));
 };
 
 export const openMealPlanEditorModal = (context, pkg) => {
