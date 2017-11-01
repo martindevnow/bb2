@@ -45,12 +45,6 @@
                 <td>{{ plan.pet_name }}</td>
                 <td>
                     {{ plan.package_label }}
-                    <!--<admin-package-selector @select="onSelect"-->
-                                            <!--:selected-package-id="plan.package_id"-->
-                                            <!--:autonomous="1"-->
-                                            <!--model-api="plans"-->
-                                            <!--:model="plan"-->
-                    <!--&gt;</admin-package-selector>-->
                 </td>
                 <td>{{ plan.weeks_of_food }}</td>
                 <td>{{ plan.weeks_per_shipment }}</td>
@@ -126,14 +120,6 @@
             ...mapActions('packages', [
                 'loadPackages',
             ]),
-            mealSize(plan) {
-                return (plan.plan.pet_weight * plan.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
-            },
-            onSelect(val) {
-                console.log('selected package...');
-                console.log(val);
-
-            }
         },
         computed: {
             ...mapState('plans', [
