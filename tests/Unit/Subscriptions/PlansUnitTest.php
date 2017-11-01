@@ -901,4 +901,41 @@ class PlansUnitTest extends TestCase
         $this->assertEquals(28, $mealPlan->where('calendar_code', 'B1')->first()->count);
         $this->assertEquals(14, $mealPlan->where('calendar_code', 'D1')->first()->count);
     }
+
+    /** @test */
+    public function generating_an_order_takes_into_account_the_ships_every_x_weeks_field() {
+        /** @var Plan $plan */
+        $plan = $this->createPlanForBasicBento([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 2,
+        ]);
+
+        $order = $plan->generateOrder();
+
+        $today = Carbon::now();
+        $firstDelivery = $today->copy();
+        $firstDelivery->addDays(4);
+
+        $this->assertEquals(
+            $firstDelivery->format('Y-m-d'),
+            $order->deliver_by->format('Y-m-d')
+        );
+        $order->markAsPacked();
+        $delivery = factory(Delivery::class)->create([
+            'weeks_shipped'         => $plan->weeks_of_food_per_shipment,
+            'shipped_package_id'    => $plan->package_id,
+        ]);
+        $order->markAsShipped($delivery);
+
+        $plan = $plan->fresh(['orders']);
+
+        $order2 = $plan->generateOrder();
+        $secondDelivery = $firstDelivery->copy();
+        $secondDelivery->addDays($plan->ships_every_x_weeks * 7);
+
+        $this->assertEquals(
+            $secondDelivery->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+    }
 }

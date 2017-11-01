@@ -416,9 +416,9 @@ class Plan extends Model
 
         $latestOrder = $this->getLatestOrder();
 
-        $weeks_delay = $latestOrder->weeks_shipped ?:
-             $latestOrder->weeks_packed ?:
-             $this->ships_every_x_weeks;
+        $weeks_delay = max($latestOrder->weeks_shipped,
+             $latestOrder->weeks_packed,
+             $this->ships_every_x_weeks);
 
         return $latestOrder->deliver_by->addDays($weeks_delay * 7);
     }
