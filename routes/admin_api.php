@@ -35,11 +35,8 @@ Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
 
-Route::get('plans', function() {
-    return Plan::active()
-        ->with(['customer', 'package', 'pet'])
-        ->get();
-});
+Route::resource('plans', 'PlansController');
+
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
     $validData = $request->validate([
         'package_id'    => 'required|exists:packages,id',
@@ -47,26 +44,6 @@ Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request)
 
     if ($plan->updatePackage($validData['package_id']))
         return response('Success', 200);
-});
-Route::post('plans', function(Request $request) {
-    $validData = $request->validate([
-        'pet_id'                    => 'required|exists:pets,id',
-        'package_id'                => 'required|exists:packages,id',
-        'shipping_cost'             => 'required|numeric',
-        'weekly_cost'               => 'required|numeric',
-        'weeks_of_food_per_shipment'    => 'required|integer',
-        'ships_every_x_weeks'       => 'required|integer',
-        'first_delivery_at'         => 'required|date_format:Y-m-d',
-        'payment_method'            => 'required',
-    ]);
-
-    $pet = Pet::find($validData['pet_id']);
-    $validData['customer_id'] = $pet->owner_id;
-    $validData['pet_weight'] = $pet->weight;
-    $validData['pet_activity_level'] = $pet->activity_level;
-
-    $plan = Plan::create($validData);
-    return $plan->fresh(['customer', 'pet', 'package']);
 });
 
 Route::get('purchase-orders', 'PurchaseOrdersController@index');

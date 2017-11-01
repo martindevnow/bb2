@@ -41,7 +41,7 @@
                 'loadPets',
             ]),
             getText(item) {
-                return item.name + ' (' + item.owner.name + ')';
+                return item.name + ' (' + (item.owner ? item.owner.name : '') + ')';
             }
         },
         computed: {

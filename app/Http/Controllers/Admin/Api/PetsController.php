@@ -29,8 +29,7 @@ class PetsController extends Controller {
         ]);
 
         $pet = Pet::create($validData);
-
-        return $pet;
+        return $pet->fresh(['owner']);
     }
 
     /**

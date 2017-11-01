@@ -42,6 +42,12 @@
                 <td>{{ meal.id }}</td>
                 <td>{{ meal.label }}</td>
                 <td>{{ meal.code }}</td>
+                <td>
+                    {{ meal.meats.length ? meal.meats.map(meat => meat.type + ' (' + meat.variety + ')').join(', ') : '' }}
+                </td>
+                <td>
+                    {{ meal.toppings.length ? meal.toppings.map(topping => topping.label).join(', ') : '' }}
+                </td>
                 <td>{{ meal.meal_value }}</td>
                 <td>${{ meal.costPerLb().toFixed(2) }}</td>
 
@@ -85,6 +91,8 @@
                 'id',
                 'label',
                 'code',
+                'meats',
+                'toppings',
                 'meal_value',
                 'costPerLb',
             ];
