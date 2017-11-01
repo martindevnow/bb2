@@ -339,4 +339,63 @@ class OrdersUnitTest extends TestCase
         );
     }
 
+    /** @test */
+    public function an_order_can_be_delayed() {
+        /** @var Plan $plan */
+        $plan = $this->createPlanForBasicBento([
+            'ships_every_x_weeks'   => 1,
+            'weeks_of_food_per_shipment'    => 1,
+        ]);
+
+        /** @var Order $order */
+        $order = $plan->generateOrder();
+        $order2 = $plan->generateOrder();
+        $order3 = $plan->generateOrder();
+
+        $order->markAsPacked([
+            'weeks_packed'  => 1,
+        ]);
+        $order->markAsShipped(factory(Delivery::class)->create([
+            'weeks_shipped' => 1,
+        ]));
+
+        $order = $order->fresh();
+        $order2 = $order2->fresh();
+        $this->assertEquals(
+            Carbon::now()->addDays(
+                4
+                + $order->weeks_shipped * 7
+            )->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+
+        $delayInDays = 30;
+        $order2->delayShipmentDays($delayInDays);
+        $order2 = $order2->fresh();
+        $this->assertEquals(
+            Carbon::now()->addDays(
+                4
+                + $order->weeks_shipped * 7
+                + $delayInDays
+            )->format('Y-m-d'),
+            $order2->deliver_by->format('Y-m-d')
+        );
+
+
+        $order3 = $order3->fresh();
+        $this->assertEquals(
+            Carbon::now()->addDays(
+                4
+                + $order->weeks_shipped * 7
+                + $delayInDays
+                + $plan->ships_every_x_weeks * 7
+            )->format('Y-m-d'),
+            $order3->deliver_by->format('Y-m-d')
+        );
+
+
+
+
+    }
+
 }
