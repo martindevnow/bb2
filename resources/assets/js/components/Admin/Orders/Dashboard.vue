@@ -103,10 +103,11 @@
 
         <admin-common-modal v-if="show.cancellationModal">
             <p slot="header">Cancel an Order</p>
-            <admin-order-canceller @saved="closeCancellationModal()"
+            <p slot="body">Reason:</p>
+            <admin-orders-canceller @saved="closeCancellationModal()"
                                    @cancelled="closeCancellationModal()"
                                    slot="body"
-            ></admin-order-canceller>
+            ></admin-orders-canceller>
         </admin-common-modal>
     </div>
 </template>
