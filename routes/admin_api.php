@@ -29,12 +29,34 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
     return $package->fresh(['meals']);
 });
 
-Route::resource('pets', 'PetsController');
 
 Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
 
+Route::post('notes', function(Request $request) {
+    $valid = $request->validate([
+        'modelName' => 'required|string',
+        'modelId'   => 'required|integer',
+        'content'   => 'required|string',
+    ]);
+
+    switch ($valid['modelName']) {
+        case 'plan':
+            $model = Plan::find($valid['modelId']);
+            break;
+
+        default:
+            return response('Cannot add note to this type...', 500);
+    }
+
+    return $model->notes()->create([
+        'content'   => $valid['content'],
+        'author_id' => $request->user()->id,
+    ]);
+});
+
+Route::resource('pets', 'PetsController');
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {

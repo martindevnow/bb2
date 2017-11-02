@@ -137,10 +137,6 @@ export default {
     },
     data() {
         return {
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
                 code: '',
                 type: '',
@@ -165,12 +161,6 @@ export default {
         ...mapActions('toppings', [
             'loadToppings',
         ]),
-        meatLabel (item) {
-            return `${item.type} - ${item.variety} - ${item.code}`
-        },
-        toppingLabel (item) {
-            return `${item.label} - ${item.code}`
-        },
         populateFormFromMeat(meat) {
             this.form.code = meat.code;
             this.form.type = meat.type;

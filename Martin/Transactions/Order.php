@@ -282,6 +282,13 @@ class Order extends Model
         }
     }
 
+    /**
+     * Cancels an order
+     */
+    public function cancel() {
+        $this->cancelled = true;
+        $this->save();
+    }
 
     /**
      * Scopes

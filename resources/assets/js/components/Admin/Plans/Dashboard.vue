@@ -50,6 +50,11 @@
                 <td>{{ plan.weeks_per_shipment }}</td>
                 <td>{{ plan.cost }}</td>
                 <td>
+                    <button class="btn btn-default btn-xs"
+                            @click="createNote({ model: plan, type: 'plan' })"
+                    >
+                        + Note
+                    </button>
                     <button class="btn btn-primary btn-xs"
                             @click="editPlan(plan)"
                     >
@@ -72,6 +77,14 @@
             <admin-plans-creator @close="$emit('close')"
                                   slot="body"
             ></admin-plans-creator>
+        </admin-common-modal>
+        <admin-common-modal v-if="notesShow.noteCreatorModal"
+                            @close="closeNoteCreatorModal()"
+        >
+            <admin-notes-creator @close="$emit('close')"
+                                slot="body"
+            >
+            </admin-notes-creator>
         </admin-common-modal>
     </div>
 </template>
@@ -117,6 +130,11 @@
                 'loadPlans',
                 'editPlan',
             ]),
+            ...mapActions('notes', [
+                'openNoteCreatorModal',
+                'closeNoteCreatorModal',
+                'createNote',
+            ]),
             ...mapActions('packages', [
                 'loadPackages',
             ]),
@@ -127,7 +145,10 @@
                 'show',
                 'selected',
                 'mode',
-            ])
+            ]),
+            ...mapState('notes', {
+                'notesShow': 'show',
+            }),
         },
     }
 </script>

@@ -48,6 +48,8 @@ Vue.component('admin-meats-dashboard', require('./components/Admin/Meats/Dashboa
 Vue.component('admin-meats-creator', require('./components/Admin/Meats/Creator.vue'));
 Vue.component('admin-meat-selector', require('./components/Admin/Meats/MeatSelector.vue'));
 
+Vue.component('admin-notes-creator', require('./components/Admin/Notes/Creator.vue'));
+
 Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
 
 Vue.component('admin-pets-dashboard', require('./components/Admin/Pets/Dashboard.vue'));
