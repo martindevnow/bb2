@@ -37,6 +37,7 @@
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
                 <td>
+
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
                             :class="{
@@ -64,37 +65,44 @@
                     >
                         Shipped
                     </button>
+                    <button @click="openCancellationModal(order)"
+                            class="btn btn-xs btn-danger"
+
+                    >
+                        Cancel
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
 
 
-        <admin-common-modal v-if="show.paymentModal"
-                             @close="closePaymentModal()"
-        >
+        <admin-common-modal v-if="show.paymentModal">
             <p slot="header">Log a Payment</p>
-            <admin-payment-logger @close="$emit('close')"
+            <admin-payment-logger @saved="closePaymentModal()"
                                   slot="body"
             ></admin-payment-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.packedModal"
-                            @close="closePackedModal()"
-        >
+        <admin-common-modal v-if="show.packedModal">
             <p slot="header">Log Packing an Order</p>
-            <admin-packed-logger @close="$emit('close')"
+            <admin-packed-logger @saved="closePackedModal()"
                                  slot="body"
             ></admin-packed-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.shippedModal"
-                            @close="closeShippedModal()"
-        >
+        <admin-common-modal v-if="show.shippedModal">
             <p slot="header">Log a Shipment</p>
-            <admin-shipped-logger @close="$emit('close')"
+            <admin-shipped-logger @saved="closeShippedModal()"
                                   slot="body"
             ></admin-shipped-logger>
+        </admin-common-modal>
+
+        <admin-common-modal v-if="show.cancellationModal">
+            <p slot="header">Cancel an Order</p>
+            <admin-order-canceller @saved="closeCancellationModal()"
+                                   slot="body"
+            ></admin-order-canceller>
         </admin-common-modal>
     </div>
 </template>
@@ -140,6 +148,8 @@ export default {
             'closePackedModal',
             'openShippedModal',
             'closeShippedModal',
+            'openCancellationModal',
+            'closeCancellationModal',
             'loadOrders',
         ]),
         ...mapActions('packages', [

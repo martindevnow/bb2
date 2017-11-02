@@ -149,7 +149,7 @@ export default {
                     weeks_shipped: this.form.weeks_shipped,
                     shipped_package_id: this.form.shipped_package.id,
                 });
-                vm.closeShippedModal();
+                vm.$emit('saved');
             }).catch(function(error) {
                 vm.errors.record(error.response.data.errors);
             });

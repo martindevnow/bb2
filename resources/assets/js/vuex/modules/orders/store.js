@@ -10,6 +10,7 @@ const state = {
         pickedModal: false,
         shippedModal: false,
         deliveredModal: false,
+        cancellationModal: false,
     }
 };
 

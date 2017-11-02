@@ -74,3 +74,11 @@ export const showDeliveredModal = (state) => {
 export const hideDeliveredModal = (state) => {
     state.show.deliveredModal = false;
 };
+
+export const showCancellationModal = (state) => {
+    state.show.cancellationModal = true;
+};
+
+export const hideCancellationModal = (state) => {
+    state.show.cancellationModal = false;
+};

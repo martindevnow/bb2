@@ -127,7 +127,7 @@ export default {
                 received_at: moment(this.received_at).format('YYYY-MM-DD'),
             }).then(response => {
                 vm.updateSelectedOrder({ paid: true });
-                vm.closePaymentModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

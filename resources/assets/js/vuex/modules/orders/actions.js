@@ -48,6 +48,16 @@ export const closeDeliveredModal = (context) => {
     context.commit('deselectOrder');
 };
 
+export const openCancellationModal = (context, order) => {
+    context.commit('setSelectedOrder', order);
+    context.commit('showCancellationModal');
+};
+
+export const closeCancellationModal = (context) => {
+    context.commit('hideCancellationModal');
+    context.commit('deselectOrder');
+};
+
 export const loadOrders = ({commit, state}, force = false) => {
     if (! force && state.collection.length)
         return;

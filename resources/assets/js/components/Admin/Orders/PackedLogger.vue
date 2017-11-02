@@ -97,7 +97,7 @@ export default {
                     weeks_packed: vm.weeks_packed,
                     packed_package_id: vm.packed_package.id,
                 });
-                vm.closePackedModal();
+                vm.$emit('saved')
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
