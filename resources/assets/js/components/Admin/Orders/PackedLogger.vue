@@ -50,7 +50,7 @@
             </div>
             <div class="col-sm-6">
                 <button class="btn btn-default btn-block"
-                        @click="closePackedModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
