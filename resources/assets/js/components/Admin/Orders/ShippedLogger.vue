@@ -72,7 +72,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         @click="save()"
                 >
                     Save

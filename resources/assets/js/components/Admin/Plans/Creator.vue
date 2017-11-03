@@ -130,7 +130,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label>&nbsp;</label>
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         :disabled="errors.any()"
                         @click="save()"
                         v-if="! mode"
