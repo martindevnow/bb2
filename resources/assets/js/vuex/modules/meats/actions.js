@@ -13,6 +13,8 @@ export const openMeatCreatorModal = (context) => {
 
 export const closeMeatCreatorModal = (context) => {
     context.commit('hideMeatCreatorModal');
+    context.commit('disableEditMode');
+    context.commit('deselectMeat');
 };
 
 export const editMeat = (context, meat) => {

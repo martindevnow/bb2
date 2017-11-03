@@ -57,9 +57,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.meatCreatorModal"
-                            @close="closeMeatCreatorModal()"
-        >
+        <admin-common-modal v-if="show.meatCreatorModal">
             <p slot="header" v-if="! mode">Add a Meat</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
             <admin-meats-creator @saved="closeMeatCreatorModal()"
