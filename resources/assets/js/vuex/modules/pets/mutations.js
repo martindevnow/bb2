@@ -22,7 +22,7 @@ export const setSelectedPet = (state, pet) => {
 };
 
 export const deselectPet = (state) => {
-    state.selected = null;
+    state.selected = {};
 };
 
 export const enableEditMode = (state) => {

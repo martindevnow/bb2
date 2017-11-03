@@ -147,7 +147,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePetCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -189,9 +189,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('pets', [
-            'closePetCreatorModal',
-        ]),
         ...mapMutations('pets', [
             'addToPetsCollection',
             'updatePet',
@@ -210,7 +207,7 @@ export default {
             }).then(response => {
                 console.log('api call done...');
                 vm.addToPetsCollection(response.data);
-                vm.closePetCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
                 console.log(error);
@@ -228,7 +225,7 @@ export default {
             }).then(response => {
                 console.log('api call done...');
                 vm.updatePet(response.data);
-                vm.closePetCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
                 console.log(error);

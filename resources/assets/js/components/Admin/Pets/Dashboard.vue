@@ -68,8 +68,9 @@
         >
             <p slot="header" v-if="! mode">Add a Pet</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Pet: {{ selected.name }}</p>
-            <admin-pets-creator @close="$emit('close')"
-                               slot="body"
+            <admin-pets-creator @saved="closePetCreatorModal()"
+                                @cancelled="closePetCreatorModal()"
+                                slot="body"
             ></admin-pets-creator>
         </admin-common-modal>
     </div>
