@@ -131,7 +131,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePackageCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -178,7 +178,6 @@ export default {
     },
     methods: {
         ...mapActions('packages', [
-            'closePackageCreatorModal',
             'editPackage',
         ]),
         ...mapActions('meals', [
@@ -194,7 +193,7 @@ export default {
                 ...this.form
             }).then(response => {
                 vm.addToPackagesCollection(response.data);
-                vm.closePackageCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -205,7 +204,7 @@ export default {
             return axios.patch('/admin/api/packages/' + this.selected.id, this.form
             ).then(response => {
                 vm.updatePackage(response.data);
-                vm.closePackageCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -218,10 +217,6 @@ export default {
             this.form.customization = pkg.customization;
             this.form.public = pkg.public;
         },
-        onSelect(owner) {
-            this.errors.clear('owner_id');
-            this.owner = owner;
-        }
     },
     computed: {
         ...mapState('packages', [
@@ -230,11 +225,6 @@ export default {
             'selected',
             'show',
         ]),
-        ownersSelect() {
-            return this.users.map(user => {
-                return { value: user.id, text: user.name + ' (' + user.id + ')' };
-            });
-        }
     },
     mounted() {
         this.loadMeals();
