@@ -107,7 +107,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeMeatCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -148,7 +148,6 @@ export default {
     },
     methods: {
         ...mapActions('meats', [
-            'closeMeatCreatorModal',
             'editMeat',
         ]),
         ...mapMutations('meats', [
@@ -174,7 +173,7 @@ export default {
                 ...this.form,
             }).then(response => {
                 vm.addToMeatsCollection(response.data);
-                vm.closeMeatCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -185,7 +184,7 @@ export default {
             return axios.patch('/admin/api/meats/' + this.selected.id, this.form
             ).then(response => {
                 vm.updateMeat(response.data);
-                vm.closeMeatCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

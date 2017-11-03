@@ -62,7 +62,8 @@
         >
             <p slot="header" v-if="! mode">Add a Meat</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
-            <admin-meats-creator @close="$emit('close')"
+            <admin-meats-creator @saved="closeMeatCreatorModal()"
+                                 @cancelled="closeMeatCreatorModal()"
                                  slot="body"
             ></admin-meats-creator>
         </admin-common-modal>
