@@ -30,7 +30,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeNoteCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>

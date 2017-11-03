@@ -1,5 +1,5 @@
 <template>
-    <admin-notes-creator @close="$emit('close')"
+    <admin-notes-creator @cancelled="$emit('cancelled')"
                          @saved="cancelOrder()"
     >
     </admin-notes-creator>

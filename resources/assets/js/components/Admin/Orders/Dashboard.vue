@@ -107,8 +107,8 @@
             <p slot="header">Cancel an Order</p>
             <p slot="body">Reason:</p>
             <admin-orders-canceller @saved="closeCancellationModal()"
-                                   @cancelled="closeCancellationModal()"
-                                   slot="body"
+                                    @cancelled="closeCancellationModal()"
+                                    slot="body"
             ></admin-orders-canceller>
         </admin-common-modal>
     </div>
