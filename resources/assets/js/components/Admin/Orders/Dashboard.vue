@@ -36,41 +36,43 @@
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
-                <td>
-
+                <td v-if="! order.cancelled">
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.paid,
-                            'btn-success': order.paid
-                        }"
+                        'btn-danger': ! order.paid,
+                        'btn-success': order.paid
+                    }"
                     >
                         Paid
                     </button>
                     <button @click="openPackedModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.packed,
-                            'btn-success': order.packed
-                        }"
+                        'btn-danger': ! order.packed,
+                        'btn-success': order.packed
+                    }"
                     >
                         Packed
                     </button>
                     <button @click="openShippedModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.shipped,
-                            'btn-success': order.shipped
-                        }"
+                        'btn-danger': ! order.shipped,
+                        'btn-success': order.shipped
+                    }"
                     >
                         Shipped
                     </button>
                     <button @click="openCancellationModal(order)"
-                            class="btn btn-xs btn-danger"
+                            class="btn btn-xs btn-warning"
 
                     >
                         Cancel
                     </button>
+                </td>
+                <td v-if="order.cancelled">
+                    Cancelled
                 </td>
             </tr>
             </tbody>
