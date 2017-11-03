@@ -117,9 +117,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('orders', [
-            'closeShippedModal',
-        ]),
         ...mapMutations('orders', [
             'updateSelectedOrder'
         ]),
@@ -157,7 +154,6 @@ export default {
     },
     computed: {
         ...mapState('orders', [
-            'show',
             'selected',
         ]),
         ...mapState('couriers', {

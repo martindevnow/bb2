@@ -49,12 +49,14 @@ export const closeDeliveredModal = (context) => {
 };
 
 export const openCancellationModal = (context, order) => {
+    context.commit('notes/setTargetModel', {model: order, type: 'order'}, { root: true });
     context.commit('setSelectedOrder', order);
     context.commit('showCancellationModal');
 };
 
 export const closeCancellationModal = (context) => {
     context.commit('hideCancellationModal');
+    context.commit('notes/unsetTargetModel', null, { root: true });
     context.commit('deselectOrder');
 };
 

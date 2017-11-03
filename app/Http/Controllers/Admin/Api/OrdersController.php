@@ -109,5 +109,14 @@ class OrdersController extends Controller
         $order->markAsDelivered();
         return response('success', 200);
     }
+
+    public function cancel(Order $order) {
+        if ( ! $order->notes->count()) {
+            return response(['error' => 'no note was saved...'], 500);
+        }
+
+        $order->cancel();
+        return response('success', 200);
+    }
 }
 

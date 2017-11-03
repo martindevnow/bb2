@@ -9,3 +9,7 @@ export const hideNoteCreatorModal = (state) => {
 export const setTargetModel = (state, targetModel) => {
     state.targeted = targetModel;
 };
+
+export const unsetTargetModel = (state) => {
+    state.targeted = {};
+};

@@ -70,7 +70,7 @@
                     modelId,
                 }).then(response => {
                     swal('success', 'Saved', 'success');
-                    vm.closeNoteCreatorModal();
+                    vm.$emit('saved');
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
                 })

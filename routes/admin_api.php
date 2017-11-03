@@ -1,17 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
-use Martin\Customers\Pet;
 use Martin\Products\Topping;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
-
-Route::get('orders', 'OrdersController@index');
-Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
-Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
-Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
-Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
-Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+use Martin\Transactions\Order;
 
 
 Route::get('couriers', 'CouriersController@index');
@@ -45,6 +38,9 @@ Route::post('notes', function(Request $request) {
         case 'plan':
             $model = Plan::find($valid['modelId']);
             break;
+        case 'order':
+            $model = Order::find($valid['modelId']);
+            break;
 
         default:
             return response('Cannot add note to this type...', 500);
@@ -56,7 +52,16 @@ Route::post('notes', function(Request $request) {
     ]);
 });
 
+Route::get('orders', 'OrdersController@index');
+Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
+Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
+Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
+Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
+Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+Route::post('/orders/{order}/cancel', 'OrdersController@cancel');
+
 Route::resource('pets', 'PetsController');
+
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
