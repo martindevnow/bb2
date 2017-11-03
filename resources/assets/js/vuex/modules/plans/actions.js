@@ -13,6 +13,8 @@ export const openPlanCreatorModal = (context) => {
 
 export const closePlanCreatorModal = (context) => {
     context.commit('hidePlanCreatorModal');
+    context.commit('disableEditMode');
+    context.commit('deselectPlan');
 };
 
 export const editPlan = (context, plan) => {

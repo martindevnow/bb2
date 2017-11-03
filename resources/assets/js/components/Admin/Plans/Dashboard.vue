@@ -74,15 +74,17 @@
         >
             <p slot="header" v-if="! mode">Add a Plan</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
-            <admin-plans-creator @close="$emit('close')"
-                                  slot="body"
+            <admin-plans-creator @cancelled="closePlanCreatorModal()"
+                                 @saved="closePlanCreatorModal()"
+                                 slot="body"
             ></admin-plans-creator>
         </admin-common-modal>
         <admin-common-modal v-if="notesShow.noteCreatorModal"
                             @close="closeNoteCreatorModal()"
         >
-            <admin-notes-creator @close="$emit('close')"
-                                slot="body"
+            <admin-notes-creator @cancelled="closeNoteCreatorModal()"
+                                 @saved="closeNoteCreatorModal"
+                                 slot="body"
             >
             </admin-notes-creator>
         </admin-common-modal>

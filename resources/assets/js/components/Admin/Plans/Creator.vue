@@ -148,7 +148,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closePlanCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -196,9 +196,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('plans', [
-            'closePlanCreatorModal'
-        ]),
         ...mapMutations('plans', [
             'addToPlansCollection',
             'updatePlan',
@@ -220,7 +217,7 @@ export default {
                 pet_id: this.form.pet.id,
             }).then(response => {
                 vm.addToPlansCollection(response.data);
-                vm.closePlanCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -236,7 +233,7 @@ export default {
                 pet_id: this.form.pet.id,
             }).then(response => {
                 vm.updatePlan(response.data);
-                vm.closePlanCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
