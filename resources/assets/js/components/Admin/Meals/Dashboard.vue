@@ -65,12 +65,11 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.mealCreatorModal"
-                            @close="closeMealCreatorModal()"
-        >
+        <admin-common-modal v-if="show.mealCreatorModal">
             <p slot="header" v-if="! mode">Add a Meal</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Meal: {{ selected.label }}</p>
-            <admin-meals-creator @close="$emit('close')"
+            <admin-meals-creator @saved="closeMealCreatorModal()"
+                                 @cancelled="closeMealCreatorModal()"
                                slot="body"
             ></admin-meals-creator>
         </admin-common-modal>

@@ -21,7 +21,7 @@ export const setSelectedMeal = (state, meal) => {
 };
 
 export const deselectMeal = (state) => {
-    state.selected = null;
+    state.selected = {};
 };
 
 export const enableEditMode = (state) => {
