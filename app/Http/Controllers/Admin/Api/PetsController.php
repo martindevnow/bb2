@@ -29,7 +29,7 @@ class PetsController extends Controller {
         ]);
 
         $pet = Pet::create($validData);
-        return $pet->fresh(['owner']);
+        return $pet->fresh(['owner', 'plans', 'plans.package']);
     }
 
     /**
@@ -50,6 +50,6 @@ class PetsController extends Controller {
         ]);
 
         $pet->update($validData);
-        return $pet->fresh(['owner']);
+        return $pet->fresh(['owner', 'plans', 'plans.package']);
     }
 }

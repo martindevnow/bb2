@@ -1,17 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
-use Martin\Customers\Pet;
 use Martin\Products\Topping;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
-
-Route::get('orders', 'OrdersController@index');
-Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
-Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
-Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
-Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
-Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+use Martin\Transactions\Order;
 
 
 Route::get('couriers', 'CouriersController@index');
@@ -29,11 +22,45 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
     return $package->fresh(['meals']);
 });
 
-Route::resource('pets', 'PetsController');
 
 Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
+
+Route::post('notes', function(Request $request) {
+    $valid = $request->validate([
+        'modelName' => 'required|string',
+        'modelId'   => 'required|integer',
+        'content'   => 'required|string',
+    ]);
+
+    switch ($valid['modelName']) {
+        case 'plan':
+            $model = Plan::find($valid['modelId']);
+            break;
+        case 'order':
+            $model = Order::find($valid['modelId']);
+            break;
+
+        default:
+            return response('Cannot add note to this type...', 500);
+    }
+
+    return $model->notes()->create([
+        'content'   => $valid['content'],
+        'author_id' => $request->user()->id,
+    ]);
+});
+
+Route::get('orders', 'OrdersController@index');
+Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
+Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
+Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
+Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
+Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
+Route::post('/orders/{order}/cancel', 'OrdersController@cancel');
+
+Route::resource('pets', 'PetsController');
 
 Route::resource('plans', 'PlansController');
 

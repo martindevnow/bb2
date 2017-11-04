@@ -39,7 +39,7 @@ export const setSelectedPlan = (state, Plan) => {
 };
 
 export const deselectPlan = (state) => {
-    state.selected = null;
+    state.selected = {};
 };
 
 export const updatePlan = (state, payload) => {

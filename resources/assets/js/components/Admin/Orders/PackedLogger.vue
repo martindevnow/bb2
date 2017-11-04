@@ -42,7 +42,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         @click="save()"
                 >
                     Save
@@ -50,7 +50,7 @@
             </div>
             <div class="col-sm-6">
                 <button class="btn btn-default btn-block"
-                        @click="closePackedModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -97,7 +97,7 @@ export default {
                     weeks_packed: vm.weeks_packed,
                     packed_package_id: vm.packed_package.id,
                 });
-                vm.closePackedModal();
+                vm.$emit('saved')
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

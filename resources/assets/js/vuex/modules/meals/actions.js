@@ -4,6 +4,8 @@ export const openMealCreatorModal = (context) => {
 
 export const closeMealCreatorModal = (context) => {
     context.commit('hideMealCreatorModal');
+    context.commit('disableEditMode');
+    context.commit('deselectMeal');
 };
 
 export const editMeal = (context, meal) => {

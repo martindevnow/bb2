@@ -72,12 +72,25 @@ class Plan extends Model
     public function updateForShipped(Order $order) {
         $this->latest_delivery_at = $order->shipped_at;
         if ($order->weeks_shipped > $this->ships_every_x_weeks) {
-            $futureOrders = $this->orders()->where('deliver_by', '>', $order->deliver_by)->get();
+            $futureOrders = $this->orders()
+                ->where('deliver_by', '>', $order->deliver_by)
+                ->get();
             foreach ($futureOrders as $fOrder) {
                 $fOrder->deliver_by = $fOrder->deliver_by->addWeeks($order->weeks_shipped - $this->ships_every_x_weeks);
                 $fOrder->save();
             }
         }
+    }
+
+    public function delayOrdersAfter(Order $order, $daysToDelay) {
+        $futureOrders = $this->orders()
+            ->where('id', '>', $order->id)
+            ->get();
+        foreach ($futureOrders as $fOrder) {
+            $fOrder->deliver_by = $fOrder->deliver_by->addDays($daysToDelay);
+            $fOrder->save();
+        }
+        return true;
     }
 
     public static function getPrice($pet_weight, Package $package, $shipping_modifier) {
@@ -416,9 +429,9 @@ class Plan extends Model
 
         $latestOrder = $this->getLatestOrder();
 
-        $weeks_delay = $latestOrder->weeks_shipped ?:
-             $latestOrder->weeks_packed ?:
-             $this->ships_every_x_weeks;
+        $weeks_delay = max($latestOrder->weeks_shipped,
+             $latestOrder->weeks_packed,
+             $this->ships_every_x_weeks);
 
         return $latestOrder->deliver_by->addDays($weeks_delay * 7);
     }
