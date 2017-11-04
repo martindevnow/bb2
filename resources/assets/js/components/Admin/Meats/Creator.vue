@@ -89,7 +89,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label>&nbsp;</label>
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         :disabled="errors.any()"
                         @click="save()"
                         v-if="! mode"
@@ -107,7 +107,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeMeatCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -137,10 +137,6 @@ export default {
     },
     data() {
         return {
-            owner: {
-                value: '',
-                text: '',
-            },
             form: {
                 code: '',
                 type: '',
@@ -152,7 +148,6 @@ export default {
     },
     methods: {
         ...mapActions('meats', [
-            'closeMeatCreatorModal',
             'editMeat',
         ]),
         ...mapMutations('meats', [
@@ -165,12 +160,6 @@ export default {
         ...mapActions('toppings', [
             'loadToppings',
         ]),
-        meatLabel (item) {
-            return `${item.type} - ${item.variety} - ${item.code}`
-        },
-        toppingLabel (item) {
-            return `${item.label} - ${item.code}`
-        },
         populateFormFromMeat(meat) {
             this.form.code = meat.code;
             this.form.type = meat.type;
@@ -184,7 +173,7 @@ export default {
                 ...this.form,
             }).then(response => {
                 vm.addToMeatsCollection(response.data);
-                vm.closeMeatCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -195,7 +184,7 @@ export default {
             return axios.patch('/admin/api/meats/' + this.selected.id, this.form
             ).then(response => {
                 vm.updateMeat(response.data);
-                vm.closeMeatCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

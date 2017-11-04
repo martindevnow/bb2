@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label>&nbsp;</label>
-                        <button class="btn btn-primary btn-block"
+                        <button class="btn btn-success btn-block"
                                 :disabled="errors.any()"
                                 @click="save()"
                         >
@@ -73,7 +73,7 @@
                     <div class="col-sm-6">
                         <label>&nbsp;</label>
                         <button class="btn btn-default btn-block"
-                                @click="closePaymentModal()"
+                                @click="$emit('cancelled')"
                         >
                             Cancel
                         </button>
@@ -112,9 +112,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('orders', [
-            'closePaymentModal',
-        ]),
         ...mapMutations('orders', [
             'updateSelectedOrder'
         ]),
@@ -127,7 +124,7 @@ export default {
                 received_at: moment(this.received_at).format('YYYY-MM-DD'),
             }).then(response => {
                 vm.updateSelectedOrder({ paid: true });
-                vm.closePaymentModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -135,7 +132,6 @@ export default {
     },
     computed: {
         ...mapState('orders', [
-            'show',
             'selected'
         ]),
     },

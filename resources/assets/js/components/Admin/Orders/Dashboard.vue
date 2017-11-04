@@ -36,65 +36,80 @@
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
                 <td>{{ order.deliver_by }}</td>
-                <td>
+                <td v-if="! order.cancelled">
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.paid,
-                            'btn-success': order.paid
-                        }"
+                        'btn-danger': ! order.paid,
+                        'btn-success': order.paid
+                    }"
                     >
                         Paid
                     </button>
                     <button @click="openPackedModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.packed,
-                            'btn-success': order.packed
-                        }"
+                        'btn-danger': ! order.packed,
+                        'btn-success': order.packed
+                    }"
                     >
                         Packed
                     </button>
                     <button @click="openShippedModal(order)"
                             class="btn btn-xs"
                             :class="{
-                            'btn-danger': ! order.shipped,
-                            'btn-success': order.shipped
-                        }"
+                        'btn-danger': ! order.shipped,
+                        'btn-success': order.shipped
+                    }"
                     >
                         Shipped
                     </button>
+                    <button @click="openCancellationModal(order)"
+                            class="btn btn-xs btn-warning"
+
+                    >
+                        Cancel
+                    </button>
+                </td>
+                <td v-if="order.cancelled">
+                    Cancelled
                 </td>
             </tr>
             </tbody>
         </table>
 
 
-        <admin-common-modal v-if="show.paymentModal"
-                             @close="closePaymentModal()"
-        >
+        <admin-common-modal v-if="show.paymentModal">
             <p slot="header">Log a Payment</p>
-            <admin-payment-logger @close="$emit('close')"
+            <admin-payment-logger @saved="closePaymentModal()"
+                                  @cancelled="closePaymentModal()"
                                   slot="body"
             ></admin-payment-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.packedModal"
-                            @close="closePackedModal()"
-        >
+        <admin-common-modal v-if="show.packedModal">
             <p slot="header">Log Packing an Order</p>
-            <admin-packed-logger @close="$emit('close')"
+            <admin-packed-logger @saved="closePackedModal()"
+                                 @cancelled="closePackedModal()"
                                  slot="body"
             ></admin-packed-logger>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.shippedModal"
-                            @close="closeShippedModal()"
-        >
+        <admin-common-modal v-if="show.shippedModal">
             <p slot="header">Log a Shipment</p>
-            <admin-shipped-logger @close="$emit('close')"
+            <admin-shipped-logger @saved="closeShippedModal()"
+                                  @cancelled="closeShippedModal()"
                                   slot="body"
             ></admin-shipped-logger>
+        </admin-common-modal>
+
+        <admin-common-modal v-if="show.cancellationModal">
+            <p slot="header">Cancel an Order</p>
+            <p slot="body">Reason:</p>
+            <admin-orders-canceller @saved="closeCancellationModal()"
+                                    @cancelled="closeCancellationModal()"
+                                    slot="body"
+            ></admin-orders-canceller>
         </admin-common-modal>
     </div>
 </template>
@@ -140,6 +155,8 @@ export default {
             'closePackedModal',
             'openShippedModal',
             'closeShippedModal',
+            'openCancellationModal',
+            'closeCancellationModal',
             'loadOrders',
         ]),
         ...mapActions('packages', [

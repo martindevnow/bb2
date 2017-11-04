@@ -4,6 +4,8 @@ export const openPetCreatorModal = (context) => {
 
 export const closePetCreatorModal = (context) => {
     context.commit('hidePetCreatorModal');
+    context.commit('deselectPet');
+    context.commit('disableEditMode');
 };
 
 export const loadPets = ({commit, state}, force = false) => {

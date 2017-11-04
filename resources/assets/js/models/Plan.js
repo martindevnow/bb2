@@ -5,6 +5,10 @@ export class Plan {
     customerName() {
         return (!! this.customer) ? this.customer.name : '';
     }
+
+    modelName() {
+        return 'Plan';
+    }
 }
 
 export const loadPlanFromData = function (data) {

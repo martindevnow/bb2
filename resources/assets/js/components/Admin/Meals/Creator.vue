@@ -93,7 +93,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label>&nbsp;</label>
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         :disabled="errors.any()"
                         @click="save()"
                         v-if="! mode"
@@ -111,7 +111,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeMealCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -149,7 +149,6 @@ export default {
     },
     methods: {
         ...mapActions('meals', [
-            'closeMealCreatorModal',
             'editMeal',
         ]),
         ...mapMutations('meals', [
@@ -177,7 +176,7 @@ export default {
                 ...this.form, meats, toppings
             }).then(response => {
                 vm.addToMealsCollection(response.data);
-                vm.closeMealCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -191,7 +190,7 @@ export default {
                 ...this.form, meats, toppings
             }).then(response => {
                 vm.updateMeal(response.data);
-                vm.closeMealCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

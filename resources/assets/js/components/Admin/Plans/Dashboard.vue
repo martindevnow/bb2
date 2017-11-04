@@ -45,17 +45,15 @@
                 <td>{{ plan.pet_name }}</td>
                 <td>
                     {{ plan.package_label }}
-                    <!--<admin-package-selector @select="onSelect"-->
-                                            <!--:selected-package-id="plan.package_id"-->
-                                            <!--:autonomous="1"-->
-                                            <!--model-api="plans"-->
-                                            <!--:model="plan"-->
-                    <!--&gt;</admin-package-selector>-->
                 </td>
-                <td>{{ plan.weeks_of_food }}</td>
-                <td>{{ plan.weeks_per_shipment }}</td>
-                <td>{{ plan.cost }}</td>
+                <td>{{ plan.weeks_of_food }} / {{ plan.weeks_per_shipment }}</td>
+                <td>${{ plan.weekly_cost }}</td>
                 <td>
+                    <button class="btn btn-default btn-xs"
+                            @click="createNote({ model: plan, type: 'plan' })"
+                    >
+                        + Note
+                    </button>
                     <button class="btn btn-primary btn-xs"
                             @click="editPlan(plan)"
                     >
@@ -75,9 +73,19 @@
         >
             <p slot="header" v-if="! mode">Add a Plan</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
-            <admin-plans-creator @close="$emit('close')"
-                                  slot="body"
+            <admin-plans-creator @cancelled="closePlanCreatorModal()"
+                                 @saved="closePlanCreatorModal()"
+                                 slot="body"
             ></admin-plans-creator>
+        </admin-common-modal>
+        <admin-common-modal v-if="notesShow.noteCreatorModal"
+                            @close="closeNoteCreatorModal()"
+        >
+            <admin-notes-creator @cancelled="closeNoteCreatorModal()"
+                                 @saved="closeNoteCreatorModal"
+                                 slot="body"
+            >
+            </admin-notes-creator>
         </admin-common-modal>
     </div>
 </template>
@@ -96,8 +104,7 @@
                 'customer_name',
                 'pet_name',
                 'package_label',
-                'weeks_of_food',
-                'weeks_per_shipment',
+                'X wks food every X wks',
                 'cost',
             ];
             let numColumns = columns.length;
@@ -123,17 +130,14 @@
                 'loadPlans',
                 'editPlan',
             ]),
+            ...mapActions('notes', [
+                'openNoteCreatorModal',
+                'closeNoteCreatorModal',
+                'createNote',
+            ]),
             ...mapActions('packages', [
                 'loadPackages',
             ]),
-            mealSize(plan) {
-                return (plan.plan.pet_weight * plan.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
-            },
-            onSelect(val) {
-                console.log('selected package...');
-                console.log(val);
-
-            }
         },
         computed: {
             ...mapState('plans', [
@@ -141,7 +145,10 @@
                 'show',
                 'selected',
                 'mode',
-            ])
+            ]),
+            ...mapState('notes', {
+                'notesShow': 'show',
+            }),
         },
     }
 </script>

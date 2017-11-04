@@ -29,7 +29,7 @@ export const setSelectedMeat = (state, meat) => {
 };
 
 export const deselectMeat = (state) => {
-    state.selected = null;
+    state.selected = {};
 };
 
 export const updateMeat = (state, payload) => {

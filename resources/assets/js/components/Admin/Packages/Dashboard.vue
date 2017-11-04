@@ -95,8 +95,9 @@
         >
             <p slot="header" v-if="! mode">Add a Package</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Package: {{ selected.label }}</p>
-            <admin-packages-creator @close="$emit('close')"
-                               slot="body"
+            <admin-packages-creator @cancelled="closePackageCreatorModal()"
+                                    @saved="closePackageCreatorModal()"
+                                    slot="body"
             ></admin-packages-creator>
         </admin-common-modal>
 
@@ -104,8 +105,9 @@
                             @close="closeMealPlanEditorModal()"
         >
             <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>
-            <admin-meal-plan-editor @close="$emit('close')"
-                               slot="body"
+            <admin-meal-plan-editor @cancelled="closeMealPlanEditorModal()"
+                                    @saved="closeMealPlanEditorModal()"
+                                    slot="body"
             ></admin-meal-plan-editor>
         </admin-common-modal>
     </div>

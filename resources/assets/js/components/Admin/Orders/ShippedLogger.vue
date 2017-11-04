@@ -72,7 +72,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <button class="btn btn-primary btn-block"
+                <button class="btn btn-success btn-block"
                         @click="save()"
                 >
                     Save
@@ -80,7 +80,7 @@
             </div>
             <div class="col-sm-6">
                 <button class="btn btn-default btn-block"
-                        @click="closeShippedModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -117,9 +117,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('orders', [
-            'closeShippedModal',
-        ]),
         ...mapMutations('orders', [
             'updateSelectedOrder'
         ]),
@@ -149,7 +146,7 @@ export default {
                     weeks_shipped: this.form.weeks_shipped,
                     shipped_package_id: this.form.shipped_package.id,
                 });
-                vm.closeShippedModal();
+                vm.$emit('saved');
             }).catch(function(error) {
                 vm.errors.record(error.response.data.errors);
             });
@@ -157,7 +154,6 @@ export default {
     },
     computed: {
         ...mapState('orders', [
-            'show',
             'selected',
         ]),
         ...mapState('couriers', {

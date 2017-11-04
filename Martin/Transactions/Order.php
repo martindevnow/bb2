@@ -205,6 +205,19 @@ class Order extends Model
         return $this;
     }
 
+    public function delayShipmentDays($daysToDelay, $affectOnlyThisOrder = false) {
+        if ($daysToDelay < 1)
+            return false; // TODO: Throw error;
+
+        $this->deliver_by = $this->deliver_by->addDays($daysToDelay);
+        $this->save();
+
+        if ($affectOnlyThisOrder)
+            return $this;
+
+        return $this->plan->delayOrdersAfter($this, $daysToDelay);
+    }
+
     /**
      * @param Meal|null $meal
      * @return mixed
@@ -269,6 +282,13 @@ class Order extends Model
         }
     }
 
+    /**
+     * Cancels an order
+     */
+    public function cancel() {
+        $this->cancelled = true;
+        $this->save();
+    }
 
     /**
      * Scopes
