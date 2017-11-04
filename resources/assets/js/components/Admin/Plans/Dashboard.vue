@@ -46,9 +46,8 @@
                 <td>
                     {{ plan.package_label }}
                 </td>
-                <td>{{ plan.weeks_of_food }}</td>
-                <td>{{ plan.weeks_per_shipment }}</td>
-                <td>{{ plan.cost }}</td>
+                <td>{{ plan.weeks_of_food }} / {{ plan.weeks_per_shipment }}</td>
+                <td>${{ plan.weekly_cost }}</td>
                 <td>
                     <button class="btn btn-default btn-xs"
                             @click="createNote({ model: plan, type: 'plan' })"
@@ -105,8 +104,7 @@
                 'customer_name',
                 'pet_name',
                 'package_label',
-                'weeks_of_food',
-                'weeks_per_shipment',
+                'X wks food every X wks',
                 'cost',
             ];
             let numColumns = columns.length;
