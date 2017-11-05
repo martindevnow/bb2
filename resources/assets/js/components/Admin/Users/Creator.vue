@@ -156,9 +156,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('users', [
-            'closeUserCreatorModal'
-        ]),
         ...mapMutations('users', [
             'addToUsersCollection',
             'updateUser',
@@ -169,7 +166,7 @@ export default {
             return axios.post('/admin/api/users', this.form
             ).then(response => {
                 vm.addToUsersCollection(response.data);
-                vm.closeUserCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -181,7 +178,7 @@ export default {
                 this.form
             ).then(response => {
                 vm.updateUser(response.data);
-                vm.closeUserCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
