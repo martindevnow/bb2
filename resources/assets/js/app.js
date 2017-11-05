@@ -43,6 +43,7 @@ Vue.component('admin-dashboard', require('./components/Admin/Dashboard/Dashboard
 Vue.component('admin-meals-dashboard', require('./components/Admin/Meals/Dashboard.vue'));
 Vue.component('admin-meals-creator', require('./components/Admin/Meals/Creator.vue'));
 Vue.component('admin-meal-selector', require('./components/Admin/Meals/MealSelector.vue'));
+Vue.component('admin-meal-plan-editor', require('./components/Admin/Packages/MealPlanEditor.vue'));
 
 Vue.component('admin-meats-dashboard', require('./components/Admin/Meats/Dashboard.vue'));
 Vue.component('admin-meats-creator', require('./components/Admin/Meats/Creator.vue'));
@@ -53,6 +54,10 @@ Vue.component('admin-notes-creator', require('./components/Admin/Notes/Creator.v
 Vue.component('admin-orders-dashboard', require('./components/Admin/Orders/Dashboard.vue'));
 Vue.component('admin-orders-canceller', require('./components/Admin/Orders/OrderCanceller.vue'));
 
+Vue.component('admin-packages-dashboard', require('./components/Admin/Packages/Dashboard.vue'));
+Vue.component('admin-packages-creator', require('./components/Admin/Packages/Creator.vue'));
+Vue.component('admin-package-selector', require('./components/Admin/Packages/PackageSelector.vue'));
+
 Vue.component('admin-pets-dashboard', require('./components/Admin/Pets/Dashboard.vue'));
 Vue.component('admin-pets-creator', require('./components/Admin/Pets/Creator.vue'));
 Vue.component('admin-pet-selector', require('./components/Admin/Pets/PetSelector.vue'));
@@ -60,11 +65,9 @@ Vue.component('admin-pet-selector', require('./components/Admin/Pets/PetSelector
 Vue.component('admin-plans-dashboard', require('./components/Admin/Plans/Dashboard.vue'));
 Vue.component('admin-plans-creator', require('./components/Admin/Plans/Creator.vue'));
 
-Vue.component('admin-packages-dashboard', require('./components/Admin/Packages/Dashboard.vue'));
-Vue.component('admin-packages-creator', require('./components/Admin/Packages/Creator.vue'));
-Vue.component('admin-package-selector', require('./components/Admin/Packages/PackageSelector.vue'));
-Vue.component('admin-meal-selector', require('./components/Admin/Meals/MealSelector.vue'));
-Vue.component('admin-meal-plan-editor', require('./components/Admin/Packages/MealPlanEditor.vue'));
+Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
+Vue.component('admin-purchase-order-builder', require('./components/Admin/PurchaseOrders/OrderBuilder.vue'));
+Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
 
 Vue.component('admin-topping-selector', require('./components/Admin/Toppings/ToppingSelector.vue'));
 
@@ -72,7 +75,6 @@ Vue.component('admin-users-dashboard', require('./components/Admin/Users/Dashboa
 Vue.component('admin-users-creator', require('./components/Admin/Users/Creator.vue'));
 Vue.component('admin-user-selector', require('./components/Admin/Users/UserSelector.vue'));
 
-Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
 
 
 /**

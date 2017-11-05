@@ -13,7 +13,7 @@ class PackagesController extends Controller {
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[] |Illuminate\Database\Eloquent\Collection
      */
     public function index() {
-        return Package::with(['meals'])->get();
+        return Package::with(['meals', 'meals.meats'])->get();
     }
 
     /**

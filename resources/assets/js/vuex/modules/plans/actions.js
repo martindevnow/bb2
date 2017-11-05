@@ -1,10 +1,18 @@
 export const loadPlans = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (!force && state.collection.length)
+            resolve(state.collection);
 
-    axios.get('/admin/api/plans')
-        .then(response => commit('populatePlansCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/plans')
+            .then(response => {
+                commit('populatePlansCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
 
 export const openPlanCreatorModal = (context) => {
