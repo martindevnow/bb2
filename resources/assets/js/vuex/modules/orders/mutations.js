@@ -1,10 +1,11 @@
 export const populateOrdersCollection = (state, data) => {
     state.collection = data.map(order => {
-        let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+        let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / order.plan.pet.daily_meals * 454 / 100).toFixed(0);
+        let daily_meals = order.plan.pet.daily_meals;
         let package_label = order.plan.package.label;
         let pet_breed_customer = order.plan.pet.name + ' (' + order.plan.pet.breed + ') - ' + order.customer.name;
         let deliver_by = order.deliver_by.slice(0,10);
-        return {...order, package_label, pet_breed_customer, meal_size, deliver_by };
+        return {...order, package_label, pet_breed_customer, meal_size, deliver_by, daily_meals };
     });
 };
 

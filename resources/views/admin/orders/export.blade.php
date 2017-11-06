@@ -124,19 +124,19 @@
 
                     <div class="meal-weight col-sm-3">
                         <div class="label label-top">Meal Size (g)</div>
-                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }}</div>
+                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }} (x {{ $order->plan->pet->daily_meals }} daily meals)</div>
                     </div>
 
                     <div class="delivery-date col-sm-5">
                         <div class="label label-top">Delivery Date</div>
-                        <div class="value">{{ $order->deliver_by->format('D, M jS') }}</div>
+                        <div class="value">{{ $order->deliver_by->format('D, M jS') }} [{{ $order->plan->weeks_of_food_per_shipment }} wk(s) of food]</div>
                     </div>
                 </div>
                 <div class="body">
                     <table class="table table-bordered table-striped table-responsive">
                         <thead>
                         <tr>
-                            <td><span class="package-name">{{ $order->plan->package->label }}</span> <i>Toppings</i></td>
+                            <td><span class="package-name">{{ $order->plan->package->label }}</span> <i>Toppings</i> -- [{{ $order->plan->weeks_of_food_per_shipment * 7 * $order->plan->pet->daily_meals }} total meals]</td>
                             <td>#</td>
                             <td>M</td>
                             <td>T</td>
