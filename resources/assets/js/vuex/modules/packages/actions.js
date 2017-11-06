@@ -18,7 +18,7 @@ export const editPackage = (context, pkg) => {
 export const loadPackages = ({commit, state}, force = false) => {
     return new Promise((resolve, reject) => {
         if (!force && state.collection.length)
-            resolve(state.collection);
+            return resolve(state.collection);
 
         axios.get('/admin/api/packages')
             .then(response => {

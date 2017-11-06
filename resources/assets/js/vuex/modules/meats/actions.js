@@ -1,7 +1,7 @@
 export const loadMeats = ({commit, state}, force = false) => {
     return new Promise((resolve, reject) => {
         if (! force && state.collection.length)
-            resolve(state.collection);
+            return resolve(state.collection);
 
         axios.get('/admin/api/meats')
             .then(response => {

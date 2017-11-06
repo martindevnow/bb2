@@ -17,7 +17,7 @@ export const editMeal = (context, meal) => {
 export const loadMeals = ({commit, state}, force = false) => {
     return new Promise((resolve, reject) => {
         if (! force && state.collection.length)
-            resolve(state.collection);
+            return resolve(state.collection);
 
         axios.get('/admin/api/meals')
         .then(response => {

@@ -61,10 +61,19 @@ export const closeCancellationModal = (context) => {
 };
 
 export const loadOrders = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (! force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/orders')
-        .then(response => commit('populateOrdersCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/orders')
+            .then(response => {
+                commit('populateOrdersCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
+
 };

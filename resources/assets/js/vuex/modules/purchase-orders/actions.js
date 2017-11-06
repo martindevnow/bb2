@@ -1,10 +1,19 @@
 export const loadPurchaseOrders = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (! force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/purchase-orders')
-        .then(response => commit('populatePurchaseOrdersCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/purchase-orders')
+            .then(response => {
+                commit('populatePurchaseOrdersCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
+
 };
 
 export const openOrderedModal = (context, purchaseOrder) => {
