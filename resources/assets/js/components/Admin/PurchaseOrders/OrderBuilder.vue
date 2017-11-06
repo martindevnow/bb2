@@ -23,7 +23,7 @@
             </tbody>
         </table>
         <button class="btn btn-primary"
-                @click="calculate()"
+                @click="calculateNew()"
         >Calculate</button>
 
         <table class="table table-bordered table-striped">
@@ -110,6 +110,17 @@
             ]),
             getMealSize(weight, activity_level) {
                 return weight * activity_level / 100 / 2 * 454;
+            },
+            isBreakfast(meal) {
+                return (
+                       meal.pivot.calendar_code == 'B1'
+                    || meal.pivot.calendar_code == 'B2'
+                    || meal.pivot.calendar_code == 'B3'
+                    || meal.pivot.calendar_code == 'B4'
+                    || meal.pivot.calendar_code == 'B5'
+                    || meal.pivot.calendar_code == 'B6'
+                    || meal.pivot.calendar_code == 'B7'
+                );
             },
             clearPackagesToOrder() {
                 this.packagesToOrder.map(pkg => {
@@ -206,6 +217,26 @@
                 orderingMeals.forEach(meal => {
                     meal.meats.forEach(meat => {
                         vm.addMeatToOrder(meat.id, meal.weightToOrder / meal.meats.length);
+                    });
+                });
+            },
+            calculateNew() {
+                let vm = this;
+
+                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
+                orderingPlans.forEach(plan => {
+                    plan.package.meals.forEach(meal => {
+                        meal.meats.forEach(meat => {
+                            let meat_weight = vm.getMealSize(plan.pet_weight, plan.pet_activity_level);
+                            if (plan.pet.daily_meals == 3) {
+                                if (vm.isBreakfast(meal)) {
+                                    meat_weight = meat_weight * 2 / 3 * 2; //
+                                } else {
+                                    meat_weight = meat_weight * 2 / 3; //   1/2 ->  2/2 -> 2/6 -> 1/3
+                                }
+                            }
+                            vm.addMeatToOrder(meat.id, meat_weight);
+                        });
                     });
                 });
             }
