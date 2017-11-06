@@ -1,15 +1,24 @@
 <template>
     <div>
         <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Pet / Plan</th>
+                <th>Wks/Shipment</th>
+                <th>
+                    Wks to Order
+                    <button class="btn btn-xs btn-primary" @click="defaultPlansToOrder()">Default</button>
+                    <button class="btn btn-xs btn-warning" @click="clearPlansToOrder()">Clear</button>
+                </th>
+            </tr>
+            </thead>
             <tbody>
             <tr v-for="(plan, index) in plansToOrder">
                 <td>{{ plan.pet.name }} - on {{ plan.package.label }} bento ...</td>
-                <td>{{ plan.weeks_of_food_per_shipment }} weeks at a time</td>
+                <td>{{ plan.weeks_of_food_per_shipment }}</td>
                 <td>
-                    weeks to order:
                     <input type="text" v-model="plansToOrder[index].weeksToOrder">
                 </td>
-
             </tr>
             </tbody>
         </table>
@@ -163,7 +172,16 @@
                     return meat;
                 });
             },
-
+            clearPlansToOrder() {
+                this.plansToOrder = this.plansToOrder.map(plan => {
+                    plan.weeksToOrder = 0;
+                    return plan;
+                });
+            },
+            defaultPlansToOrder() {
+                this.plansToOrder = [];
+                this.populatePlansToOrder();
+            },
             calculate() {
                 let vm = this;
 
