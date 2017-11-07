@@ -25,6 +25,16 @@ export const closePlanCreatorModal = (context) => {
     context.commit('deselectPlan');
 };
 
+export const openMealReplacementModal = (context, plan) => {
+    context.commit('setSelectedPlan', plan);
+    context.commit('showMealReplacementModal');
+};
+
+export const closeMealReplacementModal = (context) => {
+    context.commit('hideMealReplacementModal');
+    context.commit('deselectPlan');
+};
+
 export const editPlan = (context, plan) => {
     context.commit('setSelectedPlan', plan);
     context.commit('showPlanCreatorModal');

@@ -26,6 +26,14 @@ export const hidePlanCreatorModal = (state) => {
     state.show.planCreatorModal = false;
 };
 
+export const showMealReplacementModal = (state) => {
+    state.show.mealReplacementModal = true;
+};
+
+export const hideMealReplacementModal = (state) => {
+    state.show.mealReplacementModal = false;
+};
+
 export const enableEditMode = (state) => {
     state.mode = 'EDIT';
 };

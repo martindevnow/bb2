@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Martin\Customers\Pet;
+use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 
 class PlansController extends Controller {
@@ -68,5 +69,23 @@ class PlansController extends Controller {
 
         $plan->update($validData);
         return $plan->fresh(['customer', 'pet', 'package']);
+    }
+
+    /**
+     * @param Plan $plan
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function replaceMeal(Plan $plan, Request $request) {
+        $validData = $request->validate([
+            'removed_meal_id'   => 'required|exists:meals,id',
+            'added_meal_id'     => 'required|exists:meals,id',
+        ]);
+
+        $removedMeal = Meal::find($validData['removed_meal_id']);
+        $addedMeal = Meal::find($validData['added_meal_id']);
+        $plan->replaceMeal($removedMeal)->withMeal($addedMeal)->save();
+
+        return response('Success', 200);
     }
 }
