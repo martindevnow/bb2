@@ -54,6 +54,11 @@
                     >
                         + Note
                     </button>
+                    <button class="btn btn-xs btn-primary"
+                            @click="openMealReplacementModal(plan)"
+                    >
+                        Replace Meal
+                    </button>
                     <button class="btn btn-primary btn-xs"
                             @click="editPlan(plan)"
                     >
@@ -82,10 +87,19 @@
                             @close="closeNoteCreatorModal()"
         >
             <admin-notes-creator @cancelled="closeNoteCreatorModal()"
-                                 @saved="closeNoteCreatorModal"
+                                 @saved="closeNoteCreatorModal()"
                                  slot="body"
             >
             </admin-notes-creator>
+        </admin-common-modal>
+        <admin-common-modal v-if="show.mealReplacementModal"
+                            @close="closeMealReplacementModal()"
+        >
+            <admin-plans-meal-replacement @cancelled="closeMealReplacementModal()"
+                                          @saved="closeMealReplacementModal()"
+                                          slot="body"
+            >
+            </admin-plans-meal-replacement>
         </admin-common-modal>
     </div>
 </template>
@@ -127,6 +141,8 @@
             ...mapActions('plans', [
                 'openPlanCreatorModal',
                 'closePlanCreatorModal',
+                'openMealReplacementModal',
+                'closeMealReplacementModal',
                 'loadPlans',
                 'editPlan',
             ]),

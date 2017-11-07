@@ -62,6 +62,7 @@ Route::post('/orders/{order}/cancel', 'OrdersController@cancel');
 
 Route::resource('pets', 'PetsController');
 
+Route::post('plans/{plan}/replaceMeal', 'PlansController@replaceMeal');
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {

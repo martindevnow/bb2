@@ -16,6 +16,7 @@ use Martin\Products\Meal;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Underscore\Types\Object;
 
 class Plan extends Model
 {
@@ -291,6 +292,13 @@ class Plan extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mealReplacements() {
+        return $this->hasMany(MealReplacement::class, 'plan_id');
+    }
+
+    /**
      * Orders
      */
 
@@ -318,7 +326,24 @@ class Plan extends Model
         $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
         $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
-        $counted = $this->package->meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
+
+
+        $meals = $this->package->meals;
+        $replacements = $this->mealReplacements;
+
+        foreach($replacements as $replacement) {
+            $meals = $meals->map(function($meal) use ($replacement) {
+                if ($meal->id === $replacement->removed_meal_id) {
+                    $newMeal = clone $replacement->addedMeal;
+                    $newMeal->pivot = new Object();
+                    $newMeal->pivot->calendar_code = $meal->pivot->calendar_code;
+                    return $newMeal;
+                }
+                return $meal;
+            });
+        }
+
+        $counted = $meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
             $calendar_code = $meal->calendar_code ?: $meal->pivot->calendar_code;
             $increment = in_array($calendar_code, $breakfasts) ? $breakfast_modifier : 0;
             $meal->count = 1 + $increment;
@@ -511,6 +536,17 @@ class Plan extends Model
         $this->package_id = $package_id;
         $this->save();
         return $this;
+    }
+
+    /**
+     * @param Meal $meal
+     * @return MealReplacement
+     */
+    public function replaceMeal(Meal $meal) {
+        return new MealReplacement([
+            'plan_id'           => $this->id,
+            'removed_meal_id'   => $meal->id,
+        ]);
     }
 
 }
