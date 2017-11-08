@@ -56,6 +56,8 @@ class Plan extends Model
         'hash',
     ];
 
+    protected $appends = ['meals'];
+
     /**
      * Fields which are cast to type of Carbon/Carbon
      *
@@ -296,6 +298,28 @@ class Plan extends Model
      */
     public function mealReplacements() {
         return $this->hasMany(MealReplacement::class, 'plan_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMealsAttribute() {
+//        $package = Package::with('meals', 'meals.meats')->find($this->package_id);
+//        $meals = $package->meals;
+        $meals = $this->package->meals()->with('meats')->get();
+        $replacements = $this->mealReplacements;
+
+        foreach($replacements as $replacement) {
+            $meals = $meals->map(function($meal) use ($replacement) {
+                if ($meal->id === $replacement->removed_meal_id) {
+                    $newMeal = clone $replacement->addedMeal()->with('meats')->first();
+                    $newMeal->pivot = clone $meal->pivot;
+                    return $newMeal;
+                }
+                return $meal;
+            });
+        }
+        return $meals;
     }
 
     /**

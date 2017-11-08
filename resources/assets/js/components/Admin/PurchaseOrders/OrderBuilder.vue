@@ -23,7 +23,7 @@
             </tbody>
         </table>
         <button class="btn btn-primary"
-                @click="calculateNew()"
+                @click="calculateFinal()"
         >Calculate</button>
 
         <table class="table table-bordered table-striped">
@@ -193,39 +193,58 @@
                 this.plansToOrder = [];
                 this.populatePlansToOrder();
             },
-            calculate() {
+//            calculate() {
+//                let vm = this;
+//
+//                // clear out old calculations...
+//                this.clearPackagesToOrder();
+//                this.clearMealsToOrder();
+//                this.clearMeatsToOrder();
+//
+//                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
+//                orderingPlans.forEach(plan => {
+//                    vm.addPackageToOrder(plan.package.id, plan.weeksToOrder, plan.pet_weight, plan.pet_activity_level);
+//                });
+//
+//                let orderingPackages = this.packagesToOrder.filter(pkg => pkg.mealSizeToOrder);
+//                orderingPackages.forEach(pkg => {
+//                    pkg.meals.forEach(meal => {
+//                        vm.addMealToOrder(meal.id, pkg.mealSizeToOrder);
+//                    });
+//                });
+//
+//                let orderingMeals = this.mealsToOrder.filter(meal => meal.weightToOrder);
+//                orderingMeals.forEach(meal => {
+//                    meal.meats.forEach(meat => {
+//                        vm.addMeatToOrder(meat.id, meal.weightToOrder / meal.meats.length);
+//                    });
+//                });
+//            },
+//            calculateNew() {
+//                let vm = this;
+//
+//                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
+//                orderingPlans.forEach(plan => {
+//                    plan.package.meals.forEach(meal => {
+//                        meal.meats.forEach(meat => {
+//                            let meat_weight = vm.getMealSize(plan.pet_weight, plan.pet_activity_level);
+//                            if (plan.pet.daily_meals == 3) {
+//                                if (vm.isBreakfast(meal)) {
+//                                    meat_weight = meat_weight * 2 / 3 * 2; //
+//                                } else {
+//                                    meat_weight = meat_weight * 2 / 3; //   1/2 ->  2/2 -> 2/6 -> 1/3
+//                                }
+//                            }
+//                            vm.addMeatToOrder(meat.id, meat_weight);
+//                        });
+//                    });
+//                });
+//            },
+            calculateFinal() {
                 let vm = this;
-
-                // clear out old calculations...
-                this.clearPackagesToOrder();
-                this.clearMealsToOrder();
-                this.clearMeatsToOrder();
-
                 let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
                 orderingPlans.forEach(plan => {
-                    vm.addPackageToOrder(plan.package.id, plan.weeksToOrder, plan.pet_weight, plan.pet_activity_level);
-                });
-
-                let orderingPackages = this.packagesToOrder.filter(pkg => pkg.mealSizeToOrder);
-                orderingPackages.forEach(pkg => {
-                    pkg.meals.forEach(meal => {
-                        vm.addMealToOrder(meal.id, pkg.mealSizeToOrder);
-                    });
-                });
-
-                let orderingMeals = this.mealsToOrder.filter(meal => meal.weightToOrder);
-                orderingMeals.forEach(meal => {
-                    meal.meats.forEach(meat => {
-                        vm.addMeatToOrder(meat.id, meal.weightToOrder / meal.meats.length);
-                    });
-                });
-            },
-            calculateNew() {
-                let vm = this;
-
-                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
-                orderingPlans.forEach(plan => {
-                    plan.package.meals.forEach(meal => {
+                    plan.meals.forEach(meal => {
                         meal.meats.forEach(meat => {
                             let meat_weight = vm.getMealSize(plan.pet_weight, plan.pet_activity_level);
                             if (plan.pet.daily_meals == 3) {
