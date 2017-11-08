@@ -35,7 +35,27 @@
                     {{ order.plan.package.label }}
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
-                <td>{{ order.deliver_by }}</td>
+                <td v-if="orderBeingEdited != order.id">
+                    {{ order.deliver_by }}
+                    <button class="btn btn-xs btn-default"
+                            @click="orderBeingEdited = order.id"
+                    >
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </td>
+                <td v-if="orderBeingEdited == order.id">
+                    <datepicker :value="order.deliver_by"
+                                format="yyyy-MM-dd"
+                                input-class="form-control"
+                                @input="updateDeliverBy(order, $event)"
+                    >
+                    </datepicker>
+                    <button class="btn btn-danger"
+                            @click="orderBeingEdited = null"
+                    >
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
                 <td v-if="! order.cancelled">
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
@@ -118,11 +138,15 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
+import Datepicker from 'vuejs-datepicker';
 
 export default {
     mixins: [
         isSortable
     ],
+    components: {
+        Datepicker
+    },
     data() {
         let columns = [
             'pet_breed_customer',
@@ -140,7 +164,8 @@ export default {
         return {
             columns: columns,
             numColumns: numColumns,
-            sortOrders: sortOrders
+            sortOrders: sortOrders,
+            orderBeingEdited: null,
         }
     },
     mounted() {
@@ -162,13 +187,20 @@ export default {
         ...mapActions('packages', [
             'loadPackages',
         ]),
-        mealSize(order) {
-            return (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+//        editDeliverBy(order) {
+//            this.ordersBeingEdited[order.id] = true;
+//        },
+//        editingDeliverBy(order) {
+//            return this.ordersBeingEdited[order.id] === true;
+//        },
+        updateDeliverBy(order, event) {
+            console.log('order');
+            console.log(order);
+            console.log('event');
+            console.log(event);
+
         },
-        onSelect(val) {
-            console.log('selected package...');
-            console.log(val);
-        }
+
     },
     computed: {
         ...mapState('orders', [

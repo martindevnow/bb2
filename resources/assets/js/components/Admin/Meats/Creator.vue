@@ -123,18 +123,11 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-import Datepicker from 'vuejs-datepicker';
-import { BasicSelect, ModelListSelect } from 'vue-search-select'
 
 export default {
     mixins: [
         hasErrors
     ],
-    components: {
-        Datepicker,
-        BasicSelect,
-        ModelListSelect,
-    },
     data() {
         return {
             form: {
