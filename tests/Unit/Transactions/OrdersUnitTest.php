@@ -392,10 +392,94 @@ class OrdersUnitTest extends TestCase
             )->format('Y-m-d'),
             $order3->deliver_by->format('Y-m-d')
         );
+    }
+
+    /** @test */
+    public function moving_the_deliver_by_date_EARLIER_can_update_future_orders_too() {
+        $this->buildPlan([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
+
+        $this->buildOrder();
+        $this->buildOrder();
+
+        $this->assertCount(2, $this->order);
+
+        // Original is 4 days after Plan is created
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->format('Y-m-d'),
+            $this->order[0]->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->addWeek()->format('Y-m-d'),
+            $this->order[1]->deliver_by->format('Y-m-d')
+        );
 
 
+        // We want to ship out next day
+        $newDelivery = Carbon::now()->addDays(1);
+        $applyToFuture = true;
 
+        // Update the order
+        $this->order[0]->updateDeliverBy($newDelivery->format('Y-m-d'), $applyToFuture);
 
+        // Refresh these from the DB
+        $this->refreshOrder(0);
+        $this->refreshOrder(1);
+
+        // Delivery should be updated
+        $this->assertEquals(
+            $newDelivery->format('Y-m-d'),
+            $this->order[0]->deliver_by->format('Y-m-d')
+        );
+
+        // Next order delivery should be 1 week later
+        $this->assertEquals(
+            $newDelivery->addWeek()->format('Y-m-d'),
+            $this->order[1]->deliver_by->format('Y-m-d')
+        );
+    }
+
+    /** @test */
+    public function moving_the_deliver_by_date_LATER_can_update_future_orders_too() {
+        $this->buildPlan([
+            'weeks_of_food_per_shipment'    => 1,
+            'ships_every_x_weeks'           => 1,
+        ]);
+
+        $this->buildOrder();
+        $this->buildOrder();
+
+        $this->assertCount(2, $this->order);
+
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->format('Y-m-d'),
+            $this->order[0]->deliver_by->format('Y-m-d')
+        );
+        $this->assertEquals(
+            Carbon::now()->addDays(4)->addWeek()->format('Y-m-d'),
+            $this->order[1]->deliver_by->format('Y-m-d')
+        );
+
+        // We want to ship out a week from now (3 days later than normal)
+        $newDelivery = Carbon::now()->addWeek();
+        $applyToFuture = true;
+
+        $this->order[0]->updateDeliverBy($newDelivery->format('Y-m-d'), $applyToFuture);
+
+        $this->refreshOrder(0);
+        $this->refreshOrder(1);
+
+        $this->assertEquals(
+            $newDelivery->format('Y-m-d'),
+            $this->order[0]->deliver_by->format('Y-m-d')
+        );
+
+        $this->assertEquals(
+            $newDelivery->addWeek()->format('Y-m-d'),
+            $this->order[1]->deliver_by->format('Y-m-d')
+        );
     }
 
 }

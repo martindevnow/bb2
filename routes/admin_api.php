@@ -59,6 +59,7 @@ Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
 Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 Route::post('/orders/{order}/cancel', 'OrdersController@cancel');
+Route::post('/orders/{order}/deliverBy', 'OrdersController@updateDeliverBy');
 
 Route::resource('pets', 'PetsController');
 

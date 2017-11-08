@@ -44,7 +44,7 @@
                     </button>
                 </td>
                 <td v-if="orderBeingEdited == order.id">
-                    <datepicker :value="order.deliver_by"
+                    <datepicker :value="simpleDate(order.deliver_by)"
                                 format="yyyy-MM-dd"
                                 input-class="form-control"
                                 @input="updateDeliverBy(order, $event)"
@@ -139,6 +139,8 @@
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
 import Datepicker from 'vuejs-datepicker';
+import swal from 'sweetalert2';
+import moment from 'moment';
 
 export default {
     mixins: [
@@ -194,12 +196,62 @@ export default {
 //            return this.ordersBeingEdited[order.id] === true;
 //        },
         updateDeliverBy(order, event) {
-            console.log('order');
-            console.log(order);
-            console.log('event');
-            console.log(event);
+            let vm = this;
 
+            let newDeliverByDate = moment(event).format('YYYY-MM-DD');
+            swal({
+                title: 'Are you sure?',
+                text: "Do you want to update this order's deliver by date to "
+                    + newDeliverByDate + "?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Update'
+            }).then(function () {
+                swal({
+                    title: 'Future Orders',
+                    text: "Should future orders adjust to ship on the same day of the week?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update future orders'
+                }).then(function () {
+                    vm.orderBeingEdited = null;
+                    axios.post('/admin/api/orders/' + order + '/deliverBy', {
+                        deliver_by: newDeliverByDate,
+                        updateFuture: 1,
+                    }).then(response => {
+                        swal(
+                            'Updated!',
+                            'Future orders have been updated as well.',
+                            'success'
+                        )
+                    }).catch(error => {
+                        swal('Error', 'Something went wrong...', 'error');
+                    });
+                }).catch(function() {
+                    vm.orderBeingEdited = null;
+                    axios.post('/admin/api/orders/' + order + '/deliverBy', {
+                        deliver_by: newDeliverByDate,
+                        updateFuture: 0,
+                    }).then(response => {
+                        swal(
+                            'Updated',
+                            'Only this order was updated.',
+                            'success'
+                        )
+                    }).catch(error => {
+                        swal('Error', 'Something went wrong...', 'error');
+                    });
+
+                });
+            });
         },
+        simpleDate(dateData) {
+            return moment(dateData).toDate();
+        }
 
     },
     computed: {
