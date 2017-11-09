@@ -119,6 +119,11 @@ class OrdersController extends Controller
         return response('success', 200);
     }
 
+    /**
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function updateDeliverBy(Order $order, Request $request) {
         $validData = $request->validate([
             'deliver_by'    => 'required|date_format:Y-m-d',
