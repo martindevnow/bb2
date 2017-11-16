@@ -39,3 +39,15 @@ export const updateUser = (state, payload) => {
         return model;
     });
 };
+
+export const attachAddressToUser = (state, payload) => {
+    console.log('payload');
+    console.log(payload);
+
+    state.collection = state.collection.map(model => {
+        if (model.id === state.selected.id) {
+            model.addresses = [ ...model.addresses, payload ];
+        }
+        return model;
+    });
+};

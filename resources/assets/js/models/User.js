@@ -30,5 +30,8 @@ export const loadUserFromData = function(data) {
         return loadPetFromData(pet);
     }) : null;
 
+    // ToDo: build a loader for Addresses...
+    user.addresses = data.addresses ? data.addresses : null;
+
     return user;
 };

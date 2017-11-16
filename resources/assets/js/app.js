@@ -40,6 +40,9 @@ Vue.component('cart-summary', require('./components/Cart/Summary.vue'));
  */
 Vue.component('admin-dashboard', require('./components/Admin/Dashboard/Dashboard.vue'));
 
+Vue.component('admin-addresses-creator', require('./components/Admin/Addresses/Creator.vue'));
+Vue.component('admin-address-selector', require('./components/Admin/Addresses/AddressSelector.vue'));
+
 Vue.component('admin-meals-dashboard', require('./components/Admin/Meals/Dashboard.vue'));
 Vue.component('admin-meals-creator', require('./components/Admin/Meals/Creator.vue'));
 Vue.component('admin-meal-selector', require('./components/Admin/Meals/MealSelector.vue'));

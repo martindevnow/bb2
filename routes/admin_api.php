@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Http\Request;
+use Martin\ACL\User;
+use Martin\Core\Address;
 use Martin\Products\Topping;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 
-
+Route::resource('addresses', 'AddressesController');
 Route::get('couriers', 'CouriersController@index');
 
 Route::resource('packages', 'PackagesController');
@@ -81,6 +83,16 @@ Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersControlle
 
 Route::get('toppings', function() {
     return Topping::all();
+});
+
+Route::put('users/{user}/attachAddress', function(User $user, Request $request) {
+    $validData = $request->validate([
+        'address_id' => 'required|exists:addresses,id',
+    ]);
+
+    $address = Address::find($validData['address_id']);
+    $user->addresses()->save($address);
+    return response('Success', 200);
 });
 
 Route::resource('users', 'UsersController');
