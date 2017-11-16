@@ -5,7 +5,7 @@
     >
         <div class="row" v-if="addAddress">
             <div class="col-sm-12">
-                .. Save the address to return to user view ...
+                <h1>Editing Addresses ...</h1>
             </div>
         </div>
         <div class="row" v-if="! addAddress">
@@ -147,7 +147,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="! addAddress">
             <div class="col-sm-12">
                 <button class="btn btn-block btn-primary"
                         @click="addAddress = true"
