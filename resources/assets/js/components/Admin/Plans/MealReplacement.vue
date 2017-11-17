@@ -2,6 +2,38 @@
     <form @keydown="errors.clear($event.target.name)"
           @submit.prevent=""
     >
+
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>{{ selected.package.label }} Bento</h1>
+                <div class="row">
+                    <div class="col-sm-12" v-for="meal in selected.package.meals">
+                        {{ meal.label }} - {{ meal.pivot.calendar_code }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h1>Customized for {{ selected.pet.name }}</h1>
+                <div class="row">
+                    <div class="col-sm-12" v-for="meal in selected.meals">
+                        {{ meal.label }} - {{ meal.pivot.calendar_code }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Replacements</h1>
+                <div class="row">
+                    <div class="col-sm-12" v-for="repl in selected.meal_replacements">
+                        {{ getMealById(repl.removed_meal_id).label }} => {{ getMealById(repl.added_meal_id).label }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
@@ -69,8 +101,11 @@
                 }).catch(error => {
                     console.log(error);
                 });
-
-
+            },
+            getMealById(meal_id) {
+                return this.collection.filter(meal => {
+                    return meal.id === meal_id;
+                })[0];
             }
         },
         computed: {
@@ -78,6 +113,9 @@
                 'show',
                 'selected',
             ]),
+            ...mapState('meals', [
+                'collection'
+            ])
         },
         mounted() {
             this.loadMeals();
