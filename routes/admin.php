@@ -57,6 +57,9 @@ Route::resource('/pets', 'PetsController');
 // Plans
 Route::resource('/plans', 'PlansController');
 
+// Products
+Route::resource('/products', 'ProductsController');
+
 // Purchase Orders
 Route::resource('/purchase-orders', 'PurchaseOrdersController');
 
