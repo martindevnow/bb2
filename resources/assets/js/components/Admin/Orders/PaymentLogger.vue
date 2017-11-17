@@ -136,7 +136,7 @@ export default {
         ]),
     },
     mounted() {
-        this.format = 'cash';
+        this.format = this.selected.plan.payment_method;
         this.received_at = new Date();
         this.amount_paid = this.selected.plan.weekly_cost;
     }
