@@ -12,7 +12,7 @@ class PlansController extends Controller {
 
     public function index() {
         return Plan::active()
-            ->with(['deliveryAddress', 'customer', 'package', 'pet', 'package.meals', 'package.meals.meats'])
+            ->with(['notes', 'deliveryAddress', 'customer', 'package', 'pet', 'package.meals', 'package.meals.meats'])
             ->get();
     }
 

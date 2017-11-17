@@ -61,6 +61,13 @@ Route::post('notes', function(Request $request) {
     ]);
 });
 
+Route::delete('notes/{id}', function ($id) {
+    if (\Martin\Core\Note::where('id', $id)->delete())
+        return response('success', 200);
+
+    return response('error', 500);
+});
+
 Route::get('orders', 'OrdersController@index');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
 Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
