@@ -28,6 +28,11 @@
                 <div class="row">
                     <div class="col-sm-12" v-for="repl in selected.meal_replacements">
                         {{ getMealById(repl.removed_meal_id).label }} => {{ getMealById(repl.added_meal_id).label }}
+                        <button class="btn btn-xs btn-danger"
+                                @click="deleteReplacement(repl.id)"
+                        >
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -106,6 +111,14 @@
                 return this.collection.filter(meal => {
                     return meal.id === meal_id;
                 })[0];
+            },
+            deleteReplacement(id) {
+                let vm = this;
+                axios.delete('/admin/api/mealReplacements/' + id).then(response => {
+                    alert('Removed');
+                }).catch(error => {
+                    alert('Error');
+                });
             }
         },
         computed: {

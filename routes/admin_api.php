@@ -29,6 +29,13 @@ Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
 
+Route::delete('mealReplacements/{id}', function($id) {
+    if (\Martin\Subscriptions\MealReplacement::where('id', $id)->delete())
+        return response('Success', 200);
+
+    return response('failed', 500);
+});
+
 Route::post('notes', function(Request $request) {
     $valid = $request->validate([
         'modelName' => 'required|string',
