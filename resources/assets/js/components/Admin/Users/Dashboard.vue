@@ -1,5 +1,20 @@
 <template>
     <div>
+        <div class="" v-if="show.userCreatorModal">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <h1>User</h1>
+                    <admin-users-creator @saved="closeUserCreatorModal()"
+                                         @cancelled="closeUserCreatorModal()"
+                                         slot="body"
+                                         :showAddresses="mode == 'EDIT'"
+                    ></admin-users-creator>
+                </div>
+            </div>
+        </div>
+
+
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
@@ -56,7 +71,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.userCreatorModal"
+        <admin-common-modal v-if="show.userCreatorModal && false"
                             @close="closeUserCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
@@ -64,6 +79,7 @@
             <admin-users-creator @saved="closeUserCreatorModal()"
                                  @cancelled="closeUserCreatorModal()"
                                  slot="body"
+                                 :showAddresses="mode == 'EDIT'"
             ></admin-users-creator>
         </admin-common-modal>
     </div>

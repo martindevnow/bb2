@@ -12,7 +12,7 @@ class PlansController extends Controller {
 
     public function index() {
         return Plan::active()
-            ->with(['customer', 'package', 'pet', 'package.meals', 'package.meals.meats'])
+            ->with(['deliveryAddress', 'customer', 'package', 'pet', 'package.meals', 'package.meals.meats'])
             ->get();
     }
 
@@ -26,6 +26,7 @@ class PlansController extends Controller {
         $validData = $request->validate([
             'pet_id'                    => 'required|exists:pets,id',
             'package_id'                => 'required|exists:packages,id',
+            'delivery_address_id'       => 'required|exists:addresses,id',
             'shipping_cost'             => 'required|numeric',
             'weekly_cost'               => 'required|numeric',
             'weeks_of_food_per_shipment'    => 'required|integer',
@@ -54,6 +55,7 @@ class PlansController extends Controller {
         $validData = $request->validate([
             'pet_id'                    => 'required|exists:pets,id',
             'package_id'                => 'required|exists:packages,id',
+            'delivery_address_id'       => 'required|exists:addresses,id',
             'shipping_cost'             => 'required|numeric',
             'weekly_cost'               => 'required|numeric',
             'weeks_of_food_per_shipment'    => 'required|integer',

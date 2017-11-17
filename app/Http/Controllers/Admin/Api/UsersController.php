@@ -13,7 +13,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[] |Illuminate\Database\Eloquent\Collection
      */
     public function index() {
-        return User::with(['pets'])->get();
+        return User::with(['pets', 'addresses'])->get();
     }
 
     /**
