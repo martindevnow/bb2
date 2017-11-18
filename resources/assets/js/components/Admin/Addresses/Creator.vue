@@ -211,10 +211,23 @@
                     vm.errors.record(error.response.data.errors);
                 });
             },
-            populateFormFromAddress(address) {
-                for(let field of this.form) {
-                    if (this.form.hasOwnProperty(field))
-                        this.form[field] = address[field];
+            update() {
+                let vm = this;
+
+                return axios.patch('/admin/api/addresses/' + this.selected.id, this.form
+                ).then(response => {
+                    vm.updateAddress(response.data);
+                    vm.$emit('saved', response.data);
+                }).catch(error => {
+                    vm.errors.record(error.response.data.errors);
+                });
+            },
+
+            populateFormFromModel(model) {
+                for (let prop in this.form) {
+                    if (this.form.hasOwnProperty(prop)) {
+                        this.form[prop] = model[prop];
+                    }
                 }
             }
         },
@@ -228,12 +241,12 @@
         },
         mounted() {
             if (this.mode == 'EDIT') {
-                this.populateFormFromAddress(this.selected);
+                this.populateFormFromModel(this.selected);
             }
         },
         watch: {
             selected(newSelected) {
-                this.populateFormFromAddress(newSelected);
+                this.populateFormFromModel(newSelected);
             }
         }
     }

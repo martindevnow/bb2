@@ -40,4 +40,35 @@ class AddressesController extends Controller {
         return $address;
     }
 
+    /**
+     * @param Address $address
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(Address $address, Request $request) {
+        $validData = $request->validate([
+            'name'          => 'nullable',
+            'description'   => 'nullable',
+            'company'       => 'nullable',
+            'street_1'      => 'required',
+            'street_2'      => 'nullable',
+            'city'          => 'required',
+            'province'      => 'required',
+            'postal_code'   => 'required',
+            'country'       => 'required',
+            'phone'         => 'nullable',
+            'buzzer'        => 'nullable',
+        ]);
+
+        $address->update($validData);
+        return $address->fresh();
+    }
+
+    public function destroy($id) {
+        if (Address::where($id)->delete()) {
+            return response('Success', 200);
+        }
+        return response('Error', 500);
+    }
+
 }
