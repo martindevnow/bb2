@@ -133,7 +133,7 @@
                 >
                     <label>Delivery Address</label>
                     <admin-address-selector v-model="form.delivery_address"
-                                        :userId="form.pet.owner_id"
+                                        :userId="form.pet.owner ? form.pet.owner.id : 0"
                                         @input="errors.clear('delivery_address_id')"
                     >
                     </admin-address-selector>
