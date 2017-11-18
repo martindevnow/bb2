@@ -135,15 +135,29 @@
             <div class="col-sm-12">
                 <h1> Current Addresses:</h1>
             </div>
-            <div class="col-sm-12" v-for="address in selected.addresses">
-                <button class="btn btn-default btn-block" disabled>
-                    {{ address.street_1 }}
-                    {{ address.street_2 }}
-                    {{ address.city }}
-                    {{ address.province }}
-                    {{ address.postal_code }}
-                    {{ address.country }}
-                </button>
+            <div class="col-sm-12">
+                <div class="row" v-for="address in selected.addresses">
+                    <div class="col-xs-10">
+                        <button class="btn btn-default btn-block"
+                                @click="editUsersAddress(address)"
+                        >
+                            <i class="fa fa-pencil"></i>
+                            {{ address.street_1 }}
+                            {{ address.street_2 }}
+                            {{ address.city }}
+                            {{ address.province }}
+                            {{ address.postal_code }}
+                            {{ address.country }}
+                        </button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-danger btn-block"
+                                @click="deleteAddress(address)"
+                        >
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -202,6 +216,9 @@ export default {
             'updateUser',
             'attachAddressToUser',
         ]),
+        ...mapActions('addresses', [
+            'editAddress'
+        ]),
         save() {
             let vm = this;
 
@@ -225,6 +242,14 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
+        deleteAddress(address) {
+            let vm = this;
+            axios.delete('/admin/api/addresses/' + address.id).then(response => {
+                alert('Deleted');
+            }).catch(error => {
+                alert('Error');
+            });
+        },
         attachAddress(data) {
             let vm = this;
             axios.put('/admin/api/users/' + this.selected.id + '/attachAddress',
@@ -244,6 +269,10 @@ export default {
                 }
             }
             this.form.password = '';
+        },
+        editUsersAddress(address) {
+            this.addAddress = true;
+            this.editAddress(address);
         }
     },
     computed: {

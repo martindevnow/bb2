@@ -572,4 +572,15 @@ class OrdersUnitTest extends TestCase
         );
     }
 
+    /** @test */
+    public function needs_picking_scope_ignores_cancelled_orders() {
+        $this->buildOrder();
+        $this->assertCount(1, Order::needsPicking()->get());
+        $this->assertCount(1, Order::needsPacking()->get());
+
+        $this->order[0]->cancel();
+        $this->assertCount(0, Order::needsPicking()->get());
+        $this->assertCount(0, Order::needsPacking()->get());
+    }
+
 }

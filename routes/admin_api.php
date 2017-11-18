@@ -91,6 +91,8 @@ Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request)
         return response('Success', 200);
 });
 
+Route::resource('products', 'ProductsController');
+
 Route::get('purchase-orders', 'PurchaseOrdersController@index');
 Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
 Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');

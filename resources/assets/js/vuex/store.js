@@ -16,6 +16,7 @@ import orders from './modules/orders/store';
 import packages from './modules/packages/store';
 import pets from './modules/pets/store';
 import plans from './modules/plans/store';
+import products from './modules/products/store';
 import purchaseOrders from './modules/purchase-orders/store';
 import toppings from './modules/toppings/store';
 import users from './modules/users/store';
@@ -34,6 +35,7 @@ export default new Vuex.Store({
         packages,
         pets,
         plans,
+        products,
         purchaseOrders,
         toppings,
         users,

@@ -139,7 +139,7 @@ abstract class TestCase extends BaseTestCase
         $this->plan = $this->createPlanForBasicBento($overrides);
     }
 
-    public function buildOrder($planOverrides = null) {
+    public function buildOrder($planOverrides = []) {
         if (! $this->plan)
             $this->buildPlan($planOverrides);
         $this->order[] = $this->plan->generateOrder();

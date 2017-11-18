@@ -69,6 +69,10 @@ Vue.component('admin-plans-dashboard', require('./components/Admin/Plans/Dashboa
 Vue.component('admin-plans-creator', require('./components/Admin/Plans/Creator.vue'));
 Vue.component('admin-plans-meal-replacement', require('./components/Admin/Plans/MealReplacement.vue'));
 
+Vue.component('admin-products-dashboard', require('./components/Admin/Products/Dashboard.vue'));
+Vue.component('admin-products-creator', require('./components/Admin/Products/Creator.vue'));
+Vue.component('admin-product-selector', require('./components/Admin/Products/ProductSelector.vue'));
+
 Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));
 Vue.component('admin-purchase-order-builder', require('./components/Admin/PurchaseOrders/OrderBuilder.vue'));
 Vue.component('admin-purchase-orders-dashboard', require('./components/Admin/PurchaseOrders/Dashboard.vue'));

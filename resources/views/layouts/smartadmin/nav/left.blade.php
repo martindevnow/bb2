@@ -64,6 +64,10 @@
                     <span class="menu-item-parent">Plans</span></a>
             </li>
             <li>
+                <a href="/admin/products"><i class="fa"></i>
+                    <span class="menu-item-parent">Products</span></a>
+            </li>
+            <li>
                 <a href="/admin/purchase-orders"><i class="fa fa-repeat"></i>
                     <span class="menu-item-parent">Purchase Orders</span></a>
             </li>
