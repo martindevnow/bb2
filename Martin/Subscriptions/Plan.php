@@ -425,7 +425,7 @@ class Plan extends Model
 
         $tax = $this->deliveryAddress->getTax();
 
-        return $this->orders()->create([
+        $order = $this->orders()->create([
             'customer_id'   => $this->customer_id,
             'delivery_address_id'   => $this->delivery_address_id,
 //            'shipping_cost' => $this->deliveryAddress
@@ -436,6 +436,16 @@ class Plan extends Model
             'deliver_by'    => $delivery_date,
             'plan_order'    => true,
         ]);
+
+        if (! $this->hasProducts() )
+            return $order;
+
+        // TODO: Attach the details to the order....
+
+    }
+
+    public function hasProducts() {
+        return !! $this->products->count();
     }
 
     /**

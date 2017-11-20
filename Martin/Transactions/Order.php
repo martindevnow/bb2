@@ -340,7 +340,7 @@ class Order extends Model
     }
 
 
-    /**
+    /*
      * Relationships
      */
 
@@ -352,6 +352,13 @@ class Order extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function delivery() {
+        return $this->hasOne(Delivery::class, 'order_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function deliveryAddress() {
@@ -359,17 +366,10 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function plan() {
-        return $this->belongsTo(Plan::class, 'plan_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function payments() {
-        return $this->morphMany(Payment::class, 'paymentable');
+    public function details() {
+        return $this->hasMany(OrderDetail::class);
     }
 
     /**
@@ -380,9 +380,16 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function delivery() {
-        return $this->hasOne(Delivery::class, 'order_id');
+    public function payments() {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plan() {
+        return $this->belongsTo(Plan::class, 'plan_id');
     }
 }

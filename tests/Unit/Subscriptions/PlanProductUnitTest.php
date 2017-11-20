@@ -44,6 +44,17 @@ class PlanProductUnitTest extends TestCase
 
         $this->plan = $this->plan->fresh(['products']);
         $this->assertCount(0, $this->plan->products);
+    }
 
+    /** @test */
+    public function an_order_generated_from_a_plan_with_products_has_these_details() {
+        $this->buildPlan();
+
+        $product = factory(Product::class)->create();
+        $this->plan->addProduct($product);
+
+        $this->buildOrder();
+
+        $this->assertCount(1, $this->order[0]->details);
     }
 }
