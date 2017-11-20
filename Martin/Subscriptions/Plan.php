@@ -13,6 +13,7 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
+use Martin\Products\Product;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -252,6 +253,14 @@ class Plan extends Model
      */
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products() {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('quantity');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function customer() {
@@ -304,8 +313,6 @@ class Plan extends Model
      * @return mixed
      */
     public function getMealsAttribute() {
-//        $package = Package::with('meals', 'meals.meats')->find($this->package_id);
-//        $meals = $package->meals;
         $meals = $this->package->meals()->with('meats')->get();
         $replacements = $this->mealReplacements;
 
@@ -573,4 +580,67 @@ class Plan extends Model
         ]);
     }
 
+
+
+    /*
+     * Products
+     */
+
+
+    /**
+     * @param $product
+     * @return Model
+     */
+    public function addProduct($product, $quantity = 1) {
+        if (is_string($product))
+            return $this->products()->save(
+                Product::whereCode($product)->firstOrFail(),
+                compact('quantity')
+            );
+
+        if ($product instanceof Product)
+            return $this->products()->save(
+                $product,
+                compact('quantity')
+            );
+
+        return $this->products()->save(
+            Product::findOrFail($product),
+            compact('quantity')
+        );
+    }
+
+
+    public function hasProduct($product) {
+        if ($this->products->count() == 0)
+            return false;
+
+        if ($product instanceof Product) {
+            return !! $this->products->filter(function($val, $key) use ($product) {
+                return $val->id === $product->id;
+            })->count();
+        }
+
+        if (is_integer($product))
+            return !! $this->products->filter(function($val, $key) use ($product) {
+                return $val->id === $product;
+            })->count();
+
+
+        // TODO: Throw error here?
+        return false;
+    }
+
+
+    public function removeProduct($product) {
+        if ($product instanceof Product)
+            return $this->products()->detach($product->id);
+
+        if (is_int($product))
+            return $this->products()->detach($product);
+
+        // TODO: Throw error here?
+        return false;
+
+    }
 }
