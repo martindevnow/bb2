@@ -51,3 +51,7 @@ export const attachAddressToUser = (state, payload) => {
         return model;
     });
 };
+
+export const removeAddress = (state, payload) => {
+    console.log('in the user domain of mutations...');
+};
