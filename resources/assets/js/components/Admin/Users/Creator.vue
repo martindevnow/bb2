@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="! addAddress">
+        <div class="row" v-if="! addAddress && showAddresses">
             <div class="col-sm-12">
                 <button class="btn btn-block btn-primary"
                         @click="addAddress = true"

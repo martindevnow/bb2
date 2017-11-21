@@ -8,13 +8,6 @@
 
     <ul id="sparks" class="">
         <li class="sparks-info">
-            <a href="/admin/orders/create">
-                <button class="btn btn-block btn-primary">
-                    <i class="fa fa-wrench"></i> Create New
-                </button>
-            </a>
-        </li>
-        <li class="sparks-info">
             <a href="/admin/orders/export/packing/2">
                 <button class="btn btn-block btn-primary btn-lg">
                     <i class="fa fa-wrench"></i> Export Packing (Big)

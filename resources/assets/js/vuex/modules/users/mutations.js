@@ -53,5 +53,13 @@ export const attachAddressToUser = (state, payload) => {
 };
 
 export const removeAddress = (state, payload) => {
-    console.log('in the user domain of mutations...');
+    state.collection.map((user) => {
+        let addresses = user.addresses.filter((address) => {
+            if (address.id !== payload.id)
+                return true;
+
+        });
+        user.addresses = [...addresses];
+        return user;
+    });
 };

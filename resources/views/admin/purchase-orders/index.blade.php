@@ -1,19 +1,5 @@
 @extends('layouts.smartadmin.app')
 
-@section('breadcrumb_right')
-
-<ul id="sparks" class="">
-    <li class="sparks-info">
-        <a href="/admin/purchase-orders/create">
-            <button class="btn btn-block btn-primary">
-                <i class="fa fa-wrench"></i> Create New
-            </button>
-        </a>
-    </li>
-</ul>
-
-@endsection
-
 @section('content')
 
     <div class="jarviswidget jarviswidget-color-blue jarviswidget-sortable" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false" role="widget">

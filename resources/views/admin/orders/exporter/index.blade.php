@@ -4,11 +4,6 @@
     <i class="fa-fw fa fa-home"></i> Dashboard > Orders <span>> Exporter</span>
 @endsection
 
-@section('breadcrumb_right')
-
-
-@endsection
-
 @section('content')
 
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">
