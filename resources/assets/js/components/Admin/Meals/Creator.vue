@@ -8,12 +8,13 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('code') }"
                 >
-                    <label for="code">code</label>
+                    <label for="code">Code</label>
                     <input type="text"
                            class="form-control"
                            id="code"
                            name="code"
                            v-model="form.code"
+                           placeholder="M-CH-BL"
                     >
                     <span class="help-block">{{ errors.get('code') }}</span>
                 </div>
@@ -22,12 +23,13 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('label') }"
                 >
-                    <label for="label">label</label>
+                    <label for="label">Label</label>
                     <input type="text"
                            class="form-control"
                            id="label"
                            name="label"
                            v-model="form.label"
+                           placeholder="Chicken (Boneless)"
                     >
                     <span class="help-block">{{ errors.get('label') }}</span>
                 </div>
@@ -39,7 +41,7 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('meal_value') }"
                 >
-                    <label for="meal_value">meal_value</label>
+                    <label for="meal_value">Meal Value (1 or 2 meals worth of food)</label>
                     <input type="text"
                            class="form-control"
                            id="meal_value"

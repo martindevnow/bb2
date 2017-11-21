@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-xs-6">
                             <button class="btn btn-primary"
-                                    @click="openUserCreatorModal()"
+                                    @click="create()"
                             >
                                 New
                             </button>
@@ -88,6 +88,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as actions from '../../../vuex/modules/users/userActions';
 
     export default {
         mixins: [
@@ -113,17 +114,16 @@
             }
         },
         mounted() {
-            this.loadUsers();
+            this.$store.dispatch('users/' + actions.FETCH_ALL);
         },
         methods: {
             ...mapActions('users', [
-                'loadUsers',
-                'openUserCreatorModal',
-                'closeUserCreatorModal',
-                'editUser',
+                actions.CREATE,
+                actions.EDIT,
+                actions.FETCH_ALL,
             ]),
-            log(message) {
-                console.log(message);
+            create() {
+                this.$store.dispatch('users/' + actions.CREATE);
             }
         },
         computed: {

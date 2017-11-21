@@ -1,65 +1,69 @@
 import {loadUserFromData} from "../../../models/User";
+import * as userMutations from './userMutations';
 
-export const populateUsersCollection = (state, data) => {
-    state.collection = data.map(userData => loadUserFromData(userData));
-};
+export default {
+    [userMutations.POPULATE_COLLECTION]: (state, data) => {
+        state.collection = data.map(userData => loadUserFromData(userData));
+    },
 
-export const addToUsersCollection = (state, userData) => {
-    state.collection.unshift(loadUserFromData(userData));
-};
+    [userMutations.ADD_TO_COLLECTION]: (state, userData) => {
+        state.collection.unshift(loadUserFromData(userData));
+    },
 
-export const showUserCreatorModal = (state) => {
-    state.show.userCreatorModal = true;
-};
+    [userMutations.CREATE_MODE]: (state) => {
+        state.show.userCreatorModal = true;
+        state.mode = null;
+    },
 
-export const hideUserCreatorModal = (state) => {
-    state.show.userCreatorModal = false;
-};
+    [userMutations.EDIT_MODE]: (state) => {
+        state.show.userCreatorModal = true;
+        state.mode = 'EDIT';
+    },
 
-export const setSelectedUser = (state, user) => {
-    state.selected = user;
-};
+    [userMutations.CLEAR_MODE]: (state) => {
+        state.show.userCreatorModal = false;
+        state.mode = null;
+    },
 
-export const deselectUser = (state) => {
-    state.selected = null;
-};
+    [userMutations.SELECT]: (state, user) => {
+        state.selected = user;
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [userMutations.DESELECT]: (state) => {
+        state.selected = null;
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
-
-export const updateUser = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id == payload.id)
-            return loadUserFromData(payload);
-        return model;
-    });
-};
-
-export const attachAddressToUser = (state, payload) => {
-    console.log('payload');
-    console.log(payload);
-
-    state.collection = state.collection.map(model => {
-        if (model.id === state.selected.id) {
-            model.addresses = [ ...model.addresses, payload ];
-        }
-        return model;
-    });
-};
-
-export const removeAddress = (state, payload) => {
-    state.collection.map((user) => {
-        let addresses = user.addresses.filter((address) => {
-            if (address.id !== payload.id)
-                return true;
-
+    [userMutations.UPDATE]: (state, payload) => {
+        state.collection = state.collection.map(model => {
+            if (model.id == payload.id)
+                return loadUserFromData(payload);
+            return model;
         });
-        user.addresses = [...addresses];
-        return user;
-    });
+    },
+
+    [userMutations.ATTACH_ADDRESS]: (state, payload) => {
+        console.log('payload');
+        console.log(payload);
+
+        state.collection = state.collection.map(model => {
+            if (model.id === state.selected.id) {
+                model.addresses = [ ...model.addresses, payload ];
+            }
+            return model;
+        });
+    },
+
+    [userMutations.REMOVE_ADDRESS]: (state, payload) => {
+        state.collection.map((user) => {
+            let addresses = user.addresses.filter((address) => {
+                if (address.id !== payload.id)
+                    return true;
+
+            });
+            user.addresses = [...addresses];
+            return user;
+        });
+    }
+
+
 };

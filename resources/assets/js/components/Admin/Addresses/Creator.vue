@@ -5,12 +5,13 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="name">name</label>
+                    <label for="name">Name / Label</label>
                     <input class="form-control"
                            type="text"
                            id="name"
                            name="name"
                            v-model="form.name"
+                           placeholder="Home / Office / Cottage ..."
                     >
                     <span class="help-block">{{ errors.get('name') }}</span>
                 </div>
@@ -45,7 +46,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="street_2">Street (cont..)</label>
+                    <label for="street_2">Street (Unit...)</label>
                     <input class="form-control"
                            type="text"
                            id="street_2"
