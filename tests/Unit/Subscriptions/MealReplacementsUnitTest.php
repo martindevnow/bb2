@@ -66,9 +66,8 @@ class MealReplacementsUnitTest extends TestCase
 
         $this->refreshPlan();
 
-        print_r(get_class($this->plan->meals));
-        print_r($this->plan->meals->toArray());
+//        print_r(get_class($this->plan->meals->toArray()));
+//        print_r($this->plan->meals->toArray());
         $this->assertTrue($this->plan->meals instanceof \Illuminate\Support\Collection);
-
     }
 }

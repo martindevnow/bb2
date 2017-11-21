@@ -77,7 +77,13 @@ class PlansUnitTest extends TestCase
             'hash'=> 'THIS_PLAN',
             'internal_cost' => $internal_costInCents
         ]);
-        DB::table('plans')->insert($plan->toArray());
+        $plan = $plan->toArray();
+
+        unset($plan['meals']);
+        unset($plan['package']);
+        unset($plan['meal_replacements']);
+
+        DB::table('plans')->insert($plan);
         $plan_clone = Plan::where('hash', 'THIS_PLAN')->firstOrFail();
         $this->assertEquals($internal_costInDollars, $plan_clone->internal_cost);
     }
