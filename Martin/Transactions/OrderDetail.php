@@ -15,6 +15,8 @@ class OrderDetail extends Model
         'unit_cost',
         'extended_cost',
         'tax',
+        'orderable_type',
+        'orderable_id',
     ];
 
     /*

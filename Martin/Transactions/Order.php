@@ -12,6 +12,7 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
+use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Stripe\Collection;
@@ -391,5 +392,38 @@ class Order extends Model
      */
     public function plan() {
         return $this->belongsTo(Plan::class, 'plan_id');
+    }
+
+    /**
+     * @param Product $product
+     * @param int $quantity
+     */
+    public function addProduct(Product $product, $quantity = 1) {
+        $this->details()->create([
+            'label'             => $product->name,
+            'quantity'          => $quantity,
+            'unit_cost'         => $product->price,
+            'extended_cost'     => $product->price * $quantity,
+            'tax'               => 0,
+            'orderable_type'    => get_class($product),
+            'orderable_id'      => $product->id,
+        ]);
+    }
+
+    public function hasProduct(Product $product) {
+        return !! $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->count();
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product) {
+        $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->delete();
     }
 }

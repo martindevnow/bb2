@@ -440,8 +440,11 @@ class Plan extends Model
         if (! $this->hasProducts() )
             return $order;
 
-        // TODO: Attach the details to the order....
+        foreach ($this->products as $prod) {
+            $order->addProduct($prod);
+        }
 
+        return $order;
     }
 
     public function hasProducts() {

@@ -56,5 +56,10 @@ class PlanProductUnitTest extends TestCase
         $this->buildOrder();
 
         $this->assertCount(1, $this->order[0]->details);
+        $detail = $this->order[0]->details->first();
+
+        $this->assertEquals(1, $detail->quantity);
+        $this->assertEquals($product->price, $detail->extended_cost);
+        $this->assertEquals($product->name, $detail->label);
     }
 }
