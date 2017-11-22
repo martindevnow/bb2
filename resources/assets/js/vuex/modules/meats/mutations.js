@@ -1,41 +1,44 @@
 import {loadMeatFromData} from "../../../models/Meat";
+import * as mutations from './mutationTypes';
 
-export const populateMeatsCollection = (state, data) => {
-    state.collection = data.map(meatData => loadMeatFromData(meatData));
-};
 
-export const addToMeatsCollection = (state, meat) => {
-    state.collection.unshift(loadMeatFromData(meat));
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadMeatFromData(modelData));
+    },
 
-export const showMeatCreatorModal = (state) => {
-    state.show.meatCreatorModal = true;
-};
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        state.collection.ushift(loadMeatFromData(modelData));
+    },
 
-export const hideMeatCreatorModal = (state) => {
-    state.show.meatCreatorModal = false;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const setSelectedMeat = (state, meat) => {
-    state.selected = meat;
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
 
-export const deselectMeat = (state) => {
-    state.selected = {};
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const updateMeat = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
-            return loadMeatFromData(payload);
-        return model;
-    });
+    [mutations.UPDATE] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadMeatFromData(payload);
+            return model;
+        });
+    },
 };

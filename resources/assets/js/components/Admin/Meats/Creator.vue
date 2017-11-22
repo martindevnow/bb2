@@ -123,6 +123,8 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import * as actions from '../../../vuex/modules/meats/actionTypes';
+import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
 export default {
     mixins: [
@@ -140,18 +142,9 @@ export default {
         };
     },
     methods: {
-        ...mapActions('meats', [
-            'editMeat',
-        ]),
         ...mapMutations('meats', [
             'addToMeatsCollection',
             'updateMeat',
-        ]),
-        ...mapActions('meats', [
-            'loadMeats',
-        ]),
-        ...mapActions('toppings', [
-            'loadToppings',
         ]),
         populateFormFromMeat(meat) {
             this.form.code = meat.code;
@@ -162,10 +155,9 @@ export default {
         },
         save() {
             let vm = this;
-            return axios.post('/admin/api/meats', {
-                ...this.form,
-            }).then(response => {
-                vm.addToMeatsCollection(response.data);
+            this.$store.dispatch('meats/' + actions.SAVE,
+                this.form
+            ).then(response => {
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -173,10 +165,9 @@ export default {
         },
         update() {
             let vm = this;
-
-            return axios.patch('/admin/api/meats/' + this.selected.id, this.form
+            this.$store.dispatch('meats/' + actions.UPDATE,
+                this.form
             ).then(response => {
-                vm.updateMeat(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -188,13 +179,9 @@ export default {
         ...mapState('meats', {
             'meats': 'collection'
         }),
-        ...mapState('toppings', {
-            'toppings': 'collection'
-        }),
     },
     mounted() {
-        this.loadMeats();
-        this.loadToppings();
+        this.$store.dispatch('meats/' + actions.FETCH_ALL);
         if (this.mode == 'EDIT') {
             this.populateFormFromMeat(this.selected);
         }

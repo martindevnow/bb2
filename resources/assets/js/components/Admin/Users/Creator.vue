@@ -187,17 +187,14 @@
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-//    import { ModelListSelect } from 'vue-search-select';
-    import * as actions from '../../../vuex/modules/users/userActions';
-    import * as mutations from '../../../vuex/modules/users/userMutations';
+    import * as actions from '../../../vuex/modules/users/actionTypes';
+    import * as mutations from '../../../vuex/modules/users/mutationTypes';
 
 export default {
     mixins: [
         hasErrors
     ],
-    components: {
-//        ModelListSelect,
-    },
+    components: {},
     props: ['showAddresses'],
     data() {
         return {
@@ -213,23 +210,22 @@ export default {
         };
     },
     methods: {
-//        ...mapMutations('users', [
-//            'addToUsersCollection',
-//            'updateUser',
-//            'attachAddressToUser',
-//        ]),
-//        ...mapActions('addresses', [
-//            'editAddress',
-//            'deleteAddress',
-//        ]),
+        ...mapMutations('users', [
+            'addToUsersCollection',
+            'updateUser',
+            'attachAddressToUser',
+        ]),
+        ...mapActions('addresses', [
+            'editAddress',
+            'deleteAddress',
+        ]),
         save() {
             let vm = this;
             this.$store.dispatch('users/' + actions.SAVE,
                 this.form
             ).then(response => {
                 vm.$emit('saved');
-            })
-            .catch(error => {
+            }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
@@ -239,8 +235,7 @@ export default {
                 this.form
             ).then(response => {
                 vm.$emit('saved');
-            })
-            .catch(error => {
+            }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },

@@ -1,33 +1,41 @@
-export const loadMeats = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-        axios.get('/admin/api/meats')
-            .then(response => {
-                commit('populateMeatsCollection', response.data);
-                resolve(response);
-            })
-            .catch(error => {
-                console.log(error);
-                reject(error);
-            });
-    });
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const openMeatCreatorModal = (context) => {
-    context.commit('showMeatCreatorModal');
-};
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-export const closeMeatCreatorModal = (context) => {
-    context.commit('hideMeatCreatorModal');
-    context.commit('disableEditMode');
-    context.commit('deselectMeat');
-};
+            axios.get('/admin/api/meats')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
 
-export const editMeat = (context, meat) => {
-    context.commit('setSelectedMeat', meat);
-    context.commit('showMeatCreatorModal');
-    context.commit('enableEditMode');
+    [actions.SAVE] ({commit}, formData) {
+
+    },
+
+    [actions.UPDATE] ({commit}, formData) {
+
+    },
+
+
 };

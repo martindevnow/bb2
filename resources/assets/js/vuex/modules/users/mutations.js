@@ -1,41 +1,41 @@
 import {loadUserFromData} from "../../../models/User";
-import * as userMutations from './userMutations';
+import * as mutations from './mutationTypes';
 
 export default {
-    [userMutations.POPULATE_COLLECTION]: (state, data) => {
-        state.collection = data.map(userData => loadUserFromData(userData));
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadUserFromData(modelData));
     },
 
-    [userMutations.ADD_TO_COLLECTION]: (state, userData) => {
-        console.log('userData');
-        console.log(userData);
-        state.collection.unshift(loadUserFromData(userData));
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        console.log('modelData');
+        console.log(modelData);
+        state.collection.unshift(loadUserFromData(modelData));
     },
 
-    [userMutations.CREATE_MODE]: (state) => {
-        state.show.userCreatorModal = true;
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
         state.mode = null;
     },
 
-    [userMutations.EDIT_MODE]: (state) => {
-        state.show.userCreatorModal = true;
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
         state.mode = 'EDIT';
     },
 
-    [userMutations.CLEAR_MODE]: (state) => {
-        state.show.userCreatorModal = false;
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
         state.mode = null;
     },
 
-    [userMutations.SELECT]: (state, user) => {
-        state.selected = user;
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
     },
 
-    [userMutations.DESELECT]: (state) => {
+    [mutations.DESELECT] (state) {
         state.selected = null;
     },
 
-    [userMutations.UPDATE]: (state, payload) => {
+    [mutations.UPDATE] (state, payload) {
         state.collection = state.collection.map(model => {
             if (model.id === payload.id)
                 return loadUserFromData(payload);
@@ -43,7 +43,7 @@ export default {
         });
     },
 
-    [userMutations.ATTACH_ADDRESS]: (state, payload) => {
+    [mutations.ATTACH_ADDRESS] (state, payload) {
         console.log('payload');
         console.log(payload);
 
@@ -55,7 +55,7 @@ export default {
         });
     },
 
-    [userMutations.REMOVE_ADDRESS]: (state, payload) => {
+    [mutations.REMOVE_ADDRESS] (state, payload) {
         state.collection.map((user) => {
             let addresses = user.addresses.filter((address) => {
                 if (address.id !== payload.id)

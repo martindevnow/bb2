@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="" v-if="show.userCreatorModal">
+        <div class="" v-if="show.creator">
             <div class="row">
 
                 <div class="col-sm-12">
@@ -71,7 +71,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.userCreatorModal && false"
+        <admin-common-modal v-if="show.creator && false"
                             @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
@@ -88,8 +88,8 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
-    import * as actions from '../../../vuex/modules/users/userActions';
-    import * as mutations from '../../../vuex/modules/users/userMutations';
+    import * as actions from '../../../vuex/modules/users/actionTypes';
+    import * as mutations from '../../../vuex/modules/users/mutationTypes';
 
     export default {
         mixins: [
