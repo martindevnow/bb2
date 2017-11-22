@@ -187,14 +187,16 @@
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import { ModelListSelect } from 'vue-search-select';
+//    import { ModelListSelect } from 'vue-search-select';
+    import * as actions from '../../../vuex/modules/users/userActions';
+    import * as mutations from '../../../vuex/modules/users/userMutations';
 
 export default {
     mixins: [
         hasErrors
     ],
     components: {
-        ModelListSelect,
+//        ModelListSelect,
     },
     props: ['showAddresses'],
     data() {
@@ -211,35 +213,34 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('users', [
-            'addToUsersCollection',
-            'updateUser',
-            'attachAddressToUser',
-        ]),
-        ...mapActions('addresses', [
-            'editAddress',
-            'deleteAddress',
-        ]),
+//        ...mapMutations('users', [
+//            'addToUsersCollection',
+//            'updateUser',
+//            'attachAddressToUser',
+//        ]),
+//        ...mapActions('addresses', [
+//            'editAddress',
+//            'deleteAddress',
+//        ]),
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/users', this.form
+            this.$store.dispatch('users/' + actions.SAVE,
+                this.form
             ).then(response => {
-                vm.addToUsersCollection(response.data);
                 vm.$emit('saved');
-            }).catch(error => {
+            })
+            .catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
         update() {
             let vm = this;
-
-            return axios.patch('/admin/api/users/' + this.selected.id,
+            this.$store.dispatch('users/' + actions.UPDATE,
                 this.form
             ).then(response => {
-                vm.updateUser(response.data);
                 vm.$emit('saved');
-            }).catch(error => {
+            })
+            .catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },

@@ -30,4 +30,30 @@ export default {
         });
     },
 
+    [userActions.SAVE] (context, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/users',
+                formData
+            ).then(response => {
+                context.commit(userMutations.ADD_TO_COLLECTION, response.data);
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        })
+    },
+
+    [userActions.UPDATE] (context, formData) {
+        return new Promise((resolve, reject) => {
+            axios.put('/admin/api/users/' + context.state.selected.id,
+                formData
+            ).then(response => {
+                context.commit(userMutations.UPDATE, response.data);
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        })
+    }
+
 };

@@ -5,8 +5,8 @@
 
                 <div class="col-sm-12">
                     <h1>User</h1>
-                    <admin-users-creator @saved="closeUserCreatorModal()"
-                                         @cancelled="closeUserCreatorModal()"
+                    <admin-users-creator @saved="closeCreator()"
+                                         @cancelled="closeCreator()"
                                          slot="body"
                                          :showAddresses="mode == 'EDIT'"
                     ></admin-users-creator>
@@ -59,7 +59,7 @@
                 <td>{{ user.getPets() }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editUser(user)"
+                            @click="edit(user)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -72,12 +72,12 @@
         </table>
 
         <admin-common-modal v-if="show.userCreatorModal && false"
-                            @close="closeUserCreatorModal()"
+                            @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
-            <admin-users-creator @saved="closeUserCreatorModal()"
-                                 @cancelled="closeUserCreatorModal()"
+            <admin-users-creator @saved="closeCreator()"
+                                 @cancelled="closeCreator()"
                                  slot="body"
                                  :showAddresses="mode == 'EDIT'"
             ></admin-users-creator>
@@ -89,6 +89,7 @@
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
     import * as actions from '../../../vuex/modules/users/userActions';
+    import * as mutations from '../../../vuex/modules/users/userMutations';
 
     export default {
         mixins: [
@@ -117,13 +118,14 @@
             this.$store.dispatch('users/' + actions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('users', [
-                actions.CREATE,
-                actions.EDIT,
-                actions.FETCH_ALL,
-            ]),
             create() {
                 this.$store.dispatch('users/' + actions.CREATE);
+            },
+            closeCreator() {
+                this.$store.commit('users/' + mutations.CLEAR_MODE)
+            },
+            edit(model) {
+                this.$store.dispatch('users/' + actions.EDIT, model);
             }
         },
         computed: {

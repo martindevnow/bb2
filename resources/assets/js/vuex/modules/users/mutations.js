@@ -7,6 +7,8 @@ export default {
     },
 
     [userMutations.ADD_TO_COLLECTION]: (state, userData) => {
+        console.log('userData');
+        console.log(userData);
         state.collection.unshift(loadUserFromData(userData));
     },
 
@@ -35,7 +37,7 @@ export default {
 
     [userMutations.UPDATE]: (state, payload) => {
         state.collection = state.collection.map(model => {
-            if (model.id == payload.id)
+            if (model.id === payload.id)
                 return loadUserFromData(payload);
             return model;
         });
@@ -64,6 +66,4 @@ export default {
             return user;
         });
     }
-
-
 };
