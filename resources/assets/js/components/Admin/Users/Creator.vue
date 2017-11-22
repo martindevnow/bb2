@@ -279,7 +279,8 @@ export default {
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromModel(newSelected);
+            if (newSelected)
+                this.populateFormFromModel(newSelected);
         }
     }
 }

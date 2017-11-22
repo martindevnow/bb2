@@ -142,11 +142,7 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('meats', [
-            'addToMeatsCollection',
-            'updateMeat',
-        ]),
-        populateFormFromMeat(meat) {
+        populateFormFromModel(meat) {
             this.form.code = meat.code;
             this.form.type = meat.type;
             this.form.variety = meat.variety;
@@ -175,20 +171,23 @@ export default {
         },
     },
     computed: {
-        ...mapState('meats', ['show', 'selected', 'mode']),
-        ...mapState('meats', {
-            'meats': 'collection'
-        }),
+        ...mapState('meats', [
+            'show',
+            'selected',
+            'mode',
+            'collection'
+        ]),
     },
     mounted() {
         this.$store.dispatch('meats/' + actions.FETCH_ALL);
         if (this.mode == 'EDIT') {
-            this.populateFormFromMeat(this.selected);
+            this.populateFormFromModel(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromMeat(newSelected);
+            if (newSelected)
+                this.populateFormFromModel(newSelected);
         }
     }
 }
