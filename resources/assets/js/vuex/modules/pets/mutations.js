@@ -5,8 +5,7 @@ export const populatePetsCollection = (state, data) => {
 };
 
 export const addToPetsCollection = (state, pet) => {
-    console.log(pet);
-    state.collection.unshift(pet);
+    state.collection.unshift(loadPetFromData(pet));
 };
 
 export const showPetCreatorModal = (state) => {

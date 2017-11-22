@@ -1,10 +1,18 @@
 export const loadPlans = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (!force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/plans')
-        .then(response => commit('populatePlansCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/plans')
+            .then(response => {
+                commit('populatePlansCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
 
 export const openPlanCreatorModal = (context) => {
@@ -14,6 +22,16 @@ export const openPlanCreatorModal = (context) => {
 export const closePlanCreatorModal = (context) => {
     context.commit('hidePlanCreatorModal');
     context.commit('disableEditMode');
+    context.commit('deselectPlan');
+};
+
+export const openMealReplacementModal = (context, plan) => {
+    context.commit('setSelectedPlan', plan);
+    context.commit('showMealReplacementModal');
+};
+
+export const closeMealReplacementModal = (context) => {
+    context.commit('hideMealReplacementModal');
     context.commit('deselectPlan');
 };
 

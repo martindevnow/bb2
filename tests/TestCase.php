@@ -71,7 +71,7 @@ abstract class TestCase extends BaseTestCase
             'code'  => 'chickenMeal',
         ]);
         $turkMeal = factory(Meal::class)->create([
-            'code'  => 'chickenMeal',
+            'code'  => 'turkeyMeal',
         ]);
 
         $chickenCost = 1;
@@ -129,5 +129,39 @@ abstract class TestCase extends BaseTestCase
 
         $plan->generateOrder();
         return $plan->orders->first();
+    }
+
+
+    public $plan;
+    public $order;
+
+    public function buildPlan($overrides = []) {
+        $this->plan = $this->createPlanForBasicBento($overrides);
+    }
+
+    public function buildOrder($planOverrides = []) {
+        if (! $this->plan)
+            $this->buildPlan($planOverrides);
+        $this->order[] = $this->plan->generateOrder();
+    }
+
+    public function packOrder($orderIndex, $numberOfWeeks){
+        $this->order[$orderIndex]->markAsPacked([
+            'weeks_packed' => $numberOfWeeks,
+        ]);
+    }
+
+    public function shipOrder($orderIndex, $numberOfWeeks){
+        $this->order[$orderIndex]->markAsShipped(factory(Delivery::class)->create([
+            'weeks_shipped' => $numberOfWeeks,
+        ]));
+    }
+
+    public function refreshOrder($orderIndex) {
+        $this->order[$orderIndex] = $this->order[$orderIndex]->fresh();
+    }
+
+    public function refreshPlan() {
+        $this->plan = $this->plan->fresh(['mealReplacements']);
     }
 }

@@ -20,12 +20,13 @@ class PetsController extends Controller {
      */
     public function store(Request $request) {
         $validData = $request->validate([
-            'name'  => 'required',
-            'breed' => '',
-            'weight'    => 'required|integer|min:1',
-            'birthday'  => 'nullable|date_format:Y-m-d',
-            'activity_level'  => 'required|numeric|min:1',
-            'owner_id'  => 'required|exists:users,id',
+            'name'              => 'required',
+            'breed'             => '',
+            'weight'            => 'required|integer|min:1',
+            'birthday'          => 'nullable|date_format:Y-m-d',
+            'activity_level'    => 'required|numeric|min:1',
+            'daily_meals'       => 'required|numeric|min:1',
+            'owner_id'          => 'required|exists:users,id',
         ]);
 
         $pet = Pet::create($validData);
@@ -41,12 +42,13 @@ class PetsController extends Controller {
      */
     public function update(Pet $pet, Request $request) {
         $validData = $request->validate([
-            'name'  => 'required',
-            'breed' => '',
-            'weight'    => 'required|integer|min:1',
-            'birthday'  => 'nullable|date_format:Y-m-d',
-            'activity_level'  => 'required|numeric|min:1',
-            'owner_id'  => 'required|exists:users,id',
+            'name'              => 'required',
+            'breed'             => '',
+            'weight'            => 'required|integer|min:1',
+            'birthday'          => 'nullable|date_format:Y-m-d',
+            'activity_level'    => 'required|numeric|min:1',
+            'daily_meals'       => 'required|numeric|min:1',
+            'owner_id'          => 'required|exists:users,id',
         ]);
 
         $pet->update($validData);

@@ -4,8 +4,8 @@ export const populateUsersCollection = (state, data) => {
     state.collection = data.map(userData => loadUserFromData(userData));
 };
 
-export const addToUsersCollection = (state, user) => {
-    state.collection.unshift(user);
+export const addToUsersCollection = (state, userData) => {
+    state.collection.unshift(loadUserFromData(userData));
 };
 
 export const showUserCreatorModal = (state) => {
@@ -33,6 +33,21 @@ export const disableEditMode = (state) => {
 };
 
 export const updateUser = (state, payload) => {
-    state.collection = state.collection.filter(model => model.id !== payload.id);
-    state.collection.unshift(payload);
+    state.collection = state.collection.map(model => {
+        if (model.id == payload.id)
+            return loadUserFromData(payload);
+        return model;
+    });
+};
+
+export const attachAddressToUser = (state, payload) => {
+    console.log('payload');
+    console.log(payload);
+
+    state.collection = state.collection.map(model => {
+        if (model.id === state.selected.id) {
+            model.addresses = [ ...model.addresses, payload ];
+        }
+        return model;
+    });
 };

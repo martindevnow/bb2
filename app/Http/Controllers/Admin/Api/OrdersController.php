@@ -118,5 +118,20 @@ class OrdersController extends Controller
         $order->cancel();
         return response('success', 200);
     }
+
+    /**
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updateDeliverBy(Order $order, Request $request) {
+        $validData = $request->validate([
+            'deliver_by'    => 'required|date_format:Y-m-d',
+            'updateFuture'  => 'nullable',
+        ]);
+
+        $order->updateDeliverBy($validData['deliver_by'], $validData['updateFuture']);
+        return response('Success', 200);
+    }
 }
 

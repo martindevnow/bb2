@@ -22,34 +22,7 @@ class OrdersDatesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $plan;
-    public $order;
 
-    public function buildPlan($overrides = null) {
-        $this->plan = $this->createPlanForBasicBento($overrides);
-    }
-
-    public function buildOrder($planOverrides = null) {
-        if (! $this->plan)
-            $this->buildPlan($planOverrides);
-        $this->order[] = $this->plan->generateOrder();
-    }
-
-    public function packOrder($orderIndex, $numberOfWeeks){
-        $this->order[$orderIndex]->markAsPacked([
-            'weeks_packed' => $numberOfWeeks,
-        ]);
-    }
-
-    public function shipOrder($orderIndex, $numberOfWeeks){
-        $this->order[$orderIndex]->markAsShipped(factory(Delivery::class)->create([
-            'weeks_shipped' => $numberOfWeeks,
-        ]));
-    }
-
-    public function refreshOrder($orderIndex) {
-        $this->order[$orderIndex] = $this->order[$orderIndex]->fresh();
-    }
 
     /** @test */
     public function a_normal_plan_operates_under_normal_circumstances() {

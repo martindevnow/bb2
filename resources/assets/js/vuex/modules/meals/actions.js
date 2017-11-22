@@ -15,10 +15,18 @@ export const editMeal = (context, meal) => {
 };
 
 export const loadMeals = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (! force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/meals')
-        .then(response => commit('populateMealsCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/meals')
+        .then(response => {
+            commit('populateMealsCollection', response.data);
+            resolve(response);
+        })
+        .catch(error => {
+            console.log(error);
+            reject(error);
+        });
+    });
 };

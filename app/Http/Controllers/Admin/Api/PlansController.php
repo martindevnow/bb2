@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Martin\Customers\Pet;
+use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 
 class PlansController extends Controller {
 
     public function index() {
         return Plan::active()
-            ->with(['customer', 'package', 'pet'])
+            ->with(['notes', 'deliveryAddress', 'customer', 'package', 'pet', 'package.meals', 'package.meals.meats'])
             ->get();
     }
 
@@ -25,6 +26,7 @@ class PlansController extends Controller {
         $validData = $request->validate([
             'pet_id'                    => 'required|exists:pets,id',
             'package_id'                => 'required|exists:packages,id',
+            'delivery_address_id'       => 'required|exists:addresses,id',
             'shipping_cost'             => 'required|numeric',
             'weekly_cost'               => 'required|numeric',
             'weeks_of_food_per_shipment'    => 'required|integer',
@@ -53,6 +55,7 @@ class PlansController extends Controller {
         $validData = $request->validate([
             'pet_id'                    => 'required|exists:pets,id',
             'package_id'                => 'required|exists:packages,id',
+            'delivery_address_id'       => 'required|exists:addresses,id',
             'shipping_cost'             => 'required|numeric',
             'weekly_cost'               => 'required|numeric',
             'weeks_of_food_per_shipment'    => 'required|integer',
@@ -68,5 +71,23 @@ class PlansController extends Controller {
 
         $plan->update($validData);
         return $plan->fresh(['customer', 'pet', 'package']);
+    }
+
+    /**
+     * @param Plan $plan
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function replaceMeal(Plan $plan, Request $request) {
+        $validData = $request->validate([
+            'removed_meal_id'   => 'required|exists:meals,id',
+            'added_meal_id'     => 'required|exists:meals,id',
+        ]);
+
+        $removedMeal = Meal::find($validData['removed_meal_id']);
+        $addedMeal = Meal::find($validData['added_meal_id']);
+        $plan->replaceMeal($removedMeal)->withMeal($addedMeal)->save();
+
+        return response('Success', 200);
     }
 }

@@ -3,6 +3,18 @@
           @submit.prevent=""
     >
         <div class="row">
+            <h1>Existing Notes</h1>
+            <div class="col-sm-12" v-if="targeted.model.comment"></div>
+            <div class="col-sm-12" v-for="note in targeted.model.notes">
+                {{ note.content }}
+                <button class="btn btn-xs btn-danger"
+                        @click="deleteNote(note.id)"
+                >
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-12">
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('content') }"
@@ -74,6 +86,13 @@
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
                 })
+            },
+            deleteNote(id) {
+                axios.delete('/admin/api/notes/' + id).then(response => {
+                    alert('deleted');
+                }).catch(error => {
+                    alert('error');
+                });
             }
         },
         computed: {

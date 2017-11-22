@@ -16,12 +16,20 @@ export const editPackage = (context, pkg) => {
 };
 
 export const loadPackages = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (!force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/packages')
-        .then(response => commit('populatePackagesCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/packages')
+            .then(response => {
+                commit('populatePackagesCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
 
 export const openMealPlanEditorModal = (context, pkg) => {

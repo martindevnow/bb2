@@ -291,6 +291,34 @@ class Order extends Model
     }
 
     /**
+     * @param $newDate
+     * @param bool $applyToFutureOrders
+     * @return bool
+     */
+    public function updateDeliverBy($newDate, $applyToFutureOrders = false) {
+        $oldDeliverBy = clone $this->deliver_by;
+        $this->deliver_by = Carbon::createFromFormat('Y-m-d', $newDate);
+
+        $this->save();
+        if (!$applyToFutureOrders) {
+            return true;
+        }
+
+        /** @var Carbon $oldDeliverBy */
+        if ($oldDeliverBy->lt($this->deliver_by)) {
+            $oldDeliverBy->subSecond();
+        } else {
+            $oldDeliverBy->addSecond();
+        }
+
+        /** @var Carbon $oldDeliverBy */
+        $daysToDelay = $oldDeliverBy->diff($this->deliver_by);
+        $daysToDelay = ($daysToDelay->days) * ($daysToDelay->invert ? -1 : 1);
+
+        $this->plan->delayOrdersAfter($this, $daysToDelay);
+    }
+
+    /**
      * Scopes
      */
 
@@ -299,14 +327,16 @@ class Order extends Model
      * @return mixed
      */
     public function scopeNeedsPacking(Builder $query) {
-        return $query->where('packed', '=', 0);
+        return $query->where('packed', '=', 0)
+            ->where('cancelled', 0);
     }
     /**
      * @param Builder $query
      * @return mixed
      */
     public function scopeNeedsPicking(Builder $query) {
-        return $query->where('picked', '=', 0);
+        return $query->where('picked', '=', 0)
+            ->where('cancelled', 0);
     }
 
 

@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Http\Request;
+use Martin\ACL\User;
+use Martin\Core\Address;
 use Martin\Products\Topping;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Martin\Transactions\Order;
 
-
+Route::resource('addresses', 'AddressesController');
 Route::get('couriers', 'CouriersController@index');
 
 Route::resource('packages', 'PackagesController');
@@ -26,6 +28,13 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
 Route::resource('meats', 'MeatsController');
 
 Route::resource('meals', 'MealsController');
+
+Route::delete('mealReplacements/{id}', function($id) {
+    if (\Martin\Subscriptions\MealReplacement::where('id', $id)->delete())
+        return response('Success', 200);
+
+    return response('failed', 500);
+});
 
 Route::post('notes', function(Request $request) {
     $valid = $request->validate([
@@ -52,6 +61,13 @@ Route::post('notes', function(Request $request) {
     ]);
 });
 
+Route::delete('notes/{id}', function ($id) {
+    if (\Martin\Core\Note::where('id', $id)->delete())
+        return response('success', 200);
+
+    return response('error', 500);
+});
+
 Route::get('orders', 'OrdersController@index');
 Route::post('/orders/{order}/paid', 'OrdersController@storePayment');
 Route::post('/orders/{order}/packed', 'OrdersController@markAsPacked');
@@ -59,9 +75,11 @@ Route::post('/orders/{order}/picked', 'OrdersController@markAsPicked');
 Route::post('/orders/{order}/shipped', 'OrdersController@storeShipment');
 Route::post('/orders/{order}/delivered', 'OrdersController@storeDelivery');
 Route::post('/orders/{order}/cancel', 'OrdersController@cancel');
+Route::post('/orders/{order}/deliverBy', 'OrdersController@updateDeliverBy');
 
 Route::resource('pets', 'PetsController');
 
+Route::post('plans/{plan}/replaceMeal', 'PlansController@replaceMeal');
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
@@ -73,12 +91,24 @@ Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request)
         return response('Success', 200);
 });
 
+Route::resource('products', 'ProductsController');
+
 Route::get('purchase-orders', 'PurchaseOrdersController@index');
 Route::post('purchase-orders/{purchaseOrder}/ordered', 'PurchaseOrdersController@storeOrdered');
 Route::post('purchase-orders/{purchaseOrder}/received', 'PurchaseOrdersController@storeReceived');
 
 Route::get('toppings', function() {
     return Topping::all();
+});
+
+Route::put('users/{user}/attachAddress', function(User $user, Request $request) {
+    $validData = $request->validate([
+        'address_id' => 'required|exists:addresses,id',
+    ]);
+
+    $address = Address::find($validData['address_id']);
+    $user->addresses()->save($address);
+    return response('Success', 200);
 });
 
 Route::resource('users', 'UsersController');

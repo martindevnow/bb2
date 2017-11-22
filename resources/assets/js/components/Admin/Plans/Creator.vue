@@ -126,6 +126,22 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group"
+                     :class="{ 'has-error': errors.has('delivery_address_id') }"
+                >
+                    <label>Delivery Address</label>
+                    <admin-address-selector v-model="form.delivery_address"
+                                        :userId="form.pet.owner ? form.pet.owner.id : 0"
+                                        @input="errors.clear('delivery_address_id')"
+                    >
+                    </admin-address-selector>
+                    <span class="help-block">{{ errors.get('delivery_address_id') }}</span>
+                </div>
+            </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-6">
@@ -175,6 +191,8 @@ export default {
     data() {
         return {
             form: {
+                delivery_address_id: 0,
+                delivery_address: {},
                 shipping_cost: 0,
                 package_id: 0,
                 pkg: {},
@@ -215,6 +233,7 @@ export default {
                 first_delivery_at,
                 package_id: this.form.pkg.id,
                 pet_id: this.form.pet.id,
+                delivery_address_id: this.form.delivery_address.id,
             }).then(response => {
                 vm.addToPlansCollection(response.data);
                 vm.$emit('saved');
@@ -231,6 +250,7 @@ export default {
                 first_delivery_at,
                 package_id: this.form.pkg.id,
                 pet_id: this.form.pet.id,
+                delivery_address_id: this.form.delivery_address.id,
             }).then(response => {
                 vm.updatePlan(response.data);
                 vm.$emit('saved');
@@ -241,6 +261,7 @@ export default {
         populateFormFromPlan(plan) {
             this.form.pet = plan.pet;
             this.form.pkg = plan.package;
+            this.form.delivery_address = plan.delivery_address;
 
             this.form.shipping_cost = plan.shipping_cost;
             this.form.weekly_cost = plan.weekly_cost;

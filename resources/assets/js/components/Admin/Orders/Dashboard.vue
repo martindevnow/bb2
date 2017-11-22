@@ -4,14 +4,25 @@
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               v-model="sortable.filterKey"
-                        />
-                        <span class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </span>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="sortable.filterKey"
+                                />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-warning"
+                                    @click="loadOrders(true)"
+                            >
+                                Refresh
+                            </button>
+                        </div>
                     </div>
                 </th>
             </tr>
@@ -30,12 +41,32 @@
             <tbody>
             <tr v-for="order in filteredData(collection)" :key="order.id">
                 <td>{{ order.pet_breed_customer }}</td>
-                <td>{{ order.meal_size }}</td>
+                <td>{{ order.meal_size }} x {{ order.daily_meals }}</td>
                 <td>
                     {{ order.plan.package.label }}
                 </td>
                 <td>{{ order.plan.weeks_of_food_per_shipment }}</td>
-                <td>{{ order.deliver_by }}</td>
+                <td v-if="orderBeingEdited != order.id">
+                    {{ order.deliver_by }}
+                    <button class="btn btn-xs btn-default"
+                            @click="orderBeingEdited = order.id"
+                    >
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </td>
+                <td v-if="orderBeingEdited == order.id">
+                    <datepicker :value="simpleDate(order.deliver_by)"
+                                format="yyyy-MM-dd"
+                                input-class="form-control"
+                                @input="updateDeliverBy(order, $event)"
+                    >
+                    </datepicker>
+                    <button class="btn btn-danger"
+                            @click="orderBeingEdited = null"
+                    >
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
                 <td v-if="! order.cancelled">
                     <button @click="openPaymentModal(order)"
                             class="btn btn-xs"
@@ -118,11 +149,17 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
+import Datepicker from 'vuejs-datepicker';
+import swal from 'sweetalert2';
+import moment from 'moment';
 
 export default {
     mixins: [
         isSortable
     ],
+    components: {
+        Datepicker
+    },
     data() {
         let columns = [
             'pet_breed_customer',
@@ -140,7 +177,8 @@ export default {
         return {
             columns: columns,
             numColumns: numColumns,
-            sortOrders: sortOrders
+            sortOrders: sortOrders,
+            orderBeingEdited: null,
         }
     },
     mounted() {
@@ -162,13 +200,70 @@ export default {
         ...mapActions('packages', [
             'loadPackages',
         ]),
-        mealSize(order) {
-            return (order.plan.pet_weight * order.plan.pet_activity_level / 2 * 454 / 100).toFixed(0);
+//        editDeliverBy(order) {
+//            this.ordersBeingEdited[order.id] = true;
+//        },
+//        editingDeliverBy(order) {
+//            return this.ordersBeingEdited[order.id] === true;
+//        },
+        updateDeliverBy(order, event) {
+            let vm = this;
+
+            let newDeliverByDate = moment(event).format('YYYY-MM-DD');
+            swal({
+                title: 'Are you sure?',
+                text: "Do you want to update this order's deliver by date to "
+                    + newDeliverByDate + "?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Update'
+            }).then(function () {
+                swal({
+                    title: 'Future Orders',
+                    text: "Should future orders adjust to ship on the same day of the week?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update future orders'
+                }).then(function () {
+                    vm.orderBeingEdited = null;
+                    axios.post('/admin/api/orders/' + order.id + '/deliverBy', {
+                        deliver_by: newDeliverByDate,
+                        updateFuture: 1,
+                    }).then(response => {
+                        swal(
+                            'Updated!',
+                            'Future orders have been updated as well.',
+                            'success'
+                        )
+                    }).catch(error => {
+                        swal('Error', 'Something went wrong...', 'error');
+                    });
+                }).catch(function() {
+                    vm.orderBeingEdited = null;
+                    axios.post('/admin/api/orders/' + order.id + '/deliverBy', {
+                        deliver_by: newDeliverByDate,
+                        updateFuture: 0,
+                    }).then(response => {
+                        swal(
+                            'Updated',
+                            'Only this order was updated.',
+                            'success'
+                        )
+                    }).catch(error => {
+                        swal('Error', 'Something went wrong...', 'error');
+                    });
+
+                });
+            });
         },
-        onSelect(val) {
-            console.log('selected package...');
-            console.log(val);
+        simpleDate(dateData) {
+            return moment(dateData).toDate();
         }
+
     },
     computed: {
         ...mapState('orders', [

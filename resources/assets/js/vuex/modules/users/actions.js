@@ -11,12 +11,20 @@ export const editUser = (context, user) => {
 };
 
 export const loadUsers = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (! force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/users')
-        .then(response => commit('populateUsersCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/users')
+            .then(response => {
+                commit('populateUsersCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
 
 export const openUserCreatorModal = (context) => {

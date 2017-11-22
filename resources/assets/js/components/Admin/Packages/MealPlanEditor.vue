@@ -62,7 +62,7 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeMealPlanEditorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
@@ -76,16 +76,12 @@
 <script>
     import swal from 'sweetalert2';
     import hasErrors from '../../../mixins/hasErrors';
-    import { BasicSelect } from 'vue-search-select'
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
         mixins: [
             hasErrors
         ],
-        components: {
-            BasicSelect,
-        },
         data() {
             return {
                 form: {

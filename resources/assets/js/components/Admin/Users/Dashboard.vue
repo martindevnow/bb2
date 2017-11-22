@@ -1,6 +1,20 @@
 <template>
     <div>
-        <admin-topping-selector v-model="toppings[0]"></admin-topping-selector>
+        <div class="" v-if="show.userCreatorModal">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <h1>User</h1>
+                    <admin-users-creator @saved="closeUserCreatorModal()"
+                                         @cancelled="closeUserCreatorModal()"
+                                         slot="body"
+                                         :showAddresses="mode == 'EDIT'"
+                    ></admin-users-creator>
+                </div>
+            </div>
+        </div>
+
+
         <table class="table table-bordered table-responsive table-striped">
             <thead>
             <tr>
@@ -57,13 +71,15 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.userCreatorModal"
+        <admin-common-modal v-if="show.userCreatorModal && false"
                             @close="closeUserCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
-            <admin-users-creator @close="$emit('close')"
-                               slot="body"
+            <admin-users-creator @saved="closeUserCreatorModal()"
+                                 @cancelled="closeUserCreatorModal()"
+                                 slot="body"
+                                 :showAddresses="mode == 'EDIT'"
             ></admin-users-creator>
         </admin-common-modal>
     </div>

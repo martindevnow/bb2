@@ -9,12 +9,20 @@ export const closePetCreatorModal = (context) => {
 };
 
 export const loadPets = ({commit, state}, force = false) => {
-    if (! force && state.collection.length)
-        return;
+    return new Promise((resolve, reject) => {
+        if (! force && state.collection.length)
+            return resolve(state.collection);
 
-    axios.get('/admin/api/pets')
-        .then(response => commit('populatePetsCollection', response.data))
-        .catch(error => console.log(error));
+        axios.get('/admin/api/pets')
+            .then(response => {
+                commit('populatePetsCollection', response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
 
 export const editPet = (context, pet) => {

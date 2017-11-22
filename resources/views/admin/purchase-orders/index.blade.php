@@ -28,6 +28,9 @@
 
             <div class="widget-body no-padding">
 
+                <admin-purchase-order-builder></admin-purchase-order-builder>
+
+
                 <admin-purchase-orders-dashboard></admin-purchase-orders-dashboard>
 
             </div>

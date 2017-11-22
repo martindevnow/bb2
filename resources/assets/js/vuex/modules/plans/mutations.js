@@ -5,7 +5,8 @@ export const populatePlansCollection = (state, data) => {
         let weeks_of_food = plan.weeks_of_food_per_shipment;
         let weeks_per_shipment = plan.ships_every_x_weeks;
         let package_label = plan.package.label;
-        return {...plan, customer_name, weeks_of_food, weeks_per_shipment, pet_name, package_label};
+        let meals = plan.meals;
+        return {...plan, customer_name, weeks_of_food, weeks_per_shipment, pet_name, package_label, meals};
     });
 };
 
@@ -15,7 +16,8 @@ export const addToPlansCollection = (state, plan) => {
     let weeks_of_food = plan.weeks_of_food_per_shipment;
     let weeks_per_shipment = plan.ships_every_x_weeks;
     let package_label = plan.package.label;
-    state.collection.unshift({...plan, customer_name, weeks_of_food, weeks_per_shipment, pet_name, package_label});
+    let meals = plan.meals;
+    state.collection.unshift({...plan, customer_name, weeks_of_food, weeks_per_shipment, pet_name, package_label, meals});
 };
 
 export const showPlanCreatorModal = (state) => {
@@ -24,6 +26,14 @@ export const showPlanCreatorModal = (state) => {
 
 export const hidePlanCreatorModal = (state) => {
     state.show.planCreatorModal = false;
+};
+
+export const showMealReplacementModal = (state) => {
+    state.show.mealReplacementModal = true;
+};
+
+export const hideMealReplacementModal = (state) => {
+    state.show.mealReplacementModal = false;
 };
 
 export const enableEditMode = (state) => {

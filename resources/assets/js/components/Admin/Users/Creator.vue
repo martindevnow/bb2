@@ -3,7 +3,12 @@
           @submit.prevent=""
           autocomplete="off"
     >
-        <div class="row">
+        <div class="row" v-if="addAddress">
+            <div class="col-sm-12">
+                <h1>Editing Addresses ...</h1>
+            </div>
+        </div>
+        <div class="row" v-if="! addAddress">
             <div class="col-sm-6">
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('name') }"
@@ -35,7 +40,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="! addAddress">
             <div class="col-sm-6">
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('password') }"
@@ -66,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="! addAddress">
             <div class="col-sm-6">
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('first_name') }"
@@ -98,7 +103,7 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" v-if="! addAddress">
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-success btn-block"
@@ -119,10 +124,58 @@
             <div class="col-sm-6">
                 <label>&nbsp;</label>
                 <button class="btn btn-default btn-block"
-                        @click="closeUserCreatorModal()"
+                        @click="$emit('cancelled')"
                 >
                     Cancel
                 </button>
+            </div>
+        </div>
+
+        <div class="row" v-if="showAddresses">
+            <div class="col-sm-12">
+                <h1> Current Addresses:</h1>
+            </div>
+            <div class="col-sm-12">
+                <div class="row" v-for="address in selected.addresses">
+                    <div class="col-xs-10">
+                        <button class="btn btn-default btn-block"
+                                @click="editUsersAddress(address)"
+                        >
+                            <i class="fa fa-pencil"></i>
+                            {{ address.street_1 }}
+                            {{ address.street_2 }}
+                            {{ address.city }}
+                            {{ address.province }}
+                            {{ address.postal_code }}
+                            {{ address.country }}
+                        </button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-danger btn-block"
+                                @click="deleteAddress(address)"
+                        >
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" v-if="! addAddress">
+            <div class="col-sm-12">
+                <button class="btn btn-block btn-primary"
+                        @click="addAddress = true"
+                >
+                    <i class="fa fa-plus"></i> Add an Address
+                </button>
+            </div>
+        </div>
+
+        <div class="row" v-if="showAddresses && addAddress">
+            <div class="col-sm-12">
+                <admin-addresses-creator @cancelled="addAddress = false"
+                                         @saved="attachAddress"
+                ></admin-addresses-creator>
             </div>
         </div>
 
@@ -143,8 +196,10 @@ export default {
     components: {
         ModelListSelect,
     },
+    props: ['showAddresses'],
     data() {
         return {
+            addAddress: false,
             form: {
                 name: '',
                 email: '',
@@ -156,12 +211,13 @@ export default {
         };
     },
     methods: {
-        ...mapActions('users', [
-            'closeUserCreatorModal'
-        ]),
         ...mapMutations('users', [
             'addToUsersCollection',
             'updateUser',
+            'attachAddressToUser',
+        ]),
+        ...mapActions('addresses', [
+            'editAddress'
         ]),
         save() {
             let vm = this;
@@ -169,7 +225,7 @@ export default {
             return axios.post('/admin/api/users', this.form
             ).then(response => {
                 vm.addToUsersCollection(response.data);
-                vm.closeUserCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -181,18 +237,42 @@ export default {
                 this.form
             ).then(response => {
                 vm.updateUser(response.data);
-                vm.closeUserCreatorModal();
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        populateFormFromUser(user) {
-            this.form.name = user.name;
-            this.form.email = user.email;
+        deleteAddress(address) {
+            let vm = this;
+            axios.delete('/admin/api/addresses/' + address.id).then(response => {
+                alert('Deleted');
+            }).catch(error => {
+                alert('Error');
+            });
+        },
+        attachAddress(data) {
+            let vm = this;
+            axios.put('/admin/api/users/' + this.selected.id + '/attachAddress',
+                { address_id: data.id }
+            ).then(response => {
+                alert('Address attached');
+                vm.attachAddressToUser(data);
+                vm.addAddress = false;
+            }).catch(error => {
+                alert('error');
+            })
+        },
+        populateFormFromModel(model) {
+            for (let prop in this.form) {
+                if (this.form.hasOwnProperty(prop)) {
+                    this.form[prop] = model[prop];
+                }
+            }
             this.form.password = '';
-            this.form.first_name = user.first_name;
-            this.form.last_name = user.last_name;
-            this.form.phone_number = user.phone_number;
+        },
+        editUsersAddress(address) {
+            this.addAddress = true;
+            this.editAddress(address);
         }
     },
     computed: {
@@ -205,12 +285,12 @@ export default {
     },
     mounted() {
         if (this.mode == 'EDIT') {
-            this.populateFormFromUser(this.selected);
+            this.populateFormFromModel(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromUser(newSelected);
+            this.populateFormFromModel(newSelected);
         }
     }
 }
