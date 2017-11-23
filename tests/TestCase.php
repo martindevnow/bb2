@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Martin\ACL\Role;
 use Martin\ACL\User;
 use Martin\Customers\Pet;
+use Martin\Delivery\Delivery;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Martin\Subscriptions\Package;

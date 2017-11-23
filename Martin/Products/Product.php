@@ -5,6 +5,7 @@ namespace Martin\Products;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Core\Traits\CoreRelations;
+use Martin\Subscriptions\Plan;
 
 class Product extends Model
 {
@@ -38,6 +39,11 @@ class Product extends Model
      */
     public function setPriceAttribute($value) {
         $this->attributes['price'] = round($value * 100);
+    }
+
+    public function plans() {
+        return $this->belongsToMany(Plan::class)
+            ->withPivot('quantity');
     }
 
     /**

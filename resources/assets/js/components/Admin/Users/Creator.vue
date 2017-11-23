@@ -217,7 +217,8 @@ export default {
             'attachAddressToUser',
         ]),
         ...mapActions('addresses', [
-            'editAddress'
+            'editAddress',
+            'deleteAddress',
         ]),
         save() {
             let vm = this;
@@ -240,14 +241,6 @@ export default {
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
-            });
-        },
-        deleteAddress(address) {
-            let vm = this;
-            axios.delete('/admin/api/addresses/' + address.id).then(response => {
-                alert('Deleted');
-            }).catch(error => {
-                alert('Error');
             });
         },
         attachAddress(data) {
