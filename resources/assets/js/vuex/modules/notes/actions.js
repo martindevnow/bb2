@@ -1,15 +1,14 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const openNoteCreatorModal = (context) => {
-    context.commit('showNoteCreatorModal');
-};
+export default {
+    [actions.CREATE] ({commit}, targetModel) {
+        commit(mutations.SET_TARGET_MODEL, targetModel);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const closeNoteCreatorModal = (context) => {
-    context.commit('hideNoteCreatorModal');
-};
-
-export const createNote = (context, targetModel) => {
-    context.commit('setTargetModel', targetModel);
-    context.commit('showNoteCreatorModal');
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.UNSET_TARGET_MODEL);
+        commit(mutations.CLEAR_MODE);
+    }
 };

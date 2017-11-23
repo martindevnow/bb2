@@ -1,18 +1,21 @@
-import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const showNoteCreatorModal = (state) => {
-    state.show.creator = true;
+export default {
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+    },
+
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+    },
+
+    [mutations.SET_TARGET_MODEL] (state, targetModel) {
+        state.targeted = targetModel;
+    },
+
+    [mutations.UNSET_TARGET_MODEL] (state) {
+        state.targeted = {};
+    },
 };
 
-export const hideNoteCreatorModal = (state) => {
-    state.show.creator = false;
-};
 
-export const setTargetModel = (state, targetModel) => {
-    state.targeted = targetModel;
-};
-
-export const unsetTargetModel = (state) => {
-    state.targeted = {};
-};
