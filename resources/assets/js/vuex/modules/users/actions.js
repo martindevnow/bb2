@@ -12,6 +12,11 @@ export default {
         commit(mutations.EDIT_MODE);
     },
 
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CLEAR_MODE);
+    },
+
     [actions.FETCH_ALL] ({commit, state}, force = false) {
         return new Promise((resolve, reject) => {
             if (!force && state.collection.length)

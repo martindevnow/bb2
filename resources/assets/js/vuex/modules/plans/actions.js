@@ -1,45 +1,46 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const loadPlans = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (!force && state.collection.length)
-            return resolve(state.collection);
+export default {
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (!force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/plans')
-            .then(response => {
-                commit('populatePlansCollection', response.data);
-                resolve(response);
-            })
-            .catch(error => {
-                console.log(error);
-                reject(error);
-            });
-    });
-};
+            axios.get('/admin/api/plans')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
 
-export const openPlanCreatorModal = (context) => {
-    context.commit('showPlanCreatorModal');
-};
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const closePlanCreatorModal = (context) => {
-    context.commit('hidePlanCreatorModal');
-    context.commit('disableEditMode');
-    context.commit('deselectPlan');
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const openMealReplacementModal = (context, plan) => {
-    context.commit('setSelectedPlan', plan);
-    context.commit('showMealReplacementModal');
-};
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CLEAR_MODE);
+    },
 
-export const closeMealReplacementModal = (context) => {
-    context.commit('hideMealReplacementModal');
-    context.commit('deselectPlan');
-};
+    [actions.OPEN_MEAL_REPLACEMENT_CREATOR] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.SHOW_MEAL_REPLACEMENT_CREATOR);
+    },
 
-export const editPlan = (context, plan) => {
-    context.commit('setSelectedPlan', plan);
-    context.commit('showPlanCreatorModal');
-    context.commit('enableEditMode');
+    [actions.CLOSE_MEAL_REPLACEMENT_CREATOR] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.HIDE_MEAL_REPLACEMENT_CREATOR);
+    },
 };
