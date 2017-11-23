@@ -7,7 +7,7 @@ export default {
     },
 
     [addressMutations.ADD_TO_COLLECTION] (state, modelData) {
-        state.collection.ushift((modelData));
+        state.collection.unshift((modelData));
     },
 
     [addressMutations.CREATE_MODE] (state) {

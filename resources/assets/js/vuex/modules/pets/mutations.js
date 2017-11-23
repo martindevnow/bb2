@@ -1,41 +1,43 @@
-import {loadPetFromData} from "../../../models/Pet";
+import {loadPetFromData} from "../../../models/Meat";
+import * as mutations from './mutationTypes';
 
-export const populatePetsCollection = (state, data) => {
-    state.collection = data.map(petData => loadPetFromData(petData));
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadPetFromData(modelData));
+    },
 
-export const addToPetsCollection = (state, pet) => {
-    state.collection.unshift(loadPetFromData(pet));
-};
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        state.collection.unshift(loadPetFromData(modelData));
+    },
 
-export const showPetCreatorModal = (state) => {
-    state.show.creator = true;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const hidePetCreatorModal = (state) => {
-    state.show.creator = false;
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const setSelectedPet = (state, pet) => {
-    state.selected = pet;
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const deselectPet = (state) => {
-    state.selected = {};
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
-
-export const updatePet = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
-            return loadPetFromData(payload);
-        return model;
-    });
+    [mutations.UPDATE] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadPetFromData(payload);
+            return model;
+        });
+    },
 };

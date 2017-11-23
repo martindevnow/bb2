@@ -129,7 +129,7 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-import * as actions from '../../../vuex/modules/meats/actionTypes';
+import * as mealActions from '../../../vuex/modules/meats/actionTypes';
 import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
 export default {
@@ -166,7 +166,7 @@ export default {
             let meats = this.form.meats.map(meat => meat.id);
             let toppings = this.form.toppings.map(topping => topping.id);
 
-            this.$store.dispatch('meals/' + actions.SAVE, {
+            this.$store.dispatch('meals/' + mealActions.SAVE, {
                 ...this.form, meats, toppings
             }).then(response => {
                 vm.$emit('saved');
@@ -179,7 +179,7 @@ export default {
             let meats = this.form.meats.filter(item => item.id).map(item => item.id);
             let toppings = this.form.toppings.filter(item => item.id).map(item => item.id);
 
-            this.$store.dispatch('meals/' + actions.UPDATE, {
+            this.$store.dispatch('meals/' + mealActions.UPDATE, {
                 ...this.form, meats, toppings
             }).then(response => {
                 vm.$emit('saved');

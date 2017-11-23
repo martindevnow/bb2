@@ -1,35 +1,61 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const openPetCreatorModal = (context) => {
-    context.commit('showPetCreatorModal');
-};
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const closePetCreatorModal = (context) => {
-    context.commit('hidePetCreatorModal');
-    context.commit('deselectPet');
-    context.commit('disableEditMode');
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const loadPets = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/pets')
-            .then(response => {
-                commit('populatePetsCollection', response.data);
+            axios.get('/admin/api/pets')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/pets', {
+                formData
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
-};
+        });
+    },
 
-export const editPet = (context, pet) => {
-    context.commit('setSelectedPet', pet);
-    context.commit('showPetCreatorModal');
-    context.commit('enableEditMode');
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/pets/' + state.selected.id, {
+                formData
+            }).then(response => {
+                commit(mutations.UPDATE, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
+
 };

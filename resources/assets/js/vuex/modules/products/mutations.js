@@ -7,7 +7,7 @@ export default {
     },
 
     [mutations.ADD_TO_COLLECTION] (state, modelData) {
-        state.collection.ushift(loadProductFromData(modelData));
+        state.collection.unshift(loadProductFromData(modelData));
     },
 
     [mutations.CREATE_MODE] (state) {

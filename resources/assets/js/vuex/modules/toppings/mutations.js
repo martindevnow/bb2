@@ -8,7 +8,7 @@ export default {
     },
 
     [mutations.ADD_TO_COLLECTION] (state, modelData) {
-        state.collection.ushift(loadToppingFromData(modelData));
+        state.collection.unshift(loadToppingFromData(modelData));
     },
 
     [mutations.CREATE_MODE] (state) {
