@@ -1,4 +1,6 @@
 import {loadPkgFromData} from "../../../models/Package";
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
 export const populatePackagesCollection = (state, data) => {
     state.collection = data.map(pkgData => loadPkgFromData(pkgData));
@@ -9,19 +11,19 @@ export const addToPackagesCollection = (state, pkg) => {
 };
 
 export const showPackageCreatorModal = (state) => {
-    state.show.packageCreatorModal = true;
+    state.show.creator = true;
 };
 
 export const hidePackageCreatorModal = (state) => {
-    state.show.packageCreatorModal = false;
+    state.show.creator = false;
 };
 
 export const showMealPlanEditorModal = (state) => {
-    state.show.mealPlanEditorModal = true;
+    state.show.mealPlanEditor = true;
 };
 
 export const hideMealPlanEditorModal = (state) => {
-    state.show.mealPlanEditorModal = false;
+    state.show.mealPlanEditor = false;
 };
 
 export const setSelectedPackage = (state, pkg) => {

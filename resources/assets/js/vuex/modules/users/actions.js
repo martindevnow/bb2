@@ -1,7 +1,6 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-
 export default {
     [actions.CREATE] ({commit}) {
         commit(mutations.DESELECT);
@@ -43,9 +42,9 @@ export default {
         })
     },
 
-    [actions.UPDATE] ({commit}, formData) {
+    [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.put('/admin/api/users/' + context.state.selected.id,
+            axios.put('/admin/api/users/' + state.selected.id,
                 formData
             ).then(response => {
                 commit(mutations.UPDATE, response.data);

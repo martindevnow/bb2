@@ -32,7 +32,7 @@ export default {
     [actions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
             axios.post('/admin/api/meats', {
-                ...this.form, meats, toppings
+                formData
             }).then(response => {
                 commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
@@ -43,12 +43,12 @@ export default {
         });
     },
 
-    [actions.UPDATE] ({commit}, formData) {
+    [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.patch('/admin/api/meats/' + this.selected.id, {
-                ...this.form, meats, toppings
+            axios.patch('/admin/api/meats/' + state.selected.id, {
+                formData
             }).then(response => {
-                commit(mutations.UPDATE, formData)
+                commit(mutations.UPDATE, formData);
                 resolve(response);
             }).catch(error => {
                 console.log(error);

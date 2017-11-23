@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const openPaymentModal = (context, order) => {
     context.commit('setSelectedOrder', order);
     context.commit('showPaymentsModal');

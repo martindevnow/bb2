@@ -1,42 +1,61 @@
-export const closeMealPlanEditorModal = (context) => {
-    context.commit('hideMealPlanEditorModal');
-    context.commit('deselectPackage');
-};
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-export const closePackageCreatorModal = (context) => {
-    context.commit('hidePackageCreatorModal');
-    context.commit('deselectPackage');
-    context.commit('disableEditMode');
-};
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const editPackage = (context, pkg) => {
-    context.commit('setSelectedPackage', pkg);
-    context.commit('showPackageCreatorModal');
-    context.commit('enableEditMode');
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const loadPackages = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (!force && state.collection.length)
-            return resolve(state.collection);
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/packages')
-            .then(response => {
-                commit('populatePackagesCollection', response.data);
+            axios.get('/admin/api/packages')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/packages', {
+                formData
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
-};
+        });
+    },
 
-export const openMealPlanEditorModal = (context, pkg) => {
-    context.commit('setSelectedPackage', pkg);
-    context.commit('showMealPlanEditorModal');
-};
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/packages/' + state.selected.id, {
+                formData
+            }).then(response => {
+                commit(mutations.UPDATE, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
 
-export const openPackageCreatorModal = (context) => {
-    context.commit('showPackageCreatorModal');
+
 };

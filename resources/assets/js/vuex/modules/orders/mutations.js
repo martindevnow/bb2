@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const populateOrdersCollection = (state, data) => {
     state.collection = data.map(order => {
         let meal_size = (order.plan.pet_weight * order.plan.pet_activity_level / order.plan.pet.daily_meals * 454 / 100).toFixed(0);

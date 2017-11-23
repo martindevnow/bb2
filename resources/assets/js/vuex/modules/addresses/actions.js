@@ -1,25 +1,25 @@
-import * as actions from './actionTypes';
-import * as mutations from './mutationTypes';
+import * as addressActions from './actionTypes';
+import * as addressMutations from './mutationTypes';
 
 export default {
-    [actions.CREATE] ({commit}) {
-        commit(mutations.DESELECT);
-        commit(mutations.CREATE_MODE);
+    [addressActions.CREATE] ({commit}) {
+        commit(addressMutations.DESELECT);
+        commit(addressMutations.CREATE_MODE);
     },
 
-    [actions.EDIT] ({commit}, model) {
-        commit(mutations.SELECT, model);
-        commit(mutations.EDIT_MODE);
+    [addressActions.EDIT] ({commit}, model) {
+        commit(addressMutations.SELECT, model);
+        commit(addressMutations.EDIT_MODE);
     },
 
-    [actions.FETCH_ALL] ({commit, state}, force = false) {
+    [addressActions.FETCH_ALL] ({commit, state}, force = false) {
         return new Promise((resolve, reject) => {
             if (! force && state.collection.length)
                 return resolve(state.collection);
 
             axios.get('/admin/api/addresses')
                 .then(response => {
-                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    commit(addressMutations.POPULATE_COLLECTION, response.data);
                     resolve(response);
                 })
                 .catch(error => {
@@ -29,12 +29,12 @@ export default {
         });
     },
 
-    [actions.SAVE] ({commit}, formData) {
+    [addressActions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
             axios.post('/admin/api/addresses', {
-                ...this.form, meats, toppings
+                formData
             }).then(response => {
-                commit(mutations.ADD_TO_COLLECTION, formData);
+                commit(addressMutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
             }).catch(error => {
                 console.log(error);
@@ -43,12 +43,12 @@ export default {
         });
     },
 
-    [actions.UPDATE] ({commit}, formData) {
+    [addressActions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.patch('/admin/api/addresses/' + this.selected.id, {
-                ...this.form, meats, toppings
+            axios.patch('/admin/api/addresses/' + state.selected.id, {
+                formData
             }).then(response => {
-                commit(mutations.UPDATE, formData)
+                commit(addressMutations.UPDATE, formData)
                 resolve(response);
             }).catch(error => {
                 console.log(error);
@@ -57,7 +57,7 @@ export default {
         });
     },
 
-    [actions.DELETE] ({commit}, model) {
+    [addressActions.DELETE] ({commit}, model) {
         return new Promise((resolve, reject) => {
             axios.delete('/admin/api/addresses/' + model.id).then(response => {
                 commit('users/removeAddress', model, {root: true});

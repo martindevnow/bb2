@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const showOrderedModal = (state) => {
     state.show.orderedModal = true;
 };

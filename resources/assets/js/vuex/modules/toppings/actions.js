@@ -1,31 +1,61 @@
-export const openToppingCreatorModal = (context) => {
-    context.commit('showToppingCreatorModal');
-};
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-export const closeToppingCreatorModal = (context) => {
-    context.commit('hideToppingCreatorModal');
-};
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const editTopping = (context, topping) => {
-    context.commit('setSelectedTopping', topping);
-    context.commit('showToppingCreatorModal');
-    context.commit('enableEditMode');
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const loadToppings = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/toppings')
-            .then(response => {
-                commit('populateToppingsCollection', response.data);
+            axios.get('/admin/api/toppings')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/toppings', {
+                ...this.form, toppings, toppings
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
+        });
+    },
+
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/toppings/' + state.selected.id, {
+                ...this.form, toppings, toppings
+            }).then(response => {
+                commit(mutations.UPDATE, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
 
 };

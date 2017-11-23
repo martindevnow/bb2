@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const populatePlansCollection = (state, data) => {
     state.collection = data.map(plan => {
         let pet_name = plan.pet.name + ' (' + plan.pet_weight + ' lb)';
@@ -21,11 +24,11 @@ export const addToPlansCollection = (state, plan) => {
 };
 
 export const showPlanCreatorModal = (state) => {
-    state.show.planCreatorModal = true;
+    state.show.creator = true;
 };
 
 export const hidePlanCreatorModal = (state) => {
-    state.show.planCreatorModal = false;
+    state.show.creator = false;
 };
 
 export const showMealReplacementModal = (state) => {

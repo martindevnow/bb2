@@ -73,7 +73,7 @@
         </table>
 
 
-        <admin-common-modal v-if="show.planCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closePlanCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Plan</p>
@@ -83,7 +83,7 @@
                                  slot="body"
             ></admin-plans-creator>
         </admin-common-modal>
-        <admin-common-modal v-if="notesShow.noteCreatorModal"
+        <admin-common-modal v-if="notesShow.creator"
                             @close="closeNoteCreatorModal()"
         >
             <admin-notes-creator @cancelled="closeNoteCreatorModal()"
