@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const openPetCreatorModal = (context) => {
     context.commit('showPetCreatorModal');
 };

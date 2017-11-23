@@ -1,4 +1,6 @@
 import {loadPkgFromData} from "../../../models/Package";
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
 export const populatePackagesCollection = (state, data) => {
     state.collection = data.map(pkgData => loadPkgFromData(pkgData));

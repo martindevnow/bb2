@@ -1,39 +1,39 @@
 import * as actions from './actionTypes';
-import * as mutations from './mutationTypes';
+import * as addressMutations from './mutationTypes';
 
 export default {
-    [mutations.POPULATE_COLLECTION] (state, data) {
+    [addressMutations.POPULATE_COLLECTION] (state, data) {
         state.collection = data.map(modelData => (modelData));
     },
 
-    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+    [addressMutations.ADD_TO_COLLECTION] (state, modelData) {
         state.collection.ushift((modelData));
     },
 
-    [mutations.CREATE_MODE] (state) {
+    [addressMutations.CREATE_MODE] (state) {
         state.show.creator = true;
         state.mode = null;
     },
 
-    [mutations.EDIT_MODE] (state) {
+    [addressMutations.EDIT_MODE] (state) {
         state.show.creator = true;
         state.mode = 'EDIT';
     },
 
-    [mutations.CLEAR_MODE] (state) {
+    [addressMutations.CLEAR_MODE] (state) {
         state.show.creator = false;
         state.mode = null;
     },
 
-    [mutations.SELECT] (state, model) {
+    [addressMutations.SELECT] (state, model) {
         state.selected = model;
     },
 
-    [mutations.DESELECT] (state) {
+    [addressMutations.DESELECT] (state) {
         state.selected = null;
     },
 
-    [mutations.UPDATE] (state, payload) {
+    [addressMutations.UPDATE] (state, payload) {
         state.collection = state.collection.map(model => {
             if (model.id === payload.id)
                 return loadMealFromData(payload);

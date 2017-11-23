@@ -43,12 +43,12 @@ export default {
         });
     },
 
-    [actions.UPDATE] ({commit}, formData) {
+    [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.patch('/admin/api/meats/' + this.selected.id, {
+            axios.patch('/admin/api/meats/' + state.selected.id, {
                 ...this.form, meats, toppings
             }).then(response => {
-                commit(mutations.UPDATE, formData)
+                commit(mutations.UPDATE, formData);
                 resolve(response);
             }).catch(error => {
                 console.log(error);

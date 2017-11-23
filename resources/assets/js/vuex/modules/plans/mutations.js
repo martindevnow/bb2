@@ -1,3 +1,6 @@
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
+
 export const populatePlansCollection = (state, data) => {
     state.collection = data.map(plan => {
         let pet_name = plan.pet.name + ' (' + plan.pet_weight + ' lb)';

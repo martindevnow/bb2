@@ -1,4 +1,6 @@
 import {loadProductFromData} from "../../../models/Product";
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
 export const populateProductsCollection = (state, data) => {
     state.collection = data.map(productData => loadProductFromData(productData));
