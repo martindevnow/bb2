@@ -1,5 +1,4 @@
 import {loadToppingFromData} from "../../../models/Topping";
-import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
 export default {

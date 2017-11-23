@@ -16,4 +16,4 @@ const meatsModule = {
     actions,
 };
 
-export default meatsModule;
+export default toppingsModule;
