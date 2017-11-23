@@ -9,7 +9,7 @@ const state = {
     }
 };
 
-const meatsModule = {
+const toppingsModule = {
     namespaced: true,
     state,
     mutations,
