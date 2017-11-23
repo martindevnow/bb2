@@ -189,7 +189,12 @@ export default {
         }
     },
     computed: {
-        ...mapState('meals', ['show', 'selected', 'mode', 'collection']),
+        ...mapState('meals', [
+            'show',
+            'selected',
+            'mode',
+            'collection'
+        ]),
     },
     mounted() {
         if (this.mode == 'EDIT') {
