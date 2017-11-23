@@ -65,7 +65,7 @@ class AddressesController extends Controller {
     }
 
     public function destroy($id) {
-        if (Address::where($id)->delete()) {
+        if (Address::where('id', $id)->delete()) {
             return response('Success', 200);
         }
         return response('Error', 500);

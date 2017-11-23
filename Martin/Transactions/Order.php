@@ -12,6 +12,7 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
+use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Stripe\Collection;
@@ -340,7 +341,7 @@ class Order extends Model
     }
 
 
-    /**
+    /*
      * Relationships
      */
 
@@ -352,6 +353,13 @@ class Order extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function delivery() {
+        return $this->hasOne(Delivery::class, 'order_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function deliveryAddress() {
@@ -359,17 +367,10 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function plan() {
-        return $this->belongsTo(Plan::class, 'plan_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function payments() {
-        return $this->morphMany(Payment::class, 'paymentable');
+    public function details() {
+        return $this->hasMany(OrderDetail::class);
     }
 
     /**
@@ -380,9 +381,49 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function delivery() {
-        return $this->hasOne(Delivery::class, 'order_id');
+    public function payments() {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plan() {
+        return $this->belongsTo(Plan::class, 'plan_id');
+    }
+
+    /**
+     * @param Product $product
+     * @param int $quantity
+     */
+    public function addProduct(Product $product, $quantity = 1) {
+        $this->details()->create([
+            'label'             => $product->name,
+            'quantity'          => $quantity,
+            'unit_cost'         => $product->price,
+            'extended_cost'     => $product->price * $quantity,
+            'tax'               => 0,
+            'orderable_type'    => get_class($product),
+            'orderable_id'      => $product->id,
+        ]);
+    }
+
+    public function hasProduct(Product $product) {
+        return !! $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->count();
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product) {
+        $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->delete();
     }
 }

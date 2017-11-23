@@ -213,13 +213,4 @@ class PetsUnitTest extends TestCase
         $this->assertEquals(3, $pet->daily_meals);
     }
 
-    /** @test */
-    public function a_puppy_can_have_three_meals_a_day() {
-        $pet = factory(Pet::class)->create([
-            'weight'    => 50,
-            'activity_level'    => 2,
-            'daily_meals'   => 3,
-        ]);
-
-    }
 }

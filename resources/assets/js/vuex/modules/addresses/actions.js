@@ -10,6 +10,15 @@ export const editAddress = (context, user) => {
     context.commit('enableEditMode');
 };
 
+export const deleteAddress = (context, address, root) => {
+    let vm = this;
+    axios.delete('/admin/api/addresses/' + address.id).then(response => {
+        root.commit('users/removeAddress', address);
+    }).catch(error => {
+        alert('Error');
+    });
+}
+
 export const loadAddresses = ({commit, state}, force = false) => {
     return new Promise((resolve, reject) => {
         if (! force && state.collection.length)
