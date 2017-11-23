@@ -30,11 +30,31 @@ export default {
     },
 
     [actions.SAVE] ({commit}, formData) {
-
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/meats', {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
     },
 
     [actions.UPDATE] ({commit}, formData) {
-
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/meats/' + this.selected.id, {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.UPDATE, formData)
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
     },
 
 

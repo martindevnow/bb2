@@ -30,26 +30,30 @@ export default {
     },
 
     [actions.SAVE] ({commit}, formData) {
-        return axios.post('/admin/api/meals', {
-            ...this.form, meats, toppings
-        }).then(response => {
-            commit(mutations.ADD_TO_COLLECTION, formData);
-            resolve(response);
-        }).catch(error => {
-            console.log(error);
-            reject(error);
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/meals', {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
         });
     },
 
     [actions.UPDATE] ({commit}, formData) {
-        return axios.patch('/admin/api/meals/' + this.selected.id, {
-            ...this.form, meats, toppings
-        }).then(response => {
-            commit(mutations.UPDATE, formData)
-            resolve(response);
-        }).catch(error => {
-            console.log(error);
-            reject(error);
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/meals/' + this.selected.id, {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.UPDATE, formData)
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
         });
     },
 
