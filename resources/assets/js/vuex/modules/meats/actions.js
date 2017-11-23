@@ -31,10 +31,10 @@ export default {
 
     [actions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
-            axios.post('/admin/api/meats', {
+            axios.post('/admin/api/meats',
                 formData
-            }).then(response => {
-                commit(mutations.ADD_TO_COLLECTION, formData);
+            ).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, response.data);
                 resolve(response);
             }).catch(error => {
                 console.log(error);
@@ -45,9 +45,9 @@ export default {
 
     [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.patch('/admin/api/meats/' + state.selected.id, {
+            axios.patch('/admin/api/meats/' + state.selected.id,
                 formData
-            }).then(response => {
+            ).then(response => {
                 commit(mutations.UPDATE, formData);
                 resolve(response);
             }).catch(error => {
