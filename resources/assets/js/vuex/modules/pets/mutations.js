@@ -1,4 +1,4 @@
-import {loadPetFromData} from "../../../models/Meat";
+import {loadPetFromData} from "../../../models/Pet";
 import * as mutations from './mutationTypes';
 
 export default {

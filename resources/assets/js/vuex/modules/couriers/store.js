@@ -5,6 +5,7 @@ const state = {
     collection: [],
     selected: null,
     show: {
+        creator: false,
     }
 };
 

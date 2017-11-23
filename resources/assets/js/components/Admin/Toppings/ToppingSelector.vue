@@ -21,6 +21,8 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as actions from '../../../vuex/modules/toppings/actionTypes';
+    import * as mutations from '../../../vuex/modules/toppings/mutationTypes';
 
     export default {
         props: [
@@ -35,12 +37,9 @@
             return {};
         },
         mounted() {
-            this.loadToppings();
+            this.$store.dispatch('toppings/' + actions.FETCH_ALL)
         },
         methods: {
-            ...mapActions('toppings', [
-                'loadToppings',
-            ]),
             getText(item) {
                 return item.label + ' (' + item.id + ')';
             }
@@ -51,13 +50,12 @@
             ]),
             options() {
                 let vm = this;
-                let arr = this.collection.map(item => {
+                return this.collection.map(item => {
                     return {
                         ...item,
                         text: vm.getText(item),
                     };
                 });
-                return arr;
             },
             selectedItem() {
                 if ( ! this.value.id) {

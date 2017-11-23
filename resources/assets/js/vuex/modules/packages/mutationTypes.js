@@ -6,3 +6,5 @@ export const UPDATE = 'UPDATE';
 export const CREATE_MODE = 'CREATE_MODE';
 export const EDIT_MODE = 'EDIT_MODE';
 export const CLEAR_MODE = 'CLEAR_MODE';
+export const SHOW_MEAL_PLAN_EDITOR = 'SHOW_MEAL_PLAN_EDITOR';
+export const HIDE_MEAL_PLAN_EDITOR = 'HIDE_MEAL_PLAN_EDITOR';
