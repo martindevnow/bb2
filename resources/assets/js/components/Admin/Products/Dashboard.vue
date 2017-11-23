@@ -60,7 +60,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.productCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closeProductCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Product</p>

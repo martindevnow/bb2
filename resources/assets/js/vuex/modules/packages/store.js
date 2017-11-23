@@ -6,8 +6,8 @@ const state = {
     collection: [],
     selected: null,
     show: {
-        packageCreatorModal: false,
-        mealPlanEditorModal: false,
+        creator: false,
+        mealPlanEditor: false,
     },
     mode: null,
 };

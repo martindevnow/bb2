@@ -90,7 +90,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.packageCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closePackageCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Package</p>
@@ -101,7 +101,7 @@
             ></admin-packages-creator>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.mealPlanEditorModal"
+        <admin-common-modal v-if="show.mealPlanEditor"
                             @close="closeMealPlanEditorModal()"
         >
             <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>

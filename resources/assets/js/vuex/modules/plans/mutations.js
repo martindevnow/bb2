@@ -24,11 +24,11 @@ export const addToPlansCollection = (state, plan) => {
 };
 
 export const showPlanCreatorModal = (state) => {
-    state.show.planCreatorModal = true;
+    state.show.creator = true;
 };
 
 export const hidePlanCreatorModal = (state) => {
-    state.show.planCreatorModal = false;
+    state.show.creator = false;
 };
 
 export const showMealReplacementModal = (state) => {

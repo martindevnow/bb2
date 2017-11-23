@@ -5,7 +5,7 @@ const state = {
     collection: [],
     selected: null,
     show: {
-        productCreatorModal: false,
+        creator: false,
     }
 };
 

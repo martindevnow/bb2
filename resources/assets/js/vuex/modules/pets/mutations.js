@@ -9,11 +9,11 @@ export const addToPetsCollection = (state, pet) => {
 };
 
 export const showPetCreatorModal = (state) => {
-    state.show.petCreatorModal = true;
+    state.show.creator = true;
 };
 
 export const hidePetCreatorModal = (state) => {
-    state.show.petCreatorModal = false;
+    state.show.creator = false;
 };
 
 export const setSelectedPet = (state, pet) => {

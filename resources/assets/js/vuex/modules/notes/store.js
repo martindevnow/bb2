@@ -5,7 +5,7 @@ const state = {
     collection: [],
     targeted: null,
     show: {
-        noteCreatorModal: false,
+        creator: false,
     }
 };
 

@@ -1,36 +1,61 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const loadProducts = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-        axios.get('/admin/api/products')
-            .then(response => {
-                commit('populateProductsCollection', response.data);
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
+
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
+
+            axios.get('/admin/api/products')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/products', {
+                formData
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
+        });
+    },
 
-};
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/products/' + state.selected.id, {
+                formData
+            }).then(response => {
+                commit(mutations.UPDATE, formData);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
 
-export const openProductCreatorModal = (context) => {
-    context.commit('showProductCreatorModal');
-};
 
-export const closeProductCreatorModal = (context) => {
-    context.commit('hideProductCreatorModal');
-    context.commit('disableEditMode');
-    context.commit('deselectProduct');
-};
-
-export const editProduct = (context, product) => {
-    context.commit('setSelectedProduct', product);
-    context.commit('showProductCreatorModal');
-    context.commit('enableEditMode');
 };

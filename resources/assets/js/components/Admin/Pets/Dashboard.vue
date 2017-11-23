@@ -63,7 +63,7 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.petCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closePetCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Pet</p>

@@ -6,7 +6,7 @@ const state = {
     selected: null,
     show: {
         mealReplacementModal: false,
-        planCreatorModal: false,
+        creator: false,
     }
 };
 
