@@ -1,32 +1,57 @@
-export const openMealCreatorModal = (context) => {
-    context.commit('showMealCreatorModal');
-};
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-export const closeMealCreatorModal = (context) => {
-    context.commit('hideMealCreatorModal');
-    context.commit('disableEditMode');
-    context.commit('deselectMeal');
-};
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const editMeal = (context, meal) => {
-    context.commit('setSelectedMeal', meal);
-    context.commit('showMealCreatorModal');
-    context.commit('enableEditMode');
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const loadMeals = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/meals')
-        .then(response => {
-            commit('populateMealsCollection', response.data);
+            axios.get('/admin/api/meals')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return axios.post('/admin/api/meals', {
+            ...this.form, meats, toppings
+        }).then(response => {
+            commit(mutations.ADD_TO_COLLECTION, formData);
             resolve(response);
-        })
-        .catch(error => {
+        }).catch(error => {
             console.log(error);
             reject(error);
         });
-    });
+    },
+
+    [actions.UPDATE] ({commit}, formData) {
+        return axios.patch('/admin/api/meals/' + this.selected.id, {
+            ...this.form, meats, toppings
+        }).then(response => {
+            commit(mutations.UPDATE, formData)
+            resolve(response);
+        }).catch(error => {
+            console.log(error);
+            reject(error);
+        });
+    },
+
+
 };

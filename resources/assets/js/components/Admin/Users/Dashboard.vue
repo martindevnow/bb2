@@ -75,7 +75,7 @@
                             @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
+            <p slot="header" v-if="mode == 'EDIT' && selected">Edit User: {{ selected.name }}</p>
             <admin-users-creator @saved="closeCreator()"
                                  @cancelled="closeCreator()"
                                  slot="body"

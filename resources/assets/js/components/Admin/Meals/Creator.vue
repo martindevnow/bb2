@@ -129,6 +129,8 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import * as actions from '../../../vuex/modules/meats/actionTypes';
+import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
 export default {
     mixins: [
@@ -146,20 +148,13 @@ export default {
         };
     },
     methods: {
-        ...mapActions('meals', [
-            'editMeal',
-        ]),
-        ...mapMutations('meals', [
-            'addToMealsCollection',
-            'updateMeal',
-        ]),
         removeTopping(index) {
             this.form.toppings.splice(index, 1);
         },
         removeMeat(index) {
             this.form.meats.splice(index, 1);
         },
-        populateFormFromMeal(meal) {
+        populateFormFromModel(meal) {
             this.form.code = meal.code;
             this.form.label = meal.label;
             this.form.meal_value = meal.meal_value;
@@ -170,10 +165,10 @@ export default {
             let vm = this;
             let meats = this.form.meats.map(meat => meat.id);
             let toppings = this.form.toppings.map(topping => topping.id);
-            return axios.post('/admin/api/meals', {
+
+            this.$store.dispatch('meals/' + actions.SAVE, {
                 ...this.form, meats, toppings
             }).then(response => {
-                vm.addToMealsCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -184,10 +179,9 @@ export default {
             let meats = this.form.meats.filter(item => item.id).map(item => item.id);
             let toppings = this.form.toppings.filter(item => item.id).map(item => item.id);
 
-            return axios.patch('/admin/api/meals/' + this.selected.id, {
+            this.$store.dispatch('meals/' + actions.UPDATE, {
                 ...this.form, meats, toppings
             }).then(response => {
-                vm.updateMeal(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -199,12 +193,13 @@ export default {
     },
     mounted() {
         if (this.mode == 'EDIT') {
-            this.populateFormFromMeal(this.selected);
+            this.populateFormFromModel(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromMeal(newSelected);
+            if (newSelected)
+                this.populateFormFromModel(newSelected);
         }
     }
 }

@@ -1,41 +1,70 @@
-export const closeAddressCreatorModal = (context) => {
-    context.commit('hideAddressCreatorModal');
-    context.commit('deselectAddress');
-    context.commit('disableEditMode');
-};
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-export const editAddress = (context, user) => {
-    context.commit('setSelectedAddress', user);
-    context.commit('showAddressCreatorModal');
-    context.commit('enableEditMode');
-};
+export default {
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
 
-export const deleteAddress = (context, address) => {
-    let vm = this;
-    axios.delete('/admin/api/addresses/' + address.id).then(response => {
-        context.commit('users/removeAddress', address, {root: true});
-    }).catch(error => {
-        alert('Error');
-    });
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const loadAddresses = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
 
-        axios.get('/admin/api/addresses')
-            .then(response => {
-                commit('populateAddressesCollection', response.data);
+            axios.get('/admin/api/addresses')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/addresses', {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
-};
+        });
+    },
 
-export const openAddressCreatorModal = (context) => {
-    context.commit('showAddressCreatorModal');
+    [actions.UPDATE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/addresses/' + this.selected.id, {
+                ...this.form, meats, toppings
+            }).then(response => {
+                commit(mutations.UPDATE, formData)
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
+
+    [actions.DELETE] ({commit}, model) {
+        return new Promise((resolve, reject) => {
+            axios.delete('/admin/api/addresses/' + model.id).then(response => {
+                commit('users/removeAddress', model, {root: true});
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
 };

@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-xs-6">
                             <button class="btn btn-primary"
-                                    @click="openMealCreatorModal()"
+                                    @click="create()"
                             >
                                 New
                             </button>
@@ -53,7 +53,7 @@
 
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editMeal(meal)"
+                            @click="edit(meal)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -65,13 +65,13 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.mealCreatorModal"
-                            @close="closeMealCreatorModal()"
+        <admin-common-modal v-if="show.creator"
+                            @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a Meal</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit Meal: {{ selected.label }}</p>
-            <admin-meals-creator @saved="closeMealCreatorModal()"
-                                 @cancelled="closeMealCreatorModal()"
+            <p slot="header" v-if="mode == 'EDIT' && selected">Edit Meal: {{ selected.label }}</p>
+            <admin-meals-creator @saved="closeCreator()"
+                                 @cancelled="closeCreator()"
                                slot="body"
             ></admin-meals-creator>
         </admin-common-modal>
@@ -82,6 +82,8 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as actions from '../../../vuex/modules/meats/actionTypes';
+    import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
     export default {
         mixins: [
@@ -110,15 +112,18 @@
             }
         },
         mounted() {
-            this.loadMeals();
+            this.$store.dispatch('meals/' + actions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('meals', [
-                'loadMeals',
-                'openMealCreatorModal',
-                'closeMealCreatorModal',
-                'editMeal',
-            ]),
+            create() {
+                this.$store.dispatch('meals/' + actions.CREATE);
+            },
+            closeCreator() {
+                this.$store.commit('meals/' + mutations.CLEAR_MODE)
+            },
+            edit(model) {
+                this.$store.dispatch('meals/' + actions.EDIT, model);
+            }
         },
         computed: {
             ...mapState('meals', [
