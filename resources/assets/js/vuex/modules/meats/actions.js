@@ -48,7 +48,7 @@ export default {
             axios.patch('/admin/api/meats/' + state.selected.id,
                 formData
             ).then(response => {
-                commit(mutations.UPDATE, formData);
+                commit(mutations.UPDATE_IN_COLLECTION, formData);
                 resolve(response);
             }).catch(error => {
                 console.log(error);

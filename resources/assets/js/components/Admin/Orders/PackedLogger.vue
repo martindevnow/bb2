@@ -64,6 +64,8 @@ import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
 import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+import * as orderMutations from "../../../vuex/modules/orders/mutationTypes";
+import * as orderActions from "../../../vuex/modules/orders/actionTypes";
 
 
 export default {
@@ -78,12 +80,6 @@ export default {
         };
     },
     methods: {
-        ...mapActions('orders', [
-            'closePackedModal',
-        ]),
-        ...mapMutations('orders', [
-            'updateSelectedOrder',
-        ]),
         save() {
             let vm = this;
 
@@ -91,7 +87,7 @@ export default {
                 weeks_packed:      this.weeks_packed,
                 packed_package_id: this.packed_package.id,
             }).then(response => {
-                vm.updateSelectedOrder({
+                vm.$store.commit('orders/' + orderMutations.UPDATE_IN_COLLECTION, {
                     packed: true,
                     weeks_packed: vm.weeks_packed,
                     packed_package_id: vm.packed_package.id,

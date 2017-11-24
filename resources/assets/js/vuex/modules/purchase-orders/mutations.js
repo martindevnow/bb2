@@ -6,7 +6,7 @@ export default {
         state.collection = data;
     },
 
-    [mutations.UPDATE] (state, payload) {
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
         state.selected = { ...state.selected, ...payload };
         state.collection = state.collection.map(po => {
             if (po.id === state.selected.id)

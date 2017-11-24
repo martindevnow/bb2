@@ -147,7 +147,7 @@
                 axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', {
                     ...this.form, meals
                 }).then(response => {
-                    vm.$store.dispatch('packages/' + packageMutations.UPDATE, response.data);
+                    vm.$store.dispatch('packages/' + packageMutations.UPDATE_IN_COLLECTION, response.data);
                     vm.closeMealPlanEditorModal();
                     swal('Done', 'Thank you', 'success');
                 })

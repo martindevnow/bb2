@@ -47,7 +47,7 @@ export default {
             axios.put('/admin/api/users/' + state.selected.id,
                 formData
             ).then(response => {
-                commit(mutations.UPDATE, response.data);
+                commit(mutations.UPDATE_IN_COLLECTION, response.data);
                 resolve(response);
             }).catch(error => {
                 reject(error);

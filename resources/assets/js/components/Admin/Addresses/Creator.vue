@@ -174,6 +174,7 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as addressMutations from "../../../vuex/modules/addresses/mutationTypes";
 
     export default {
         mixins: [
@@ -206,7 +207,7 @@
 
                 return axios.post('/admin/api/addresses', this.form
                 ).then(response => {
-                    vm.addToAddressesCollection(response.data);
+                    vm.$store.commit('addresses/' + addressMutations.ADD_TO_COLLECTION, response.data);
                     vm.$emit('saved', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
@@ -217,7 +218,7 @@
 
                 return axios.patch('/admin/api/addresses/' + this.selected.id, this.form
                 ).then(response => {
-                    vm.updateAddress(response.data);
+                    vm.$store.commit('addresses/' + addressMutations.UPDATE, response.data);
                     vm.$emit('saved', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
@@ -247,7 +248,8 @@
         },
         watch: {
             selected(newSelected) {
-                this.populateFormFromModel(newSelected);
+                if (newSelected)
+                    this.populateFormFromModel(newSelected);
             }
         }
     }

@@ -33,7 +33,7 @@ export default {
         state.selected = null;
     },
 
-    [mutations.UPDATE] (state, payload) {
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
         state.collection = state.collection.map(model => {
             if (model.id === payload.id)
                 return loadPetFromData(payload);

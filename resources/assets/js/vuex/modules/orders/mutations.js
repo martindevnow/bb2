@@ -21,7 +21,7 @@ export default {
         state.selected = null;
     },
 
-    [mutations.UPDATE] (state, payload) {
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
         state.selected = { ...state.selected, ...payload };
         state.collection = state.collection.map(model => {
             if (model.id == state.selected.id)

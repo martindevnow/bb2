@@ -97,6 +97,8 @@ import eventBus from '../../../events/eventBus';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
+import * as courierActions from "../../../vuex/modules/couriers/actionTypes";
+import * as packageActions from "../../../vuex/modules/packages/actionTypes";
 
 export default {
     mixins: [
@@ -167,8 +169,8 @@ export default {
         ]),
     },
     mounted() {
-        this.loadCouriers();
-        this.loadPackages();
+        this.$store.dispatch(courierActions.FETCH_ALL);
+        this.$store.dispatch(packageActions.FETCH_ALL);
         this.form.shipped_at = new Date();
         this.form.package_id = this.selected.shipped_package_id
             || this.selected.packed_package_id

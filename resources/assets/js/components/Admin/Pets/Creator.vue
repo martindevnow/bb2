@@ -202,7 +202,7 @@ export default {
                 owner_id,
             }).then(response => {
                 console.log('api call done...');
-                vm.$store.dispatch('pets/' + petMutations.ADD_TO_COLLECTION,response.data);
+                vm.$store.commit('pets/' + petMutations.ADD_TO_COLLECTION,response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
@@ -220,7 +220,7 @@ export default {
                     owner_id,
             }).then(response => {
                 console.log('api call done...');
-                vm.$store.dispatch('pets/' + petMutations.UPDATE, response.data);
+                vm.$store.commit('pets/' + petMutations.UPDATE_IN_COLLECTION, response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
