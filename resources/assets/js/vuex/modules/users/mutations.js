@@ -72,19 +72,20 @@ export default {
             if (user.id !== updated.addressable_id)
                 return user;
 
-            user.addresses.map((address) => {
+            user.addresses = user.addresses.map((address) => {
                 if (address.id !== updated.id)
                     return address;
 
                 return { ...updated };
             });
+            return user;
         });
 
-        state.selected.addresses.map((address) => {
+        state.selected.addresses = state.selected.addresses.map((address) => {
             if (address.id !== updated.id)
                 return address;
 
-            return { ...updated };
+            return updated;
         });
     },
 };
