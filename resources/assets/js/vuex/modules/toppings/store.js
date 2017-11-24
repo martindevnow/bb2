@@ -9,11 +9,11 @@ const state = {
     }
 };
 
-const meatsModule = {
+const toppingsModule = {
     namespaced: true,
     state,
     mutations,
     actions,
 };
 
-export default meatsModule;
+export default toppingsModule;

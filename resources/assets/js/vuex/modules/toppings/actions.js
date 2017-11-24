@@ -27,7 +27,7 @@ export default {
     [actions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
             axios.post('/admin/api/toppings', {
-                ...this.form, toppings, toppings
+                formData
             }).then(response => {
                 commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
@@ -46,7 +46,7 @@ export default {
     [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
             axios.patch('/admin/api/toppings/' + state.selected.id, {
-                ...this.form, toppings, toppings
+                formData
             }).then(response => {
                 commit(mutations.UPDATE, formData);
                 resolve(response);

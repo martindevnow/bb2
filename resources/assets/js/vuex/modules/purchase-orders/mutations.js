@@ -1,24 +1,9 @@
 import * as mutations from './mutationTypes';
 
 export default {
-    [mutations.SHOW_ORDERED_MODAL] (state) {
-        state.show.orderedModal = true;
-    },
 
-    [mutations.HIDE_ORDERED_MODAL] (state) {
-        state.show.orderedModal = false;
-    },
-
-    [mutations.SHOW_RECEIVED_MODAL] (state) {
-        state.show.receivedModal = true;
-    },
-
-    [mutations.HIDE_RECEIVED_MODAL] (state) {
-        state.show.receivedModal = false;
-    },
-
-    [mutations.SELECT] (state, model) {
-        state.selected = model;
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data;
     },
 
     [mutations.UPDATE] (state, payload) {
@@ -30,8 +15,24 @@ export default {
         });
     },
 
-    [mutations.POPULATE_COLLECTION] (state, data) {
-        state.collection = data;
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
+
+    [mutations.SHOW_ORDERED_LOGGER] (state) {
+        state.show.orderedModal = true;
+    },
+
+    [mutations.HIDE_ORDERED_LOGGER] (state) {
+        state.show.orderedModal = false;
+    },
+
+    [mutations.SHOW_RECEIVED_LOGGER] (state) {
+        state.show.receivedModal = true;
+    },
+
+    [mutations.HIDE_RECEIVED_LOGGER] (state) {
+        state.show.receivedModal = false;
     },
 
 };

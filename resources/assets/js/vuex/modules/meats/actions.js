@@ -29,7 +29,7 @@ export default {
             axios.post('/admin/api/meats',
                 formData
             ).then(response => {
-                commit(mutations.ADD_TO_COLLECTION, formData);
+                commit(mutations.ADD_TO_COLLECTION, response.data);
                 resolve(response);
             }).catch(error => {
                 console.log(error);
