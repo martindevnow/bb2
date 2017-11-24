@@ -65,5 +65,26 @@ export default {
             user.addresses = [...addresses];
             return user;
         });
-    }
+    },
+
+    [mutations.UPDATE_ADDRESS] (state, updated) {
+        state.collection.map((user) => {
+            if (user.id !== updated.addressable_id)
+                return user;
+
+            user.addresses.map((address) => {
+                if (address.id !== updated.id)
+                    return address;
+
+                return { ...updated };
+            });
+        });
+
+        state.selected.addresses.map((address) => {
+            if (address.id !== updated.id)
+                return address;
+
+            return { ...updated };
+        });
+    },
 };

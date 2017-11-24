@@ -8,3 +8,4 @@ export const EDIT_MODE = 'EDIT_MODE';
 export const CLEAR_MODE = 'CLEAR_MODE';
 export const ATTACH_ADDRESS = 'ATTACH_ADDRESS';
 export const REMOVE_ADDRESS = 'REMOVE_ADDRESS';
+export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';

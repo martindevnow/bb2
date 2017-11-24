@@ -139,7 +139,7 @@
                 <div class="row" v-for="address in selected.addresses">
                     <div class="col-xs-10">
                         <button class="btn btn-default btn-block"
-                                @click="editUsersAddress(address)"
+                                @click="editAddress(address)"
                         >
                             <i class="fa fa-pencil"></i>
                             {{ address.street_1 }}
@@ -175,6 +175,7 @@
             <div class="col-sm-12">
                 <admin-addresses-creator @cancelled="addAddress = false"
                                          @saved="attachAddress"
+                                         @updated="updateUserAddress"
                 ></admin-addresses-creator>
             </div>
         </div>
@@ -186,9 +187,11 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
+    import swal from 'sweetalert2';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import * as actions from '../../../vuex/modules/users/actionTypes';
-    import * as mutations from '../../../vuex/modules/users/mutationTypes';
+    import * as userActions from '../../../vuex/modules/users/actionTypes';
+    import * as userMutations from '../../../vuex/modules/users/mutationTypes';
+    import * as addressActions from "../../../vuex/modules/addresses/actionTypes";
 
 export default {
     mixins: [
@@ -210,18 +213,9 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('users', [
-            'addToUsersCollection',
-            'updateUser',
-            'attachAddressToUser',
-        ]),
-        ...mapActions('addresses', [
-            'editAddress',
-            'deleteAddress',
-        ]),
         save() {
             let vm = this;
-            this.$store.dispatch('users/' + actions.SAVE,
+            this.$store.dispatch('users/' + userActions.SAVE,
                 this.form
             ).then(response => {
                 vm.$emit('saved');
@@ -231,7 +225,7 @@ export default {
         },
         update() {
             let vm = this;
-            this.$store.dispatch('users/' + actions.UPDATE,
+            this.$store.dispatch('users/' + userActions.UPDATE,
                 this.form
             ).then(response => {
                 vm.$emit('saved');
@@ -245,11 +239,15 @@ export default {
                 { address_id: data.id }
             ).then(response => {
                 alert('Address attached');
-                vm.attachAddressToUser(data);
+                vm.$store.commit('users/' + userMutations.ATTACH_ADDRESS, data);
                 vm.addAddress = false;
             }).catch(error => {
                 alert('error');
             })
+        },
+        updateUserAddress(address) {
+            this.$store.commit('users/' + userMutations.UPDATE_ADDRESS, address);
+            this.addAddress = false;
         },
         populateFormFromModel(model) {
             for (let prop in this.form) {
@@ -259,9 +257,12 @@ export default {
             }
             this.form.password = '';
         },
-        editUsersAddress(address) {
+        editAddress(address) {
             this.addAddress = true;
-            this.editAddress(address);
+            this.$store.dispatch('addresses/' + addressActions.EDIT, address);
+        },
+        deleteAddress(address) {
+            swal('error', 'You shouldnt do that...', 'error');
         }
     },
     computed: {

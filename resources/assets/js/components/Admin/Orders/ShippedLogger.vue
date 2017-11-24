@@ -169,8 +169,8 @@ export default {
         ]),
     },
     mounted() {
-        this.$store.dispatch(courierActions.FETCH_ALL);
-        this.$store.dispatch(packageActions.FETCH_ALL);
+        this.$store.dispatch('couriers/' + courierActions.FETCH_ALL);
+        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         this.form.shipped_at = new Date();
         this.form.package_id = this.selected.shipped_package_id
             || this.selected.packed_package_id

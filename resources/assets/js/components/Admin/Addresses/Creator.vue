@@ -218,8 +218,8 @@
 
                 return axios.patch('/admin/api/addresses/' + this.selected.id, this.form
                 ).then(response => {
-                    vm.$store.commit('addresses/' + addressMutations.UPDATE, response.data);
-                    vm.$emit('saved', response.data);
+                    vm.$store.commit('addresses/' + addressMutations.UPDATE_IN_COLLECTION, response.data);
+                    vm.$emit('updated', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
                 });
