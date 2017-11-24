@@ -20,6 +20,7 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as petsActions from "../../../vuex/modules/pets/actionTypes";
 
     export default {
         props: [
@@ -34,12 +35,9 @@
             return {};
         },
         mounted() {
-            this.loadPets();
+            this.$store.dispatch('pets/' + petsActions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('pets', [
-                'loadPets',
-            ]),
             getText(item) {
                 return item.name + ' (' + (item.owner ? item.owner.name : '') + ')';
             }
@@ -50,13 +48,12 @@
             ]),
             options() {
                 let vm = this;
-                let arr = this.collection.map(item => {
+                return this.collection.map(item => {
                     return {
                         ...item,
                         text: vm.getText(item),
                     };
                 });
-                return arr;
             },
             selectedItem() {
                 if ( ! this.value.id) {

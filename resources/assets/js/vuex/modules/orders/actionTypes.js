@@ -1,9 +1,10 @@
-export const SAVE = 'SAVE';
-export const EDIT = 'EDIT';
 export const FETCH_ALL = 'FETCH_ALL';
 export const CREATE = 'CREATE';
+export const SAVE = 'SAVE';
+export const EDIT = 'EDIT';
 export const UPDATE = 'UPDATE';
 export const DELETE = 'DELETE';
+export const CANCEL = 'CANCEL';
 export const OPEN_PAYMENT_LOGGER = 'OPEN_PAYMENT_LOGGER';
 export const CLOSE_PAYMENT_LOGGER = 'CLOSE_PAYMENT_LOGGER';
 export const OPEN_PACKED_LOGGER = 'OPEN_PACKED_LOGGER';

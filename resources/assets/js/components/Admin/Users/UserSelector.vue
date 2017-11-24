@@ -21,6 +21,7 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as userActions from "../../../vuex/modules/users/actionTypes";
 
     export default {
         props: [
@@ -35,12 +36,9 @@
             return {};
         },
         mounted() {
-            this.loadUsers();
+            this.$store.dispatch('users/' + userActions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('users', [
-                'loadUsers',
-            ]),
             getText(item) {
                 return item.name + ' (' + item.id + ')';
             }
@@ -51,13 +49,12 @@
             ]),
             options() {
                 let vm = this;
-                let arr = this.collection.map(item => {
+                return this.collection.map(item => {
                     return {
                         ...item,
                         text: vm.getText(item),
                     };
                 });
-                return arr;
             },
             selectedItem() {
                 if ( ! this.value.id) {

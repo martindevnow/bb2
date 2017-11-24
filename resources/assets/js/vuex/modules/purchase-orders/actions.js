@@ -28,12 +28,28 @@ export default {
         commit(mutations.DESELECT);
         commit(mutations.CLEAR_MODE);
     },
-};
 
 
+    [actions.OPEN_ORDERED_MODAL] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.SHOW_ORDERED_MODAL);
+    },
 
-export const closeOrderedModal = (context) => {
-    context.commit('hideOrderedModal');
+    [actions.CLOSE_ORDERED_MODAL] ({commit}) {
+        commit(mutations.HIDE_ORDERED_MODAL);
+        commit(mutations.DESELECT);
+    },
+
+    [actions.OPEN_RECEIVED_MODAL] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.SHOW_RECEIVED_MODAL);
+    },
+
+    [actions.CLOSE_RECEIVED_MODAL] ({commit}) {
+        commit(mutations.HIDE_RECEIVED_MODAL);
+        commit(mutations.DESELECT);
+    },
+
 };
 
 export const openReceivedModal = (context, purchaseOrder) => {

@@ -165,6 +165,9 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
 import { BasicSelect } from 'vue-search-select'
+import * as userActions from "../../../vuex/modules/users/actionTypes";
+import * as userMutations from "../../../vuex/modules/users/mutationTypes";
+import * as petMutations from "../../../vuex/modules/pets/mutationTypes";
 
 export default {
     mixins: [
@@ -189,13 +192,6 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('pets', [
-            'addToPetsCollection',
-            'updatePet',
-        ]),
-        ...mapActions('users', [
-            'loadUsers',
-        ]),
         save() {
             let vm = this;
             let birthday = this.form.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
@@ -206,7 +202,7 @@ export default {
                 owner_id,
             }).then(response => {
                 console.log('api call done...');
-                vm.addToPetsCollection(response.data);
+                vm.$store.dispatch('pets/' + petMutations.ADD_TO_COLLECTION,response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
@@ -224,7 +220,7 @@ export default {
                     owner_id,
             }).then(response => {
                 console.log('api call done...');
-                vm.updatePet(response.data);
+                vm.$store.dispatch('pets/' + petMutations.UPDATE, response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 console.log('error in pet creator');
@@ -256,14 +252,15 @@ export default {
         }),
     },
     mounted() {
-        this.loadUsers();
+        this.$store.dispatch('users/' + userActions.FETCH_ALL);
         if (this.mode == 'EDIT') {
             this.populateFormFromPet(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromPet(newSelected);
+            if (newSelected)
+                this.populateFormFromPet(newSelected);
         }
     }
 }

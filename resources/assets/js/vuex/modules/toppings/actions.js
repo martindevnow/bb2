@@ -2,16 +2,6 @@ import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
 export default {
-    [actions.CREATE] ({commit}) {
-        commit(mutations.DESELECT);
-        commit(mutations.CREATE_MODE);
-    },
-
-    [actions.EDIT] ({commit}, model) {
-        commit(mutations.SELECT, model);
-        commit(mutations.EDIT_MODE);
-    },
-
     [actions.FETCH_ALL] ({commit, state}, force = false) {
         return new Promise((resolve, reject) => {
             if (! force && state.collection.length)
@@ -29,6 +19,11 @@ export default {
         });
     },
 
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
+
     [actions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
             axios.post('/admin/api/toppings', {
@@ -41,6 +36,11 @@ export default {
                 reject(error);
             });
         });
+    },
+
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
     },
 
     [actions.UPDATE] ({commit, state}, formData) {
@@ -57,5 +57,10 @@ export default {
         });
     },
 
+    // TODO: Delete
 
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CLEAR_MODE);
+    },
 };

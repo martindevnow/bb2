@@ -40,7 +40,7 @@ export default {
     },
 
     [actions.CLOSE_MEAL_REPLACEMENT_CREATOR] ({commit}) {
-        commit(mutations.DESELECT);
         commit(mutations.HIDE_MEAL_REPLACEMENT_CREATOR);
+        commit(mutations.DESELECT);
     },
 };

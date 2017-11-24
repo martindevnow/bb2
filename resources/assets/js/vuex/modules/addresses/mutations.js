@@ -36,7 +36,7 @@ export default {
     [addressMutations.UPDATE] (state, payload) {
         state.collection = state.collection.map(model => {
             if (model.id === payload.id)
-                return loadMealFromData(payload);
+                return { ...payload};
             return model;
         });
     },

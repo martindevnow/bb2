@@ -31,9 +31,9 @@ export default {
 
     [actions.SAVE] ({commit}, formData) {
         return new Promise((resolve, reject) => {
-            axios.post('/admin/api/packages', {
+            axios.post('/admin/api/packages',
                 formData
-            }).then(response => {
+            ).then(response => {
                 commit(mutations.ADD_TO_COLLECTION, formData);
                 resolve(response);
             }).catch(error => {
@@ -45,9 +45,9 @@ export default {
 
     [actions.UPDATE] ({commit, state}, formData) {
         return new Promise((resolve, reject) => {
-            axios.patch('/admin/api/packages/' + state.selected.id, {
+            axios.patch('/admin/api/packages/' + state.selected.id,
                 formData
-            }).then(response => {
+            ).then(response => {
                 commit(mutations.UPDATE, formData);
                 resolve(response);
             }).catch(error => {

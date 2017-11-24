@@ -51,7 +51,7 @@
                 <td>{{ getActivePlanCount(pet) }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editPet(pet)"
+                            @click="edit(pet)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -79,6 +79,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as petActions from "../../../vuex/modules/pets/actionTypes";
 
     export default {
         mixins: [
@@ -108,15 +109,18 @@
             }
         },
         mounted() {
-            this.loadPets();
+            this.$store.dispatch('pets/' + petActions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('pets', [
-                'loadPets',
-                'openPetCreatorModal',
-                'closePetCreatorModal',
-                'editPet',
-            ]),
+            openPetCreatorModal() {
+                this.$store.dispatch('pets/' + petActions.CREATE);
+            },
+            closePetCreatorModal() {
+                this.$store.dispatch('pets/' + petActions.CANCEL);
+            },
+            edit(model) {
+                this.$store.dispatch('pets/' + petActions.EDIT, model)
+            },
             getActivePlanCount(pet) {
                 return pet.plans.length ? pet.plans.filter((plan) => plan.active == 1).length : 0;
             }
