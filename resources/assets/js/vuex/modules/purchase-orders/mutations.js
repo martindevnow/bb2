@@ -1,35 +1,37 @@
-import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 
-export const showOrderedModal = (state) => {
-    state.show.orderedModal = true;
-};
+export default {
+    [mutations.SHOW_ORDERED_MODAL] (state) {
+        state.show.orderedModal = true;
+    },
 
-export const hideOrderedModal = (state) => {
-    state.show.orderedModal = false;
-};
+    [mutations.HIDE_ORDERED_MODAL] (state) {
+        state.show.orderedModal = false;
+    },
 
-export const showReceivedModal = (state) => {
-    state.show.receivedModal = true;
-};
+    [mutations.SHOW_RECEIVED_MODAL] (state) {
+        state.show.receivedModal = true;
+    },
 
-export const hideReceivedModal = (state) => {
-    state.show.receivedModal = false;
-};
+    [mutations.HIDE_RECEIVED_MODAL] (state) {
+        state.show.receivedModal = false;
+    },
 
-export const setSelectedPurchaseOrder = (state, purchaseOrder) => {
-    state.selected = purchaseOrder;
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
 
-export const updateSelectedPurchaseOrder = (state, payload) => {
-    state.selected = { ...state.selected, ...payload };
-    state.collection = state.collection.map(po => {
-        if (po.id === state.selected.id)
-            return { ...state.selected };
-        return po;
-    });
-};
+    [mutations.UPDATE] (state, payload) {
+        state.selected = { ...state.selected, ...payload };
+        state.collection = state.collection.map(po => {
+            if (po.id === state.selected.id)
+                return { ...state.selected };
+            return po;
+        });
+    },
 
-export const populatePurchaseOrdersCollection = (state, data) => {
-    state.collection = data;
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data;
+    },
+
 };

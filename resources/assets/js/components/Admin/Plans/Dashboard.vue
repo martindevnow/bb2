@@ -108,6 +108,10 @@
     import swal from 'sweetalert2'
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+
+    import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+    import * as planActions from '../../../vuex/modules/plans/actionTypes';
+
     export default {
         mixins: [
             isSortable
@@ -134,8 +138,8 @@
             }
         },
         mounted() {
-            this.loadPlans();
-            this.loadPackages();
+            this.$store.dispatch('plans/' + planActions.FETCH_ALL);
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         },
         methods: {
             ...mapActions('plans', [
@@ -143,16 +147,12 @@
                 'closePlanCreatorModal',
                 'openMealReplacementModal',
                 'closeMealReplacementModal',
-                'loadPlans',
                 'editPlan',
             ]),
             ...mapActions('notes', [
                 'openNoteCreatorModal',
                 'closeNoteCreatorModal',
                 'createNote',
-            ]),
-            ...mapActions('packages', [
-                'loadPackages',
             ]),
         },
         computed: {

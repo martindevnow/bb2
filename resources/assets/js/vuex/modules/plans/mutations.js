@@ -59,21 +59,20 @@ export default {
         });
     },
 
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+    },
 
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+    },
 
-export const showPlanCreatorModal = (state) => {
-    state.show.creator = true;
-};
+    [mutations.SHOW_MEAL_REPLACEMENT_CREATOR] (state) {
+        state.show.mealReplacementModal = true;
+    },
 
-export const hidePlanCreatorModal = (state) => {
-    state.show.creator = false;
-};
+    [mutations.HIDE_MEAL_REPLACEMENT_CREATOR] (state) {
+        state.show.mealReplacementModal = false;
+    },
 
-export const showMealReplacementModal = (state) => {
-    state.show.mealReplacementModal = true;
-};
-
-export const hideMealReplacementModal = (state) => {
-    state.show.mealReplacementModal = false;
 };

@@ -181,6 +181,9 @@ import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
 import { BasicSelect } from 'vue-search-select'
 
+import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+import * as petActions from '../../../vuex/modules/pets/actionTypes';
+
 export default {
     mixins: [
         hasErrors
@@ -217,12 +220,6 @@ export default {
         ...mapMutations('plans', [
             'addToPlansCollection',
             'updatePlan',
-        ]),
-        ...mapActions('pets', [
-            'loadPets',
-        ]),
-        ...mapActions('packages', [
-            'loadPackages',
         ]),
         save() {
             let vm = this;
@@ -287,8 +284,8 @@ export default {
         }),
     },
     mounted() {
-        this.loadPets();
-        this.loadPackages();
+        this.$store.dispatch('pets/' + petActions.FETCH_ALL);
+        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         if (this.mode == 'EDIT') {
             this.populateFormFromPlan(this.selected);
         }

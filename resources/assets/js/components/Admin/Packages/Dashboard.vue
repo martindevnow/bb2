@@ -78,7 +78,7 @@
                 </td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editPackage(package)"
+                            @click="edit(package)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -116,6 +116,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as packageActions from '../../../vuex/modules/packages/actionTypes';
 
     export default {
         mixins: [
@@ -144,17 +145,24 @@
             }
         },
         mounted() {
-            this.loadPackages();
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('packages', [
-                'loadPackages',
-                'openPackageCreatorModal',
-                'closePackageCreatorModal',
-                'editPackage',
-                'openMealPlanEditorModal',
-                'closeMealPlanEditorModal',
-            ]),
+            openPackageCreatorModal() {
+                this.$store.dispatch('packages/' + packageActions.CREATE);
+            },
+            closePackageCreatorModal() {
+                this.$store.dispatch('packages/' + packageActions.CANCEL);
+            },
+            openMealPlanEditorModal(model) {
+                this.$store.dispatch('packages/' + packageActions.OPEN_MEAL_PLAN_EDITOR, model);
+            },
+            closeMealPlanEditorModal() {
+                this.$store.dispatch('packages/' + packageActions.CLOSE_MEAL_PLAN_EDITOR);
+            },
+            edit(model) {
+                this.$store.dispatch('packages/' + packageActions.EDIT, model);
+            },
             boolIconClass(val) {
                 if (val)
                     return 'fa-check';

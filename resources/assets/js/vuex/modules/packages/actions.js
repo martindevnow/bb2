@@ -57,5 +57,18 @@ export default {
         });
     },
 
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.CLEAR_MODE);
+        commit(mutations.DESELECT);
+    },
 
+    [actions.OPEN_MEAL_PLAN_EDITOR] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.SHOW_MEAL_PLAN_EDITOR);
+    },
+
+    [actions.CLOSE_MEAL_PLAN_EDITOR] ({commit}, model) {
+        commit(mutations.DESELECT);
+        commit(mutations.HIDE_MEAL_PLAN_EDITOR);
+    },
 };

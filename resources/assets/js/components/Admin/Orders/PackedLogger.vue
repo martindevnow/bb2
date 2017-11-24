@@ -63,6 +63,8 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
+import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+
 
 export default {
     mixins: [
@@ -78,9 +80,6 @@ export default {
     methods: {
         ...mapActions('orders', [
             'closePackedModal',
-        ]),
-        ...mapActions('packages', [
-            'loadPackages',
         ]),
         ...mapMutations('orders', [
             'updateSelectedOrder',
@@ -116,7 +115,7 @@ export default {
         ]),
     },
     mounted() {
-        this.loadPackages();
+        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
         this.package_id = this.selected.packed_package_id
             || this.selected.plan.package_id;

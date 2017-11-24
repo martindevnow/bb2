@@ -77,6 +77,9 @@
     import swal from 'sweetalert2';
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as mealActions from "../../../vuex/modules/meals/actionTypes";
+    import * as packageActions from "../../../vuex/modules/packages/actionTypes";
+    import * as packageMutations from "../../../vuex/modules/packages/mutationTypes";
 
     export default {
         mixins: [
@@ -112,15 +115,9 @@
             };
         },
         methods: {
-            ...mapActions('meals', [
-                'loadMeals',
-            ]),
-            ...mapActions('packages', [
-                'closeMealPlanEditorModal'
-            ]),
-            ...mapMutations('packages', [
-                'updatePackage'
-            ]),
+            closeMealPlanEditorModal() {
+                this.$store.dispatch('plans' + packageActions.CLOSE_MEAL_PLAN_EDITOR);
+            },
             removeMeal(key) {
                 this.form.meals[key] = {};
             },
@@ -150,7 +147,7 @@
                 axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', {
                     ...this.form, meals
                 }).then(response => {
-                    vm.updatePackage(response.data);
+                    vm.$store.dispatch('packages/' + packageMutations.UPDATE, response.data);
                     vm.closeMealPlanEditorModal();
                     swal('Done', 'Thank you', 'success');
                 })
@@ -175,7 +172,7 @@
             },
         },
         mounted() {
-            this.loadMeals();
+            this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
             this.populateFormFromPackage(this.selected);
         },
         watch: {
