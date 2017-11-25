@@ -152,8 +152,7 @@ import isSortable from '../../../mixins/isSortable';
 import Datepicker from 'vuejs-datepicker';
 import swal from 'sweetalert2';
 import moment from 'moment';
-import * as actions from '../../../vuex/modules/orders/actionTypes';
-import * as mutations from '../../../vuex/modules/orders/mutationTypes';
+import * as orderActions from '../../../vuex/modules/orders/actionTypes';
 
 export default {
     mixins: [
@@ -184,35 +183,17 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('orders/' + actions.FETCH_ALL);
+        this.$store.dispatch('orders/' + orderActions.FETCH_ALL);
     },
     methods: {
         openPaymentModal(order) {
-            this.$store.dispatch('orders/' + actions.OPEN_PAYMENT_LOGGER, order)
-        },
-        closePaymentModal() {
-            this.$store.dispatch('orders/' + actions.CLOSE_PAYMENT_LOGGER)
-        },
-        openPackedModal(order) {
-            this.$store.dispatch('orders/' + actions.OPEN_PACKED_LOGGER, order)
-        },
-        closePackedModal() {
-            this.$store.dispatch('orders/' + actions.CLOSE_PACKED_LOGGER)
-        },
-        openShippedModal(order) {
-            this.$store.dispatch('orders/' + actions.OPEN_SHIPPED_LOGGER, order)
-        },
-        closeShippedModal() {
-            this.$store.dispatch('orders/' + actions.CLOSE_SHIPPED_LOGGER)
-        },
-        openCancellationModal(order) {
-            this.$store.dispatch('orders/' + actions.OPEN_CANCELLED_LOGGER, order)
+            this.$store.dispatch('orders/' + orderActions.OPEN_CANCELLED_LOGGER, order)
         },
         closeCancellationModal() {
-            this.$store.dispatch('orders/' + actions.CLOSE_CANCELLED_LOGGER)
+            this.$store.dispatch('orders/' + orderActions.CLOSE_CANCELLED_LOGGER)
         },
         refresh(force) {
-            this.$store.dispatch('orders/' + actions.FETCH_ALL, force);
+            this.$store.dispatch('orders/' + orderActions.FETCH_ALL, force);
         },
 
         updateDeliverBy(order, event) {

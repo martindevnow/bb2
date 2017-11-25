@@ -183,6 +183,7 @@ import { BasicSelect } from 'vue-search-select'
 
 import * as packageActions from '../../../vuex/modules/packages/actionTypes';
 import * as petActions from '../../../vuex/modules/pets/actionTypes';
+import * as planActions from "../../../vuex/modules/plans/actionTypes";
 
 export default {
     mixins: [
@@ -217,22 +218,17 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('plans', [
-            'addToPlansCollection',
-            'updatePlan',
-        ]),
         save() {
             let vm = this;
             let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
 
-            return axios.post('/admin/api/plans', {
+            this.$store.dispatch('plans/' + planActions.SAVE, {
                 ...this.form,
                 first_delivery_at,
                 package_id: this.form.pkg.id,
                 pet_id: this.form.pet.id,
                 delivery_address_id: this.form.delivery_address.id,
             }).then(response => {
-                vm.addToPlansCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -242,15 +238,14 @@ export default {
             let vm = this;
             let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
 
-            return axios.patch('/admin/api/plans/' + this.selected.id, {
+            this.$store.dispatch(planActions.UPDATE, {
                 ...this.form,
                 first_delivery_at,
                 package_id: this.form.pkg.id,
                 pet_id: this.form.pet.id,
                 delivery_address_id: this.form.delivery_address.id,
             }).then(response => {
-                vm.updatePlan(response.data);
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -292,7 +287,8 @@ export default {
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromPlan(newSelected);
+            if (newSelected)
+                this.populateFormFromPlan(newSelected);
         }
     }
 }

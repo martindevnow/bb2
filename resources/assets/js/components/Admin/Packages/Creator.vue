@@ -193,7 +193,7 @@ export default {
             let vm = this;
             this.$store.dispatch('packages/' + packageActions.UPDATE, this.form
             ).then(response => {
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -223,7 +223,8 @@ export default {
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromPackage(newSelected);
+            if (newSelected)
+                this.populateFormFromPackage(newSelected);
         }
     }
 }

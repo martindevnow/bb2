@@ -35,11 +35,14 @@
             return {};
         },
         mounted() {
-            this.$store.dispatch('pets/' + petsActions.FETCH_ALL);
+            this.fetchAll()
         },
         methods: {
             getText(item) {
                 return item.name + ' (' + (item.owner ? item.owner.name : '') + ')';
+            },
+            fetchAll() {
+                this.$store.dispatch('pets/' + petsActions.FETCH_ALL);
             }
         },
         computed: {

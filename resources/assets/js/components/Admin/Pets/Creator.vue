@@ -168,6 +168,7 @@ import { BasicSelect } from 'vue-search-select'
 import * as userActions from "../../../vuex/modules/users/actionTypes";
 import * as userMutations from "../../../vuex/modules/users/mutationTypes";
 import * as petMutations from "../../../vuex/modules/pets/mutationTypes";
+import * as petActions from "../../../vuex/modules/pets/actionTypes";
 
 export default {
     mixins: [
@@ -196,17 +197,11 @@ export default {
             let vm = this;
             let birthday = this.form.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
             let owner_id = this.form.owner.id;
-            return axios.post('/admin/api/pets', {
-                ...this.form,
-                birthday,
-                owner_id,
+            this.$store.dispatch('pets/' + petActions.SAVE, {
+                ...this.form, birthday, owner_id,
             }).then(response => {
-                console.log('api call done...');
-                vm.$store.commit('pets/' + petMutations.ADD_TO_COLLECTION,response.data);
                 vm.$emit('saved');
             }).catch(error => {
-                console.log('error in pet creator');
-                console.log(error);
                 vm.errors.record(error.response.data.errors);
             });
         },
@@ -214,19 +209,16 @@ export default {
             let vm = this;
             let birthday = this.form.birthday ? moment(this.birthday).format('YYYY-MM-DD') : null;
             let owner_id = this.form.owner.id;
-            return axios.patch('/admin/api/pets/' + this.selected.id, {
-                    ...this.form,
-                    birthday,
-                    owner_id,
+            this.$store.dispatch('pets/' + petActions.UPDATE, {
+                ...this.form, birthday, owner_id,
             }).then(response => {
-                console.log('api call done...');
-                vm.$store.commit('pets/' + petMutations.UPDATE_IN_COLLECTION, response.data);
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
-                console.log('error in pet creator');
-                console.log(error);
                 vm.errors.record(error.response.data.errors);
             });
+        },
+        fetchAll() {
+            this.$store.dispatch('users/' + userActions.FETCH_ALL);
         },
         populateFormFromPet(pet) {
             this.form.owner = pet.owner;
@@ -252,7 +244,7 @@ export default {
         }),
     },
     mounted() {
-        this.$store.dispatch('users/' + userActions.FETCH_ALL);
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromPet(this.selected);
         }

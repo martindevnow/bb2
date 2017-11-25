@@ -175,6 +175,7 @@
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import * as addressMutations from "../../../vuex/modules/addresses/mutationTypes";
+    import * as addressActions from "../../../vuex/modules/addresses/actionTypes";
 
     export default {
         mixins: [
@@ -205,9 +206,8 @@
             save() {
                 let vm = this;
 
-                return axios.post('/admin/api/addresses', this.form
+                this.$store.dispatch('addresses/' + addressActions.SAVE, this.form
                 ).then(response => {
-                    vm.$store.commit('addresses/' + addressMutations.ADD_TO_COLLECTION, response.data);
                     vm.$emit('saved', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
@@ -216,9 +216,8 @@
             update() {
                 let vm = this;
 
-                return axios.patch('/admin/api/addresses/' + this.selected.id, this.form
+                this.$store.dispatch('addresses/' + addressActions.UPDATE, this.form
                 ).then(response => {
-                    vm.$store.commit('addresses/' + addressMutations.UPDATE_IN_COLLECTION, response.data);
                     vm.$emit('updated', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);

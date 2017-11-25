@@ -182,7 +182,7 @@ export default {
             this.$store.dispatch('meals/' + mealActions.UPDATE, {
                 ...this.form, meats, toppings
             }).then(response => {
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

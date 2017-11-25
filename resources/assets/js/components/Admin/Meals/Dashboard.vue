@@ -71,6 +71,7 @@
             <p slot="header" v-if="! mode">Add a Meal</p>
             <p slot="header" v-if="mode == 'EDIT' && selected">Edit Meal: {{ selected.label }}</p>
             <admin-meals-creator @saved="closeCreator()"
+                                 @updated="closeCreator()"
                                  @cancelled="closeCreator()"
                                slot="body"
             ></admin-meals-creator>
@@ -82,8 +83,8 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
-    import * as actions from '../../../vuex/modules/meats/actionTypes';
-    import * as mutations from '../../../vuex/modules/meats/mutationTypes';
+    import * as mealActions from '../../../vuex/modules/meats/actionTypes';
+    import * as mealMutations from '../../../vuex/modules/meats/mutationTypes';
 
     export default {
         mixins: [
@@ -112,17 +113,20 @@
             }
         },
         mounted() {
-            this.$store.dispatch('meals/' + actions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
             create() {
-                this.$store.dispatch('meals/' + actions.CREATE);
+                this.$store.dispatch('meals/' + mealActions.CREATE);
             },
             closeCreator() {
-                this.$store.commit('meals/' + mutations.CLEAR_MODE)
+                this.$store.dispatch('meals/' + mealActions.CANCEL)
             },
             edit(model) {
-                this.$store.dispatch('meals/' + actions.EDIT, model);
+                this.$store.dispatch('meals/' + mealActions.EDIT, model);
+            },
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
             }
         },
         computed: {

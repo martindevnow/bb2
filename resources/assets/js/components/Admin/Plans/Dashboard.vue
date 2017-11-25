@@ -60,7 +60,7 @@
                         Replace Meal
                     </button>
                     <button class="btn btn-primary btn-xs"
-                            @click="editPlan(plan)"
+                            @click="edit(plan)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -79,6 +79,7 @@
             <p slot="header" v-if="! mode">Add a Plan</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
             <admin-plans-creator @cancelled="closePlanCreatorModal()"
+                                 @updated="closePlanCreatorModal()"
                                  @saved="closePlanCreatorModal()"
                                  slot="body"
             ></admin-plans-creator>
@@ -87,6 +88,7 @@
                             @close="closeNoteCreatorModal()"
         >
             <admin-notes-creator @cancelled="closeNoteCreatorModal()"
+                                 @updated="closeNoteCreatorModal()"
                                  @saved="closeNoteCreatorModal()"
                                  slot="body"
             >
@@ -96,6 +98,7 @@
                             @close="closeMealReplacementModal()"
         >
             <admin-plans-meal-replacement @cancelled="closeMealReplacementModal()"
+                                          @updated="closeMealReplacementModal()"
                                           @saved="closeMealReplacementModal()"
                                           slot="body"
             >
@@ -111,6 +114,7 @@
 
     import * as packageActions from '../../../vuex/modules/packages/actionTypes';
     import * as planActions from '../../../vuex/modules/plans/actionTypes';
+    import * as noteActions from "../../../vuex/modules/notes/actionTypes";
 
     export default {
         mixins: [
@@ -142,18 +146,30 @@
             this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
         },
         methods: {
-            ...mapActions('plans', [
-                'openPlanCreatorModal',
-                'closePlanCreatorModal',
-                'openMealReplacementModal',
-                'closeMealReplacementModal',
-                'editPlan',
-            ]),
-            ...mapActions('notes', [
-                'openNoteCreatorModal',
-                'closeNoteCreatorModal',
-                'createNote',
-            ]),
+            openPlanCreatorModal() {
+                this.$store.dispatch(planActions.CREATE)
+            },
+            closePlanCreatorModal() {
+                this.$store.dispatch(planActions.CANCEL)
+            },
+            edit(plan) {
+                this.$store.dispatch(planActions.EDIT, plan);
+            },
+            openMealReplacementModal(plan) {
+                this.$store.dispatch(planActions.OPEN_MEAL_REPLACEMENT_CREATOR, plan)
+            },
+            closeMealReplacementModal() {
+                this.$store.dispatch(planActions.CLOSE_MEAL_REPLACEMENT_CREATOR)
+            },
+            openNoteCreatorModal(dto) {
+                this.$store.dispatch(noteActions.CREATE, dto)
+            },
+            closeNoteCreatorModal() {
+                this.$store.dispatch(noteActions.CANCEL)
+            },
+            createNote(dto) {
+                this.$store.dispatch(noteActions.CREATE, dto);
+            }
         },
         computed: {
             ...mapState('plans', [

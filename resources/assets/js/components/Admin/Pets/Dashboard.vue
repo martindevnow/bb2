@@ -69,6 +69,7 @@
             <p slot="header" v-if="! mode">Add a Pet</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Pet: {{ selected.name }}</p>
             <admin-pets-creator @saved="closePetCreatorModal()"
+                                @updated="closePetCreatorModal()"
                                 @cancelled="closePetCreatorModal()"
                                 slot="body"
             ></admin-pets-creator>
@@ -109,7 +110,7 @@
             }
         },
         mounted() {
-            this.$store.dispatch('pets/' + petActions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
             openPetCreatorModal() {
@@ -123,6 +124,9 @@
             },
             getActivePlanCount(pet) {
                 return pet.plans.length ? pet.plans.filter((plan) => plan.active == 1).length : 0;
+            },
+            fetchAll() {
+                this.$store.dispatch('pets/' + petActions.FETCH_ALL);
             }
         },
         computed: {

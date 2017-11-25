@@ -123,7 +123,7 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-import * as actions from '../../../vuex/modules/meats/actionTypes';
+import * as meatActions from '../../../vuex/modules/meats/actionTypes';
 import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
 export default {
@@ -151,7 +151,7 @@ export default {
         },
         save() {
             let vm = this;
-            this.$store.dispatch('meats/' + actions.SAVE,
+            this.$store.dispatch('meats/' + meatActions.SAVE,
                 this.form
             ).then(response => {
                 vm.$emit('saved');
@@ -161,10 +161,10 @@ export default {
         },
         update() {
             let vm = this;
-            this.$store.dispatch('meats/' + actions.UPDATE,
+            this.$store.dispatch('meats/' + meatActions.UPDATE,
                 this.form
             ).then(response => {
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -179,7 +179,7 @@ export default {
         ]),
     },
     mounted() {
-        this.$store.dispatch('meats/' + actions.FETCH_ALL);
+        this.$store.dispatch('meats/' + meatActions.FETCH_ALL);
         if (this.mode == 'EDIT') {
             this.populateFormFromModel(this.selected);
         }

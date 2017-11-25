@@ -21,8 +21,7 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import * as actions from '../../../vuex/modules/meats/actionTypes';
-    import * as mutations from '../../../vuex/modules/meats/mutationTypes';
+    import * as mealActions from '../../../vuex/modules/meats/actionTypes';
 
     export default {
         props: [
@@ -37,7 +36,7 @@
             return {};
         },
         mounted() {
-            this.$store.dispatch('meals/' + actions.FETCH_ALL);
+            this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
         },
         methods: {
             getText(item) {

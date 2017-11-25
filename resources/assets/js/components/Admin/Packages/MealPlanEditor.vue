@@ -148,7 +148,7 @@
                     ...this.form, meals
                 }).then(response => {
                     vm.$store.dispatch('packages/' + packageMutations.UPDATE_IN_COLLECTION, response.data);
-                    vm.closeMealPlanEditorModal();
+                    vm.$emit('saved');
                     swal('Done', 'Thank you', 'success');
                 })
                 .catch(error => {
@@ -177,7 +177,8 @@
         },
         watch: {
             selected(newSelected) {
-                this.populateFormFromPackage(newSelected);
+                if (newSelected)
+                    this.populateFormFromPackage(newSelected);
             }
         }
     }

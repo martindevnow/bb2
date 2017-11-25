@@ -122,7 +122,7 @@
                 this.$store.dispatch('users/' + actions.CREATE);
             },
             closeCreator() {
-                this.$store.commit('users/' + mutations.CLEAR_MODE)
+                this.$store.dispatch('users/' + actions.CANCEL)
             },
             edit(model) {
                 this.$store.dispatch('users/' + actions.EDIT, model);

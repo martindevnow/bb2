@@ -29,7 +29,7 @@ export default {
             axios.post('/admin/api/addresses',
                 formData
             ).then(response => {
-                commit(mutations.ADD_TO_COLLECTION, formData);
+                commit(mutations.ADD_TO_COLLECTION, response.data);
                 resolve(response);
             }).catch(error => {
                 console.log(error);
@@ -48,7 +48,7 @@ export default {
             axios.patch('/admin/api/addresses/' + state.selected.id,
                 formData
             ).then(response => {
-                commit(mutations.UPDATE_IN_COLLECTION, formData)
+                commit(mutations.UPDATE_IN_COLLECTION, response.data);
                 resolve(response);
             }).catch(error => {
                 console.log(error);

@@ -24,9 +24,35 @@ export default {
         commit(mutations.CREATE_MODE);
     },
 
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/plans',
+                formData
+            ).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, response.data);
+                resolve(response)
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
+
     [actions.EDIT] ({commit}, model) {
         commit(mutations.SELECT, model);
         commit(mutations.EDIT_MODE);
+    },
+
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/plans/' + state.selected.id,
+                formData
+            ).then(response => {
+                commit(mutations.UPDATE_IN_COLLECTION, response.data);
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
     },
 
     [actions.CANCEL] ({commit}) {
