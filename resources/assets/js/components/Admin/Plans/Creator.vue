@@ -238,7 +238,7 @@ export default {
             let vm = this;
             let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
 
-            this.$store.dispatch(planActions.UPDATE, {
+            this.$store.dispatch('plans/' + planActions.UPDATE, {
                 ...this.form,
                 first_delivery_at,
                 package_id: this.form.pkg.id,

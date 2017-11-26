@@ -62,4 +62,17 @@ export default {
         commit(mutations.CLEAR_MODE);
     },
 
+
+    [actions.ATTACH_ADDRESS] ({commit, state}, address_id) {
+        return new Promise((resolve, reject) => {
+            axios.put('/admin/api/users/' + state.selected.id + '/attachAddress',
+                {address_id: address_id}
+            ).then(response => {
+                commit(mutations.ATTACH_ADDRESS_TO_USER, response.data);
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
 };

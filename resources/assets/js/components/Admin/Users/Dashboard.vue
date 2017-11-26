@@ -77,6 +77,7 @@
             <p slot="header" v-if="! mode">Add a User</p>
             <p slot="header" v-if="mode == 'EDIT' && selected">Edit User: {{ selected.name }}</p>
             <admin-users-creator @saved="closeCreator()"
+                                 @updated="closeCreator()"
                                  @cancelled="closeCreator()"
                                  slot="body"
                                  :showAddresses="mode == 'EDIT'"
@@ -88,8 +89,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
-    import * as actions from '../../../vuex/modules/users/actionTypes';
-    import * as mutations from '../../../vuex/modules/users/mutationTypes';
+    import * as userActions from '../../../vuex/modules/users/actionTypes';
 
     export default {
         mixins: [
@@ -115,17 +115,20 @@
             }
         },
         mounted() {
-            this.$store.dispatch('users/' + actions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('users/' + userActions.FETCH_ALL)
+            },
             create() {
-                this.$store.dispatch('users/' + actions.CREATE);
+                this.$store.dispatch('users/' + userActions.CREATE);
             },
             closeCreator() {
-                this.$store.dispatch('users/' + actions.CANCEL)
+                this.$store.dispatch('users/' + userActions.CANCEL)
             },
             edit(model) {
-                this.$store.dispatch('users/' + actions.EDIT, model);
+                this.$store.dispatch('users/' + userActions.EDIT, model);
             }
         },
         computed: {

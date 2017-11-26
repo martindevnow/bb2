@@ -233,20 +233,18 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        attachAddress(data) {
+        attachAddress(address) {
             let vm = this;
-            axios.put('/admin/api/users/' + this.selected.id + '/attachAddress',
-                { address_id: data.id }
+            this.$store.dispatch('users/' + userActions.ATTACH_ADDRESS,
+                address.id
             ).then(response => {
-                alert('Address attached');
-                vm.$store.commit('users/' + userMutations.ATTACH_ADDRESS, data);
                 vm.addAddress = false;
             }).catch(error => {
                 alert('error');
-            })
+            });
         },
         updateUserAddress(address) {
-            this.$store.commit('users/' + userMutations.UPDATE_ADDRESS, address);
+            this.$store.commit('users/' + userMutations.UPDATE_ADDRESS_ON_USER, address);
             this.addAddress = false;
         },
         populateFormFromModel(model) {

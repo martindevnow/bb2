@@ -84,7 +84,7 @@
                 });
             },
             deleteNote(id) {
-                this.$store.dispatch(noteActions.DELETE, id)
+                this.$store.dispatch('notes/' + noteActions.DELETE, id)
                 .then(response => {
                     alert('deleted');
                 }).catch(error => {

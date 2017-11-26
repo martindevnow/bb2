@@ -36,9 +36,12 @@
             return {};
         },
         mounted() {
-            this.$store.dispatch('users/' + userActions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('users/' + userActions.FETCH_ALL);
+            },
             getText(item) {
                 return item.name + ' (' + item.id + ')';
             }

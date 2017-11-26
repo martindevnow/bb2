@@ -43,7 +43,7 @@ export default {
         });
     },
 
-    [mutations.ATTACH_ADDRESS] (state, payload) {
+    [mutations.ATTACH_ADDRESS_TO_USER] (state, payload) {
         console.log('payload');
         console.log(payload);
 
@@ -55,7 +55,7 @@ export default {
         });
     },
 
-    [mutations.REMOVE_ADDRESS] (state, payload) {
+    [mutations.REMOVE_ADDRESS_FROM_USER] (state, payload) {
         state.collection.map((user) => {
             let addresses = user.addresses.filter((address) => {
                 if (address.id !== payload.id)
@@ -67,7 +67,7 @@ export default {
         });
     },
 
-    [mutations.UPDATE_ADDRESS] (state, updated) {
+    [mutations.UPDATE_ADDRESS_ON_USER] (state, updated) {
         state.collection.map((user) => {
             if (user.id !== updated.addressable_id)
                 return user;

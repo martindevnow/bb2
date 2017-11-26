@@ -147,28 +147,28 @@
         },
         methods: {
             openPlanCreatorModal() {
-                this.$store.dispatch(planActions.CREATE)
+                this.$store.dispatch('plans/' + planActions.CREATE)
             },
             closePlanCreatorModal() {
-                this.$store.dispatch(planActions.CANCEL)
+                this.$store.dispatch('plans/' + planActions.CANCEL)
             },
             edit(plan) {
-                this.$store.dispatch(planActions.EDIT, plan);
+                this.$store.dispatch('plans/' + planActions.EDIT, plan);
             },
             openMealReplacementModal(plan) {
-                this.$store.dispatch(planActions.OPEN_MEAL_REPLACEMENT_CREATOR, plan)
+                this.$store.dispatch('plans/' + planActions.OPEN_MEAL_REPLACEMENT_CREATOR, plan)
             },
             closeMealReplacementModal() {
-                this.$store.dispatch(planActions.CLOSE_MEAL_REPLACEMENT_CREATOR)
+                this.$store.dispatch('plans/' + planActions.CLOSE_MEAL_REPLACEMENT_CREATOR)
             },
             openNoteCreatorModal(dto) {
-                this.$store.dispatch(noteActions.CREATE, dto)
+                this.$store.dispatch('notes/' + noteActions.CREATE, dto)
             },
             closeNoteCreatorModal() {
-                this.$store.dispatch(noteActions.CANCEL)
+                this.$store.dispatch('notes/' + noteActions.CANCEL)
             },
             createNote(dto) {
-                this.$store.dispatch(noteActions.CREATE, dto);
+                this.$store.dispatch('notes/' + noteActions.CREATE, dto);
             }
         },
         computed: {
