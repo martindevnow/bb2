@@ -15,3 +15,5 @@ seeds.zip
 /coverage
 /pdfs
 app/Console/Commands/queue.pid
+/database/backups
+error_log
