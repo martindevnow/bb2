@@ -115,8 +115,8 @@
             };
         },
         methods: {
-            closeMealPlanEditorModal() {
-                this.$store.dispatch('plans' + packageActions.CLOSE_MEAL_PLAN_EDITOR);
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
             },
             removeMeal(key) {
                 this.form.meals[key] = {};
@@ -144,10 +144,10 @@
             save() {
                 let vm = this;
                 let meals = this.buildMealPlan();
-                axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', {
-                    ...this.form, meals
+                this.$store.dispatch(packageActions.SAVE_MEAL_PLAN, {
+                    ...this.form,
+                    meals
                 }).then(response => {
-                    vm.$store.dispatch('packages/' + packageMutations.UPDATE_IN_COLLECTION, response.data);
                     vm.$emit('saved');
                     swal('Done', 'Thank you', 'success');
                 })
@@ -172,7 +172,7 @@
             },
         },
         mounted() {
-            this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+            this.fetchAll();
             this.populateFormFromPackage(this.selected);
         },
         watch: {

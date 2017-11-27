@@ -67,8 +67,23 @@ export default {
         commit(mutations.SHOW_MEAL_PLAN_EDITOR);
     },
 
-    [actions.CLOSE_MEAL_PLAN_EDITOR] ({commit}, model) {
+    [actions.CLOSE_MEAL_PLAN_EDITOR] ({commit}) {
         commit(mutations.DESELECT);
         commit(mutations.HIDE_MEAL_PLAN_EDITOR);
+    },
+
+    [actions.SAVE_MEAL_PLAN] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+
+            axios.patch('/admin/api/packages/' + formData.package_id + '/mealPlan',
+                formData
+            ).then(response => {
+                commit(mutations.UPDATE_IN_COLLECTION, response.data);
+                resolve(response);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
     },
 };
