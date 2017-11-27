@@ -68,11 +68,9 @@ export default {
     methods: {
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/purchase-orders/' + this.$store.state.selected.purchaseOrder.id + '/received', {
+            this.$store.dispatch('purchase-orders/' + purchaseOrderActions.SAVE_RECEIVED, {
                 received_at: moment(vm.received_at).format('YYYY-MM-DD'),
             }).then(response => {
-                vm.$store.commit('purchase-orders/' + purchaseOrderMutations.UPDATE_IN_COLLECTION, { received: true });
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);

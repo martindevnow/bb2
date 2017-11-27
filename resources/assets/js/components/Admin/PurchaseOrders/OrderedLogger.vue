@@ -69,11 +69,9 @@ export default {
     methods: {
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/purchase-orders/' + this.$store.state.selected.purchaseOrder.id + '/ordered', {
+            this.$store.dispatch('purchase-orders/' + purchaseOrderActions.SAVE_ORDERED, {
                 ordered_at: moment(vm.ordered_at).format('YYYY-MM-DD'),
             }).then(response => {
-                vm.$store.commit('purchase-orders/' + purchaseOrderMutations.UPDATE_IN_COLLECTION, { ordered: true });
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
