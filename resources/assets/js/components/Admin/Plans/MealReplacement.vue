@@ -98,7 +98,7 @@
             },
             save() {
                 let vm = this;
-                axios.post('/admin/api/plans/' + vm.selected.id + '/replaceMeal', {
+                this.$store.dispatch('plans/' + planActions.SAVE_MEAL_REPLACEMENT, {
                     removed_meal_id: vm.form.removed_meal.id,
                     added_meal_id: vm.form.added_meal.id,
                 }).then(response => {
@@ -114,8 +114,9 @@
                 })[0];
             },
             deleteReplacement(id) {
-                let vm = this;
-                axios.delete('/admin/api/mealReplacements/' + id).then(response => {
+                this.$store.dispatch(planActions.DELETE_MEAL_REPLACEMENT,
+                    id
+                ).then(response => {
                     alert('Removed');
                 }).catch(error => {
                     alert('Error');

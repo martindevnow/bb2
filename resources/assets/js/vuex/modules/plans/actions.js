@@ -69,4 +69,27 @@ export default {
         commit(mutations.HIDE_MEAL_REPLACEMENT_CREATOR);
         commit(mutations.DESELECT);
     },
+
+    [actions.SAVE_MEAL_REPLACEMENT] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/plans/' + state.selected.id + '/replaceMeal',
+                formData
+            ).then(response => {
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
+
+    [actions.DELETE_MEAL_REPLACEMENT] ({commit}, mr_id) {
+        return new Promise((resolve, reject) => {
+            axios.delete('/admin/api/mealReplacements/' + mr_id
+            ).then(response => {
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
 };
