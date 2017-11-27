@@ -7,7 +7,7 @@
 
 <script>
     import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
-    import * as orderMutations from "../../../vuex/modules/orders/mutationTypes";
+    import * as orderActions from "../../../vuex/modules/orders/actionTypes";
 
     export default {
         data() {
@@ -17,12 +17,11 @@
             cancelOrder() {
                 let vm = this;
 
-                axios.post('/admin/api/orders/' + vm.selected.id + '/cancel')
-                    .then(response => {
-                        vm.$store.commit('orders/' + orderMutations.UPDATE_IN_COLLECTION, {cancelled: true});
-                        vm.$emit('saved');
-                    }).catch(error => {
-                        vm.errors.record(error.response.data.errors);
+                this.$store.dispatch('orders/' + orderActions.SAVE_CANCELLED
+                ).then(response => {
+                    vm.$emit('saved');
+                }).catch(error => {
+                    vm.errors.record(error.response.data.errors);
                 });
             }
         },

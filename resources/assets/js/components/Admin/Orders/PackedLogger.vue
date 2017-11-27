@@ -80,18 +80,15 @@ export default {
         };
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        },
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/orders/'+ this.selected.id +'/packed', {
+            this.$store.dispatch('orders/' + orderActions.SAVE_PACKED, {
                 weeks_packed:      this.weeks_packed,
                 packed_package_id: this.packed_package.id,
             }).then(response => {
-                vm.$store.commit('orders/' + orderMutations.UPDATE_IN_COLLECTION, {
-                    packed: true,
-                    weeks_packed: vm.weeks_packed,
-                    packed_package_id: vm.packed_package.id,
-                });
                 vm.$emit('saved')
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -111,7 +108,7 @@ export default {
         ]),
     },
     mounted() {
-        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        this.fetchAll();
         this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
         this.package_id = this.selected.packed_package_id
             || this.selected.plan.package_id;

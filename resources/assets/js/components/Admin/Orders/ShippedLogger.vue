@@ -99,6 +99,7 @@ import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
 import * as courierActions from "../../../vuex/modules/couriers/actionTypes";
 import * as packageActions from "../../../vuex/modules/packages/actionTypes";
+import * as orderActions from "../../../vuex/modules/orders/actionTypes";
 
 export default {
     mixins: [
@@ -119,35 +120,24 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('orders', [
-            'updateSelectedOrder'
-        ]),
-        ...mapActions('couriers', [
-            'loadCouriers',
-        ]),
-        ...mapActions('packages', [
-            'loadPackages',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('couriers/' + courierActions.FETCH_ALL);
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        },
         hasErrorClass(field) {
             return this.errors.has(field) ? 'has-error' : '';
         },
         save() {
             let vm = this;
-
             let requestBody = {
                 ...this.form,
-                shipped_at: moment(this.form.shipped_at).format('YYYY-MM-DD'),
-                shipped_package_id: this.form.shipped_package.id,
+                shipped_at:      moment(this.form.shipped_at).format('YYYY-MM-DD'),
+                weeks_shipped:          this.form.weeks_shipped,
+                shipped_package_id:     this.form.shipped_package.id,
             };
-            return axios.post('/admin/api/orders/'+ this.selected.id +'/shipped',
+            this.$store.dispatch('orders/' + orderActions.SAVE_SHIPPED,
                 requestBody
             ).then(response => {
-                vm.updateSelectedOrder({
-                    shipped: true,
-                    shipped_at: moment(this.form.shipped_at).format('YYYY-MM-DD'),
-                    weeks_shipped: this.form.weeks_shipped,
-                    shipped_package_id: this.form.shipped_package.id,
-                });
                 vm.$emit('saved');
             }).catch(function(error) {
                 vm.errors.record(error.response.data.errors);
@@ -169,8 +159,7 @@ export default {
         ]),
     },
     mounted() {
-        this.$store.dispatch('couriers/' + courierActions.FETCH_ALL);
-        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        this.fetchAll();
         this.form.shipped_at = new Date();
         this.form.package_id = this.selected.shipped_package_id
             || this.selected.packed_package_id
