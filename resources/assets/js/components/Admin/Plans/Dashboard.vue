@@ -78,18 +78,18 @@
         >
             <p slot="header" v-if="! mode">Add a Plan</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
-            <admin-plans-creator @cancelled="closePlanCreatorModal()"
+            <admin-plans-creator @saved="closePlanCreatorModal()"
                                  @updated="closePlanCreatorModal()"
-                                 @saved="closePlanCreatorModal()"
+                                 @cancelled="closePlanCreatorModal()"
                                  slot="body"
             ></admin-plans-creator>
         </admin-common-modal>
         <admin-common-modal v-if="notesShow.creator"
                             @close="closeNoteCreatorModal()"
         >
-            <admin-notes-creator @cancelled="closeNoteCreatorModal()"
+            <admin-notes-creator @saved="closeNoteCreatorModal()"
                                  @updated="closeNoteCreatorModal()"
-                                 @saved="closeNoteCreatorModal()"
+                                 @cancelled="closeNoteCreatorModal()"
                                  slot="body"
             >
             </admin-notes-creator>
@@ -97,9 +97,9 @@
         <admin-common-modal v-if="show.mealReplacementModal"
                             @close="closeMealReplacementModal()"
         >
-            <admin-plans-meal-replacement @cancelled="closeMealReplacementModal()"
+            <admin-plans-meal-replacement @saved="closeMealReplacementModal()"
                                           @updated="closeMealReplacementModal()"
-                                          @saved="closeMealReplacementModal()"
+                                          @cancelled="closeMealReplacementModal()"
                                           slot="body"
             >
             </admin-plans-meal-replacement>
@@ -142,10 +142,13 @@
             }
         },
         mounted() {
-            this.$store.dispatch('plans/' + planActions.FETCH_ALL);
-            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('plans/' + planActions.FETCH_ALL);
+                this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            },
             openPlanCreatorModal() {
                 this.$store.dispatch('plans/' + planActions.CREATE)
             },

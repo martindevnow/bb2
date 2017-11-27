@@ -38,12 +38,12 @@
             this.fetchAll()
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('pets/' + petsActions.FETCH_ALL);
+            },
             getText(item) {
                 return item.name + ' (' + (item.owner ? item.owner.name : '') + ')';
             },
-            fetchAll() {
-                this.$store.dispatch('pets/' + petsActions.FETCH_ALL);
-            }
         },
         computed: {
             ...mapState('pets', [

@@ -166,8 +166,6 @@ import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
 import { BasicSelect } from 'vue-search-select'
 import * as userActions from "../../../vuex/modules/users/actionTypes";
-import * as userMutations from "../../../vuex/modules/users/mutationTypes";
-import * as petMutations from "../../../vuex/modules/pets/mutationTypes";
 import * as petActions from "../../../vuex/modules/pets/actionTypes";
 
 export default {

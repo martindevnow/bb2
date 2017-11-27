@@ -23,7 +23,7 @@
             </tbody>
         </table>
         <button class="btn btn-primary"
-                @click="calculateFinal()"
+                @click="calculate()"
         >Calculate</button>
 
         <table class="table table-bordered table-striped">
@@ -47,6 +47,10 @@
     import swal from 'sweetalert2'
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as planActions from "../../../vuex/modules/plans/actionTypes";
+    import * as packageActions from "../../../vuex/modules/packages/actionTypes";
+    import * as meatActions from "../../../vuex/modules/meats/actionTypes";
+    import * as mealActions from "../../../vuex/modules/meals/actionTypes";
     export default {
         mixins: [
             isSortable
@@ -79,35 +83,25 @@
         },
         mounted() {
             let vm = this;
-            this.loadPlans().then(resposne => {
-                vm.populatePlansToOrder();
+
+            this.$store.dispatch('plans/' + planActions.FETCH_ALL)
+                .then(resposne => {
+                    vm.populatePlansToOrder();
             });
-            this.loadPackages().then(response => {
-                vm.populatePackagesToOrder();
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL)
+                .then(response => {
+                    vm.populatePackagesToOrder();
             });
-            this.loadMeats().then(response => {
-                vm.populateMeatsToOrder();
+            this.$store.dispatch('meats/' + meatActions.FETCH_ALL)
+                .then(response => {
+                    vm.populateMeatsToOrder();
             });
-            this.loadMeals().then(response => {
-                vm.populateMealsToOrder();
+            this.$store.dispatch('meals/' + mealActions.FETCH_ALL)
+                .then(response => {
+                    vm.populateMealsToOrder();
             });
         },
         methods: {
-            ...mapActions('plans', [
-                'openPlanCreatorModal',
-                'closePlanCreatorModal',
-                'loadPlans',
-                'editPlan',
-            ]),
-            ...mapActions('packages', [
-                'loadPackages',
-            ]),
-            ...mapActions('meats', [
-                'loadMeats',
-            ]),
-            ...mapActions('meals', [
-                'loadMeals',
-            ]),
             getMealSize(weight, activity_level) {
                 return weight * activity_level / 100 / 2 * 454;
             },
@@ -193,54 +187,7 @@
                 this.plansToOrder = [];
                 this.populatePlansToOrder();
             },
-//            calculate() {
-//                let vm = this;
-//
-//                // clear out old calculations...
-//                this.clearPackagesToOrder();
-//                this.clearMealsToOrder();
-//                this.clearMeatsToOrder();
-//
-//                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
-//                orderingPlans.forEach(plan => {
-//                    vm.addPackageToOrder(plan.package.id, plan.weeksToOrder, plan.pet_weight, plan.pet_activity_level);
-//                });
-//
-//                let orderingPackages = this.packagesToOrder.filter(pkg => pkg.mealSizeToOrder);
-//                orderingPackages.forEach(pkg => {
-//                    pkg.meals.forEach(meal => {
-//                        vm.addMealToOrder(meal.id, pkg.mealSizeToOrder);
-//                    });
-//                });
-//
-//                let orderingMeals = this.mealsToOrder.filter(meal => meal.weightToOrder);
-//                orderingMeals.forEach(meal => {
-//                    meal.meats.forEach(meat => {
-//                        vm.addMeatToOrder(meat.id, meal.weightToOrder / meal.meats.length);
-//                    });
-//                });
-//            },
-//            calculateNew() {
-//                let vm = this;
-//
-//                let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
-//                orderingPlans.forEach(plan => {
-//                    plan.package.meals.forEach(meal => {
-//                        meal.meats.forEach(meat => {
-//                            let meat_weight = vm.getMealSize(plan.pet_weight, plan.pet_activity_level);
-//                            if (plan.pet.daily_meals == 3) {
-//                                if (vm.isBreakfast(meal)) {
-//                                    meat_weight = meat_weight * 2 / 3 * 2; //
-//                                } else {
-//                                    meat_weight = meat_weight * 2 / 3; //   1/2 ->  2/2 -> 2/6 -> 1/3
-//                                }
-//                            }
-//                            vm.addMeatToOrder(meat.id, meat_weight);
-//                        });
-//                    });
-//                });
-//            },
-            calculateFinal() {
+            calculate() {
                 let vm = this;
                 let orderingPlans = this.plansToOrder.filter(plan => plan.weeksToOrder);
                 orderingPlans.forEach(plan => {

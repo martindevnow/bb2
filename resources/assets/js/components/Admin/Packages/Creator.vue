@@ -179,6 +179,9 @@ export default {
         };
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+        },
         save() {
             let vm = this;
             this.$store.dispatch('packages/' + packageActions.SAVE, {
@@ -191,7 +194,8 @@ export default {
         },
         update() {
             let vm = this;
-            this.$store.dispatch('packages/' + packageActions.UPDATE, this.form
+            this.$store.dispatch('packages/' + packageActions.UPDATE,
+                this.form
             ).then(response => {
                 vm.$emit('updated');
             }).catch(error => {
@@ -216,7 +220,7 @@ export default {
         ]),
     },
     mounted() {
-        this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromPackage(this.selected);
         }

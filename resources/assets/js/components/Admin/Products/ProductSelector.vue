@@ -36,9 +36,12 @@
             return {};
         },
         mounted() {
-            this.$store.dispatch('meats/' + meatActions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('meats/' + meatActions.FETCH_ALL);
+            },
             getText(item) {
                 return item.type + ' ' + item.variety + ' (' + item.id + ')';
             }

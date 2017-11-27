@@ -113,6 +113,9 @@
             this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('pets/' + petActions.FETCH_ALL);
+            },
             openPetCreatorModal() {
                 this.$store.dispatch('pets/' + petActions.CREATE);
             },
@@ -125,9 +128,6 @@
             getActivePlanCount(pet) {
                 return pet.plans.length ? pet.plans.filter((plan) => plan.active == 1).length : 0;
             },
-            fetchAll() {
-                this.$store.dispatch('pets/' + petActions.FETCH_ALL);
-            }
         },
         computed: {
             ...mapState( 'pets', [

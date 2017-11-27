@@ -199,10 +199,6 @@
             };
         },
         methods: {
-            ...mapMutations('addresses', [
-                'addToAddressesCollection',
-                'updateAddress',
-            ]),
             save() {
                 let vm = this;
 

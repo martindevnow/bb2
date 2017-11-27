@@ -171,14 +171,9 @@ export default {
         };
     },
     methods: {
-        populateFormFromProduct(product) {
-            this.form.name = product.name;
-            this.form.description = product.description;
-            this.form.description_long = product.description_long;
-            this.form.size = product.size;
-            this.form.sku = product.sku;
-            this.form.ingredients = product.ingredients;
-            this.form.price = product.price;
+        fetchAll() {
+            this.$store.dispatch('products/' + productActions.FETCH_ALL);
+            this.$store.dispatch('toppings/' + toppingActions.FETCH_ALL);
         },
         save() {
             let vm = this;
@@ -199,13 +194,21 @@ export default {
                 vm.errors.record(error.response.data.errors);
             });
         },
+        populateFormFromProduct(product) {
+            this.form.name = product.name;
+            this.form.description = product.description;
+            this.form.description_long = product.description_long;
+            this.form.size = product.size;
+            this.form.sku = product.sku;
+            this.form.ingredients = product.ingredients;
+            this.form.price = product.price;
+        },
     },
     computed: {
         ...mapState('products', ['show', 'selected', 'mode', 'collection']),
     },
     mounted() {
-        this.$store.dispatch('products/' + productActions.FETCH_ALL);
-        this.$store.dispatch('toppings/' + toppingActions.FETCH_ALL);
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromProduct(this.selected);
         }

@@ -38,9 +38,12 @@
             return {};
         },
         mounted() {
-            this.$store.dispatch('addresses/' + actions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('addresses/' + actions.FETCH_ALL);
+            },
             getText(item) {
                 return item.name + ' (' + item.street_1 + ' ' + item.city + ')';
             }

@@ -110,6 +110,9 @@ export default {
         this.fetchAll();
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('products/' + productActions.FETCH_ALL);
+        },
         openProductCreatorModal() {
             this.$store.dispatch('products/' + productActions.CREATE);
         },
@@ -119,9 +122,6 @@ export default {
         editProduct(model) {
             this.$store.dispatch('products/' + productActions.EDIT, model);
         },
-        fetchAll() {
-            this.$store.dispatch('products/' + productActions.FETCH_ALL);
-        }
     },
     computed: {
         ...mapState('products', [

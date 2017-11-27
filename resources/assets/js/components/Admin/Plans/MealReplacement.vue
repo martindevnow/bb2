@@ -78,6 +78,7 @@
 <script>
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import hasErrors from '../../../mixins/hasErrors';
+    import * as mealActions from "../../../vuex/modules/meals/actionTypes";
 
     export default {
         mixins: [
@@ -92,9 +93,9 @@
             };
         },
         methods: {
-            ...mapActions('meals', [
-                'loadMeals'
-            ]),
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+            },
             save() {
                 let vm = this;
                 axios.post('/admin/api/plans/' + vm.selected.id + '/replaceMeal', {
@@ -131,7 +132,7 @@
             ])
         },
         mounted() {
-            this.loadMeals();
+            this.fetchAll();
         }
     }
 </script>

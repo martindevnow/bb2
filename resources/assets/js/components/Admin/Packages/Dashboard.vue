@@ -95,9 +95,9 @@
         >
             <p slot="header" v-if="! mode">Add a Package</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Package: {{ selected.label }}</p>
-            <admin-packages-creator @cancelled="closePackageCreatorModal()"
+            <admin-packages-creator @saved="closePackageCreatorModal()"
                                     @updated="closePackageCreatorModal()"
-                                    @saved="closePackageCreatorModal()"
+                                    @cancelled="closePackageCreatorModal()"
                                     slot="body"
             ></admin-packages-creator>
         </admin-common-modal>
@@ -106,9 +106,9 @@
                             @close="closeMealPlanEditorModal()"
         >
             <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>
-            <admin-meal-plan-editor @cancelled="closeMealPlanEditorModal()"
+            <admin-meal-plan-editor @saved="closeMealPlanEditorModal()"
                                     @updated="closeMealPlanEditorModal()"
-                                    @saved="closeMealPlanEditorModal()"
+                                    @cancelled="closeMealPlanEditorModal()"
                                     slot="body"
             ></admin-meal-plan-editor>
         </admin-common-modal>
@@ -147,9 +147,12 @@
             }
         },
         mounted() {
-            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            },
             openPackageCreatorModal() {
                 this.$store.dispatch('packages/' + packageActions.CREATE);
             },

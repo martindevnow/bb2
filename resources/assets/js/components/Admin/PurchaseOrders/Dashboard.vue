@@ -64,7 +64,8 @@
                              @close="closeOrderedModal()"
         >
             <p slot="header">Ordered</p>
-            <admin-ordered-logger @close="$emit('close')"
+            <admin-ordered-logger @saved="$emit('close')"
+                                  @cancelled="$emit('close')"
                                   slot="body"
             ></admin-ordered-logger>
         </admin-common-modal>
@@ -73,7 +74,8 @@
                             @close="closeReceivedModal()"
         >
             <p slot="header">Received</p>
-            <admin-received-logger @close="$emit('close')"
+            <admin-received-logger @saved="$emit('close')"
+                                   @cancelled="$emit('close')"
                                  slot="body"
             ></admin-received-logger>
         </admin-common-modal>

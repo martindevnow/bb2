@@ -183,9 +183,12 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('orders/' + orderActions.FETCH_ALL);
+        this.fetchAll();
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('orders/' + orderActions.FETCH_ALL);
+        },
         openPaymentModal(order) {
             this.$store.dispatch('orders/' + orderActions.OPEN_CANCELLED_LOGGER, order)
         },
@@ -195,7 +198,6 @@ export default {
         refresh(force) {
             this.$store.dispatch('orders/' + orderActions.FETCH_ALL, force);
         },
-
         updateDeliverBy(order, event) {
             let vm = this;
 

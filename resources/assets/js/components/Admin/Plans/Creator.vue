@@ -218,6 +218,10 @@ export default {
         };
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('pets/' + petActions.FETCH_ALL);
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        },
         save() {
             let vm = this;
             let first_delivery_at = this.form.first_delivery_at ? moment(this.form.first_delivery_at).format('YYYY-MM-DD') : null;
@@ -279,8 +283,7 @@ export default {
         }),
     },
     mounted() {
-        this.$store.dispatch('pets/' + petActions.FETCH_ALL);
-        this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromPlan(this.selected);
         }

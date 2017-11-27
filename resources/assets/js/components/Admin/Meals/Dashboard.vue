@@ -116,6 +116,9 @@
             this.fetchAll();
         },
         methods: {
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+            },
             create() {
                 this.$store.dispatch('meals/' + mealActions.CREATE);
             },
@@ -125,9 +128,6 @@
             edit(model) {
                 this.$store.dispatch('meals/' + mealActions.EDIT, model);
             },
-            fetchAll() {
-                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
-            }
         },
         computed: {
             ...mapState('meals', [

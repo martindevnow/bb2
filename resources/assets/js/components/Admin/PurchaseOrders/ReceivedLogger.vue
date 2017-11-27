@@ -34,7 +34,7 @@
                     <div class="col-sm-6">
                         <label>&nbsp;</label>
                         <button class="btn btn-default btn-block"
-                                @click="closeReceivedModal()"
+                                @click="$emit('cancelled')"
                         >
                             Cancel
                         </button>
@@ -51,6 +51,7 @@ import { mapState, mapActions } from 'vuex';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
+import * as purchaseOrderMutations from "../../../vuex/modules/purchase-orders/mutationTypes";
 
 export default {
     mixins: [
@@ -65,21 +66,14 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
-            'closeReceivedModal',
-        ]),
         save() {
             let vm = this;
 
             return axios.post('/admin/api/purchase-orders/' + this.$store.state.selected.purchaseOrder.id + '/received', {
                 received_at: moment(vm.received_at).format('YYYY-MM-DD'),
             }).then(response => {
-                console.log('api request done...');
-                vm.$store.commit('updateSelectedPurchaseOrder', { received: true });
-                console.log('committed change to selected Purchase Order');
-                vm.$store.dispatch('closeReceivedModal');
-                console.log('closed Modal');
-
+                vm.$store.commit('purchase-orders/' + purchaseOrderMutations.UPDATE_IN_COLLECTION, { received: true });
+                vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });

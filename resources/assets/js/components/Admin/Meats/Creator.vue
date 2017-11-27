@@ -124,7 +124,6 @@ import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import * as meatActions from '../../../vuex/modules/meats/actionTypes';
-import * as mutations from '../../../vuex/modules/meats/mutationTypes';
 
 export default {
     mixins: [

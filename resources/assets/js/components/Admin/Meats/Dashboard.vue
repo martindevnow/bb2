@@ -63,7 +63,7 @@
             <p slot="header" v-if="! mode">Add a Meat</p>
             <p slot="header" v-if="mode == 'EDIT' && selected">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
             <admin-meats-creator @saved="closeCreator()"
-                                 @cancelled="closeCreator()"
+                                 @updated="closeCreator()"
                                  @cancelled="closeCreator()"
                                  slot="body"
             ></admin-meats-creator>
