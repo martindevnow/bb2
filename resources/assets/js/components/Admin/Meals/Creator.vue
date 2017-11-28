@@ -131,6 +131,7 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import * as mealActions from '../../../vuex/modules/meats/actionTypes';
 import * as mutations from '../../../vuex/modules/meats/mutationTypes';
+import * as toppingActions from "../../../vuex/modules/toppings/actionTypes";
 
 export default {
     mixins: [
@@ -148,6 +149,10 @@ export default {
         };
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('toppings/' + toppingActions.FETCH_ALL);
+            this.$store.dispatch('meats/' + mealActions.FETCH_ALL);
+        },
         removeTopping(index) {
             this.form.toppings.splice(index, 1);
         },
@@ -197,6 +202,7 @@ export default {
         ]),
     },
     mounted() {
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromModel(this.selected);
         }

@@ -26,7 +26,7 @@ export default {
     },
 
     [mutations.SELECT] (state, model) {
-        state.selected = model;
+        state.selected = { ...model };
     },
 
     [mutations.DESELECT] (state) {
