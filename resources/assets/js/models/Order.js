@@ -1,4 +1,6 @@
-
+import {loadUserFromData} from "./User";
+import {loadAddressFromData} from "./Address";
+import {loadPlanFromData} from "./Plan";
 export class Order {}
 
 export const loadOrderFromData = function(data) {
@@ -12,6 +14,10 @@ export const loadOrderFromData = function(data) {
     order.delivery_address_id   = data.delivery_address_id;
     order.packed_package_id     = data.packed_package_id;
     order.shipped_package_id    = data.shipped_package_id;
+
+    order.plan      = data.plan ? loadPlanFromData(data.plan) : null;
+    order.customer  = data.customer ? loadUserFromData(data.customer) : null;
+    order.deliveryAddress = data.deliveryAddress ? loadAddressFromData(data.deliveryAddress) : null;
 
     // Due Date
     order.deliver_by             = data.deliver_by;

@@ -1,6 +1,7 @@
 import * as actions from './actionTypes';
 import * as mutations from './mutationTypes';
 import * as noteMutations from './../notes/mutationTypes';
+import moment from 'moment';
 
 export default {
     [actions.FETCH_ALL] ({commit, state}, force = false) {
@@ -135,6 +136,61 @@ export default {
             axios.post('/admin/api/orders/' + state.selected.id + '/cancel'
             ).then(response => {
                 commit(mutations.UPDATE_IN_COLLECTION, {cancelled: true});
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
+
+    [actions.UPDATE_DELIVER_BY] ({commit, state}, {order, formData}) {
+        let originalOrder = order;
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/orders/' + originalOrder.id + '/deliverBy',
+                formData,
+            ).then(response => {
+                if (formData.updateFuture) {
+                    // Initial Order Date (for comparison sake)
+                    let originalOrderDate = new Date(originalOrder.deliver_by);
+
+                    // Get a list of future orders to update
+                    let subset = state.collection.filter(subItem => {
+                        if (subItem.plan_id !== originalOrder.plan_id)
+                            return false;
+
+                        let subItem_date = new Date(subItem.deliver_by);
+                        return subItem_date > originalOrderDate;
+                    });
+
+                    // Update the order in question to the data selected by the user
+                    commit(mutations.UPDATE_MODEL_IN_COLLECTION, {
+                        model: originalOrder,
+                        payload: formData,
+                    });
+
+                    // Calculate the delivery by for the next order
+                    let newOrderDate = new Date(formData.deliver_by);
+                    newOrderDate.setDate(newOrderDate.getDate() + (
+                        originalOrder.weeks_shipped
+                        || originalOrder.weeks_packed
+                        || originalOrder.ships_every_x_weeks
+                        || 1) * 7);
+
+                    // Apply to future order and recalculate deliver_by
+                    subset.forEach(eachItem => {
+                        commit(mutations.UPDATE_MODEL_IN_COLLECTION, {
+                            model: eachItem,
+                            payload: {
+                                deliver_by: moment(newOrderDate).format('YYYY-MM-DD'),
+                            },
+                        });
+                        newOrderDate.setDate(newOrderDate.getDate() + (
+                            eachItem.weeks_shipped
+                            || eachItem.weeks_packed
+                            || eachItem.ships_every_x_weeks
+                            || 1) * 7);
+                    });
+                }
                 resolve(response);
             }).catch(error => {
                 reject(error);

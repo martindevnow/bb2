@@ -23,6 +23,15 @@ export default {
         });
     },
 
+    [mutations.UPDATE_MODEL_IN_COLLECTION] (state, {model, payload}) {
+        let updatedOrder = loadOrderFromData({ ...model, ...payload});
+        state.collection = state.collection.map(coll => {
+            if (coll.id === updatedOrder.id)
+                return updatedOrder;
+            return coll;
+        })
+    },
+
     [mutations.SHOW_PAYMENT_LOGGER] (state) {
         state.show.paymentModal = true;
     },
