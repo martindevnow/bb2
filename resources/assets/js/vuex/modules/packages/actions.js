@@ -58,8 +58,8 @@ export default {
     },
 
     [actions.CANCEL] ({commit}) {
-        commit(mutations.CLEAR_MODE);
         commit(mutations.DESELECT);
+        commit(mutations.CLEAR_MODE);
     },
 
     [actions.OPEN_MEAL_PLAN_EDITOR] ({commit}, model) {

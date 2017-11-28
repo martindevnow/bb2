@@ -69,6 +69,7 @@ export default {
     },
 
     [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
         commit(mutations.CLEAR_MODE);
     },
 };

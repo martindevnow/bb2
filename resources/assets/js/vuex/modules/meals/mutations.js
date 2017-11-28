@@ -26,7 +26,7 @@ export default {
     },
 
     [mutations.SELECT] (state, model) {
-        state.selected = loadMealFromData({ ...model });
+        state.selected = loadMealFromData(model);
     },
 
     [mutations.DESELECT] (state) {

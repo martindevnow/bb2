@@ -1,5 +1,6 @@
 import {loadUserFromData} from "../../../models/User";
 import * as mutations from './mutationTypes';
+import {loadAddressFromData} from "../../../models/Address";
 
 export default {
     [mutations.POPULATE_COLLECTION] (state, data) {
@@ -7,8 +8,6 @@ export default {
     },
 
     [mutations.ADD_TO_COLLECTION] (state, modelData) {
-        console.log('modelData');
-        console.log(modelData);
         state.collection.unshift(loadUserFromData(modelData));
     },
 
@@ -49,7 +48,7 @@ export default {
 
         state.collection = state.collection.map(model => {
             if (model.id === state.selected.id) {
-                model.addresses = [ ...model.addresses, payload ];
+                model.addresses = [ ...model.addresses, loadAddressFromData(payload) ];
             }
             return model;
         });
@@ -76,7 +75,7 @@ export default {
                 if (address.id !== updated.id)
                     return address;
 
-                return { ...updated };
+                return loadAddressFromData(updated);
             });
             return user;
         });
@@ -85,7 +84,7 @@ export default {
             if (address.id !== updated.id)
                 return address;
 
-            return updated;
+            return loadAddressFromData(updated);
         });
     },
 };

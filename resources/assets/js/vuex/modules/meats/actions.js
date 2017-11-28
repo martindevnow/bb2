@@ -60,6 +60,7 @@ export default {
     // TODO: Delete
 
     [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
         commit(mutations.CLEAR_MODE);
     },
 };

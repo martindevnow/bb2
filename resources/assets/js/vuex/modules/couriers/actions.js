@@ -9,7 +9,7 @@ export default {
 
           axios.get('/admin/api/couriers')
               .then(response => {
-                  commit(mutations.ADD_TO_COLLECTION, response.data);
+                  commit(mutations.POPULATE_COLLECTION, response.data);
                   resolve(response);
               })
               .catch(error => {

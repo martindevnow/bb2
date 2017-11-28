@@ -1,4 +1,5 @@
 import {loadPetFromData} from "./Pet";
+import {loadAddressFromData} from "./Address";
 
 export class User {
     getPets() {
@@ -31,7 +32,9 @@ export const loadUserFromData = function(data) {
     }) : null;
 
     // ToDo: build a loader for Addresses...
-    user.addresses = data.addresses ? data.addresses : null;
+    user.addresses = data.addresses ? data.addresses.map(address => {
+        return loadAddressFromData(address);
+    }) : null;
 
     return user;
 };
