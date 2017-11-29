@@ -19,6 +19,10 @@ export default {
         state.selected = model;
     },
 
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
+
     [mutations.SHOW_ORDERED_LOGGER] (state) {
         state.show.orderedModal = true;
     },

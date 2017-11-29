@@ -52,6 +52,7 @@ import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
 import * as purchaseOrderMutations from "../../../vuex/modules/purchase-orders/mutationTypes";
+import * as purchaseOrderActions from "../../../vuex/modules/purchase-orders/actionTypes";
 
 export default {
     mixins: [
@@ -68,7 +69,7 @@ export default {
     methods: {
         save() {
             let vm = this;
-            this.$store.dispatch('purchase-orders/' + purchaseOrderActions.SAVE_RECEIVED, {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.SAVE_RECEIVED, {
                 received_at: moment(vm.received_at).format('YYYY-MM-DD'),
             }).then(response => {
                 vm.$emit('saved');

@@ -69,7 +69,7 @@ export default {
     methods: {
         save() {
             let vm = this;
-            this.$store.dispatch('purchase-orders/' + purchaseOrderActions.SAVE_ORDERED, {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.SAVE_ORDERED, {
                 ordered_at: moment(vm.ordered_at).format('YYYY-MM-DD'),
             }).then(response => {
                 vm.$emit('saved');

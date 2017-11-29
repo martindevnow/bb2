@@ -61,11 +61,11 @@
 
 
         <admin-common-modal v-if="show.orderedModal"
-                             @close="closeOrderedModal()"
+                            @close="closeOrderedModal()"
         >
             <p slot="header">Ordered</p>
-            <admin-ordered-logger @saved="$emit('close')"
-                                  @cancelled="$emit('close')"
+            <admin-ordered-logger @saved="closeOrderedModal()"
+                                  @cancelled="closeOrderedModal()"
                                   slot="body"
             ></admin-ordered-logger>
         </admin-common-modal>
@@ -74,8 +74,8 @@
                             @close="closeReceivedModal()"
         >
             <p slot="header">Received</p>
-            <admin-received-logger @saved="$emit('close')"
-                                   @cancelled="$emit('close')"
+            <admin-received-logger @saved="closeReceivedModal()"
+                                   @cancelled="closeReceivedModal()"
                                  slot="body"
             ></admin-received-logger>
         </admin-common-modal>
@@ -123,7 +123,7 @@ export default {
             this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.OPEN_ORDERED_LOGGER, po);
         },
         closeOrderedModal() {
-            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions. CLOSE_ORDERED_LOGGER);
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.CLOSE_ORDERED_LOGGER);
         },
         openReceivedModal(po) {
             this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.OPEN_RECEIVED_LOGGER, po);
