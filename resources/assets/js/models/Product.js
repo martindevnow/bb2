@@ -11,7 +11,7 @@ export const loadProductFromData = function(data) {
     product.size =          data.size;
     product.sku =           data.sku;
     product.ingredients =   data.ingredients;
-    product.price =         data.price;
+    product.price =         Number.parseFloat(data.price);
 
     return product;
 };
