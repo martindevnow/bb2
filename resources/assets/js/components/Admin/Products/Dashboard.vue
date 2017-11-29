@@ -64,7 +64,7 @@
                             @close="closeProductCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Product</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit Product: {{ selected.type }} {{ selected.variety }}</p>
+            <p slot="header" v-if="mode == 'EDIT' && !! selected">Edit Product: {{ selected.name }}</p>
             <admin-products-creator @saved="closeProductCreatorModal()"
                                     @updated="closeProductCreatorModal()"
                                     @cancelled="closeProductCreatorModal()"
