@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
@@ -89,5 +91,28 @@ class PlansController extends Controller {
         $plan->replaceMeal($removedMeal)->withMeal($addedMeal)->save();
 
         return response('Success', 200);
+    }
+
+    /**
+     * @param Plan $plan
+     * @param Request $request
+     * @return null|static
+     */
+    public function cancel(Plan $plan, Request $request) {
+        $cancelOrders = !! $request->get('cancel_orders');
+
+        Log::info(compact('cancelOrders'));
+        $plan->update([
+            'active' => 0,
+        ]);
+
+        $set = $plan->orders()
+            ->where('shipped', 0)
+            ->where('deliver_by', '>=', Carbon::now());
+        
+        if ($cancelOrders && $set->count())
+            $set->update(['cancelled' => 1]);
+
+        return $plan->fresh(['customer', 'pet', 'package', 'orders']);
     }
 }
