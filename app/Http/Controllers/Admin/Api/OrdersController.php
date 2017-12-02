@@ -23,7 +23,10 @@ class OrdersController extends Controller
             'plan',
             'plan.package',
             'deliveryAddress'
-        ])->get();
+        ])
+            ->orderBy('deliver_by', 'DESC')
+            ->limit(60)
+            ->get();
     }
 
     /**

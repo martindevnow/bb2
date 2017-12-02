@@ -122,14 +122,14 @@
                         <div class="value">{{ $order->plan->pet->name }}</div>
                     </div>
 
-                    <div class="meal-weight col-sm-3">
+                    <div class="meal-weight col-sm-4">
                         <div class="label label-top">Meal Size (g)</div>
-                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }} (x {{ $order->plan->pet->daily_meals }} daily meals)</div>
+                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }} {{ $order->plan->pet->daily_meals }}x day</div>
                     </div>
 
-                    <div class="delivery-date col-sm-5">
+                    <div class="delivery-date col-sm-4">
                         <div class="label label-top">Delivery Date</div>
-                        <div class="value">{{ $order->deliver_by->format('D, M jS') }} [{{ $order->plan->weeks_of_food_per_shipment }} wk(s) of food]</div>
+                        <div class="value">{{ $order->deliver_by->format('D, M jS') }}<br/>[{{ $order->plan->weeks_of_food_per_shipment }}x wks]</div>
                     </div>
                 </div>
                 <div class="body">

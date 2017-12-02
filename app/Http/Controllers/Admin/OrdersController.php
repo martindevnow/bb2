@@ -168,7 +168,8 @@ class OrdersController extends Controller
     public function export($status, $perPage = 4) {
         switch($status) {
             case 'packing':
-                $orders = Order::needsPacking();
+                $orders = Order::needsPacking()
+                    ->orderBy('deliver_by', 'DESC');
                 break;
             case 'picking':
                 $orders = Order::needsPicking();
