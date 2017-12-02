@@ -321,6 +321,7 @@ class Plan extends Model
                 if ($meal->id === $replacement->removed_meal_id) {
                     $newMeal = clone $replacement->addedMeal()->with('meats')->first();
                     $newMeal->pivot = clone $meal->pivot;
+                    $newMeal->subbed = true;
                     return $newMeal;
                 }
                 return $meal;

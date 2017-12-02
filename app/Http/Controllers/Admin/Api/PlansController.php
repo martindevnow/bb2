@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Martin\Customers\Pet;
 use Martin\Products\Meal;
+use Martin\Subscriptions\MealReplacement;
 use Martin\Subscriptions\Plan;
 
 class PlansController extends Controller {
@@ -90,7 +91,10 @@ class PlansController extends Controller {
         $addedMeal = Meal::find($validData['added_meal_id']);
         $plan->replaceMeal($removedMeal)->withMeal($addedMeal)->save();
 
-        return response('Success', 200);
+        return MealReplacement::where('plan_id', $plan->id)
+            ->where('removed_meal_id', $removedMeal->id)
+            ->where('added_meal_id', $addedMeal->id)
+            ->first();
     }
 
     /**
