@@ -57,7 +57,8 @@ Route::post('notes', function(Request $request) {
 
     return $model->notes()->create([
         'content'   => $valid['content'],
-        'author_id' => $request->user()->id,
+        'author_id' => 1,
+//        'author_id' => $request->user()->id,
     ]);
 });
 
