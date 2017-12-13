@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Auth::routes();
 
 Route::get('/version', function () {
-    return 'v1.0.1';
+    return 'v1.0.0';
 });
 
 Route::get('/', 'PagesController@index');

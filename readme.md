@@ -11,7 +11,7 @@ As such, it is strongly recommended that pets be fed a B.A.R.F. diet.
 
 ## Versions
 
-Current: 1.0.1 (Release: December 13 2017)
+Current: 1.0.0 (Release: August 20 2017)
 
 ## Security Vulnerabilities
 
