@@ -16,7 +16,7 @@
         "php-http/message": "^1.6",
         "spatie/laravel-activitylog": "^1.15",
         "stripe/stripe-php": "^4.3",
-        "vinkla/instagram": "^7.0"
+        "vinkla/instagram": "^8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
