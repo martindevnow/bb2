@@ -24,7 +24,7 @@
                             <p>If you wish to <b>signup</b> with us, please <a href="/contact">contact us</a> by sending us an email
                                 or giving us a call!</p>
                             <p>We look forward to hearing from you!</p>
-                            <p>- Vivian Wong</p>
+                            <p>- Vivian</p>
 
                             {{--<plan-builder></plan-builder>--}}
 
