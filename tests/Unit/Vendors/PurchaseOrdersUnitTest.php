@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Vendors;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\Core\Image;
 use Martin\Products\Meat;
@@ -9,12 +10,10 @@ use Martin\Vendors\PurchaseOrder;
 use Martin\Vendors\PurchaseOrderDetail;
 use Martin\Vendors\Vendor;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PurchaseOrdersUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function purchase_orders_have_a_model_factory() {
@@ -60,7 +59,14 @@ class PurchaseOrdersUnitTest extends TestCase
             'vendor_id'=> 99999,
             'total' => $totalInCents
         ]);
-        DB::table('purchase_orders')->insert($purchase_order->toArray());
+
+        $poData = $purchase_order->toArray();
+        unset($poData['details']);
+        unset($poData['total_cost']);
+        unset($poData['vendor_name']);
+        unset($poData['vendor']);
+
+        DB::table('purchase_orders')->insert($poData);
         $purchase_order_clone = PurchaseOrder::where('vendor_id', 99999)->firstOrFail();
         $this->assertEquals($totalInDollars, $purchase_order_clone->total);
     }

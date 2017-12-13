@@ -12,11 +12,8 @@ class MeatsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        echo "Loading \"Meats\"...\r\n";
         DB::table('meats')->truncate();
         $this->seedFromGoogle('meats', \Martin\Products\Meat::class);
-
-//        DB::table('meat_package')->truncate();
-//        $this->seedFromCSV('meat_package', '/seeds/csv/meat_package.csv');
     }
 }

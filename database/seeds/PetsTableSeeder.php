@@ -14,6 +14,7 @@ class PetsTableSeeder extends Seeder
      * @return void
      */
     public function run() {
+        echo "Loading \"Pets\"...\r\n";
         DB::table('pets')->truncate();
         $this->seedFromGoogle('pets', Pet::class);
     }

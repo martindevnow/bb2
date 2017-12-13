@@ -2,16 +2,15 @@
 
 namespace Tests\Unit\ACL;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\Permission;
 use Martin\ACL\Role;
 use Martin\ACL\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PermissionsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function permissions_have_a_model_factory() {
@@ -62,6 +61,7 @@ class PermissionsUnitTest extends TestCase
 
         $permission = $permission->fresh(['roles']);
 
+        // TODO: This seems to have broken somehow....
         $this->assertCount(0, $permission->roles);
         $this->assertDatabaseMissing('permission_role', [
             'role_id'   => $role->id,

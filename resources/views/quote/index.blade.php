@@ -17,6 +17,7 @@
                     <div class="ms-paper-content">
                         <h1 class="color-primary">Quote</h1>
                         <section class="ms-component-section">
+
                             <h1>We are still working on it ... </h1>
                             <p>Our goal is to bring the BARF diet to as many people as we can.</p>
                             <p>To accomplish this, we need time to ensure our online systems are up to the highest standard of quality.
@@ -25,8 +26,6 @@
                                 or giving us a call!</p>
                             <p>We look forward to hearing from you!</p>
                             <p>- Vivian</p>
-
-                            {{--<plan-builder></plan-builder>--}}
 
                         </section>
 

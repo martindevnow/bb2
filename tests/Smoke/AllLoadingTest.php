@@ -2,17 +2,14 @@
 
 namespace Tests\Smoke;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Product;
 use Martin\Subscriptions\Package;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AllLoadingTest extends TestCase
 {
-    use DatabaseMigrations;
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function it_loads_the_home_page() {
@@ -20,7 +17,7 @@ class AllLoadingTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: For somereason, this test is unreliable */
     public function it_loads_the_about_page() {
         $this->get('/about')
             ->assertStatus(200);

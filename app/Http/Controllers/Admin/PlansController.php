@@ -56,21 +56,25 @@ class PlansController extends Controller
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'pet_id'                => 'required',
-            'package_id'            => 'required',
+            'pet_id'                => 'required|exists:pets,id',
+            'package_id'            => 'required|exists:packages,id',
 
-            'shipping_cost'         => 'required',
-            'weekly_cost'           => 'required',
-            'weeks_at_a_time'       => 'required',
+            'shipping_cost'         => 'required|numeric',
+            'internal_cost'           => 'required|numeric',
+            'weekly_cost'           => 'required|numeric',
+            'weeks_of_food_per_shipment'       => 'required|integer',
+            'ships_every_x_weeks'       => 'required|integer',
             'active'                => 'required'
         ]);
 
         $planData = $request->only([
-            'shipping_cost',
             'pet_id',
             'package_id',
+            'shipping_cost',
+            'internal_cost',
             'weekly_cost',
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
+            'ships_every_x_weeks',
             'active'
         ]);
 
@@ -110,20 +114,20 @@ class PlansController extends Controller
      */
     public function update(Plan $plan, Request $request) {
         $this->validate($request, [
-            'customer_id'           => 'required',
-            'delivery_address_id'   => 'required',
-            'shipping_cost'         => 'required',
+            'customer_id'           => 'required|exists:users,id',
+            'delivery_address_id'   => 'required|exists:addresses,id',
+            'shipping_cost'         => 'required|integer',
 
-            'pet_id'                => 'required',
-            'pet_weight'            => 'required',
-            'pet_activity_level'    => 'required',
+            'pet_id'                => 'required|exists:pets,id',
+            'pet_weight'            => 'required|integer',
+            'pet_activity_level'    => 'required|numeric',
 
-            'package_id'            => 'required',
-            'package_stripe_code'   => 'required',
-            'package_base'          => 'required',
+            'package_id'            => 'required|exists:packages,id',
+            'internal_cost'         => 'required|numeric',
+            'weekly_cost'           => 'required|numeric',
 
-            'weekly_cost'           => 'required',
-            'weeks_at_a_time'       => 'required',
+            'weeks_of_food_per_shipment'    => 'required|integer',
+            'ships_every_x_weeks'           => 'required|integer',
         ]);
 
         $planData = $request->only([
@@ -136,18 +140,18 @@ class PlansController extends Controller
             'pet_activity_level',
 
             'package_id',
-            'package_stripe_code',
-            'package_base',
+            'internal_cost',
 
             'weekly_cost',
 
-            'weeks_at_a_time',
+            'weeks_of_food_per_shipment',
+            'ships_every_x_weeks',
             'active']);
 
         $plan->fill($planData);
         $plan->save();
 
-        flash('The plan of $' . $plan->amount_paid . ' was updated.')->success();
+        flash('The plan of $' . $plan->weekly_cost . ' was updated.')->success();
 
         return redirect('/admin/plans');
     }
@@ -161,7 +165,7 @@ class PlansController extends Controller
     public function destroy(Plan $plan) {
         $plan->delete();
 
-        flash('The plan of $' . $plan->amount_paid . ' has been deleted.')->success();
+        flash('The plan of $' . $plan->weekly_cost . ' has been deleted.')->success();
 
         return redirect()->back();
     }

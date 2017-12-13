@@ -12,12 +12,18 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Delivery\Delivery;
 use Martin\Products\Inventory;
 use Martin\Products\Meal;
+use Martin\Products\Product;
 use Martin\Subscriptions\Plan;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Stripe\Collection;
 
 class Order extends Model
 {
     use SoftDeletes;
     use CoreRelations;
+
+    use LogsActivity;
+    static $logFillable = true;
 
     protected $fillable = [
         'plan_id',
@@ -44,6 +50,26 @@ class Order extends Model
     protected $dates = [
         'deliver_by'
     ];
+
+    /**
+     * @param $crudAction
+     * @return string
+     */
+    public function adminUrl($crudAction) {
+        switch ($crudAction) {
+            case 'index':
+            case 'store':
+                return "/admin/orders";
+            case 'show':
+            case 'update':
+            case 'destroy':
+                return "/admin/orders/$this->id";
+            case 'create':
+                return "/admin/orders/create";
+            case 'edit':
+                return "/admin/orders/$this->id/edit";
+        }
+    }
 
     /**
      * Mutators
@@ -117,11 +143,18 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsPacked() {
-        $this->reduceMeatInventory();
+    public function markAsPacked($data = null) {
+        $numberOfWeeks = isset($data['weeks_packed']) ? $data['weeks_packed'] : $this->plan->weeks_of_food_per_shipment;
+        $packageId = isset($data['packed_package_id']) ? $data['packed_package_id'] : $this->plan->package_id;
+
+        $this->reduceMeatInventory($numberOfWeeks, $packageId);
         $this->increaseMealInventory();
 
         $this->packed = true;
+
+        $this->weeks_packed = $numberOfWeeks;
+        $this->packed_package_id = $packageId;
+
         $this->save();
 
         return $this;
@@ -147,10 +180,17 @@ class Order extends Model
      */
     public function markAsShipped(Delivery $delivery) {
         $delivery->recipient_id = $this->customer_id;
-        $this->delivery->save($delivery);
+        $this->delivery()->save($delivery);
+
+        $this->shipped_at = $delivery->shipped_at;
+        $this->weeks_shipped = $delivery->weeks_shipped;
+        $this->shipped_package_id = $delivery->shipped_package_id;
 
         $this->shipped = true;
         $this->save();
+
+        $this->plan->updateForShipped($this);
+
         return $this;
     }
 
@@ -166,18 +206,31 @@ class Order extends Model
         return $this;
     }
 
+    public function delayShipmentDays($daysToDelay, $affectOnlyThisOrder = false) {
+        if ($daysToDelay < 1)
+            return false; // TODO: Throw error;
+
+        $this->deliver_by = $this->deliver_by->addDays($daysToDelay);
+        $this->save();
+
+        if ($affectOnlyThisOrder)
+            return $this;
+
+        return $this->plan->delayOrdersAfter($this, $daysToDelay);
+    }
+
     /**
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null) {
-        return $this->plan->mealCounts($meal);
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+        return $this->plan->mealCounts($meal, $number_of_weeks);
     }
 
     /**
      * TODO: Move to Plan
      */
-    private function reduceMeatInventory() {
+    private function reduceMeatInventory($number_of_weeks, $package_id) {
         $pet_meal_size = $this->plan->pet->mealSize();
 
         // TODO: This should be on the Plan model too.. no reason for it to be here....
@@ -188,7 +241,7 @@ class Order extends Model
 
         foreach($meals as $meal) {
             foreach ($meal->meats as $meat) {
-                $this->inventoryChange()->create([
+                $this->inventoryChanges()->create([
                     'inventoryable_id'      => $meat->id,
                     'inventoryable_type'    => get_class($meat),
                     'change'    => -1 * $meal->total_weight / $meal->meats()->count(),
@@ -199,12 +252,13 @@ class Order extends Model
 
     /**
      * TODO: Make it public and simply reference the plan.. these methods should be on Plan
+     * @param null $number_of_weeks
      */
-    private function increaseMealInventory() {
-        $meals = $this->mealCounts();
+    private function increaseMealInventory($number_of_weeks = null) {
+        $meals = $this->mealCounts(null, $number_of_weeks);
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -220,7 +274,7 @@ class Order extends Model
         $meals = $this->mealCounts();
 
         foreach($meals as $meal) {
-            $this->inventoryChange()->create([
+            $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
                 'size'      => $this->plan->pet->mealSize(),
@@ -229,6 +283,41 @@ class Order extends Model
         }
     }
 
+    /**
+     * Cancels an order
+     */
+    public function cancel() {
+        $this->cancelled = true;
+        $this->save();
+    }
+
+    /**
+     * @param $newDate
+     * @param bool $applyToFutureOrders
+     * @return bool
+     */
+    public function updateDeliverBy($newDate, $applyToFutureOrders = false) {
+        $oldDeliverBy = clone $this->deliver_by;
+        $this->deliver_by = Carbon::createFromFormat('Y-m-d', $newDate);
+
+        $this->save();
+        if (!$applyToFutureOrders) {
+            return true;
+        }
+
+        /** @var Carbon $oldDeliverBy */
+        if ($oldDeliverBy->lt($this->deliver_by)) {
+            $oldDeliverBy->subSecond();
+        } else {
+            $oldDeliverBy->addSecond();
+        }
+
+        /** @var Carbon $oldDeliverBy */
+        $daysToDelay = $oldDeliverBy->diff($this->deliver_by);
+        $daysToDelay = ($daysToDelay->days) * ($daysToDelay->invert ? -1 : 1);
+
+        $this->plan->delayOrdersAfter($this, $daysToDelay);
+    }
 
     /**
      * Scopes
@@ -239,11 +328,20 @@ class Order extends Model
      * @return mixed
      */
     public function scopeNeedsPacking(Builder $query) {
-        return $query->where('packed', '=', 0);
+        return $query->where('packed', '=', 0)
+            ->where('cancelled', 0);
+    }
+    /**
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeNeedsPicking(Builder $query) {
+        return $query->where('picked', '=', 0)
+            ->where('cancelled', 0);
     }
 
 
-    /**
+    /*
      * Relationships
      */
 
@@ -255,6 +353,13 @@ class Order extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function delivery() {
+        return $this->hasOne(Delivery::class, 'order_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function deliveryAddress() {
@@ -262,10 +367,17 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function plan() {
-        return $this->belongsTo(Plan::class, 'plan_id');
+    public function details() {
+        return $this->hasMany(OrderDetail::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function inventoryChanges() {
+        return $this->morphMany(Inventory::class, 'changeable');
     }
 
     /**
@@ -276,16 +388,42 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function inventoryChange() {
-        return $this->morphMany(Inventory::class, 'changeable');
+    public function plan() {
+        return $this->belongsTo(Plan::class, 'plan_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @param Product $product
+     * @param int $quantity
      */
-    public function delivery() {
-        return $this->hasOne(Delivery::class, 'order_id');
+    public function addProduct(Product $product, $quantity = 1) {
+        $this->details()->create([
+            'label'             => $product->name,
+            'quantity'          => $quantity,
+            'unit_cost'         => $product->price,
+            'extended_cost'     => $product->price * $quantity,
+            'tax'               => 0,
+            'orderable_type'    => get_class($product),
+            'orderable_id'      => $product->id,
+        ]);
+    }
+
+    public function hasProduct(Product $product) {
+        return !! $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->count();
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product) {
+        $this->details()
+            ->where('orderable_type', get_class($product))
+            ->where('orderable_id', $product->id)
+            ->delete();
     }
 }

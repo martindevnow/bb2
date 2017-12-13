@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Package;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlansTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_plans_page() {
@@ -49,7 +47,7 @@ class PlansTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_see_existing_plans_on_the_index() {
         $plan = factory(Plan::class)->create();
         $this->loginAsAdmin();
@@ -94,8 +92,10 @@ class PlansTest extends TestCase
             'customer_id' => $pet->owner_id,
             'pet_id'    => $pet->id,
             'shipping_cost' => 20,
+            'internal_cost' => 20,
             'weekly_cost' => 20,
-            'weeks_at_a_time' => 1,
+            'weeks_of_food_per_shipment' => 1,
+            'ships_every_x_weeks' => 1,
             'active'    => 1,
         ];
 
@@ -107,6 +107,7 @@ class PlansTest extends TestCase
         unset($request['_token']);
 
         // Adjust for the mutation on activity_level
+        $request['internal_cost'] *= 100;
         $request['weekly_cost'] *= 100;
         $request['shipping_cost'] *= 100;
         $this->assertDatabaseHas('plans', $request);
@@ -124,7 +125,7 @@ class PlansTest extends TestCase
             ->assertSee($plan->pet->owner->name);
     }
 
-    // TODO: Clean up this POSt request too...
+    // TODO: Clean up this POST request too...
     /** @test */
     public function an_admin_can_save_changes_to_a_plan() {
         $this->loginAsAdmin();
@@ -135,13 +136,16 @@ class PlansTest extends TestCase
         $post_data = $plan->toArray();
         unset($post_data['id']);
 
-        $post_data['package_stripe_code'] = 'THIS_IS_NOT_RIGHT';
+        $post_data['pet_weight'] = 11;
         $post_data['_method'] = 'PATCH';
 
-        $this->post('/admin/plans/'. $id, $post_data)   // UPDATE method
+        $response = $this->post('/admin/plans/'. $id, $post_data)   // UPDATE method
             ->assertStatus(302);
+
+//        $this->followRedirects($response)->assertSee("was updated.");
+
         $this->assertDatabaseHas('plans', [
-            'package_stripe_code' => $post_data['package_stripe_code'],
+            'pet_weight' => 11,
             'id' => $id
         ]);
     }

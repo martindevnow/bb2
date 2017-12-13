@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Package;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PackagesTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_packages_page() {
@@ -48,7 +46,7 @@ class PackagesTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: Replace with tests for Vue */
     public function an_admin_can_see_existing_packages_on_the_index() {
         $package = factory(Package::class)->create();
         $this->loginAsAdmin();
@@ -98,7 +96,11 @@ class PackagesTest extends TestCase
         $packageData['customization'] = $packageData['customization'] ? 'on' : null;
 
         $this->post('/admin/packages', $packageData);  // STORE method
-        $this->assertDatabaseHas('packages', $package->toArray());
+
+        unset($packageData['cost_per_lb']);
+        $packageData['customization'] = $packageData['customization'] ? 1 : 0;
+
+        $this->assertDatabaseHas('packages', $packageData);
     }
 
     /** @test */

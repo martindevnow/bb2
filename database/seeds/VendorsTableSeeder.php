@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Martin\Vendors\Vendor;
 
 class VendorsTableSeeder extends Seeder
 {
@@ -12,9 +13,9 @@ class VendorsTableSeeder extends Seeder
      */
     public function run()
     {
+        echo "Loading \"Vendors\"...\r\n";
         DB::table('vendors')->truncate();
-
-        $this->seedFromCSV('vendors', '/seeds/csv/vendors.csv', \Martin\Vendors\Vendor::class);
+        $this->seedFromGoogle('vendors', Vendor::class);
 
     }
 }

@@ -32,16 +32,16 @@ class PackagesController extends Controller
     }
 
     public function store(Request $request) {
-        $this->validate($request, [
-            'code'  => 'required|unique:packages',
+        $validData = $request->validate([
+            'code'  => 'required|unique:packages,code',
             'label' => 'required',
             'level' => 'required|integer',  // TODO: Make sure single digit only... less than 10 levels, lol
+            'customization' => 'nullable',  // TODO: Make sure single digit only... less than 10 levels, lol
         ]);
 
-        $requestData = $request->only(['code', 'label', 'level']);
-        $requestData['customization'] = $request->customization == 'on' ? 1 : 0;
+        $validData['customization'] = $request->customization == 'on' ? 1 : 0;
 
-        $package = Package::create($requestData);
+        $package = Package::create($validData);
 
         flash('The package ' . $package->label . ' has been saved.')->success();
         return redirect()->back();
@@ -85,7 +85,7 @@ class PackagesController extends Controller
      */
     public function setMeal(Package $package, Request $request) {
         $this->validate($request, [
-            'meal_id'   => 'required|integer',
+            'meal_id'       => 'required|exists:meals,id',
             'calendar_code' => 'required'
         ]);
 

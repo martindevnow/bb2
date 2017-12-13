@@ -2,18 +2,17 @@
 
 namespace Tests\Unit\Customers;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Martin\Customers\Pet;
 use Martin\Products\Container;
 use Martin\Products\Meal;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetsUnitTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function it_has_a_model_factory() {
@@ -75,10 +74,14 @@ class PetsUnitTest extends TestCase
         $activity_level_no_decimal = $activity_level * 100;
 
         $pet = factory(Pet::class)->make([
-            'name'=> 'THISMEAT',
-            'activity_level' => $activity_level_no_decimal
+            'name'              => 'THISMEAT',
+            'activity_level'    => $activity_level_no_decimal
         ]);
-        DB::table('pets')->insert($pet->toArray());
+        $petData = $pet->toArray();
+        unset($petData['owner']);
+        unset($petData['owner_name']);
+
+        DB::table('pets')->insert($petData);
         $pet_clone = Pet::whereName('THISMEAT')->firstOrFail();
         $this->assertEquals($activity_level, $pet_clone->activity_level);
     }
@@ -194,4 +197,20 @@ class PetsUnitTest extends TestCase
         $pet = $pet->fresh(['plans']);
         $this->assertCount(1, $pet->plans);
     }
+
+    /** @test */
+    public function a_pet_can_be_a_puppy() {
+        $pet = factory(Pet::class)->create([
+            'weight'    => 50,
+            'activity_level'    => 2,
+        ]);
+
+        $this->assertEquals(2, $pet->daily_meals);
+
+        $pet->makePuppy();
+        $pet = $pet->fresh();
+
+        $this->assertEquals(3, $pet->daily_meals);
+    }
+
 }

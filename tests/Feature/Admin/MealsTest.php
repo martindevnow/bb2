@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Products\Meal;
 use Martin\Products\Meat;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MealsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_meals_page() {
@@ -49,7 +47,7 @@ class MealsTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_see_existing_meals_on_the_index() {
         $meal = factory(Meal::class)->create();
         $this->loginAsAdmin();

@@ -3,22 +3,21 @@
 namespace Tests\Unit;
 
 use App\Console\Commands\GenerateOrders;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Martin\Subscriptions\Plan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GenerateOrdersTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     // TODO: Flesh this out more and ensure that orders are only generated when they should be....
 
     /** @test */
     public function it_can_be_run() {
         $plan = factory(Plan::class)->create();
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
 
         $this->assertTrue($plan->hasOrders());
     }
@@ -26,7 +25,7 @@ class GenerateOrdersTest extends TestCase
     /** @test */
     public function it_can_be_called_and_confirms_output() {
         $plan = factory(Plan::class)->create();
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
         $result = Artisan::output();
 
         // TODO: Research the best way to test console commands...
@@ -36,7 +35,7 @@ class GenerateOrdersTest extends TestCase
 
     /** @test */
     public function it_can_be_called_when_no_orders_are_pending_and_confirms_output() {
-        Artisan::call('orders:generate');
+        Artisan::call('generate:orders');
         $result = Artisan::output();
 
         // TODO: Research the best way to test console commands...

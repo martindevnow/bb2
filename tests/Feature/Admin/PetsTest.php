@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\Customers\Pet;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_pets_page() {
@@ -47,7 +45,7 @@ class PetsTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_existing_pets_on_the_index() {
         $pet = factory(Pet::class)->create();
         $this->loginAsAdmin();
@@ -57,7 +55,7 @@ class PetsTest extends TestCase
             ->assertSee($pet->name);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_view_a_single_pet() {
         $this->loginAsAdmin();
 
@@ -68,7 +66,7 @@ class PetsTest extends TestCase
             ->assertSee($pet->breed);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_the_form_to_add_a_pet() {
         $this->loginAsAdmin();
 
@@ -77,7 +75,7 @@ class PetsTest extends TestCase
             ->assertSee('<form');
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_submit_a_form_to_add_a_pet() {
         $this->loginAsAdmin();
 
@@ -95,7 +93,7 @@ class PetsTest extends TestCase
         $this->assertDatabaseHas('pets', $request);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_edit_a_pet() {
         $this->loginAsAdmin();
 
@@ -107,7 +105,7 @@ class PetsTest extends TestCase
             ->assertSee($pet->name);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_save_changes_to_a_pet() {
         $this->loginAsAdmin();
 
@@ -129,7 +127,7 @@ class PetsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_delete_a_pet_from_the_db() {
         $this->loginAsAdmin();
 

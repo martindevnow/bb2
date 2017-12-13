@@ -13,7 +13,7 @@ class MealsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        echo "Loading \"Meals\"...\r\n";
         DB::table('meals')->truncate();
         $this->seedFromGoogle('meals', \Martin\Products\Meal::class);
 

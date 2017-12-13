@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        echo "Loading \"Users\"...\r\n";
         DB::table('users')->truncate();
 
         $users = env('USER_USERS');

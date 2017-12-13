@@ -87,6 +87,7 @@
         }
         .table {
             margin-bottom: 0.5rem;
+            border: 1px solid black;
         }
 
         .package-name {
@@ -98,10 +99,12 @@
         .table > tbody > tr > td {
             padding: 0.5rem;
             font-size: 1.5rem;
+            border: 1px solid black;
         }
         .table > thead > tr > td {
             padding: 0.75rem;
             font-size: 1.7rem;
+            border: 1px solid black;
         }
 
     </style>
@@ -119,21 +122,21 @@
                         <div class="value">{{ $order->plan->pet->name }}</div>
                     </div>
 
-                    <div class="meal-weight col-sm-3">
+                    <div class="meal-weight col-sm-4">
                         <div class="label label-top">Meal Size (g)</div>
-                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }}</div>
+                        <div class="value">{{ round($order->plan->pet->mealSizeInGrams()) }} {{ $order->plan->pet->daily_meals }}x day</div>
                     </div>
 
-                    <div class="delivery-date col-sm-5">
+                    <div class="delivery-date col-sm-4">
                         <div class="label label-top">Delivery Date</div>
-                        <div class="value">{{ $order->deliver_by->format('D, M jS') }}</div>
+                        <div class="value">{{ $order->deliver_by->format('D, M jS') }}<br/>[{{ $order->plan->weeks_of_food_per_shipment }}x wks]</div>
                     </div>
                 </div>
                 <div class="body">
                     <table class="table table-bordered table-striped table-responsive">
                         <thead>
                         <tr>
-                            <td><span class="package-name">{{ $order->plan->package->label }}</span> <i>Toppings</i></td>
+                            <td><span class="package-name">{{ $order->plan->package->label }}</span> <i>Toppings</i> -- [{{ $order->plan->weeks_of_food_per_shipment * 7 * $order->plan->pet->daily_meals }} total meals]</td>
                             <td>#</td>
                             <td>M</td>
                             <td>T</td>
@@ -160,7 +163,11 @@
                             @forelse($order->plan->notes as $note)
                             <li><em>{{ $note->content }}</em></li>
                             @empty
-                            <li><em>None</em></li>
+                                @if ($order->plan->comment)
+                                    <li><em>{{ $order->plan->comment }}</em></li>
+                                @else
+                                    <li><em>-</em></li>
+                                @endif
                             @endforelse
                             </ul>
                         </div>

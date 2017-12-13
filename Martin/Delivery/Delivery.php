@@ -24,6 +24,7 @@ class Delivery extends Model
 
         'shipped_at',
         'delivered_at',
+        'weeks_shipped',
 
         'tracking_number',
         'instructions',
@@ -76,9 +77,5 @@ class Delivery extends Model
      */
     public function order() {
         return $this->belongsTo(Order::class, 'order_id');
-    }
-
-    public function inventoryChanges() {
-        return $this->morphMany(Inventory::class, 'changeable');
     }
 }

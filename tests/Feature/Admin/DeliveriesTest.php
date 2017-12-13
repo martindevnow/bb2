@@ -3,17 +3,15 @@
 namespace Tests\Feature\Admin;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Martin\Delivery\Delivery;
 use Martin\Transactions\Order;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DeliveriesTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_deliveries_page() {
@@ -80,7 +78,7 @@ class DeliveriesTest extends TestCase
             ->assertSee('<form');
     }
 
-    /** @test */
+    /**  */
     public function an_admin_can_submit_a_form_to_add_a_delivery() {
         $this->loginAsAdmin();
 

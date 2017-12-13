@@ -15,7 +15,16 @@ class Meat extends Model
         'variety',
         'code',
         'cost_per_lb',
+        'has_bone',
     ];
+
+    protected $appends = [
+        'cost_per_quantity',
+    ];
+
+    public function getCostPerQuantityAttribute() {
+        return $this->costPerQuantity();
+    }
 
     /**
      * Mutators
@@ -34,6 +43,10 @@ class Meat extends Model
      */
     public function setCostPerLbAttribute($value) {
         $this->attributes['cost_per_lb'] = round($value * 100);
+    }
+
+    public function costPerQuantity() {
+        return $this->cost_per_lb / 454;
     }
 
     /**

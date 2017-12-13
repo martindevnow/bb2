@@ -27,7 +27,7 @@ class AdminMiddleware
             return $next($request);
 
         if ($request->user() == null)
-            return redirect('home');
+            return redirect('login');
 
         if ( ! $request->user()->isAdmin()) {
             return redirect('home');

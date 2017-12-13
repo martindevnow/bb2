@@ -51,9 +51,9 @@ class MealsController extends Controller
 
     public function update(Meal $meal, Request $request) {
         $this->validate($request, [
-            'code'      => 'required',
-            'label'      => 'required',
-            'meal_value'   => 'required|integer|between:1,2',
+            'code'          => 'required',
+            'label'         => 'required',
+            'meal_value'    => 'required|integer|between:1,2',
         ]);
 
         $meal->fill($request->only(['code', 'label', 'meal_value']))

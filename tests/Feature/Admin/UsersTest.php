@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Martin\ACL\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function a_guest_is_redirected_from_admin_users_page() {
@@ -47,7 +45,7 @@ class UsersTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_existing_users_on_the_index() {
         $user = factory(User::class)->create();
         $this->loginAsAdmin();
@@ -56,7 +54,7 @@ class UsersTest extends TestCase
             ->assertSee($user->name);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_view_a_single_user() {
         $this->loginAsAdmin();
 
@@ -67,7 +65,7 @@ class UsersTest extends TestCase
             ->assertSee($user->email);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_see_the_form_to_add_a_user() {
         $this->loginAsAdmin();
 
@@ -76,7 +74,7 @@ class UsersTest extends TestCase
             ->assertSee('<form');
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_submit_a_form_to_add_a_user() {
         $this->loginAsAdmin();
 
@@ -93,7 +91,7 @@ class UsersTest extends TestCase
         $this->assertDatabaseHas('users', $user->toArray());
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_edit_a_user() {
         $this->loginAsAdmin();
 
@@ -105,7 +103,7 @@ class UsersTest extends TestCase
             ->assertSee($user->name);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_save_changes_to_a_user() {
         $this->loginAsAdmin();
 
@@ -127,7 +125,7 @@ class UsersTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /** TODO: This now uses Vue.. need to update... ? */
     public function an_admin_can_delete_a_user_from_the_db() {
         $this->loginAsAdmin();
 

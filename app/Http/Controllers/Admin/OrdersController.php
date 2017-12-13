@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Martin\Delivery\Courier;
 use Martin\Delivery\Delivery;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
@@ -12,6 +13,19 @@ use mikehaertl\wkhtmlto\Pdf;
 
 class OrdersController extends Controller
 {
+    /**
+     * Display all Orders
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index_orig()
+    {
+        $orders = Order::all();
+
+        return view('admin.orders.index_orig')
+            ->with(compact('orders'));
+    }
+
     /**
      * Display all Orders
      *
@@ -56,9 +70,9 @@ class OrdersController extends Controller
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
             'delivery_address_id'   => 'required|exists:addresses,id',
-            'subtotal'      => 'required|numeric',
-            'tax'           => 'required|numeric',
-            'total_cost'    => 'required|numeric',
+            'subtotal'              => 'required|numeric',
+            'tax'                   => 'required|numeric',
+            'total_cost'            => 'required|numeric',
         ]);
 
         if ($request->get('subtotal') + $request->get('tax') !== $request->get('total_cost')) {
@@ -104,9 +118,9 @@ class OrdersController extends Controller
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
             'delivery_address_id'   => 'required|exists:addresses,id',
-            'subtotal'      => 'required|numeric',
-            'tax'           => 'required|numeric',
-            'total_cost'    => 'required|numeric',
+            'subtotal'              => 'required|numeric',
+            'tax'                   => 'required|numeric',
+            'total_cost'            => 'required|numeric',
         ]);
 
         $order->fill($request->only([
@@ -151,8 +165,21 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
-    public function export($perPage = 4) {
-        $orders = Order::needsPacking()->get();
+    public function export($status, $perPage = 4) {
+        switch($status) {
+            case 'packing':
+                $orders = Order::needsPacking()
+                    ->orderBy('deliver_by', 'DESC');
+                break;
+            case 'picking':
+                $orders = Order::needsPicking();
+                break;
+            default:
+                flash('Invalid type')->error();
+                return redirect()->back();
+        }
+//        $orders = Order::where('id', 33)->get();
+        $orders = $orders->get();
 
         $time = time();
         $path = base_path() .'/pdfs/'. $time .'.pdf';
@@ -210,8 +237,8 @@ class OrdersController extends Controller
     public function storePayment(Order $order, Request $request) {
         $this->validate($request, [
             'format'        => 'required',
-            'amount_paid'   => 'required',
-            'received_at'   => 'required',
+            'amount_paid'   => 'required|numeric',
+            'received_at'   => 'required|date_format:Y-m-d',
         ]);
         $paymentData = $request->only(['format', 'amount_paid', 'received_at']);
         $paymentData['customer_id'] = $order->customer_id;
@@ -219,7 +246,7 @@ class OrdersController extends Controller
 
         $payment = Payment::make($paymentData);
         if ($order->markAsPaid($payment)) {
-            flash('Thank you.');
+            flash('That order was marked as paid.');
             return redirect('/admin/orders');
         }
 
@@ -234,7 +261,7 @@ class OrdersController extends Controller
     public function markAsPacked(Order $order) {
         $order->markAsPacked();
 
-        flash('Packed.');
+        flash('That order was marked as packed.');
         return redirect('/admin/orders/');
     }
 
@@ -245,19 +272,20 @@ class OrdersController extends Controller
     public function markAsPicked(Order $order) {
         $order->markAsPicked();
 
-        flash('Picked.');
+        flash('That order was marked as picked.');
         return redirect('/admin/orders');
     }
 
     public function createShipment(Order $order) {
+        $couriers = Courier::all();
         return view('admin.orders.shipment')
-            ->with(compact('order'));
+            ->with(compact('order', 'couriers'));
     }
 
     public function storeShipment(Order $order, Request $request) {
         $this->validate($request, [
-            'courier_id'    => 'required',
-            'shipped_at'    => 'required',
+            'courier_id'    => 'required|exists:couriers,id',
+            'shipped_at'    => 'required|date_format:Y-m-d',
         ]);
 
         $deliveryData = $request->only([
@@ -268,8 +296,28 @@ class OrdersController extends Controller
         ]);
 
         $delivery = Delivery::make($deliveryData);
-
         $order->markAsShipped($delivery);
+
+        flash('That order was marked as shipped.');
+        return redirect('/admin/orders');
+    }
+    public function createDelivery(Order $order) {
+        return view('admin.orders.delivery')
+            ->with(compact('order'));
+    }
+
+    public function storeDelivery(Order $order, Request $request) {
+        $this->validate($request, [
+            'delivered_at'    => 'required|date_format:Y-m-d',
+        ]);
+
+        $delivery = $order->delivery;
+        $delivery->delivered_at = $request->get('delivered_at');
+        $delivery->save();
+        $order->markAsDelivered();
+
+        flash('That order was marked as delivered.');
+        return redirect('/admin/orders');
     }
 }
 

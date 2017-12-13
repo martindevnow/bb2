@@ -20,6 +20,8 @@ class CreateOrdersTable extends Migration
             $table->integer('customer_id');
             $table->integer('delivery_address_id');
 
+            $table->dateTime('deliver_by');
+
             $table->integer('subtotal');
             $table->integer('tax');
             $table->integer('total_cost');
@@ -32,7 +34,14 @@ class CreateOrdersTable extends Migration
             $table->boolean('shipped')->default(false);
             $table->boolean('delivered')->default(false);
 
-            $table->dateTime('deliver_by');
+            $table->integer('weeks_packed')->nullable();
+            $table->integer('packed_package_id')->nullable();
+
+            $table->integer('weeks_shipped')->nullable();
+            $table->integer('shipped_package_id')->nullable();
+
+            $table->dateTime('shipped_at')->nullable();
+            $table->dateTime('delivered_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
