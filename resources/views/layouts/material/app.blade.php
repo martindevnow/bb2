@@ -15,11 +15,11 @@
     <meta property="og:url" content="http://barfbento.com/">
     <meta property="og:site_name" content="BARFBento - Raw Dog Food Delivery Service">
 
-    <link rel="shortcut icon" href="/material/img/favicon.png?v=3">
+    <!-- <link rel="shortcut icon" href="/material/img/favicon.png?v=3"> -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/material/css/preload.min.css" />
     <link rel="stylesheet" href="/material/css/plugins.min.css" />
-    <link rel="stylesheet" href="/material/css/style.light-blue-500.min.css" />
+    <link rel="stylesheet" href="/material/css/style.red-600.min.css" />
     <link rel="stylesheet" href="/barfbento/css/app.css" />
     <link rel="stylesheet" href="/barfbento/css/barf.css" />
     <link rel="stylesheet" href="/css/sweetalert2.min.css" />

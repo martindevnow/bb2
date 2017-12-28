@@ -1,0 +1,93 @@
+@extends('layouts.material.app')
+
+@section('configuration')
+    <?php $showSlider = false; ?>
+@endsection
+
+@section('content')
+
+      <div class="container">
+        <h1 class="right-line mb-4">Cart</h1>
+        <div class="row">
+          <div class="col-md-9">
+
+
+          @if($cart->count() === 0)
+          <div class="card mb-1">
+          <table class="table table-responsive table-no-border vertical-center">
+                <tbody><tr><td>
+            Nothing Found.
+            </td></tr></tbody></table>
+          </div>
+          @endif
+
+
+<form action="/cart/update" method="POST">
+{{ csrf_field() }}
+          @foreach($cart as $item)
+            <div class="card mb-1">
+              <table class="table table-responsive table-no-border vertical-center">
+                <tbody><tr>
+                  <td class="d-none d-sm-block">
+                    <img src="assets/img/demo/products/m1.png" alt=""> </td>
+                  <td><a href="/treats/{{ $item->model->sku }}">
+                    <h4 class="">{{ $item->name}}</h4>
+                    </a>
+                  </td>
+                  <td>
+                    <div class="form-inline input-number">
+                      <div class="form-group"><input type="text" class="form-control form-control-number" pattern="[0-9]*" value="{{ $item->qty }}" name="products[{{ $item->id }}]"></div> </div>
+                  </td>
+                  <td>
+                    <span class="color-success">${{ $item->price }}</span>
+                  </td>
+                  <td class="d-none d-sm-block">
+                  <a href="/cart/remove/{{ $item->id }}"
+                    <button class="btn btn-danger">
+                      <i class="zmdi zmdi-delete"></i> Remove</button>
+                  </td>
+                </tr>
+              </tbody></table>
+            </div>
+          @endforeach
+
+
+          @if($cart->count())
+            <div class="mb-1" style="height: 70px;">
+                <button class="btn btn-primary btn-raised" style="float: right;">Update Quantities</button>
+            </div>
+          @endif
+            
+          </div>
+</form>
+
+          @if($cart->count())
+          <div class="col-md-3">
+            <div class="card card-primary">
+              <div class="card-header">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Summary</div>
+              <div class="card-block">
+                <ul class="list-unstyled">
+                  <li>
+                    <strong>Price: </strong> ${{ \Cart::subtotal() }}</li>
+                  <li>
+                    <strong>Tax: </strong> ${{ \Cart::subtotal() * .13 }}</li>
+                  <li>
+                    <strong>Shipping costs: </strong>
+                    <span class="color-warning">$5.25</span>
+                  </li>
+                </ul>
+                <h3>
+                  <strong>Total:</strong>
+                  <span class="color-success">${{ \Cart::subtotal() * 1.13 + 5.25 }}</span>
+                </h3>
+                <a href="javascript:void(0)" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
+                  <i class="zmdi zmdi-shopping-cart-plus"></i> Checkout</a>
+              </div>
+            </div>
+          </div>
+          @endif
+        </div>
+      </div>
+
+@endsection

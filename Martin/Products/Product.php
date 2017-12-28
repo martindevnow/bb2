@@ -6,11 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Core\Traits\CoreRelations;
 use Martin\Subscriptions\Plan;
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 
-class Product extends Model
+class Product extends Model implements Buyable
 {
     use SoftDeletes;
     use CoreRelations;
+
+    public function getBuyableIdentifier($options = null) {
+        return $this->id;
+    }
+
+    public function getBuyableDescription($options = null) {
+        return $this->description;
+    }
+    
+    public function getBuyablePrice($options = null) {
+        return $this->price;
+    }
 
     protected $fillable = [
         'name',
