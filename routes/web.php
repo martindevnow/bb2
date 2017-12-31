@@ -32,7 +32,7 @@ Route::get('/cart/add/{treat_id}', 'CartController@add');
 Route::get('/cart/remove/{treat_id}', 'CartController@remove');
 Route::post('/cart/update', 'CartController@update');
 
-Route::get('/checkout', 'CheckoutController');
+Route::get('/checkout', 'CheckoutController@checkout');
 
 Route::get('/contact', 'ContactController@index');
 Route::post('/contact/send', 'ContactController@send');
@@ -49,7 +49,6 @@ Route::get('/quote', 'QuoteController@index');
 
 Route::resource('/treats', 'TreatsController');
 
-
 Route::post('/plans/subscribe', 'PlansController@subscribe');
 
 Route::get('camera', function () {
@@ -57,8 +56,6 @@ Route::get('camera', function () {
 });
 
 Route::post('camera', function(Request $request) {
-
-//    dd ($request);
     $path = $request->file('photo')
         ->storeAs('images', 'file.jpg');
     dd ($path);

@@ -7,23 +7,22 @@
 @section('content')
 
       <div class="container">
-        <h1 class="right-line mb-4">Cart</h1>
+      
+        <h1 class="right-line mb-4">Checkout - Delivery (Step 1 of 2)</h1>
         <div class="row">
+
+          <div class="col-sm-12 laptop apple">
+              <div class="card ms-feature">
+                  <div class="card-block text-center">
+      Have an account? Save time by <a href="/login">logging in</a>.
+                  </div>
+              </div>
+          </div>
+
           <div class="col-md-9">
 
-
-          @if($cart->count() === 0)
-          <div class="card mb-1">
-          <table class="table table-responsive table-no-border vertical-center">
-                <tbody><tr><td>
-            Nothing Found.
-            </td></tr></tbody></table>
-          </div>
-          @endif
-
-
 <form action="/cart/update" method="POST">
-{{ csrf_field() }}
+          {{ csrf_field() }}
           @foreach($cart as $item)
             <div class="card mb-1">
               <table class="table table-responsive table-no-border vertical-center">
@@ -81,7 +80,7 @@
                   <strong>Total:</strong>
                   <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() > 50 ? 0 : 5.25), 2) }} CAD</span>
                 </h3>
-                <a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
+                <a href="javascript:void(0)" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
                   <i class="zmdi zmdi-shopping-cart-plus"></i> Checkout</a>
               </div>
             </div>
