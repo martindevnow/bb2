@@ -84,7 +84,9 @@
                             <a href="mailto:info@barfbento.com">info@barfbento.com</a>
                         </p>
                         <p>
-                            <i class="color-royal-light zmdi zmdi-phone mr-1"></i>+1 647 202 0692 </p>
+                            <i class="color-royal-light zmdi zmdi-phone mr-1"></i>
+                            <a href="tel:+16478801136">+1 647 880 1136 </a>
+                        </p>
                     </address>
                 </div>
                 <div class="ms-footbar-block">

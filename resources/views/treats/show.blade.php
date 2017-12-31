@@ -43,19 +43,24 @@
                         <div class="mb-2 mt-4">
                             <div class="row">
                                 <div class="col-sm-6">
-                      <span class="mr-2">
-                      </span>
+                                    <span class="mr-2">
+                                        <i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>
+                                        <i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>
+                                        <i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>
+                                        <i class="zmdi zmdi-hc-lg zmdi-star color-warning"></i>
+                                        <i class="zmdi zmdi-hc-lg zmdi-star"></i>
+                                    </span>
                                 </div>
                                 <div class="col-sm-6 text-center">
-                                    <h2 class="color-success no-m text-normal">$ {{ $treat->price }}</h2>
+                                    <h2 class="color-success no-m text-normal">$ {{ number_format($treat->price, 2) }} CAD</h2>
                                 </div>
                             </div>
                         </div>
                         <p class="lead">{{ $treat->description }}</p>
                         <ul class="list-unstyled">
-                            <li>
-                                <strong>Ingredients: </strong>{{ $treat->ingredients }}</li>
-                            <li>
+                            <li><strong>Description: </strong>{{ $treat->description_long }}</li>
+                            <li><strong>Ingredients: </strong>{{ $treat->ingredients }}</li>
+                            <!-- <li>
                                 <strong>Number of items: </strong>
                                 <div class="form-inline input-number">
                                     <button class="btn-circle btn-circle-primary btn-circle-xs" type="button">
@@ -66,17 +71,17 @@
                                         <i class="zmdi zmdi-plus"></i>
                                     </button>
                                 </div>
-                            </li>
+                            </li> -->
                             <li class="mb-2">
                                 <strong>Availability: </strong>
                                 <span class="ms-tag ms-tag-success">in stock</span>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <strong>Shipping costs: </strong>
                                 <span class="color-warning">Free</span>
-                            </li>
+                            </li> -->
                         </ul>
-                        <a href="javascript:void(0)" class="btn btn-primary btn-block btn-raised mt-2 no-mb">
+                        <a href="/cart/add/{{ $treat->id }}" class="btn btn-primary btn-block btn-raised mt-2 no-mb">
                             <i class="zmdi zmdi-shopping-cart-plus"></i> Add to Cart<div class="ripple-container"></div></a>
                     </div>
                 </div>
