@@ -3,6 +3,7 @@
 namespace Martin\Transactions;
 
 use Carbon\Carbon;
+use Gloudemans\Shoppingcart\Cart;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -69,6 +70,32 @@ class Order extends Model
             case 'edit':
                 return "/admin/orders/$this->id/edit";
         }
+    }
+
+    public static function createFromCart(Cart $cart, Address $address) {
+        $addressable = $address->addressable;
+        if ($addressable instanceof User)
+            $customer_id = $addressable->id;
+        else
+            $customer_id = 0;
+
+        $subtotal = $cart->subtotal();
+
+        $order = Order::create([
+            'plan_id'       => 0,
+            'customer_id'   => 0,
+            'delivery_address_id'   => $address->id,
+            'deliver_by'    => Carbon::now()->addDays(2),
+            'subtotal'      => $subtotal,
+            'tax'           => $subtotal * .13,
+            'total_cost'    => ($subtotal + ($subtotal >= 50 ? 0 : 5.95)) * 1.13,
+            'plan_order'    => false,
+        ]);
+
+        foreach ($cart->content() as $item) {
+            $order->addProduct($item->model, $item->qty);
+        }
+        return $order->fresh(['details']);
     }
 
     /**

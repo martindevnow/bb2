@@ -33,6 +33,8 @@ Route::get('/cart/remove/{treat_id}', 'CartController@remove');
 Route::post('/cart/update', 'CartController@update');
 
 Route::get('/checkout', 'CheckoutController@checkout');
+Route::post('/checkout/member', 'CheckoutController@member');
+Route::post('/checkout/guest', 'CheckoutController@guest');
 
 Route::get('/contact', 'ContactController@index');
 Route::post('/contact/send', 'ContactController@send');

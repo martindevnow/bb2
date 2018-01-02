@@ -58,10 +58,13 @@
             </div>
           @endif
             
-          </div>
 </form>
 
-          @if($cart->count())
+
+          </div>
+
+
+        @if($cart->count())
           <div class="col-md-3">
             <div class="card card-primary">
               <div class="card-header">
