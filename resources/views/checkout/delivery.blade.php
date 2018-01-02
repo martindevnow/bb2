@@ -73,12 +73,12 @@
                     <strong>Tax: </strong> ${{ number_format(\Cart::subtotal() * .13, 2) }} CAD</li>
                   <li>
                     <strong>Shipping costs: </strong>
-                    <span class="color-warning">{{ \Cart::subtotal() > 50 ? "Free" : "$5.25 CAD" }}</span>
+                    <span class="color-warning">{{ \Cart::subtotal() >= 50 ? "Free" : "$5.25 CAD" }}</span>
                   </li>
                 </ul>
                 <h3>
                   <strong>Total:</strong>
-                  <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() > 50 ? 0 : 5.25), 2) }} CAD</span>
+                  <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() >= 50 ? 0 : 5.25), 2) }} CAD</span>
                 </h3>
                 <a href="javascript:void(0)" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
                   <i class="zmdi zmdi-shopping-cart-plus"></i> Checkout</a>
