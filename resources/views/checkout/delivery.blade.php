@@ -11,13 +11,15 @@
         <h1 class="right-line mb-4">Checkout - Delivery (Step 1 of 2)</h1>
         <div class="row">
 
+        @guest
           <div class="col-sm-12 laptop apple">
               <div class="card ms-feature">
                   <div class="card-block text-center">
-      Have an account? Save time by <a href="/login">logging in</a>.
+      Have an account? Save time by <a href="/checkout/login">logging in</a>.
                   </div>
               </div>
           </div>
+        @endguest
 
           <div class="col-md-9">
 
@@ -80,8 +82,7 @@
                   <strong>Total:</strong>
                   <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() > 50 ? 0 : 5.25), 2) }} CAD</span>
                 </h3>
-                <a href="javascript:void(0)" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
-                  <i class="zmdi zmdi-shopping-cart-plus"></i> Checkout</a>
+
               </div>
             </div>
           </div>
