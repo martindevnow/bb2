@@ -29,6 +29,13 @@
     <script src="/material/js/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+        /*@media screen and (min-width: 768px) {*/
+            /*.col-sm-9 {*/
+                /*float: none;*/
+            /*}*/
+        /*}*/
+    </style>
     <script>
         window.BarfBento = <?php echo json_encode([
             'csrfToken' => csrf_token(),

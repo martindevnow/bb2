@@ -36,6 +36,8 @@ Route::get('/checkout', 'CheckoutController@checkout');
 Route::middleware('auth')->get('/checkout/login', function() {
     return redirect('/checkout');
 });
+Route::post('/checkout/member', 'CheckoutController@member');
+Route::post('/checkout/guest', 'CheckoutController@guest');
 
 Route::get('/contact', 'ContactController@index');
 Route::post('/contact/send', 'ContactController@send');
