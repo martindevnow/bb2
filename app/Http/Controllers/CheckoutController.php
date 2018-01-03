@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Martin\Core\Address;
 use Martin\Transactions\Order;
+use Stripe\Stripe;
+use Stripe\Customer;
+use Stripe\Charge;
 
 class CheckoutController extends Controller
 {
@@ -35,25 +38,13 @@ class CheckoutController extends Controller
             $validData['country'] = "Canada";
 
         $cart = \Cart::instance();
-
-//        $string = '';
-//        foreach ($cart->content() as $item) {
-//            $string .= print_r($item->toArray(), true);
-//            $string .= print_r($item->model->toArray(), true);
-//        }
-//
-//        dd ($string);
-
         $address = Address::createFromForm($validData);
         $order = Order::createFromCart($cart, $address);
 
-        dd ($order);
-        // TODO: Persist the Address
-        //   Create the order
-        //   add order_details
-        //   save to session
-        // Present the user with a screen to confirm the order
-        //   and initiate payment
+        session(['pending_order_id' => $order->id]);
+
+        $cart = $cart->content();
+        return view('checkout.confirm')->with(compact('cart', 'order'));
     }
 
     public function member(Request $request) {
@@ -68,5 +59,25 @@ class CheckoutController extends Controller
         //   save order_id to session
         // Present the user with a screen to confirm the order
         //   and initiate payment
+    }
+
+    public function complete(Request $request)
+    {
+        Stripe::setApiKey(config('services.stripe.secret'));
+    
+        $cart = \Cart::instance();
+        $order = Order::findOrFail(session('pending_order_id'));
+
+        $customer = Customer::create([
+            'email'     => $request->get('stripeEmail'),
+            'source'    => $request->get('stripeToken'),
+        ]);
+
+        Charge::create([
+            'customer'  => $customer->id,
+            'amount'    => round($order->total_cost * 100),
+            'currency'  => 'CAD',
+        ]);
+
     }
 }

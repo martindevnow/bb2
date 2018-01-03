@@ -5,6 +5,14 @@
 @endsection
 
 @section('content')
+@guest
+<form action="/checkout/guest" method="POST" class="form-horizontal">
+@endguest
+
+@auth
+<form action="/checkout/member" method="POST" class="form-horizontal">
+@endauth
+          {{ csrf_field() }}
 
       <div class="container">
       
@@ -24,8 +32,6 @@
           <div class="col-md-9">
 
               @auth
-<form action="/checkout/member" method="POST">
-          {{ csrf_field() }}
 
             <div class="card mb-1">
               <table class="table table-responsive table-no-border vertical-center">
@@ -51,26 +57,80 @@
         <div class="card-header">
             <i class="fa fa-list-alt" aria-hidden="true"></i> Delivery Address</div>
         <div class="card-block">
-            <form action="/checkout/guest" method="POST">
-                {{ csrf_field() }}
-                <table class="table table-responsive table-no-border vertical-center">
-                    <tr>
-                        <td>
-                            <input type="text" name="name" placeholder="Recipient" /><br />
-                            <input type="text" name="street_1" placeholder="Street" /><br />
-                            <input type="text" name="street_2" placeholder="Street (cont)" /><br />
-                            <input type="text" name="city" placeholder="City "/><br />
-                            <input type="text" name="province" placeholder="Province "/><br />
-                            <input type="text" name="postal_code" placeholder="Postal Code" /><br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="btn btn-info btn-raised">Continue</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+
+                    <fieldset>
+                      <legend>Details</legend>
+
+                      <div class="form-group row is-empty">
+                        <label for="inputName" autocomplete="false" class="col-lg-2 control-label">Recipient</label>
+                        <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputName" placeholder="Name" autocomplete="off" style="cursor: auto;" name="name" value="{{ old('name') }}"> </div>
+                      </div>
+                      @if ($errors->has('name'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('name')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row is-empty">
+                        <label for="inputStreet1" autocomplete="false" class="col-lg-2 control-label">Street</label>
+                        <div class="col-lg-10">
+                          <input type="text" class="form-control" id="inputStreet1" placeholder="Street" autocomplete="off" style="cursor: auto;" name="street_1" value="{{ old('street_1') }}"> </div>
+                      </div>
+                      @if ($errors->has('street_1'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('street_1')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row is-empty">
+                        <label for="inputStreet2" autocomplete="false" class="col-lg-2 control-label">Street</label>
+                        <div class="col-lg-10">
+                          <input type="text" class="form-control" id="inputStreet2" placeholder="Street (cont..)" autocomplete="off" style="cursor: auto;" name="street_2" value="{{ old('street_2') }}"> </div>
+                      </div>
+                      @if ($errors->has('street_2'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('street_2')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row is-empty">
+                        <label for="inputCity" autocomplete="false" class="col-lg-2 control-label">City</label>
+                        <div class="col-lg-10">
+                          <input type="text" class="form-control" id="inputCity" placeholder="City" autocomplete="off" style="cursor: auto;" name="city" value="{{ old('city') }}"> </div>
+                      </div>
+                      @if ($errors->has('city'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('city')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row is-empty">
+                        <label for="inputProvince" autocomplete="false" class="col-lg-2 control-label">Province</label>
+                        <div class="col-lg-10">
+                          <input type="text" class="form-control" id="inputProvince" placeholder="Province" autocomplete="off" style="cursor: auto;" name="province" value="{{ old('province') }}"> </div>
+                      </div>
+                      @if ($errors->has('province'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('province')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row is-empty">
+                        <label for="inputPostalCode" autocomplete="false" class="col-lg-2 control-label">Postal Code</label>
+                        <div class="col-lg-10">
+                          <input type="text" class="form-control" id="inputPostalCode" placeholder="Postal Code" autocomplete="off" style="cursor: auto;" name="postal_code" value="{{ old('postal_code') }}"> </div>
+                      </div>
+                      @if ($errors->has('postal_code'))
+                      <div class="alert alert-primary" role="alert">
+                        <strong><i class="zmdi zmdi-notifications"></strong></i> {{ $errors->get('postal_code')[0] }} </div>
+                      @endif
+
+                      <div class="form-group row justify-content-end">
+                        <div class="col-lg-10 col-lg-offset-2">
+                          <button type="submit" class="btn btn-raised btn-info">Continue</button>
+                          <button type="button" class="btn btn-danger">Cancel</button>
+                        </div>
+                      </div>
+
+                      
+                    </fieldset>
+  
         </div>
     </div>
               @endguest
@@ -97,11 +157,13 @@
                   <strong>Total:</strong>
                   <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() >= 50 ? 0 : 5.25), 2) }} CAD</span>
                 </h3>
+                <a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
+                  <i class="zmdi zmdi-shopping-cart-plus"></i> Continue</a>
               </div>
             </div>
           </div>
           @endif
         </div>
       </div>
-
+</form>
 @endsection

@@ -82,20 +82,22 @@ class Order extends Model
         $subtotal = $cart->subtotal();
 
         $order = Order::create([
-            'plan_id'       => 0,
-            'customer_id'   => 0,
+            'plan_id'               => 0,
+            'customer_id'           => 0,
             'delivery_address_id'   => $address->id,
             'deliver_by'    => Carbon::now()->addDays(2),
             'subtotal'      => $subtotal,
+            // TODO: Change to using the tax on the cart
             'tax'           => $subtotal * .13,
-            'total_cost'    => ($subtotal + ($subtotal >= 50 ? 0 : 5.95)) * 1.13,
+            // TODO: Change to using the tax on the cart
+            'total_cost'    => ($subtotal + ($subtotal >= 50 ? 0 : 5.25)) * 1.13,
             'plan_order'    => false,
         ]);
 
         foreach ($cart->content() as $item) {
             $order->addProduct($item->model, $item->qty);
         }
-        return $order->fresh(['details']);
+        return $order->fresh(['details', 'deliveryAddress']);
     }
 
     /**
