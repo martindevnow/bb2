@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Martin\Core\Address;
 use Martin\Transactions\Order;
+use Martin\Transactions\Payment;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
@@ -66,6 +68,8 @@ class CheckoutController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
     
         $cart = \Cart::instance();
+
+        /** @var Order $order */
         $order = Order::findOrFail(session('pending_order_id'));
 
         $customer = Customer::create([
@@ -73,11 +77,30 @@ class CheckoutController extends Controller
             'source'    => $request->get('stripeToken'),
         ]);
 
-        Charge::create([
+        $charge = Charge::create([
             'customer'  => $customer->id,
             'amount'    => round($order->total_cost * 100),
             'currency'  => 'CAD',
         ]);
+
+        // TODO: Add validation that the charge was actually successful
+        if ($everything_works_ok = true) {
+            $payment = Payment::create([
+                'received_at'   => Carbon::now(),
+                'format'        => 'stripe',
+                'amount_paid'   => $order->total_cost,
+            ]);
+            $order->markAsPaid($payment);
+
+            // TODO: Clear the contents of the cart
+            //    set the session for successful order_id (in case the user registers)
+            //    show a message to the user that the order was successful
+            //    send an email to the user
+            //    send an email to the admin
+            //    display an alert to register (since the purchase is done)
+            //      to allow the user to save their order history
+            return view('checkout.success');
+        }
 
     }
 }
