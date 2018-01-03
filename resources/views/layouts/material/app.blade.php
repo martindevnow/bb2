@@ -30,11 +30,16 @@
     <![endif]-->
 
     <style>
-        /*@media screen and (min-width: 768px) {*/
-            /*.col-sm-9 {*/
-                /*float: none;*/
-            /*}*/
-        /*}*/
+        .form-group {
+            margin: inherit;
+            padding: inherit;
+        }
+        .table-tight > tbody > tr > td {
+            padding: 8px!important;
+        }
+        td.money {
+            text-align: right;
+        }
     </style>
     <script>
         window.BarfBento = <?php echo json_encode([

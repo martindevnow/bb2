@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendPurchaseNotificationToAdmin;
+use App\Jobs\SendPurchaseNotificationToCustomer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Martin\Core\Address;
@@ -95,6 +97,8 @@ class CheckoutController extends Controller
                 'received_at'   => Carbon::now(),
                 'format'        => 'stripe',
                 'amount_paid'   => $order->total_cost,
+                'stripe_customer_email' => $request->get('stripeEmail'),
+                'stripe_customer_id'    => $request->get('stripeToken'),
             ]);
             $order->markAsPaid($payment);
 
@@ -102,25 +106,19 @@ class CheckoutController extends Controller
 
             session()->remove('pending_order_id');
 
-            if (session('completed_order_ids')) {
-                $completed_order_ids = session('completed_order_ids');
+            if (session('completed_orders')) {
+                $completed_orders = session('completed_orders');
             } else {
-                $completed_order_ids = [];
+                $completed_orders = [];
             }
-            array_push($completed_order_ids, [$order->id => $customer->id]);
-            session(compact('completed_order_ids'));
-
-            if (! session('stripe_customer_id')) {
-                // it's new, save to session
-                session(['stripe_customer_id' => $customer->id]);
-            } elseif (session('stripe_customer_id') == $customer->id) {
-                // Do Nothing
-            } elseif (session('stripe_customer_id') != $customer->id) {
-                // New Stripe Customer, clear the customer ID from session...
-                session()->remove('stripe_customer_id');
-            }
+            array_push($completed_orders, $order->id);
+            session(compact('completed_orders'));
 
             //  EMAIL
+            $this->dispatch(new SendPurchaseNotificationToAdmin($order));
+            $this->dispatch(new SendPurchaseNotificationToCustomer($order));
+
+//            event(new PurchaseWasMade($order, $customer_email));
             //    send an email to the user     DISPATCH job
             //    send an email to the admin    DISPATCH job
 

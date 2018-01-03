@@ -35,6 +35,7 @@ class User extends Authenticatable
         'last_name',
         'stripe_active',
         'subscription_end_at',
+        'stripe_customer_id',
     ];
 
     /**

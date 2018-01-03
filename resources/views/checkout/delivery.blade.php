@@ -82,7 +82,7 @@
                       @endif
 
                       <div class="form-group row is-empty">
-                        <label for="inputStreet2" autocomplete="false" class="col-lg-2 control-label">Street</label>
+                        <label for="inputStreet2" autocomplete="false" class="col-lg-2 control-label"></label>
                         <div class="col-lg-10">
                           <input type="text" class="form-control" id="inputStreet2" placeholder="Street (cont..)" autocomplete="off" style="cursor: auto;" name="street_2" value="{{ old('street_2') }}"> </div>
                       </div>
@@ -155,10 +155,8 @@
                 </ul>
                 <h3>
                   <strong>Total:</strong>
-                  <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() >= 50 ? 0 : 5.25), 2) }} CAD</span>
+                  <span class="color-success">${{ number_format((\Cart::subtotal() + (\Cart::subtotal() >= 50 ? 0 : 5.25)) * 1.13, 2) }}</span>
                 </h3>
-                <a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
-                  <i class="zmdi zmdi-shopping-cart-plus"></i> Continue</a>
               </div>
             </div>
           </div>

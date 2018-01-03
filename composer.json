@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
+        "doctrine/dbal": "^2.6",
         "dompdf/dompdf": "^0.8.0",
         "gloudemans/shoppingcart": "^2.4",
         "laracasts/flash": "^3.0",

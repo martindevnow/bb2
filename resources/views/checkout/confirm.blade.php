@@ -28,10 +28,13 @@
                     </a>
                   </td>
                   <td>
-                    {{ $item->qty }}
+                    <span class="">${{ number_format($item->price, 2) }} CAD</span>
                   </td>
                   <td>
-                    <span class="color-success">${{ number_format($item->price, 2) }} CAD</span>
+                    x {{ $item->qty }}
+                  </td>
+                  <td>
+                    <span class="color-success">${{ number_format($item->price * $item->qty, 2) }} CAD</span>
                   </td>
                 </tr>
           @endforeach
@@ -83,20 +86,27 @@
               <div class="card-header">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Summary</div>
               <div class="card-block">
-                <ul class="list-unstyled">
-                  <li>
-                    <strong>Price: </strong> ${{ number_format(\Cart::subtotal(), 2) }} CAD</li>
-                  <li>
-                    <strong>Tax: </strong> ${{ number_format(\Cart::subtotal() * .13, 2) }} CAD</li>
-                  <li>
-                    <strong>Shipping costs: </strong>
-                    <span class="color-warning">{{ \Cart::subtotal() >= 50 ? "Free" : "$5.25 CAD" }}</span>
-                  </li>
-                </ul>
-                <h3>
-                  <strong>Total:</strong>
-                  <span class="color-success">${{ number_format((\Cart::subtotal() + (\Cart::subtotal() >= 50 ? 0 : 5.25)) * 1.13, 2) }} CAD</span>
-                </h3>
+
+                <table class="table table-responsive table-no-border table-tight">
+                  <tbody>
+                  <tr>
+                    <td>Subtotal:</td>
+                    <td class="money">${{ number_format(\Cart::subtotal(), 2) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Tax:</td>
+                    <td class="money">${{ number_format(\Cart::subtotal() * .13, 2) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Shipping:</td>
+                    <td class="money">{{ \Cart::subtotal() >= 50 ? "Free" : "$5.25" }}</td>
+                  </tr>
+                  <tr>
+                    <td>Total:</td>
+                    <td class="money">${{ number_format((\Cart::subtotal() + (\Cart::subtotal() >= 50 ? 0 : 5.25)) * 1.13, 2) }}</td>
+                  </tr>
+                  </tbody>
+                </table>
 
                 <form action="/checkout/complete" method="POST">
                 {{ csrf_field() }}
@@ -111,8 +121,8 @@
     data-zip-code="false">
   </script>
 </form>
-                <a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
-                  <i class="zmdi zmdi-shopping-cart-plus"></i> Pay Now</a>
+                {{--<a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">--}}
+                  {{--<i class="zmdi zmdi-shopping-cart-plus"></i> Pay Now</a>--}}
               </div>
             </div>
           </div>

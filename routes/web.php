@@ -67,3 +67,7 @@ Route::post('camera', function(Request $request) {
     dd ($path);
 
 });
+
+Route::get('/checkout/clearCompleted', function() {
+    session()->remove('completed_orders');
+});

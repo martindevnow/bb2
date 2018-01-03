@@ -82,7 +82,7 @@
                 </ul>
                 <h3>
                   <strong>Total:</strong>
-                  <span class="color-success">${{ number_format(\Cart::subtotal() * 1.13 + (\Cart::subtotal() >= 50 ? 0 : 5.25), 2) }} CAD</span>
+                  <span class="color-success">${{ number_format((\Cart::subtotal() + (\Cart::subtotal() >= 50 ? 0 : 5.25)) * 1.13, 2) }}</span>
                 </h3>
                 <a href="/checkout" class="btn btn-raised btn-info btn-block btn-raised mt-2 no-mb">
                   <i class="zmdi zmdi-shopping-cart-plus"></i> Checkout</a>
