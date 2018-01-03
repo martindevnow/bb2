@@ -38,7 +38,11 @@ Route::middleware('auth')->get('/checkout/login', function() {
 });
 Route::post('/checkout/member', 'CheckoutController@member');
 Route::post('/checkout/guest', 'CheckoutController@guest');
+Route::get('/checkout/new-address', 'CheckoutController@newAddress');
+Route::post('/checkout/new-address', 'CheckoutController@storeNewAddress');
 Route::post('/checkout/complete', 'CheckoutController@complete');
+
+
 
 Route::get('/contact', 'ContactController@index');
 Route::post('/contact/send', 'ContactController@send');

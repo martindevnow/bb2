@@ -27,6 +27,33 @@ class CheckoutController extends Controller
             ->with(compact('cart'));
     }
 
+    public function newAddress() {
+        $cart = \Cart::instance();
+
+        return view('checkout.newAddress')
+            ->with(compact('cart'));
+    }
+
+    public function storeNewAddress(Request $request) {
+        $validData = $request->validate([
+            'name'          => 'required',
+            'street_1'      => 'required',
+            'street_2'      => 'nullable',
+            'city'          => 'required',
+            'province'      => 'required',
+            'postal_code'   => 'required',
+        ]);
+
+        // FUTURE: Allow shipping to other countries
+        if (! isset($validData['country']))
+            $validData['country'] = "Canada";
+
+        $address = Address::createFromForm($validData);
+        $request->user()->addresses()->save($address);
+
+        return redirect('/checkout');
+    }
+
     public function guest(Request $request) {
         $validData = $request->validate([
             'name'          => 'required',

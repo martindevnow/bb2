@@ -10,7 +10,7 @@
 @endguest
 
 @auth
-<form action="/checkout/member" method="POST" class="form-horizontal">
+<form action="/checkout/new-address" method="POST" class="form-horizontal">
 @endauth
           {{ csrf_field() }}
 
@@ -19,83 +19,16 @@
         <h1 class="right-line mb-4">Checkout - Delivery (Step 1 of 2)</h1>
         <div class="row">
 
-        @guest
-          <div class="col-md-12 laptop apple">
-              <div class="card ms-feature">
-                  <div class="card-block text-center">
-      Have an account? Save time by <a href="/checkout/login">logging in</a>.
-                  </div>
-              </div>
-          </div>
-        @endguest
 
           <div class="col-md-9">
 
+
               @auth
-
-              <div class="card card-primary">
-                  <div class="card-header">
-                      <i class="fa fa-list-alt" aria-hidden="true"></i> Delivery Address</div>
-                  <div class="card-block">
-
-                      <table class="table table-responsive table-no-border vertical-center">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div class="form-group row justify-content-end is-empty">
-                                    <label for="deliveryAddressSelect" class="col-lg-2 control-label">Address</label>
-                                    <div class="col-lg-10">
-                                        <div class="btn-group bootstrap-select form-control">
-                                            <select id="deliveryAddressSelect" class="form-control selectpicker" data-dropup-auto="false" tabindex="-98"
-                                                    name="address_id"
-                                            >
-                                                <option>Select...</option>
-                                                @foreach(\Auth::user()->addresses as $address)
-                                                <option value="{{ $address->id }}">{{ $address->toString() }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="form-group row justify-content-end">
-                                    <div class="col-lg-10 col-lg-offset-2">
-                                        <a href="/checkout/new-address">
-                                            <button type="button" class="btn btn-raised btn-warning">
-                                                <i class="fa fa-plus"></i>
-                                                Add a new address
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="form-group row justify-content-end">
-                                    <div class="col-lg-10 col-lg-offset-2">
-                                        <button type="submit" class="btn btn-raised btn-info">Continue</button>
-                                        <button type="button" class="btn btn-danger">Cancel</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                      </tbody></table>
-                  </div>
-            </div>
-</form>
-              @endauth
-
-
-              @guest
 
 
     <div class="card card-primary">
         <div class="card-header">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> Delivery Address</div>
+            <i class="fa fa-list-alt" aria-hidden="true"></i> Add a New Delivery Address</div>
         <div class="card-block">
 
                     <fieldset>
@@ -163,7 +96,7 @@
 
                       <div class="form-group row justify-content-end">
                         <div class="col-lg-10 col-lg-offset-2">
-                          <button type="submit" class="btn btn-raised btn-info">Continue</button>
+                          <button type="submit" class="btn btn-raised btn-info">Add Address</button>
                           <button type="button" class="btn btn-danger">Cancel</button>
                         </div>
                       </div>
@@ -173,7 +106,7 @@
   
         </div>
     </div>
-              @endguest
+              @endauth
 
           </div>
 

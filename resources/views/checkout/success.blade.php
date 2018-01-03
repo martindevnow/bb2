@@ -7,7 +7,7 @@
 @section('content')
 
       <div class="container">
-        <h1 class="right-line mb-4">Cart</h1>
+        <h1 class="right-line mb-4">Order Completed</h1>
         <div class="row">
           <div class="col-md-9">
 
@@ -15,7 +15,7 @@
             @guest
             <div class="card card-primary">
                 <div class="card-header">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> Your Cart</div>
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Sign Up?</div>
                 <div class="card-block">
                   <h2>Save your order history?</h2>
                   <p>Do you wish to save your order history? If so, please register for an account today! Reordering will be a breeze!</p>
@@ -26,7 +26,7 @@
 
             <div class="card card-primary">
               <div class="card-header">
-                <i class="fa fa-list-alt" aria-hidden="true"></i> Your Cart</div>
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Success</div>
               <div class="card-block">
                 <h2>Thank you!</h2>
                 <p>Thank you for your purchase! You will receive an email with all of your purchase details outlined.</p>
@@ -36,7 +36,7 @@
             </div>
 
           </div>
-          
+
 
         </div>
       </div>
