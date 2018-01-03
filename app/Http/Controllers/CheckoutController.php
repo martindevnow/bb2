@@ -67,8 +67,6 @@ class CheckoutController extends Controller
     {
         Stripe::setApiKey(config('services.stripe.secret'));
     
-        $cart = \Cart::instance();
-
         /** @var Order $order */
         $order = Order::findOrFail(session('pending_order_id'));
 
@@ -85,6 +83,14 @@ class CheckoutController extends Controller
 
         // TODO: Add validation that the charge was actually successful
         if ($everything_works_ok = true) {
+
+            if (!! $request->user()) {
+                $user = $request->user();
+                $user->update([
+                    'stripe_customer_id'    => $customer->id,
+                ]);
+            }
+
             $payment = Payment::create([
                 'received_at'   => Carbon::now(),
                 'format'        => 'stripe',
@@ -92,11 +98,34 @@ class CheckoutController extends Controller
             ]);
             $order->markAsPaid($payment);
 
-            // TODO: Clear the contents of the cart
-            //    set the session for successful order_id (in case the user registers)
+            \Cart::destroy();
+
+            session()->remove('pending_order_id');
+
+            if (session('completed_order_ids')) {
+                $completed_order_ids = session('completed_order_ids');
+            } else {
+                $completed_order_ids = [];
+            }
+            array_push($completed_order_ids, [$order->id => $customer->id]);
+            session(compact('completed_order_ids'));
+
+            if (! session('stripe_customer_id')) {
+                // it's new, save to session
+                session(['stripe_customer_id' => $customer->id]);
+            } elseif (session('stripe_customer_id') == $customer->id) {
+                // Do Nothing
+            } elseif (session('stripe_customer_id') != $customer->id) {
+                // New Stripe Customer, clear the customer ID from session...
+                session()->remove('stripe_customer_id');
+            }
+
+            //  EMAIL
+            //    send an email to the user     DISPATCH job
+            //    send an email to the admin    DISPATCH job
+
+            //  DISPLAY
             //    show a message to the user that the order was successful
-            //    send an email to the user
-            //    send an email to the admin
             //    display an alert to register (since the purchase is done)
             //      to allow the user to save their order history
             return view('checkout.success');
