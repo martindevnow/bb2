@@ -33,18 +33,44 @@
 
               @auth
 
-            <div class="card mb-1">
-              <table class="table table-responsive table-no-border vertical-center">
-                <tbody>
-                <tr>
-                    <td>
-                        <select>
-                            <option>15 Carousel Circle</option>
-                            <option>503 Beecroft Road</option>
-                        </select>
-                    </td>
-                </tr>
-              </tbody></table>
+              <div class="card card-primary">
+                  <div class="card-header">
+                      <i class="fa fa-list-alt" aria-hidden="true"></i> Delivery Address</div>
+                  <div class="card-block">
+
+                      <table class="table table-responsive table-no-border vertical-center">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group row justify-content-end is-empty">
+                                    <label for="deliveryAddressSelect" class="col-lg-2 control-label">Address</label>
+                                    <div class="col-lg-10">
+                                        <div class="btn-group bootstrap-select form-control">
+                                            <select id="deliveryAddressSelect" class="form-control selectpicker" data-dropup-auto="false" tabindex="-98"
+                                                    name="address_id"
+                                            >
+                                                <option>Select...</option>
+                                                @foreach(\Auth::user()->addresses as $address)
+                                                <option value="{{ $address->id }}">{{ $address->toString() }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group row justify-content-end">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                        <button type="submit" class="btn btn-raised btn-info">Continue</button>
+                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                      </tbody></table>
+                  </div>
             </div>
 </form>
               @endauth

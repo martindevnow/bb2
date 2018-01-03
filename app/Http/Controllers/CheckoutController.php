@@ -52,17 +52,25 @@ class CheckoutController extends Controller
     }
 
     public function member(Request $request) {
+        // TODO: Add another route where the user can add a new address and redirect back to this page...
+
         $validData = $request->validate([
             'address_id'    => 'required|exists:addresses,id',
         ]);
 
-        $cart = \Cart::instance();
+        $address = Address::findOrFail($request->get('address_id'));
 
-        // TODO: Create the order
-        //   add order_details
-        //   save order_id to session
-        // Present the user with a screen to confirm the order
-        //   and initiate payment
+        if ($address->addressable_id != $request->user()->id) {
+            return redirect()->withErrors()->back();
+        }
+
+        $cart = \Cart::instance();
+        $order = Order::createFromCart($cart, $address);
+
+        session(['pending_order_id' => $order->id]);
+
+        $cart = $cart->content();
+        return view('checkout.confirm')->with(compact('cart', 'order'));
     }
 
     public function complete(Request $request)
@@ -118,14 +126,6 @@ class CheckoutController extends Controller
             $this->dispatch(new SendPurchaseNotificationToAdmin($order));
             $this->dispatch(new SendPurchaseNotificationToCustomer($order));
 
-//            event(new PurchaseWasMade($order, $customer_email));
-            //    send an email to the user     DISPATCH job
-            //    send an email to the admin    DISPATCH job
-
-            //  DISPLAY
-            //    show a message to the user that the order was successful
-            //    display an alert to register (since the purchase is done)
-            //      to allow the user to save their order history
             return view('checkout.success');
         }
 

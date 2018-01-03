@@ -83,7 +83,7 @@ class Order extends Model
 
         $order = Order::create([
             'plan_id'               => 0,
-            'customer_id'           => 0,
+            'customer_id'           => $customer_id,
             'delivery_address_id'   => $address->id,
             'deliver_by'    => Carbon::now()->addDays(2),
             'subtotal'      => $subtotal,
