@@ -59,7 +59,7 @@
         </div>
     </div>
 </div>
-<div class="sb-site-container" id="content">
+<div class="sb-site-container" id="client-app">
 
     @include('layouts.material.nav.top')
 
@@ -80,7 +80,6 @@
 <script src="/material/js/plugins.min.js"></script>
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
-<script src="https://checkout.stripe.com/checkout.js"></script>
 <script src="/js/app.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
