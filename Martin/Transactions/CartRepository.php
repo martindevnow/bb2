@@ -5,6 +5,10 @@ namespace Martin\Transactions;
 class CartRepository {
 
     public function __construct() {
+
+    }
+
+    public function evaluateFees() {
         if (! \Cart::getCondition('HST 13%')) {
             $taxCondition = new \Darryldecode\Cart\CartCondition(array(
                 'name' => 'HST 13%',
@@ -17,6 +21,7 @@ class CartRepository {
             \Cart::condition($taxCondition);
         }
 
+//        dd (\Cart::getContent());
         if (\Cart::getSubTotal() < 50) {
             $shippingCondition = new \Darryldecode\Cart\CartCondition(array(
                 'name' => 'Shipping (Canada)',
@@ -26,8 +31,19 @@ class CartRepository {
                 'order' => 1,
             ));
 
+            \Cart::removeCartCondition('Free Shipping (Canada)');
             \Cart::condition($shippingCondition);
         } else {
+
+            $freeShippingCondition = new \Darryldecode\Cart\CartCondition(array(
+                'name' => 'Free Shipping (Canada)',
+                'type' => 'shipping',
+                'target' => 'subtotal',
+                'value' => '+0',
+                'order' => 1,
+            ));
+
+            \Cart::condition($freeShippingCondition);
             \Cart::removeCartCondition('Shipping (Canada)');
         }
     }

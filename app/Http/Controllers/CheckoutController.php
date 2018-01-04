@@ -27,6 +27,7 @@ class CheckoutController extends Controller
 
 
     public function checkout(Request $request) {
+        $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
 
         if (! $cart->getContent()->count()) {
@@ -38,6 +39,7 @@ class CheckoutController extends Controller
     }
 
     public function newAddress() {
+        $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
 
         return view('checkout.newAddress')
@@ -78,6 +80,7 @@ class CheckoutController extends Controller
         if (! isset($validData['country']))
             $validData['country'] = "Canada";
 
+        $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
 
         $address = Address::createFromForm($validData);
@@ -101,7 +104,9 @@ class CheckoutController extends Controller
             return redirect()->withErrors()->back();
         }
 
+        $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
+        
         $order = Order::createFromCart($cart, $address);
 
         session(['pending_order_id' => $order->id]);

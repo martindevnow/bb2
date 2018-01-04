@@ -36,7 +36,12 @@
                   </td>
                   <td>
                     <div class="form-inline input-number">
-                      <div class="form-group"><input type="text" class="form-control form-control-number" pattern="[0-9]*" value="{{ $item['quantity'] }}" name="products[{{ $item['id'] }}]"></div> </div>
+                      <div class="form-group"><input type="text"
+                                                     class="form-control form-control-number" pattern="[0-9]*"
+                                                     value="{{ $item['quantity'] }}"
+                                                     name="products[{{ $item['id'] }}]"
+                                                     style="margin-bottom: -20px;"
+                          ></div> </div>
                   </td>
                   <td>
                     <span class="color-success">${{ number_format($item['price'], 2) }} CAD</span>

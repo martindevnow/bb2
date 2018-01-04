@@ -27,6 +27,7 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
 
         return view('cart.index')
@@ -82,4 +83,5 @@ class CartController extends Controller
     public function clear() {
         return $this->cartRepo->clear();
     }
+
 }
