@@ -12,6 +12,8 @@
 */
 
 use Illuminate\Http\Request;
+use Martin\Transactions\Order;
+use App\Mail\PurchaseWasMadeCustomerNotification;
 
 Auth::routes();
 
@@ -76,4 +78,12 @@ Route::get('/cart/clear', 'CartController@clear');
 
 Route::get('/checkout/clearCompleted', function() {
     session()->remove('completed_orders');
+});
+
+Route::get('/mail/test', function() {
+        $order = Order::latest()->first();
+        $customer_email = $order->payments()->first()->stripe_customer_email;
+
+        \Mail::to($customer_email)
+            ->send(new PurchaseWasMadeCustomerNotification($order));
 });

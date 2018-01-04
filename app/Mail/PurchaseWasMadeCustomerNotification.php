@@ -32,6 +32,6 @@ class PurchaseWasMadeCustomerNotification extends Mailable
     public function build()
     {
         $order = $this->order;
-        return $this->view('emails.purchase.customerNotification')->with(compact('order'));
+        return $this->markdown('emails.markdown.purchase.customerNotification')->with(compact('order'));
     }
 }
