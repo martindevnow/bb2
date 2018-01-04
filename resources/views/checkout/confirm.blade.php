@@ -98,22 +98,43 @@
                   <span class="color-success">${{ number_format($cart->getTotal(), 2) }}</span>
                 </h3>
 
-<form action="/checkout/complete" method="POST">
+                <form action="/checkout/complete" method="POST" id="stripe-checkout-form">
 
-{{ csrf_field() }}
+                  {{ csrf_field() }}
+                  <input type="hidden" name="stripeToken" id="stripeToken">
+                  <input type="hidden" name="stripeEmail" id="stripeEmail">
 
-<script
-    src="https://checkout.stripe.com/checkout.js"
-    class="stripe-button"
-    data-key="{{ config('services.stripe.key') }}"
-    data-amount="{{ round($cart->getTotal() * 100) }}"
-    data-name="BARFBento Treats"
-    data-description="All natural treats for your pup."
-    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-    data-locale="auto"
-    data-zip-code="false">
-  </script>
-</form>
+                  <button type="submit" class="btn btn-raised btn-info" id="stripe-checkout-button">Pay Now</button>
+
+                </form>
+
+                <script src="https://checkout.stripe.com/checkout.js"></script>
+                <script>
+                  let stripe = StripeCheckout.configure({
+                      key:    "{{ config('services.stripe.key') }}",
+                      image:  "https://stripe.com/img/documentation/checkout/marketplace.png",
+                      locale: "auto",
+                      token: function (token) {
+                          document.querySelector('#stripeEmail').value = token.email;
+                          document.querySelector('#stripeToken').value = token.id;
+
+                          document.querySelector('#stripe-checkout-form').submit();
+                      }
+                  });
+
+                  document.querySelector('#stripe-checkout-button').addEventListener('click', function (e) {
+                      stripe.open({
+                          name: "BARFBento Treats",
+                          description: "All natural treats for your pup.",
+                          zipCode: false,
+                          amount: "{{ round($cart->getTotal() * 100) }}"
+                      });
+
+                      e.preventDefault();
+                  });
+
+                </script>
+
               </div>
             </div>
           </div>
