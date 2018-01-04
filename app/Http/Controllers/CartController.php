@@ -15,6 +15,7 @@ class CartController extends Controller
 
     /**
      * Create a new controller instance.
+     * @param CartRepository $cartRepo
      */
     public function __construct(CartRepository $cartRepo) {
         $this->cartRepo = $cartRepo;

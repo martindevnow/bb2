@@ -44,7 +44,7 @@
                   <td class="d-none d-sm-block">
 
                   <a href="/cart/remove/{{ $item['id'] }}">
-                    <button class="btn btn-danger">
+                    <button type="button" class="btn btn-danger">
                       <i class="zmdi zmdi-delete"></i> Remove</button></a>
 
                   </td>
