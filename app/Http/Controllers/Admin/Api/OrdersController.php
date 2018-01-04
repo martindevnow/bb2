@@ -24,6 +24,7 @@ class OrdersController extends Controller
             'plan.package',
             'deliveryAddress'
         ])
+            ->forPlans()
             ->orderBy('deliver_by', 'DESC')
             ->limit(150)
             ->get()

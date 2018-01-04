@@ -370,6 +370,14 @@ class Order extends Model
             ->where('cancelled', 0);
     }
 
+    /**
+     * @param Builder $query
+     * @return $this
+     */
+    public function scopeForPlans(Builder $query) {
+        return $query->where('plan_id', '>', 0);
+    }
+
 
     /*
      * Relationships
