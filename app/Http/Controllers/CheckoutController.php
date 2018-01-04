@@ -106,7 +106,7 @@ class CheckoutController extends Controller
 
         $this->cartRepo->evaluateFees();
         $cart = $this->cartRepo;
-        
+
         $order = Order::createFromCart($cart, $address);
 
         session(['pending_order_id' => $order->id]);

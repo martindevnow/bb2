@@ -99,9 +99,12 @@
                 </h3>
 
 <form action="/checkout/complete" method="POST">
+
 {{ csrf_field() }}
+
 <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    src="https://checkout.stripe.com/checkout.js"
+    class="stripe-button"
     data-key="{{ config('services.stripe.key') }}"
     data-amount="{{ round($cart->getTotal() * 100) }}"
     data-name="BARFBento Treats"
