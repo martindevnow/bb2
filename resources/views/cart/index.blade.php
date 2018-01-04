@@ -42,9 +42,11 @@
                     <span class="color-success">${{ number_format($item['price'], 2) }} CAD</span>
                   </td>
                   <td class="d-none d-sm-block">
-                  <a href="/cart/remove/{{ $item['id'] }}"
+
+                  <a href="/cart/remove/{{ $item['id'] }}">
                     <button class="btn btn-danger">
-                      <i class="zmdi zmdi-delete"></i> Remove</button>
+                      <i class="zmdi zmdi-delete"></i> Remove</button></a>
+
                   </td>
                 </tr>
               </tbody></table>

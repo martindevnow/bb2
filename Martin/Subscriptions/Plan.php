@@ -17,7 +17,6 @@ use Martin\Products\Product;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Underscore\Types\Object;
 
 class Plan extends Model
 {

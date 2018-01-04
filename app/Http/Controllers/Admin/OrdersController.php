@@ -169,7 +169,7 @@ class OrdersController extends Controller
         switch($status) {
             case 'packing':
                 $orders = Order::needsPacking()
-                    ->orderBy('deliver_by', 'DESC');
+                    ->orderBy('deliver_by', 'ASC');
                 break;
             case 'picking':
                 $orders = Order::needsPicking();
