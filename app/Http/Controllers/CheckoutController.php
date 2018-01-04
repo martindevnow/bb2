@@ -15,11 +15,21 @@ use Stripe\Charge;
 
 class CheckoutController extends Controller
 {
-    public function checkout(Request $request)
-    {
-        $cart = \Cart::content();
 
-        if (! $cart->count()) {
+    public $cartRepo;
+
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(\Martin\Transactions\CartRepository $cartRepo) {
+        $this->cartRepo = $cartRepo;
+    }
+
+
+    public function checkout(Request $request) {
+        $cart = $this->cartRepo;
+
+        if (! $cart->getContent()->count()) {
             return redirect('/cart');
         }
 
@@ -28,7 +38,7 @@ class CheckoutController extends Controller
     }
 
     public function newAddress() {
-        $cart = \Cart::instance();
+        $cart = $this->cartRepo;
 
         return view('checkout.newAddress')
             ->with(compact('cart'));
@@ -68,13 +78,13 @@ class CheckoutController extends Controller
         if (! isset($validData['country']))
             $validData['country'] = "Canada";
 
-        $cart = \Cart::instance();
+        $cart = $this->cartRepo;
+
         $address = Address::createFromForm($validData);
         $order = Order::createFromCart($cart, $address);
 
         session(['pending_order_id' => $order->id]);
 
-        $cart = $cart->content();
         return view('checkout.confirm')->with(compact('cart', 'order'));
     }
 
@@ -91,12 +101,11 @@ class CheckoutController extends Controller
             return redirect()->withErrors()->back();
         }
 
-        $cart = \Cart::instance();
+        $cart = $this->cartRepo;
         $order = Order::createFromCart($cart, $address);
 
         session(['pending_order_id' => $order->id]);
 
-        $cart = $cart->content();
         return view('checkout.confirm')->with(compact('cart', 'order'));
     }
 
@@ -137,7 +146,7 @@ class CheckoutController extends Controller
             ]);
             $order->markAsPaid($payment);
 
-            \Cart::destroy();
+            $this->cartRepo->clear();
 
             session()->remove('pending_order_id');
 

@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use Martin\Products\Product;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
+use Martin\Transactions\CartRepository;
 
 
 class CartController extends Controller
 {
+
+    public $cartRepo;
+
     /**
      * Create a new controller instance.
+     * @param CartRepository $cartRepo
      */
-    public function __construct() {}
+    public function __construct(CartRepository $cartRepo) {
+        $this->cartRepo = $cartRepo;
+    }
 
     /**
      * Show the application dashboard.
@@ -20,7 +27,7 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $cart = \Cart::content();
+        $cart = $this->cartRepo;
 
         return view('cart.index')
             ->with(compact('cart'));
@@ -32,15 +39,15 @@ class CartController extends Controller
     public function add($treat_id) {
         $product = Product::findOrFail($treat_id);
 
-        if (! $this->cartHas($product->id)) {
-            \Cart::add($product, 1);
+        if (! $this->cartRepo->has($product)) {
+            $this->cartRepo->add($product, 1);
 
             Flash::message('Item added.');
             return redirect('/cart');
         }
     
-        $row = $this->cartRow($product->id);
-        \Cart::update($row->rowId, ['qty' => ++$row->qty]);
+        $this->cartRepo->addQuantity($product, 1);
+        
         Flash::message('Quantity updated');        
         return redirect('/cart');
     }
@@ -51,11 +58,10 @@ class CartController extends Controller
     public function remove($treat_id) {
         $product = Product::findOrFail($treat_id);
 
-        if (! $this->cartHas($product->id))
+        if (! $this->cartRepo->has($product->id))
             return redirect('/cart');
-        $row = $this->cartRow($product->id);
 
-        \Cart::remove($row->rowId);
+        $this->cartRepo->remove($product);
 
         Flash::message('Item removed.');
         return redirect('/cart');
@@ -64,29 +70,16 @@ class CartController extends Controller
     public function update(Request $request) {
          $products = $request->get('products');
 
-         foreach ($products as $id => $qty) {
-             if ($this->cartHas($id)) {
-                $row = $this->cartRow($id);
-                \Cart::update($row->rowId, ['qty' => $qty]);
+         foreach ($products as $id => $quantity) {
+             if ($this->cartRepo->has($id)) {
+                $this->cartRepo->setQuantity($id, $quantity);
             }
         }
         Flash::message('Cart updated');        
         return redirect('/cart');
     }
 
-    private function cartHas($product_id) {
-        return !! \Cart::content()->filter(function($item) use ($product_id) {
-            return $product_id === $item->id;
-        })->count();
+    public function clear() {
+        return $this->cartRepo->clear();
     }
-
-    private function cartRow($product_id) {
-        if (! $this->cartHas($product_id))
-            return null;
-
-        return \Cart::content()->filter(function($item) use ($product_id) {
-            return $product_id === $item->id;
-        })->first();
-    }
-
 }

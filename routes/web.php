@@ -72,6 +72,8 @@ Route::post('camera', function(Request $request) {
 
 });
 
+Route::get('/cart/clear', 'CartController@clear');
+
 Route::get('/checkout/clearCompleted', function() {
     session()->remove('completed_orders');
 });

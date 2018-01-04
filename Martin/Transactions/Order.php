@@ -3,7 +3,6 @@
 namespace Martin\Transactions;
 
 use Carbon\Carbon;
-use Gloudemans\Shoppingcart\Cart;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -72,14 +71,16 @@ class Order extends Model
         }
     }
 
-    public static function createFromCart(Cart $cart, Address $address) {
+    public static function createFromCart(CartRepository $cart, Address $address) {
         $addressable = $address->addressable;
         if ($addressable instanceof User)
             $customer_id = $addressable->id;
         else
             $customer_id = 0;
 
-        $subtotal = $cart->subtotal();
+        $subtotal = $cart->getSubTotal();
+        $tax = $cart->getCondition('HST 13%')->getCalculatedValue($subtotal);
+        $total = $cart->getTotal();
 
         $order = Order::create([
             'plan_id'               => 0,
@@ -88,14 +89,14 @@ class Order extends Model
             'deliver_by'    => Carbon::now()->addDays(2),
             'subtotal'      => $subtotal,
             // TODO: Change to using the tax on the cart
-            'tax'           => $subtotal * .13,
+            'tax'           => $tax,
             // TODO: Change to using the tax on the cart
-            'total_cost'    => ($subtotal + ($subtotal >= 50 ? 0 : 5.25)) * 1.13,
+            'total_cost'    => $total,
             'plan_order'    => false,
         ]);
 
-        foreach ($cart->content() as $item) {
-            $order->addProduct($item->model, $item->qty);
+        foreach ($cart->getContent()->toArray() as $item) {
+            $order->addProduct($item['attributes'], $item['quantity']);
         }
         return $order->fresh(['details', 'deliveryAddress']);
     }
@@ -427,7 +428,11 @@ class Order extends Model
      * @param Product $product
      * @param int $quantity
      */
-    public function addProduct(Product $product, $quantity = 1) {
+    public function addProduct($product, $quantity = 1) {
+        if (is_array($product)) {
+            $product = Product::findOrFail($product['id']);
+        }
+        
         $this->details()->create([
             'label'             => $product->name,
             'quantity'          => $quantity,
