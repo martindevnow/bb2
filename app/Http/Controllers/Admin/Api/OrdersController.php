@@ -25,8 +25,9 @@ class OrdersController extends Controller
             'deliveryAddress'
         ])
             ->orderBy('deliver_by', 'DESC')
-            ->limit(60)
-            ->get();
+            ->limit(150)
+            ->get()
+            ->toArray();
     }
 
     /**
