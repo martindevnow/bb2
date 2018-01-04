@@ -45,22 +45,9 @@
                                         <i class="zmdi zmdi-long-arrow-right no-mr ml-1"></i>
                                     </button>
                                 </div>
-                                {{--<div class="col-md-6">--}}
-                                    {{--<button class="btn btn-primary btn-block">--}}
-                                        {{--<i class="zmdi zmdi-account-add mr-1"></i> Sign Up</button>--}}
-                                {{--</div>--}}
                             </div>
                         </fieldset>
                     </form>
-                    {{--<div class="text-center">--}}
-                        {{--<h3 class="color-dark">Login with</h3>--}}
-                        {{--<a href="javascript:void(0)" class="wave-effect-light btn btn-raised btn-facebook">--}}
-                            {{--<i class="zmdi zmdi-facebook"></i> Facebook</a>--}}
-                        {{--<a href="javascript:void(0)" class="wave-effect-light btn btn-raised btn-twitter">--}}
-                            {{--<i class="zmdi zmdi-twitter"></i> Twitter</a>--}}
-                        {{--<a href="javascript:void(0)" class="wave-effect-light btn btn-raised btn-google">--}}
-                            {{--<i class="zmdi zmdi-google"></i> Google</a>--}}
-                    {{--</div>--}}
                 </div>
             </div>
             <div class="text-center animated fadeInUp animation-delay-7">
