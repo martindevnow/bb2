@@ -53,6 +53,10 @@
                     <i class="zmdi zmdi-shopping-basket"></i> Treats</a>
             </li>
             <li>
+                <a class="link" href="/cart">
+                    <i class="zmdi zmdi-shopping-cart"></i> Cart</a>
+            </li>
+            <li>
                 <a class="link" href="/packages">
                     <i class="zmdi zmdi-store"></i> Packages</a>
             </li>
