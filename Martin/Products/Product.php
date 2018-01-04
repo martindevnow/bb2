@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Core\Traits\CoreRelations;
 use Martin\Subscriptions\Plan;
-use Gloudemans\Shoppingcart\Contracts\Buyable;
 
-class Product extends Model implements Buyable
+class Product extends Model
 {
     use SoftDeletes;
     use CoreRelations;

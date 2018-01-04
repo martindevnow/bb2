@@ -110,7 +110,7 @@
 
           </div>
 
-          @if($cart->count())
+       @if($cart->getContent()->count())
           <div class="col-md-3">
             <div class="card card-primary">
               <div class="card-header">
@@ -118,17 +118,17 @@
               <div class="card-block">
                 <ul class="list-unstyled">
                   <li>
-                    <strong>Price: </strong> ${{ number_format(\Cart::subtotal(), 2) }} CAD</li>
+                    <strong>Price: </strong> ${{ number_format($cart->getSubTotal(), 2) }} CAD</li>
+                  
+                  @foreach($cart->getConditions() as $condition)
                   <li>
-                    <strong>Tax: </strong> ${{ number_format(\Cart::subtotal() * .13, 2) }} CAD</li>
-                  <li>
-                    <strong>Shipping costs: </strong>
-                    <span class="color-warning">{{ \Cart::subtotal() >= 50 ? "Free" : "$5.25 CAD" }}</span>
-                  </li>
+                    <strong>{{ $condition->getName() }}: </strong> ${{ number_format($condition->getCalculatedValue($cart->getSubTotal()), 2) }} CAD</li>
+                  @endforeach
+
                 </ul>
                 <h3>
                   <strong>Total:</strong>
-                  <span class="color-success">${{ number_format((\Cart::subtotal() + (\Cart::subtotal() >= 50 ? 0 : 5.25)) * 1.13, 2) }}</span>
+                  <span class="color-success">${{ number_format($cart->getTotal(), 2) }}</span>
                 </h3>
               </div>
             </div>
