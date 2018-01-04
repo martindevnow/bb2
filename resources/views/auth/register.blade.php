@@ -4,7 +4,7 @@
 
 
     <div class="bg-full-page bg-primary back-fixed">
-        <div class="mw-500 absolute-center">
+        <div class="mw-500 absolute-center" style="max-width: 650px!important; top:10%;">
             <div class="card animated zoomInDown animation-delay-5">
                 <div class="card-block">
                     <h1 class="color-primary">Register</h1>
