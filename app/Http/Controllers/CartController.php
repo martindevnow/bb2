@@ -81,20 +81,4 @@ class CartController extends Controller
     public function clear() {
         return $this->cartRepo->clear();
     }
-
-    private function cartHas($product_id) {
-        return !! \Cart::getContent()->filter(function($item) use ($product_id) {
-            return $product_id === $item->id;
-        })->count();
-    }
-
-    private function cartRow($product_id) {
-        if (! $this->cartHas($product_id))
-            return null;
-
-        return \Cart::getContent()->filter(function($item) use ($product_id) {
-            return $product_id === $item->id;
-        })->first();
-    }
-
 }
