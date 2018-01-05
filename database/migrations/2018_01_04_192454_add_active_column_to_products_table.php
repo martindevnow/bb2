@@ -14,7 +14,7 @@ class AddActiveColumnToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->boolean('active')->default('false');
+            $table->boolean('active')->default(0);
         });
 
     }
