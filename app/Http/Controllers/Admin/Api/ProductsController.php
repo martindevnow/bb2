@@ -28,8 +28,11 @@ class ProductsController extends Controller {
             'size'              => 'required',
             'sku'               => 'required',
             'ingredients'       => 'required',
-            'price'             => 'required|numeric',
+            'price'             => 'required|numeric',            
+            'active'            => 'nullable',
         ]);
+
+        // $validData['active'] = !! $validData['active'];
 
         $product = Product::create($validData);
 
@@ -50,7 +53,10 @@ class ProductsController extends Controller {
             'sku'               => 'required',
             'ingredients'       => 'required',
             'price'             => 'required|numeric',
+            'active'            => 'nullable',
         ]);
+
+        // $validData['active'] = !! $validData['active'];
 
         $product->update($validData);
 

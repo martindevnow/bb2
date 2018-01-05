@@ -33,6 +33,7 @@ export const deselectProduct = (state) => {
 };
 
 export const updateProduct = (state, payload) => {
+    console.log('updating the model in the collection of products.');
     state.collection = state.collection.map(model => {
         if (model.id === payload.id)
             return loadProductFromData(payload);

@@ -6,7 +6,7 @@ We've received your order and are working on processing it right away!
 
 We will send you an email once your order has been processed and shipped.
 
-# Contents
+# Package Contents
 
 @component('mail::table')
 | Item             | Quantity            | Unit Cost             |

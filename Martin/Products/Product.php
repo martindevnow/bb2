@@ -31,7 +31,8 @@ class Product extends Model
         'size',
         'sku',
         'ingredients',
-        'price'
+        'price',
+        'active',
     ];
 
     protected $casts = [
