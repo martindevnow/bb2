@@ -13,18 +13,6 @@ class Product extends Model
     use SoftDeletes;
     use CoreRelations;
 
-    public function getBuyableIdentifier($options = null) {
-        return $this->id;
-    }
-
-    public function getBuyableDescription($options = null) {
-        return $this->description;
-    }
-    
-    public function getBuyablePrice($options = null) {
-        return $this->price;
-    }
-
     protected $fillable = [
         'name',
         'description',
@@ -40,13 +28,22 @@ class Product extends Model
         'price' => 'integer',
     ];
 
-    /**
+    /*
      * Scopes
      */
 
+
+    /**
+     * @param Builder $query
+     * @return $this
+     */
      public function scopeActive(Builder $query) {
         return $query->where('active', '=', 1);
      }
+
+    /*
+     * Mutators
+     */
 
     /**
      * @param $value
@@ -63,6 +60,14 @@ class Product extends Model
         $this->attributes['price'] = round($value * 100);
     }
 
+
+    /*
+     * Relationships
+     */
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function plans() {
         return $this->belongsToMany(Plan::class)
             ->withPivot('quantity');
