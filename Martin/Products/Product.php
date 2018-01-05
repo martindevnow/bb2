@@ -3,6 +3,7 @@
 namespace Martin\Products;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Core\Traits\CoreRelations;
 use Martin\Subscriptions\Plan;
@@ -38,6 +39,14 @@ class Product extends Model
     protected $casts = [
         'price' => 'integer',
     ];
+
+    /**
+     * Scopes
+     */
+
+     public function scopeActive(Builder $query) {
+        return $query->where('active', '=', 1);
+     }
 
     /**
      * @param $value
