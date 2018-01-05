@@ -34,6 +34,9 @@ Route::post('/stripe/webhook', 'WebhooksController@handle');
 // Confirm is applying this middleware here is required...
 // Probably need to put some of these behind the AUTH middleware...
 // No need to expose every endpoint.. many will fail if there is no user() object.
+Route::middleware('auth:api')->get('/user', function(Request $request) {
+    return $request->user();
+});
 Route::get('/user', 'UsersController@user');
 Route::get('/user/addresses', 'UsersController@addresses');
 Route::get('/user/pets', 'UsersController@pets');

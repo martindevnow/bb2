@@ -70,7 +70,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware(['api', 'cors'])
+             ->middleware(['api'])
              ->namespace($this->apiNamespace)
              ->group(base_path('routes/api.php'));
     }
@@ -84,13 +84,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapAdminRoutes()
     {
-        Route::group([
-            'middleware' => 'admin',
-            'namespace' => $this->adminNamespace,
-            'prefix' => 'admin',
-        ], function ($router) {
-            require base_path('routes/admin.php');
-        });
+        Route::prefix('admin')
+            ->middleware(['admin'])
+            ->namespace($this->adminNamespace)
+            ->group(base_path('routes/admin.php'));
     }
 
     /**
@@ -103,7 +100,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAdminApiRoutes()
     {
         Route::group([
-            'middleware' => 'admin',
+            'middleware' => 'auth:api',
             'namespace' => $this->adminApiNamespace,
             'prefix' => 'admin/api',
         ], function ($router) {

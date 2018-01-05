@@ -19,6 +19,7 @@
         <h1 class="right-line mb-4">Checkout - Delivery (Step 1 of 2)</h1>
         <div class="row">
 
+          @include('flash::message')
 
           <div class="col-md-9">
 

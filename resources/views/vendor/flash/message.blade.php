@@ -26,7 +26,8 @@
                         ? 'check'
                         : $message['level'] }}"
             ></i>
-            <strong>{{ ucfirst($message['level']) }}</strong> {!! $message['message'] !!}
+            <!-- <strong>{{ ucfirst($message['level']) }}</strong>  -->
+            {!! $message['message'] !!}
         </div>
     @endif
 @endforeach

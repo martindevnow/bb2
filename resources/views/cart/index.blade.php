@@ -12,6 +12,7 @@
           <div class="col-md-9">
 
 
+          @include('flash::message')
           @if($cart->getContent()->count() === 0)
           <div class="card mb-1">
           <table class="table table-responsive table-no-border vertical-center">

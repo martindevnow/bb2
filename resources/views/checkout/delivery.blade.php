@@ -12,24 +12,28 @@
 @auth
 <form action="/checkout/member" method="POST" class="form-horizontal">
 @endauth
-          {{ csrf_field() }}
+      {{ csrf_field() }}
 
       <div class="container">
       
         <h1 class="right-line mb-4">Checkout - Delivery (Step 1 of 2)</h1>
         <div class="row">
 
+        @include('flash::message')
+
         @guest
           <div class="col-md-12 laptop apple">
               <div class="card ms-feature">
                   <div class="card-block text-center">
-      Have an account? Save time by <a href="/checkout/login">logging in</a>.
+      Have an account? Save time by 
+      <a href="/checkout/login">logging in</a>.
                   </div>
               </div>
           </div>
         @endguest
 
           <div class="col-md-9">
+
 
               @auth
 

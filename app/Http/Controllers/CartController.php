@@ -43,13 +43,13 @@ class CartController extends Controller
         if (! $this->cartRepo->has($product)) {
             $this->cartRepo->add($product, 1);
 
-            Flash::message('Item added.');
+            flash('Item added.')->success();
             return redirect('/cart');
         }
     
         $this->cartRepo->addQuantity($product, 1);
         
-        Flash::message('Quantity updated');        
+        flash('Quantity updated')->success();        
         return redirect('/cart');
     }
 
@@ -64,7 +64,7 @@ class CartController extends Controller
 
         $this->cartRepo->remove($product);
 
-        Flash::message('Item removed.');
+        flash('Item removed.')->success();
         return redirect('/cart');
     }
 
@@ -76,12 +76,14 @@ class CartController extends Controller
                 $this->cartRepo->setQuantity($id, $quantity);
             }
         }
-        Flash::message('Cart updated');        
+        flash('Cart updated')->success();        
         return redirect('/cart');
     }
 
     public function clear() {
-        return $this->cartRepo->clear();
+        $this->cartRepo->clear();
+        flash('Your cart is empty.');
+        return redirect('/cart');
     }
 
 }

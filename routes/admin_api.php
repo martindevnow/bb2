@@ -80,6 +80,7 @@ Route::post('/orders/{order}/deliverBy', 'OrdersController@updateDeliverBy');
 Route::resource('pets', 'PetsController');
 
 Route::post('plans/{plan}/replaceMeal', 'PlansController@replaceMeal');
+Route::post('plans/{plan}/cancel', 'PlansController@cancel');
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
