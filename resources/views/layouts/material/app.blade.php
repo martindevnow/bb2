@@ -40,6 +40,9 @@
         td.money {
             text-align: right;
         }
+        .ms-hero-bg-info::after {
+            background-color: rgba(85, 0, 0, 0.85);
+        }
     </style>
     <script>
         window.BarfBento = <?php echo json_encode([

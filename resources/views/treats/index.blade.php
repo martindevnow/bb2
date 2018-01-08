@@ -9,9 +9,9 @@
 @section('content')
 
 
-    <div class="ms-hero-page-override ms-hero-img-city2" style="background-image: url('/barfbento/img/trade-show.jpg');">
-        <div class="text-center">
-            <h1>&nbsp;</h1>
+    <div class="ms-hero-page-override ms-hero-img-city2 ms-hero-bg-info" style="background-image: url('/barfbento/img/trade-show.jpg');">
+        <div class="text-center color-white index-1">
+            <h1>Treats</h1>
         </div>
     </div>
 

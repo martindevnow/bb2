@@ -34,6 +34,9 @@ class Product extends Model
         'ingredients',
         'price',
         'active',
+        'priority',
+        'benefits',
+        'storage',
     ];
 
     protected $casts = [
