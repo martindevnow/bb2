@@ -58,8 +58,28 @@
                         </div>
                         <p class="lead">{{ $treat->description }}</p>
                         <ul class="list-unstyled">
+                            @if (!! $treat->description_long)
                             <li><strong>Description: </strong>{{ $treat->description_long }}</li>
+                            @endif
+
+                            @if (!! $treat->ingredients)
                             <li><strong>Ingredients: </strong>{{ $treat->ingredients }}</li>
+                            @endif
+
+                            @if (!! $treat->benefits)
+                            <li><strong>Benefits: </strong>
+                                <ul>
+                                    @foreach(preg_split( '/\r\n|\r|\n/', $treat->benefits ) as $benefit)
+                                        <li>{{ $benefit }}</li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            @endif
+
+                            @if (!! $treat->storage)
+                                <li><strong>Storage: </strong>{{ $treat->storage }}</li>
+                            @endif
+
                             <!-- <li>
                                 <strong>Number of items: </strong>
                                 <div class="form-inline input-number">
