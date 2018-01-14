@@ -115,6 +115,13 @@
     @foreach($orders->chunk($perPage / 2) as $orderRow)
         <div class="row">
             @foreach($orderRow as $order)
+            @if(! $order->plan_id)
+            <div class="col-sm-{{ 24 / $perPage }} order-pick-sheet">
+                <div class="row header">
+                    
+                </div>
+            </div>
+            @else
             <div class="col-sm-{{ 24 / $perPage }} order-pick-sheet">
                 <div class="row header">
                     <div class="customer-name col-sm-4">
@@ -175,6 +182,7 @@
 
                 </div>
             </div>
+            @endif
             @endforeach
         </div>
     @endforeach

@@ -31,7 +31,8 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+    {
         $orders = Order::all();
 
         return view('admin.orders.index')
@@ -44,7 +45,8 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Order $order) {
+    public function show(Order $order)
+    {
         $meals = $order->mealCounts();
         return view('admin.orders.show')
             ->with(compact('order', 'meals'));
@@ -55,7 +57,8 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() {
+    public function create()
+    {
         return view('admin.orders.create');
     }
 
@@ -65,7 +68,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->validate($request, [
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
@@ -100,10 +104,10 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Order $order) {
+    public function edit(Order $order)
+    {
         return view('admin.orders.edit')
             ->with(compact('order'));
-
     }
 
     /**
@@ -113,7 +117,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Order $order, Request $request) {
+    public function update(Order $order, Request $request)
+    {
         $this->validate($request, [
             'plan_id'               => 'required|exists:orders,id',
             'customer_id'           => 'required|exists:users,id',
@@ -144,7 +149,8 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Order $order) {
+    public function destroy(Order $order)
+    {
         $order->delete();
 
         flash('The order with ID: ' . $order->id . ' has been deleted.')->success();
@@ -156,7 +162,8 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function packed(Order $order) {
+    public function packed(Order $order)
+    {
         $order->markAsPacked();
         $order->save();
 
@@ -165,8 +172,9 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
-    public function export($status, $perPage = 4) {
-        switch($status) {
+    public function export($status, $perPage = 4)
+    {
+        switch ($status) {
             case 'packing':
                 $orders = Order::needsPacking()
                     ->orderBy('deliver_by', 'ASC');
@@ -178,8 +186,9 @@ class OrdersController extends Controller
                 flash('Invalid type')->error();
                 return redirect()->back();
         }
-//        $orders = Order::where('id', 33)->get();
-        $orders = $orders->get();
+        $orders = Order::with('details')->where('id', 278)->get();
+        dd($orders);
+        // $orders = $orders->get();
 
         $time = time();
         $path = base_path() .'/pdfs/'. $time .'.pdf';
@@ -187,7 +196,8 @@ class OrdersController extends Controller
         $orientation = $perPage == 4 ? 'Landscape' : 'Portrait';
 
         $options = [
-            'orientation'  => $orientation,
+            'binary'        => env('WKHTMLTOPDF_BINARY_LOCATION', '/usr/local/bin/wkhtmltopdf'),
+            'orientation'   => $orientation,
             'no-outline',         // Make Chrome not complain
             'margin-top'    => 5,
             'margin-right'  => 5,
@@ -204,7 +214,6 @@ class OrdersController extends Controller
 
         if ($pdf->saveAs($path)) {
             return response()->download($path);
-
         }
         return 'There was an error saving...' . $pdf->getError();
     }
@@ -212,7 +221,8 @@ class OrdersController extends Controller
     /**
      * @return $this
      */
-    public function exportView($perPage = 4) {
+    public function exportView($perPage = 4)
+    {
         $orders = Order::needsPacking()->get();
         return view('admin.orders.export')
             ->with(compact('orders', 'perPage'));
@@ -224,7 +234,8 @@ class OrdersController extends Controller
      * @param Order $order
      * @return $this
      */
-    public function createPayment(Order $order) {
+    public function createPayment(Order $order)
+    {
         return view('admin.orders.payment')
             ->with(compact('order'));
     }
@@ -234,7 +245,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function storePayment(Order $order, Request $request) {
+    public function storePayment(Order $order, Request $request)
+    {
         $this->validate($request, [
             'format'        => 'required',
             'amount_paid'   => 'required|numeric',
@@ -258,7 +270,8 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function markAsPacked(Order $order) {
+    public function markAsPacked(Order $order)
+    {
         $order->markAsPacked();
 
         flash('That order was marked as packed.');
@@ -269,20 +282,23 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function markAsPicked(Order $order) {
+    public function markAsPicked(Order $order)
+    {
         $order->markAsPicked();
 
         flash('That order was marked as picked.');
         return redirect('/admin/orders');
     }
 
-    public function createShipment(Order $order) {
+    public function createShipment(Order $order)
+    {
         $couriers = Courier::all();
         return view('admin.orders.shipment')
             ->with(compact('order', 'couriers'));
     }
 
-    public function storeShipment(Order $order, Request $request) {
+    public function storeShipment(Order $order, Request $request)
+    {
         $this->validate($request, [
             'courier_id'    => 'required|exists:couriers,id',
             'shipped_at'    => 'required|date_format:Y-m-d',
@@ -301,12 +317,14 @@ class OrdersController extends Controller
         flash('That order was marked as shipped.');
         return redirect('/admin/orders');
     }
-    public function createDelivery(Order $order) {
+    public function createDelivery(Order $order)
+    {
         return view('admin.orders.delivery')
             ->with(compact('order'));
     }
 
-    public function storeDelivery(Order $order, Request $request) {
+    public function storeDelivery(Order $order, Request $request)
+    {
         $this->validate($request, [
             'delivered_at'    => 'required|date_format:Y-m-d',
         ]);
@@ -320,4 +338,3 @@ class OrdersController extends Controller
         return redirect('/admin/orders');
     }
 }
-
