@@ -102,6 +102,10 @@ Route::get('toppings', function() {
     return Topping::all();
 });
 
+Route::get('user', function() {
+    return request()->user();
+});
+
 Route::put('users/{user}/attachAddress', function(User $user, Request $request) {
     $validData = $request->validate([
         'address_id' => 'required|exists:addresses,id',
