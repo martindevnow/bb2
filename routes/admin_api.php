@@ -24,9 +24,7 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
     return $package->fresh(['meals']);
 });
 
-
 Route::resource('meats', 'MeatsController');
-
 Route::resource('meals', 'MealsController');
 
 Route::delete('mealReplacements/{id}', function($id) {

@@ -100,7 +100,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAdminApiRoutes()
     {
         Route::group([
-            'middleware' => 'auth:api',
+            'middleware' => ['auth:api', 'bindings'],
             'namespace' => $this->adminApiNamespace,
             'prefix' => 'admin/api',
         ], function ($router) {
