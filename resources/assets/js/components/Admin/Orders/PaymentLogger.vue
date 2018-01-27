@@ -89,6 +89,7 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import hasErrors from '../../../mixins/hasErrors';
+import * as orderActions from "../../../vuex/modules/orders/actionTypes";
 
 export default {
     mixins: [
@@ -112,18 +113,13 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('orders', [
-            'updateSelectedOrder'
-        ]),
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/orders/' + this.selected.id + '/paid', {
+            this.$store.dispatch('orders/' + orderActions.SAVE_PAYMENT, {
                 format:      this.format,
                 amount_paid: this.amount_paid,
                 received_at: moment(this.received_at).format('YYYY-MM-DD'),
             }).then(response => {
-                vm.updateSelectedOrder({ paid: true });
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);

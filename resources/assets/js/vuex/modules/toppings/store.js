@@ -1,19 +1,19 @@
-import * as actions from './actions';
-import * as mutations from './mutations';
+import actions from './actions';
+import mutations from './mutations';
 
 const state = {
     collection: [],
     selected: null,
     show: {
-        toppingCreatorModal: false,
+        creator: false,
     }
 };
 
-const meatsModule = {
+const toppingsModule = {
     namespaced: true,
     state,
     mutations,
     actions,
 };
 
-export default meatsModule;
+export default toppingsModule;

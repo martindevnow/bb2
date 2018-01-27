@@ -1,11 +1,11 @@
-import * as actions from './actions';
-import * as mutations from './mutations';
+import actions from './actions';
+import mutations from './mutations';
 
 const state = {
     collection: [],
     targeted: null,
     show: {
-        noteCreatorModal: false,
+        creator: false,
     }
 };
 

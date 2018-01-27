@@ -55,6 +55,7 @@
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
     import swal from 'sweetalert2'
+    import * as noteActions from "../../../vuex/modules/notes/actionTypes";
 
     export default {
         mixins: [
@@ -69,28 +70,25 @@
             };
         },
         methods: {
-            ...mapActions('notes', [
-                'closeNoteCreatorModal',
-            ]),
             save() {
                 let vm = this;
                 let modelName = this.targeted.type;
                 let modelId = this.targeted.model.id;
-                axios.post('/admin/api/notes', {
-                    ...this.form,
-                    modelName,
-                    modelId,
+                this.$store.dispatch('notes/' + noteActions.SAVE, {
+                    ...this.form, modelName, modelId,
                 }).then(response => {
                     swal('success', 'Saved', 'success');
                     vm.$emit('saved');
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
-                })
+                });
             },
             deleteNote(id) {
-                axios.delete('/admin/api/notes/' + id).then(response => {
+                this.$store.dispatch('notes/' + noteActions.DELETE, id)
+                .then(response => {
                     alert('deleted');
                 }).catch(error => {
+                    console.log(error);
                     alert('error');
                 });
             }

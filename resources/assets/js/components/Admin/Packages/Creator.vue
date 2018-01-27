@@ -150,6 +150,8 @@
     import moment from 'moment';
     import Datepicker from 'vuejs-datepicker';
     import { BasicSelect } from 'vue-search-select'
+    import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+    import * as mealActions from '../../../vuex/modules/meals/actionTypes';
 
 export default {
     mixins: [
@@ -177,22 +179,14 @@ export default {
         };
     },
     methods: {
-        ...mapActions('packages', [
-            'editPackage',
-        ]),
-        ...mapActions('meals', [
-            'loadMeals'
-        ]),
-        ...mapMutations('packages', [
-            'addToPackagesCollection',
-            'updatePackage',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+        },
         save() {
             let vm = this;
-            return axios.post('/admin/api/packages', {
+            this.$store.dispatch('packages/' + packageActions.SAVE, {
                 ...this.form
             }).then(response => {
-                vm.addToPackagesCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -200,11 +194,10 @@ export default {
         },
         update() {
             let vm = this;
-
-            return axios.patch('/admin/api/packages/' + this.selected.id, this.form
+            this.$store.dispatch('packages/' + packageActions.UPDATE,
+                this.form
             ).then(response => {
-                vm.updatePackage(response.data);
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
@@ -227,15 +220,15 @@ export default {
         ]),
     },
     mounted() {
-        this.loadMeals();
-
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromPackage(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromPackage(newSelected);
+            if (newSelected)
+                this.populateFormFromPackage(newSelected);
         }
     }
 }

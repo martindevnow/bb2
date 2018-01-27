@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-xs-6">
                             <button class="btn btn-warning"
-                                    @click="loadOrders(true)"
+                                    @click="refresh(true)"
                             >
                                 Refresh
                             </button>
@@ -95,9 +95,9 @@
                     >
                         Shipped
                     </button>
-                    <button @click="openCancellationModal(order)"
+                    <button v-if="! order.shipped"
+                            @click="openCancellationModal(order)"
                             class="btn btn-xs btn-warning"
-
                     >
                         Cancel
                     </button>
@@ -152,6 +152,7 @@ import isSortable from '../../../mixins/isSortable';
 import Datepicker from 'vuejs-datepicker';
 import swal from 'sweetalert2';
 import moment from 'moment';
+import * as orderActions from '../../../vuex/modules/orders/actionTypes';
 
 export default {
     mixins: [
@@ -182,30 +183,39 @@ export default {
         }
     },
     mounted() {
-        this.loadOrders();
-        this.loadPackages();
+        this.fetchAll();
     },
     methods: {
-        ...mapActions('orders', [
-            'openPaymentModal',
-            'closePaymentModal',
-            'openPackedModal',
-            'closePackedModal',
-            'openShippedModal',
-            'closeShippedModal',
-            'openCancellationModal',
-            'closeCancellationModal',
-            'loadOrders',
-        ]),
-        ...mapActions('packages', [
-            'loadPackages',
-        ]),
-//        editDeliverBy(order) {
-//            this.ordersBeingEdited[order.id] = true;
-//        },
-//        editingDeliverBy(order) {
-//            return this.ordersBeingEdited[order.id] === true;
-//        },
+        fetchAll() {
+            this.$store.dispatch('orders/' + orderActions.FETCH_ALL);
+        },
+        openPaymentModal(order) {
+            this.$store.dispatch('orders/' + orderActions.OPEN_PAYMENT_LOGGER, order)
+        },
+        closePaymentModal() {
+            this.$store.dispatch('orders/' + orderActions.CLOSE_PAYMENT_LOGGER)
+        },
+        openPackedModal(order) {
+            this.$store.dispatch('orders/' + orderActions.OPEN_PACKED_LOGGER, order)
+        },
+        closePackedModal() {
+            this.$store.dispatch('orders/' + orderActions.CLOSE_PACKED_LOGGER)
+        },
+        openShippedModal(order) {
+            this.$store.dispatch('orders/' + orderActions.OPEN_SHIPPED_LOGGER, order)
+        },
+        closeShippedModal() {
+            this.$store.dispatch('orders/' + orderActions.CLOSE_SHIPPED_LOGGER)
+        },
+        openCancellationModal(order) {
+            this.$store.dispatch('orders/' + orderActions.OPEN_CANCELLED_LOGGER, order)
+        },
+        closeCancellationModal() {
+            this.$store.dispatch('orders/' + orderActions.CLOSE_CANCELLED_LOGGER)
+        },
+        refresh(force) {
+            this.$store.dispatch('orders/' + orderActions.FETCH_ALL, force);
+        },
         updateDeliverBy(order, event) {
             let vm = this;
 
@@ -217,8 +227,8 @@ export default {
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Update',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Update'
             }).then(function () {
                 swal({
                     title: 'Future Orders',
@@ -226,13 +236,17 @@ export default {
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, update future orders'
+                    confirmButtonText: 'Yes, update future orders',
+                    cancelButtonColor: '#dd9e56',
+                    cancelButtonText: 'Only This Order',
                 }).then(function () {
                     vm.orderBeingEdited = null;
-                    axios.post('/admin/api/orders/' + order.id + '/deliverBy', {
-                        deliver_by: newDeliverByDate,
-                        updateFuture: 1,
+                    vm.$store.dispatch('orders/' + orderActions.UPDATE_DELIVER_BY, {
+                        order,
+                        formData: {
+                            deliver_by: newDeliverByDate,
+                            updateFuture: 1,
+                        },
                     }).then(response => {
                         swal(
                             'Updated!',
@@ -244,9 +258,13 @@ export default {
                     });
                 }).catch(function() {
                     vm.orderBeingEdited = null;
-                    axios.post('/admin/api/orders/' + order.id + '/deliverBy', {
-                        deliver_by: newDeliverByDate,
-                        updateFuture: 0,
+                    console.log('Apply to only this one...');
+                    vm.$store.dispatch('orders/' + orderActions.UPDATE_DELIVER_BY, {
+                        order,
+                        formData: {
+                            deliver_by: newDeliverByDate,
+                            updateFuture: 0,
+                        },
                     }).then(response => {
                         swal(
                             'Updated',

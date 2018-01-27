@@ -78,7 +78,7 @@
                 </td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editPackage(package)"
+                            @click="edit(package)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -90,23 +90,25 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.packageCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closePackageCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Package</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Package: {{ selected.label }}</p>
-            <admin-packages-creator @cancelled="closePackageCreatorModal()"
-                                    @saved="closePackageCreatorModal()"
+            <admin-packages-creator @saved="closePackageCreatorModal()"
+                                    @updated="closePackageCreatorModal()"
+                                    @cancelled="closePackageCreatorModal()"
                                     slot="body"
             ></admin-packages-creator>
         </admin-common-modal>
 
-        <admin-common-modal v-if="show.mealPlanEditorModal"
+        <admin-common-modal v-if="show.mealPlanEditor"
                             @close="closeMealPlanEditorModal()"
         >
             <p slot="header">Edit Meal Plan for {{ selected.label }} Bento</p>
-            <admin-meal-plan-editor @cancelled="closeMealPlanEditorModal()"
-                                    @saved="closeMealPlanEditorModal()"
+            <admin-meal-plan-editor @saved="closeMealPlanEditorModal()"
+                                    @updated="closeMealPlanEditorModal()"
+                                    @cancelled="closeMealPlanEditorModal()"
                                     slot="body"
             ></admin-meal-plan-editor>
         </admin-common-modal>
@@ -116,6 +118,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as packageActions from '../../../vuex/modules/packages/actionTypes';
 
     export default {
         mixins: [
@@ -144,17 +147,27 @@
             }
         },
         mounted() {
-            this.loadPackages();
+            this.fetchAll();
         },
         methods: {
-            ...mapActions('packages', [
-                'loadPackages',
-                'openPackageCreatorModal',
-                'closePackageCreatorModal',
-                'editPackage',
-                'openMealPlanEditorModal',
-                'closeMealPlanEditorModal',
-            ]),
+            fetchAll() {
+                this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            },
+            openPackageCreatorModal() {
+                this.$store.dispatch('packages/' + packageActions.CREATE);
+            },
+            closePackageCreatorModal() {
+                this.$store.dispatch('packages/' + packageActions.CANCEL);
+            },
+            openMealPlanEditorModal(model) {
+                this.$store.dispatch('packages/' + packageActions.OPEN_MEAL_PLAN_EDITOR, model);
+            },
+            closeMealPlanEditorModal() {
+                this.$store.dispatch('packages/' + packageActions.CLOSE_MEAL_PLAN_EDITOR);
+            },
+            edit(model) {
+                this.$store.dispatch('packages/' + packageActions.EDIT, model);
+            },
             boolIconClass(val) {
                 if (val)
                     return 'fa-check';

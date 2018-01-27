@@ -1,41 +1,43 @@
 import { loadMealFromData } from "../../../models/Meal";
+import * as mutations from './mutationTypes';
 
-export const populateMealsCollection = (state, data) => {
-    state.collection = data.map(mealData => loadMealFromData(mealData));
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadMealFromData(modelData));
+    },
 
-export const addToMealsCollection = (state, meal) => {
-    state.collection.unshift(loadMealFromData(meal));
-};
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        state.collection.unshift(loadMealFromData(modelData));
+    },
 
-export const showMealCreatorModal = (state) => {
-    state.show.mealCreatorModal = true;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const hideMealCreatorModal = (state) => {
-    state.show.mealCreatorModal = false;
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const setSelectedMeal = (state, meal) => {
-    state.selected = { ...meal };
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const deselectMeal = (state) => {
-    state.selected = {};
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = loadMealFromData(model);
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
-
-export const updateMeal = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id == payload.id)
-            return loadMealFromData(payload)
-        return model;
-    });
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadMealFromData(payload);
+            return model;
+        });
+    },
 };

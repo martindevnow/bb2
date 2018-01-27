@@ -21,6 +21,7 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as mealActions from '../../../vuex/modules/meats/actionTypes';
 
     export default {
         props: [
@@ -35,12 +36,12 @@
             return {};
         },
         mounted() {
-            this.loadMeals();
+            this.fetchAll();
         },
         methods: {
-            ...mapActions('meals', [
-                'loadMeals',
-            ]),
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+            },
             getText(item) {
                 return item.label + ' (' + item.id + ')';
             }
@@ -51,13 +52,12 @@
             ]),
             options() {
                 let vm = this;
-                let arr = this.collection.map(item => {
+                return this.collection.map(item => {
                     return {
                         ...item,
                         text: vm.getText(item),
                     };
                 });
-                return arr;
             },
             selectedItem() {
                 if ( ! this.value.id) {

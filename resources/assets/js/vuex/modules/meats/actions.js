@@ -1,33 +1,66 @@
-export const loadMeats = ({commit, state}, force = false) => {
-    return new Promise((resolve, reject) => {
-        if (! force && state.collection.length)
-            return resolve(state.collection);
+import * as actions from './actionTypes';
+import * as mutations from './mutationTypes';
 
-        axios.get('/admin/api/meats')
-            .then(response => {
-                commit('populateMeatsCollection', response.data);
+export default {
+    [actions.FETCH_ALL] ({commit, state}, force = false) {
+        return new Promise((resolve, reject) => {
+            if (! force && state.collection.length)
+                return resolve(state.collection);
+
+            axios.get('/admin/api/meats')
+                .then(response => {
+                    commit(mutations.POPULATE_COLLECTION, response.data);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
+
+    [actions.CREATE] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CREATE_MODE);
+    },
+
+    [actions.SAVE] ({commit}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/admin/api/meats',
+                formData
+            ).then(response => {
+                commit(mutations.ADD_TO_COLLECTION, response.data);
                 resolve(response);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 reject(error);
             });
-    });
+        });
+    },
 
-};
+    [actions.EDIT] ({commit}, model) {
+        commit(mutations.SELECT, model);
+        commit(mutations.EDIT_MODE);
+    },
 
-export const openMeatCreatorModal = (context) => {
-    context.commit('showMeatCreatorModal');
-};
+    [actions.UPDATE] ({commit, state}, formData) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/admin/api/meats/' + state.selected.id,
+                formData
+            ).then(response => {
+                commit(mutations.UPDATE_IN_COLLECTION, response.data);
+                resolve(response);
+            }).catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    },
 
-export const closeMeatCreatorModal = (context) => {
-    context.commit('hideMeatCreatorModal');
-    context.commit('disableEditMode');
-    context.commit('deselectMeat');
-};
+    // TODO: Delete
 
-export const editMeat = (context, meat) => {
-    context.commit('setSelectedMeat', meat);
-    context.commit('showMeatCreatorModal');
-    context.commit('enableEditMode');
+    [actions.CANCEL] ({commit}) {
+        commit(mutations.DESELECT);
+        commit(mutations.CLEAR_MODE);
+    },
 };

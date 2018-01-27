@@ -1,49 +1,51 @@
 import {loadPkgFromData} from "../../../models/Package";
+import * as mutations from './mutationTypes';
 
-export const populatePackagesCollection = (state, data) => {
-    state.collection = data.map(pkgData => loadPkgFromData(pkgData));
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(pkgData => loadPkgFromData(pkgData));
+    },
 
-export const addToPackagesCollection = (state, pkg) => {
-    state.collection.unshift(pkg);
-};
+    [mutations.ADD_TO_COLLECTION] (state, pkg) {
+        state.collection.unshift(pkg);
+    },
 
-export const showPackageCreatorModal = (state) => {
-    state.show.packageCreatorModal = true;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const hidePackageCreatorModal = (state) => {
-    state.show.packageCreatorModal = false;
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const showMealPlanEditorModal = (state) => {
-    state.show.mealPlanEditorModal = true;
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const hideMealPlanEditorModal = (state) => {
-    state.show.mealPlanEditorModal = false;
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
 
-export const setSelectedPackage = (state, pkg) => {
-    state.selected = pkg;
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const deselectPackage = (state) => {
-    state.selected = null;
-};
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadPkgFromData(payload);
+            return model;
+        });
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.SHOW_MEAL_PLAN_EDITOR] (state) {
+        state.show.mealPlanEditor = true;
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
-
-export const updatePackage = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
-            return loadPkgFromData(payload);
-        return model;
-    });
+    [mutations.HIDE_MEAL_PLAN_EDITOR] (state) {
+        state.show.mealPlanEditor = false;
+    }
 };

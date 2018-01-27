@@ -7,24 +7,21 @@
 
 <script>
     import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
+    import * as orderActions from "../../../vuex/modules/orders/actionTypes";
 
     export default {
         data() {
             return {};
         },
         methods: {
-            ...mapMutations('orders', [
-                'updateSelectedOrder'
-            ]),
             cancelOrder() {
                 let vm = this;
 
-                axios.post('/admin/api/orders/' + vm.selected.id + '/cancel')
-                    .then(response => {
-                        vm.updateSelectedOrder({cancelled: true});
-                        vm.$emit('saved');
-                    }).catch(error => {
-                        vm.errors.record(error.response.data.errors);
+                this.$store.dispatch('orders/' + orderActions.SAVE_CANCELLED
+                ).then(response => {
+                    vm.$emit('saved');
+                }).catch(error => {
+                    vm.errors.record(error.response.data.errors);
                 });
             }
         },

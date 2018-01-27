@@ -139,7 +139,7 @@
                 <div class="row" v-for="address in selected.addresses">
                     <div class="col-xs-10">
                         <button class="btn btn-default btn-block"
-                                @click="editUsersAddress(address)"
+                                @click="editAddress(address)"
                         >
                             <i class="fa fa-pencil"></i>
                             {{ address.street_1 }}
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="! addAddress">
+        <div class="row" v-if="! addAddress && showAddresses">
             <div class="col-sm-12">
                 <button class="btn btn-block btn-primary"
                         @click="addAddress = true"
@@ -175,6 +175,7 @@
             <div class="col-sm-12">
                 <admin-addresses-creator @cancelled="addAddress = false"
                                          @saved="attachAddress"
+                                         @updated="updateUserAddress"
                 ></admin-addresses-creator>
             </div>
         </div>
@@ -186,16 +187,17 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import Form from '../../../models/Form';
+    import swal from 'sweetalert2';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-    import { ModelListSelect } from 'vue-search-select';
+    import * as userActions from '../../../vuex/modules/users/actionTypes';
+    import * as userMutations from '../../../vuex/modules/users/mutationTypes';
+    import * as addressActions from "../../../vuex/modules/addresses/actionTypes";
 
 export default {
     mixins: [
         hasErrors
     ],
-    components: {
-        ModelListSelect,
-    },
+    components: {},
     props: ['showAddresses'],
     data() {
         return {
@@ -211,21 +213,11 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('users', [
-            'addToUsersCollection',
-            'updateUser',
-            'attachAddressToUser',
-        ]),
-        ...mapActions('addresses', [
-            'editAddress',
-            'deleteAddress',
-        ]),
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/users', this.form
+            this.$store.dispatch('users/' + userActions.SAVE,
+                this.form
             ).then(response => {
-                vm.addToUsersCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -233,27 +225,27 @@ export default {
         },
         update() {
             let vm = this;
-
-            return axios.patch('/admin/api/users/' + this.selected.id,
+            this.$store.dispatch('users/' + userActions.UPDATE,
                 this.form
             ).then(response => {
-                vm.updateUser(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         },
-        attachAddress(data) {
+        attachAddress(address) {
             let vm = this;
-            axios.put('/admin/api/users/' + this.selected.id + '/attachAddress',
-                { address_id: data.id }
+            this.$store.dispatch('users/' + userActions.ATTACH_ADDRESS,
+                address.id
             ).then(response => {
-                alert('Address attached');
-                vm.attachAddressToUser(data);
                 vm.addAddress = false;
             }).catch(error => {
                 alert('error');
-            })
+            });
+        },
+        updateUserAddress(address) {
+            this.$store.commit('users/' + userMutations.UPDATE_ADDRESS_ON_USER, address);
+            this.addAddress = false;
         },
         populateFormFromModel(model) {
             for (let prop in this.form) {
@@ -263,9 +255,12 @@ export default {
             }
             this.form.password = '';
         },
-        editUsersAddress(address) {
+        editAddress(address) {
             this.addAddress = true;
-            this.editAddress(address);
+            this.$store.dispatch('addresses/' + addressActions.EDIT, address);
+        },
+        deleteAddress(address) {
+            swal('error', 'You shouldnt do that...', 'error');
         }
     },
     computed: {
@@ -283,7 +278,8 @@ export default {
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromModel(newSelected);
+            if (newSelected)
+                this.populateFormFromModel(newSelected);
         }
     }
 }

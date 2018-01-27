@@ -4,20 +4,6 @@
     <i class="fa-fw fa fa-home"></i> Dashboard <span>> Users</span>
 @endsection
 
-@section('breadcrumb_right')
-
-    <ul id="sparks" class="">
-        <li class="sparks-info">
-            <a href="/admin/users/create">
-                <button class="btn btn-block btn-primary">
-                    <i class="fa fa-wrench"></i> Create New
-                </button>
-            </a>
-        </li>
-    </ul>
-
-@endsection
-
 @section('content')
 
     <div class="jarviswidget  jarviswidget-sortable jarviswidget-color-blue" id="wid-id-1" data-widget-editbutton="false" role="widget" data-widget-attstyle="jarviswidget-color-blue">

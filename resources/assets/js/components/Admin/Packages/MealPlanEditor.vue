@@ -77,6 +77,9 @@
     import swal from 'sweetalert2';
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as mealActions from "../../../vuex/modules/meals/actionTypes";
+    import * as packageActions from "../../../vuex/modules/packages/actionTypes";
+    import * as packageMutations from "../../../vuex/modules/packages/mutationTypes";
 
     export default {
         mixins: [
@@ -112,15 +115,9 @@
             };
         },
         methods: {
-            ...mapActions('meals', [
-                'loadMeals',
-            ]),
-            ...mapActions('packages', [
-                'closeMealPlanEditorModal'
-            ]),
-            ...mapMutations('packages', [
-                'updatePackage'
-            ]),
+            fetchAll() {
+                this.$store.dispatch('meals/' + mealActions.FETCH_ALL);
+            },
             removeMeal(key) {
                 this.form.meals[key] = {};
             },
@@ -147,11 +144,11 @@
             save() {
                 let vm = this;
                 let meals = this.buildMealPlan();
-                axios.patch('/admin/api/packages/' + vm.form.package_id + '/mealPlan', {
-                    ...this.form, meals
+                this.$store.dispatch(packageActions.SAVE_MEAL_PLAN, {
+                    ...this.form,
+                    meals
                 }).then(response => {
-                    vm.updatePackage(response.data);
-                    vm.closeMealPlanEditorModal();
+                    vm.$emit('saved');
                     swal('Done', 'Thank you', 'success');
                 })
                 .catch(error => {
@@ -175,12 +172,13 @@
             },
         },
         mounted() {
-            this.loadMeals();
+            this.fetchAll();
             this.populateFormFromPackage(this.selected);
         },
         watch: {
             selected(newSelected) {
-                this.populateFormFromPackage(newSelected);
+                if (newSelected)
+                    this.populateFormFromPackage(newSelected);
             }
         }
     }

@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-xs-6">
                             <button class="btn btn-primary"
-                                    @click="openMeatCreatorModal()"
+                                    @click="create()"
                             >
                                 New
                             </button>
@@ -45,7 +45,7 @@
                 <td>${{ meat.cost_per_lb.toFixed(2) }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editMeat(meat)"
+                            @click="edit(meat)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -57,13 +57,14 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.meatCreatorModal"
-                            @close="closeMeatCreatorModal()"
+        <admin-common-modal v-if="show.creator"
+                            @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a Meat</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
-            <admin-meats-creator @saved="closeMeatCreatorModal()"
-                                 @cancelled="closeMeatCreatorModal()"
+            <p slot="header" v-if="mode == 'EDIT' && selected">Edit Meat: {{ selected.type }} {{ selected.variety }}</p>
+            <admin-meats-creator @saved="closeCreator()"
+                                 @updated="closeCreator()"
+                                 @cancelled="closeCreator()"
                                  slot="body"
             ></admin-meats-creator>
         </admin-common-modal>
@@ -74,6 +75,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
+import * as meatActions from '../../../vuex/modules/meats/actionTypes';
 
 export default {
     mixins: [
@@ -99,15 +101,21 @@ export default {
         }
     },
     mounted() {
-        this.loadMeats();
+        this.fetchAll();
     },
     methods: {
-        ...mapActions('meats', [
-            'loadMeats',
-            'openMeatCreatorModal',
-            'closeMeatCreatorModal',
-            'editMeat',
-        ]),
+        create() {
+            this.$store.dispatch('meats/' + meatActions.CREATE);
+        },
+        closeCreator() {
+            this.$store.dispatch('meats/' + meatActions.CANCEL)
+        },
+        edit(model) {
+            this.$store.dispatch('meats/' + meatActions.EDIT, model);
+        },
+        fetchAll() {
+            this.$store.dispatch('meats/' + meatActions.FETCH_ALL);
+        }
     },
     computed: {
         ...mapState('meats', [

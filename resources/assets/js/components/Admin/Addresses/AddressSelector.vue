@@ -21,6 +21,8 @@
 <script>
     import { BasicSelect } from 'vue-search-select';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as actions from './../../../vuex/modules/addresses/actionTypes';
+    import * as mutations from './../../../vuex/modules/addresses/mutationTypes';
 
     export default {
         props: [
@@ -36,12 +38,12 @@
             return {};
         },
         mounted() {
-            this.loadAddresses();
+            this.fetchAll();
         },
         methods: {
-            ...mapActions('addresses', [
-                'loadAddresses',
-            ]),
+            fetchAll() {
+                this.$store.dispatch('addresses/' + actions.FETCH_ALL);
+            },
             getText(item) {
                 return item.name + ' (' + item.street_1 + ' ' + item.city + ')';
             }
@@ -52,7 +54,7 @@
             ]),
             options() {
                 let vm = this;
-                let arr = this.collection.map(item => {
+                return  this.collection.map(item => {
                     return {
                         ...item,
                         text: vm.getText(item),
@@ -61,8 +63,6 @@
                     return item.addressable_id == vm.userId
                         && item.addressable_type == 'Martin\\ACL\\User';
                 });
-
-                return arr;
             },
             selectedItem() {
                 if ( ! this.value.id) {

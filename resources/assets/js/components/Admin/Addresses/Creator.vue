@@ -5,12 +5,13 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="name">name</label>
+                    <label for="name">Name / Label</label>
                     <input class="form-control"
                            type="text"
                            id="name"
                            name="name"
                            v-model="form.name"
+                           placeholder="Home / Office / Cottage ..."
                     >
                     <span class="help-block">{{ errors.get('name') }}</span>
                 </div>
@@ -45,7 +46,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="street_2">Street (cont..)</label>
+                    <label for="street_2">Street (Unit...)</label>
                     <input class="form-control"
                            type="text"
                            id="street_2"
@@ -173,6 +174,8 @@
 <script>
     import hasErrors from '../../../mixins/hasErrors';
     import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+    import * as addressMutations from "../../../vuex/modules/addresses/mutationTypes";
+    import * as addressActions from "../../../vuex/modules/addresses/actionTypes";
 
     export default {
         mixins: [
@@ -196,16 +199,11 @@
             };
         },
         methods: {
-            ...mapMutations('addresses', [
-                'addToAddressesCollection',
-                'updateAddress',
-            ]),
             save() {
                 let vm = this;
 
-                return axios.post('/admin/api/addresses', this.form
+                this.$store.dispatch('addresses/' + addressActions.SAVE, this.form
                 ).then(response => {
-                    vm.addToAddressesCollection(response.data);
                     vm.$emit('saved', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
@@ -214,10 +212,9 @@
             update() {
                 let vm = this;
 
-                return axios.patch('/admin/api/addresses/' + this.selected.id, this.form
+                this.$store.dispatch('addresses/' + addressActions.UPDATE, this.form
                 ).then(response => {
-                    vm.updateAddress(response.data);
-                    vm.$emit('saved', response.data);
+                    vm.$emit('updated', response.data);
                 }).catch(error => {
                     vm.errors.record(error.response.data.errors);
                 });
@@ -246,7 +243,8 @@
         },
         watch: {
             selected(newSelected) {
-                this.populateFormFromModel(newSelected);
+                if (newSelected)
+                    this.populateFormFromModel(newSelected);
             }
         }
     }

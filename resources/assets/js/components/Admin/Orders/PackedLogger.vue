@@ -63,6 +63,10 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import eventBus from '../../../events/eventBus';
 import hasErrors from '../../../mixins/hasErrors';
+import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+import * as orderMutations from "../../../vuex/modules/orders/mutationTypes";
+import * as orderActions from "../../../vuex/modules/orders/actionTypes";
+
 
 export default {
     mixins: [
@@ -76,27 +80,15 @@ export default {
         };
     },
     methods: {
-        ...mapActions('orders', [
-            'closePackedModal',
-        ]),
-        ...mapActions('packages', [
-            'loadPackages',
-        ]),
-        ...mapMutations('orders', [
-            'updateSelectedOrder',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+        },
         save() {
             let vm = this;
-
-            return axios.post('/admin/api/orders/'+ this.selected.id +'/packed', {
+            this.$store.dispatch('orders/' + orderActions.SAVE_PACKED, {
                 weeks_packed:      this.weeks_packed,
                 packed_package_id: this.packed_package.id,
             }).then(response => {
-                vm.updateSelectedOrder({
-                    packed: true,
-                    weeks_packed: vm.weeks_packed,
-                    packed_package_id: vm.packed_package.id,
-                });
                 vm.$emit('saved')
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -116,7 +108,7 @@ export default {
         ]),
     },
     mounted() {
-        this.loadPackages();
+        this.fetchAll();
         this.weeks_packed = this.selected.plan.weeks_of_food_per_shipment;
         this.package_id = this.selected.packed_package_id
             || this.selected.plan.package_id;

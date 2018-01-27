@@ -234,3 +234,25 @@ ordering meat...
 * otherwise, if an order is to be delivered the day AFTER the date the person placing the order chooses, then that order won't be considered
 * this is dangerous if that order was supposed to ship within the timeframe selected (due to lead times)
   
+  
+**2017-11-21** Notes
+* Use static mutation/action types
+* Institute a loader
+* don't query e verything on initial page load... hit the API when required only
+  * then I can add the models not only to the currently selected state, but add it to the collection where appropriate
+  * Be aware that this will mean not all objects in the collection will have the same fields set..
+* start doing better error handling
+* make sure all the forms are using SOME form validation
+* fix bugs Vivian finds
+* extract mixins for the core common components.. Creators/Dashboard, etc... 
+* make wrapper components where practical (if it is a relationsal object that requires selection...)
+  * i.e. products, addresses, pet, user, package, meat, meal, topping, etc... 
+  
+  
+**2017-11-24** Notes
+* UPDATE_IN_COLLECTION has 2 use cases right now...
+  * When I hit an update API, if it is for the model itself, then I expect the model to be returned... ?
+  * WHen I hit an API to change a specific field (packed, cancelled, etc) it just updates this field on the model in the colleciton
+    * these two cases need to be divided into 2 MUTATION TYPES
+  
+  

@@ -169,6 +169,8 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import * as productActions from "../../../vuex/modules/products/actionTypes";
+import * as toppingActions from "../../../vuex/modules/toppings/actionTypes";
 
 export default {
     mixins: [
@@ -189,6 +191,10 @@ export default {
         };
     },
     methods: {
+        fetchAll() {
+            this.$store.dispatch('products/' + productActions.FETCH_ALL);
+            this.$store.dispatch('toppings/' + toppingActions.FETCH_ALL);
+        },
         ...mapActions('products', [
             'editProduct',
         ]),
@@ -214,10 +220,9 @@ export default {
         },
         save() {
             let vm = this;
-            return axios.post('/admin/api/products', {
+            this.$store.dispatch('products/' + productActions.SAVE, {
                 ...this.form,
             }).then(response => {
-                vm.addToProductsCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -225,29 +230,36 @@ export default {
         },
         update() {
             let vm = this;
-
-            return axios.patch('/admin/api/products/' + this.selected.id, this.form
+            this.$store.dispatch('products/' + productActions.UPDATE, this.form
             ).then(response => {
-                vm.updateProduct(response.data);
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
+        },
+        populateFormFromProduct(product) {
+            this.form.name = product.name;
+            this.form.description = product.description;
+            this.form.description_long = product.description_long;
+            this.form.size = product.size;
+            this.form.sku = product.sku;
+            this.form.ingredients = product.ingredients;
+            this.form.price = product.price;
         },
     },
     computed: {
         ...mapState('products', ['show', 'selected', 'mode', 'collection']),
     },
     mounted() {
-        this.loadProducts();
-        this.loadToppings();
+        this.fetchAll();
         if (this.mode == 'EDIT') {
             this.populateFormFromProduct(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromProduct(newSelected);
+            if (newSelected)
+                this.populateFormFromProduct(newSelected);
         }
     }
 }

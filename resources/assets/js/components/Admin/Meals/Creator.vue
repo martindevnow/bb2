@@ -8,12 +8,13 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('code') }"
                 >
-                    <label for="code">code</label>
+                    <label for="code">Code</label>
                     <input type="text"
                            class="form-control"
                            id="code"
                            name="code"
                            v-model="form.code"
+                           placeholder="M-CH-BL"
                     >
                     <span class="help-block">{{ errors.get('code') }}</span>
                 </div>
@@ -22,12 +23,13 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('label') }"
                 >
-                    <label for="label">label</label>
+                    <label for="label">Label</label>
                     <input type="text"
                            class="form-control"
                            id="label"
                            name="label"
                            v-model="form.label"
+                           placeholder="Chicken (Boneless)"
                     >
                     <span class="help-block">{{ errors.get('label') }}</span>
                 </div>
@@ -39,7 +41,7 @@
                 <div class="form-group"
                      :class="{ 'has-error': errors.has('meal_value') }"
                 >
-                    <label for="meal_value">meal_value</label>
+                    <label for="meal_value">Meal Value (1 or 2 meals worth of food)</label>
                     <input type="text"
                            class="form-control"
                            id="meal_value"
@@ -127,6 +129,9 @@ import hasErrors from '../../../mixins/hasErrors';
 import Form from '../../../models/Form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import * as mealActions from '../../../vuex/modules/meats/actionTypes';
+import * as mutations from '../../../vuex/modules/meats/mutationTypes';
+import * as toppingActions from "../../../vuex/modules/toppings/actionTypes";
 
 export default {
     mixins: [
@@ -144,20 +149,17 @@ export default {
         };
     },
     methods: {
-        ...mapActions('meals', [
-            'editMeal',
-        ]),
-        ...mapMutations('meals', [
-            'addToMealsCollection',
-            'updateMeal',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('toppings/' + toppingActions.FETCH_ALL);
+            this.$store.dispatch('meats/' + mealActions.FETCH_ALL);
+        },
         removeTopping(index) {
             this.form.toppings.splice(index, 1);
         },
         removeMeat(index) {
             this.form.meats.splice(index, 1);
         },
-        populateFormFromMeal(meal) {
+        populateFormFromModel(meal) {
             this.form.code = meal.code;
             this.form.label = meal.label;
             this.form.meal_value = meal.meal_value;
@@ -168,10 +170,10 @@ export default {
             let vm = this;
             let meats = this.form.meats.map(meat => meat.id);
             let toppings = this.form.toppings.map(topping => topping.id);
-            return axios.post('/admin/api/meals', {
+
+            this.$store.dispatch('meals/' + mealActions.SAVE, {
                 ...this.form, meats, toppings
             }).then(response => {
-                vm.addToMealsCollection(response.data);
                 vm.$emit('saved');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
@@ -182,27 +184,33 @@ export default {
             let meats = this.form.meats.filter(item => item.id).map(item => item.id);
             let toppings = this.form.toppings.filter(item => item.id).map(item => item.id);
 
-            return axios.patch('/admin/api/meals/' + this.selected.id, {
+            this.$store.dispatch('meals/' + mealActions.UPDATE, {
                 ...this.form, meats, toppings
             }).then(response => {
-                vm.updateMeal(response.data);
-                vm.$emit('saved');
+                vm.$emit('updated');
             }).catch(error => {
                 vm.errors.record(error.response.data.errors);
             });
         }
     },
     computed: {
-        ...mapState('meals', ['show', 'selected', 'mode', 'collection']),
+        ...mapState('meals', [
+            'show',
+            'selected',
+            'mode',
+            'collection'
+        ]),
     },
     mounted() {
+        this.fetchAll();
         if (this.mode == 'EDIT') {
-            this.populateFormFromMeal(this.selected);
+            this.populateFormFromModel(this.selected);
         }
     },
     watch: {
         selected(newSelected) {
-            this.populateFormFromMeal(newSelected);
+            if (newSelected)
+                this.populateFormFromModel(newSelected);
         }
     }
 }

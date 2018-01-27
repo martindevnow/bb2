@@ -60,7 +60,7 @@
                         Replace Meal
                     </button>
                     <button class="btn btn-primary btn-xs"
-                            @click="editPlan(plan)"
+                            @click="edit(plan)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -73,21 +73,23 @@
         </table>
 
 
-        <admin-common-modal v-if="show.planCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closePlanCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Plan</p>
             <p slot="header" v-if="mode == 'EDIT'">Edit Plan: {{ selected.customer.name }} - {{ selected.pet.name }}</p>
-            <admin-plans-creator @cancelled="closePlanCreatorModal()"
-                                 @saved="closePlanCreatorModal()"
+            <admin-plans-creator @saved="closePlanCreatorModal()"
+                                 @updated="closePlanCreatorModal()"
+                                 @cancelled="closePlanCreatorModal()"
                                  slot="body"
             ></admin-plans-creator>
         </admin-common-modal>
-        <admin-common-modal v-if="notesShow.noteCreatorModal"
+        <admin-common-modal v-if="notesShow.creator"
                             @close="closeNoteCreatorModal()"
         >
-            <admin-notes-creator @cancelled="closeNoteCreatorModal()"
-                                 @saved="closeNoteCreatorModal()"
+            <admin-notes-creator @saved="closeNoteCreatorModal()"
+                                 @updated="closeNoteCreatorModal()"
+                                 @cancelled="closeNoteCreatorModal()"
                                  slot="body"
             >
             </admin-notes-creator>
@@ -95,8 +97,9 @@
         <admin-common-modal v-if="show.mealReplacementModal"
                             @close="closeMealReplacementModal()"
         >
-            <admin-plans-meal-replacement @cancelled="closeMealReplacementModal()"
-                                          @saved="closeMealReplacementModal()"
+            <admin-plans-meal-replacement @saved="closeMealReplacementModal()"
+                                          @updated="closeMealReplacementModal()"
+                                          @cancelled="closeMealReplacementModal()"
                                           slot="body"
             >
             </admin-plans-meal-replacement>
@@ -108,6 +111,11 @@
     import swal from 'sweetalert2'
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+
+    import * as packageActions from '../../../vuex/modules/packages/actionTypes';
+    import * as planActions from '../../../vuex/modules/plans/actionTypes';
+    import * as noteActions from "../../../vuex/modules/notes/actionTypes";
+
     export default {
         mixins: [
             isSortable
@@ -134,26 +142,37 @@
             }
         },
         mounted() {
-            this.loadPlans();
-            this.loadPackages();
+            this.fetchAll();
         },
         methods: {
-            ...mapActions('plans', [
-                'openPlanCreatorModal',
-                'closePlanCreatorModal',
-                'openMealReplacementModal',
-                'closeMealReplacementModal',
-                'loadPlans',
-                'editPlan',
-            ]),
-            ...mapActions('notes', [
-                'openNoteCreatorModal',
-                'closeNoteCreatorModal',
-                'createNote',
-            ]),
-            ...mapActions('packages', [
-                'loadPackages',
-            ]),
+            fetchAll() {
+                this.$store.dispatch('plans/' + planActions.FETCH_ALL);
+                this.$store.dispatch('packages/' + packageActions.FETCH_ALL);
+            },
+            openPlanCreatorModal() {
+                this.$store.dispatch('plans/' + planActions.CREATE)
+            },
+            closePlanCreatorModal() {
+                this.$store.dispatch('plans/' + planActions.CANCEL)
+            },
+            edit(plan) {
+                this.$store.dispatch('plans/' + planActions.EDIT, plan);
+            },
+            openMealReplacementModal(plan) {
+                this.$store.dispatch('plans/' + planActions.OPEN_MEAL_REPLACEMENT_CREATOR, plan)
+            },
+            closeMealReplacementModal() {
+                this.$store.dispatch('plans/' + planActions.CLOSE_MEAL_REPLACEMENT_CREATOR)
+            },
+            openNoteCreatorModal(dto) {
+                this.$store.dispatch('notes/' + noteActions.CREATE, dto)
+            },
+            closeNoteCreatorModal() {
+                this.$store.dispatch('notes/' + noteActions.CANCEL)
+            },
+            createNote(dto) {
+                this.$store.dispatch('notes/' + noteActions.CREATE, dto);
+            }
         },
         computed: {
             ...mapState('plans', [

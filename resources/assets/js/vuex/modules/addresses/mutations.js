@@ -1,39 +1,43 @@
-export const populateAddressesCollection = (state, data) => {
-    state.collection = data;
-};
+import * as mutations from './mutationTypes';
+import {loadAddressFromData} from "../../../models/Address";
 
-export const addToAddressesCollection = (state, addressData) => {
-    state.collection.unshift(addressData);
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadAddressFromData(modelData));
+    },
 
-export const showAddressCreatorModal = (state) => {
-    state.show.addressCreatorModal = true;
-};
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        state.collection.unshift(loadAddressFromData(modelData));
+    },
 
-export const hideAddressCreatorModal = (state) => {
-    state.show.addressCreatorModal = false;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const setSelectedAddress = (state, address) => {
-    state.selected = address;
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const deselectAddress = (state) => {
-    state.selected = null;
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = loadAddressFromData(model);
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const updateAddress = (state, payload) => {
-    state.collection = state.collection.map(model => {
-        if (model.id == payload.id)
-            return payload;
-        return model;
-    });
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadAddressFromData(payload);
+            return model;
+        });
+    },
 };

@@ -61,10 +61,11 @@
 
 
         <admin-common-modal v-if="show.orderedModal"
-                             @close="closeOrderedModal()"
+                            @close="closeOrderedModal()"
         >
             <p slot="header">Ordered</p>
-            <admin-ordered-logger @close="$emit('close')"
+            <admin-ordered-logger @saved="closeOrderedModal()"
+                                  @cancelled="closeOrderedModal()"
                                   slot="body"
             ></admin-ordered-logger>
         </admin-common-modal>
@@ -73,7 +74,8 @@
                             @close="closeReceivedModal()"
         >
             <p slot="header">Received</p>
-            <admin-received-logger @close="$emit('close')"
+            <admin-received-logger @saved="closeReceivedModal()"
+                                   @cancelled="closeReceivedModal()"
                                  slot="body"
             ></admin-received-logger>
         </admin-common-modal>
@@ -84,6 +86,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
+import * as purchaseOrderActions from "../../../vuex/modules/purchase-orders/actionTypes";
 
 export default {
     mixins: [
@@ -110,16 +113,24 @@ export default {
         }
     },
     mounted() {
-        this.loadPurchaseOrders();
+        this.fetchAll();
     },
     methods: {
-        ...mapActions('purchaseOrders', [
-            'openOrderedModal',
-            'closeOrderedModal',
-            'openReceivedModal',
-            'closeReceivedModal',
-            'loadPurchaseOrders',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.FETCH_ALL);
+        },
+        openOrderedModal(po) {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.OPEN_ORDERED_LOGGER, po);
+        },
+        closeOrderedModal() {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.CLOSE_ORDERED_LOGGER);
+        },
+        openReceivedModal(po) {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.OPEN_RECEIVED_LOGGER, po);
+        },
+        closeReceivedModal() {
+            this.$store.dispatch('purchaseOrders/' + purchaseOrderActions.CLOSE_RECEIVED_LOGGER);
+        },
     },
     computed: {
         ...mapState('purchaseOrders', [

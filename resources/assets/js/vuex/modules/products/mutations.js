@@ -1,42 +1,43 @@
 import {loadProductFromData} from "../../../models/Product";
+import * as mutations from './mutationTypes';
 
-export const populateProductsCollection = (state, data) => {
-    state.collection = data.map(productData => loadProductFromData(productData));
-};
+export default {
+    [mutations.POPULATE_COLLECTION] (state, data) {
+        state.collection = data.map(modelData => loadProductFromData(modelData));
+    },
 
-export const addToProductsCollection = (state, product) => {
-    state.collection.unshift(loadProductFromData(product));
-};
+    [mutations.ADD_TO_COLLECTION] (state, modelData) {
+        state.collection.unshift(loadProductFromData(modelData));
+    },
 
-export const showProductCreatorModal = (state) => {
-    state.show.productCreatorModal = true;
-};
+    [mutations.CREATE_MODE] (state) {
+        state.show.creator = true;
+        state.mode = null;
+    },
 
-export const hideProductCreatorModal = (state) => {
-    state.show.productCreatorModal = false;
-};
+    [mutations.EDIT_MODE] (state) {
+        state.show.creator = true;
+        state.mode = 'EDIT';
+    },
 
-export const enableEditMode = (state) => {
-    state.mode = 'EDIT';
-};
+    [mutations.CLEAR_MODE] (state) {
+        state.show.creator = false;
+        state.mode = null;
+    },
 
-export const disableEditMode = (state) => {
-    state.mode = null;
-};
+    [mutations.SELECT] (state, model) {
+        state.selected = model;
+    },
 
-export const setSelectedProduct = (state, product) => {
-    state.selected = product;
-};
+    [mutations.DESELECT] (state) {
+        state.selected = null;
+    },
 
-export const deselectProduct = (state) => {
-    state.selected = {};
-};
-
-export const updateProduct = (state, payload) => {
-    console.log('updating the model in the collection of products.');
-    state.collection = state.collection.map(model => {
-        if (model.id === payload.id)
-            return loadProductFromData(payload);
-        return model;
-    });
+    [mutations.UPDATE_IN_COLLECTION] (state, payload) {
+        state.collection = state.collection.map(model => {
+            if (model.id === payload.id)
+                return loadProductFromData(payload);
+            return model;
+        });
+    },
 };

@@ -62,14 +62,15 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.productCreatorModal"
+        <admin-common-modal v-if="show.creator"
                             @close="closeProductCreatorModal()"
         >
             <p slot="header" v-if="! mode">Add a Product</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit Product: {{ selected.type }} {{ selected.variety }}</p>
+            <p slot="header" v-if="mode == 'EDIT' && !! selected">Edit Product: {{ selected.name }}</p>
             <admin-products-creator @saved="closeProductCreatorModal()"
-                                 @cancelled="closeProductCreatorModal()"
-                                 slot="body"
+                                    @updated="closeProductCreatorModal()"
+                                    @cancelled="closeProductCreatorModal()"
+                                    slot="body"
             ></admin-products-creator>
         </admin-common-modal>
 
@@ -79,6 +80,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import isSortable from '../../../mixins/isSortable';
+import * as productActions from "../../../vuex/modules/products/actionTypes";
 
 export default {
     mixins: [
@@ -107,15 +109,21 @@ export default {
         }
     },
     mounted() {
-        this.loadProducts();
+        this.fetchAll();
     },
     methods: {
-        ...mapActions('products', [
-            'loadProducts',
-            'openProductCreatorModal',
-            'closeProductCreatorModal',
-            'editProduct',
-        ]),
+        fetchAll() {
+            this.$store.dispatch('products/' + productActions.FETCH_ALL);
+        },
+        openProductCreatorModal() {
+            this.$store.dispatch('products/' + productActions.CREATE);
+        },
+        closeProductCreatorModal() {
+            this.$store.dispatch('products/' + productActions.CANCEL);
+        },
+        editProduct(model) {
+            this.$store.dispatch('products/' + productActions.EDIT, model);
+        },
     },
     computed: {
         ...mapState('products', [

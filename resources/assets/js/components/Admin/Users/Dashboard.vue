@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="" v-if="show.userCreatorModal">
+        <div class="" v-if="show.creator">
             <div class="row">
 
                 <div class="col-sm-12">
                     <h1>User</h1>
-                    <admin-users-creator @saved="closeUserCreatorModal()"
-                                         @cancelled="closeUserCreatorModal()"
+                    <admin-users-creator @saved="closeCreator()"
+                                         @cancelled="closeCreator()"
                                          slot="body"
                                          :showAddresses="mode == 'EDIT'"
                     ></admin-users-creator>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-xs-6">
                             <button class="btn btn-primary"
-                                    @click="openUserCreatorModal()"
+                                    @click="create()"
                             >
                                 New
                             </button>
@@ -59,7 +59,7 @@
                 <td>{{ user.getPets() }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs"
-                            @click="editUser(user)"
+                            @click="edit(user)"
                     >
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -71,13 +71,14 @@
             </tbody>
         </table>
 
-        <admin-common-modal v-if="show.userCreatorModal && false"
-                            @close="closeUserCreatorModal()"
+        <admin-common-modal v-if="show.creator && false"
+                            @close="closeCreator()"
         >
             <p slot="header" v-if="! mode">Add a User</p>
-            <p slot="header" v-if="mode == 'EDIT'">Edit User: {{ selected.name }}</p>
-            <admin-users-creator @saved="closeUserCreatorModal()"
-                                 @cancelled="closeUserCreatorModal()"
+            <p slot="header" v-if="mode == 'EDIT' && selected">Edit User: {{ selected.name }}</p>
+            <admin-users-creator @saved="closeCreator()"
+                                 @updated="closeCreator()"
+                                 @cancelled="closeCreator()"
                                  slot="body"
                                  :showAddresses="mode == 'EDIT'"
             ></admin-users-creator>
@@ -88,6 +89,7 @@
 <script>
     import { mapGetters, mapState, mapActions } from 'vuex';
     import isSortable from '../../../mixins/isSortable';
+    import * as userActions from '../../../vuex/modules/users/actionTypes';
 
     export default {
         mixins: [
@@ -113,17 +115,20 @@
             }
         },
         mounted() {
-            this.loadUsers();
+            this.fetchAll();
         },
         methods: {
-            ...mapActions('users', [
-                'loadUsers',
-                'openUserCreatorModal',
-                'closeUserCreatorModal',
-                'editUser',
-            ]),
-            log(message) {
-                console.log(message);
+            fetchAll() {
+                this.$store.dispatch('users/' + userActions.FETCH_ALL)
+            },
+            create() {
+                this.$store.dispatch('users/' + userActions.CREATE);
+            },
+            closeCreator() {
+                this.$store.dispatch('users/' + userActions.CANCEL)
+            },
+            edit(model) {
+                this.$store.dispatch('users/' + userActions.EDIT, model);
             }
         },
         computed: {
