@@ -17,7 +17,6 @@ use Martin\Products\Product;
 use Martin\Transactions\Order;
 use Martin\Transactions\Payment;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Underscore\Types\Object;
 
 class Plan extends Model
 {
@@ -29,7 +28,7 @@ class Plan extends Model
     use CoreRelations;
 
     use LogsActivity;
-    static $logFillable = true;
+    public static $logFillable = true;
 
     /**
      * Fields which are "mass-assignable"
@@ -69,11 +68,13 @@ class Plan extends Model
         'first_delivery_at'
     ];
 
-    public static function byHash($hash) {
+    public static function byHash($hash)
+    {
         return Plan::where('hash', $hash)->firstOrFail();
     }
 
-    public function updateForShipped(Order $order) {
+    public function updateForShipped(Order $order)
+    {
         $this->latest_delivery_at = $order->shipped_at;
         if ($order->weeks_shipped > $this->ships_every_x_weeks) {
             $futureOrders = $this->orders()
@@ -86,7 +87,8 @@ class Plan extends Model
         }
     }
 
-    public function delayOrdersAfter(Order $order, $daysToDelay) {
+    public function delayOrdersAfter(Order $order, $daysToDelay)
+    {
         $futureOrders = $this->orders()
             ->where('id', '>', $order->id)
             ->get();
@@ -97,11 +99,12 @@ class Plan extends Model
         return true;
     }
 
-    public static function getPrice($pet_weight, Package $package, $shipping_modifier) {
+    public static function getPrice($pet_weight, Package $package, $shipping_modifier)
+    {
         /** @var Collection $costModels */
         $costModels = CostModel::all();
 
-        $costModel = $costModels->filter(function($costModel) use ($pet_weight) {
+        $costModel = $costModels->filter(function ($costModel) use ($pet_weight) {
             return $pet_weight >= $costModel['min_weight'] && $pet_weight <= $costModel['max_weight'];
         });
         if (! $costModel->count()) {
@@ -128,7 +131,8 @@ class Plan extends Model
      * @param int $leadTimeInDays
      * @return mixed
      */
-    public function scopeNeedsOrder(Builder $query, $leadTimeInDays = 18) {
+    public function scopeNeedsOrder(Builder $query, $leadTimeInDays = 18)
+    {
         // 1 week at a time, will be all orders
         //      as long as there are no orders with....
         //          deliver_by is within the next two weeks
@@ -137,37 +141,37 @@ class Plan extends Model
         // 4 weeks at a time will be if the latest_delivery_at delivery_at is older than 2 weeks
         return $query
             ->active()
-            ->where(function(Builder $activeBuilder) use ($leadTimeInDays) {
+            ->where(function (Builder $activeBuilder) use ($leadTimeInDays) {
                 $activeBuilder
                     ->doesntHave('orders')
-                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                    ->orWhere(function (Builder $subQ1) use ($leadTimeInDays) {
                         $subQ1
                             ->where('ships_every_x_weeks', '=', 1)
-                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                            ->whereDoesntHave('orders', function (Builder $subQ) use ($leadTimeInDays) {
                                 $subQ
                                     ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 7)->toDateString());
                             });
                     })
-                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                    ->orWhere(function (Builder $subQ1) use ($leadTimeInDays) {
                         $subQ1
                             ->where('ships_every_x_weeks', '=', 2)
-                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                            ->whereDoesntHave('orders', function (Builder $subQ) use ($leadTimeInDays) {
                                 $subQ
                                     ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 14)->toDateString());
                             });
                     })
-                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                    ->orWhere(function (Builder $subQ1) use ($leadTimeInDays) {
                         $subQ1
                             ->where('ships_every_x_weeks', '=', 3)
-                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                            ->whereDoesntHave('orders', function (Builder $subQ) use ($leadTimeInDays) {
                                 $subQ
                                     ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 21)->toDateString());
                             });
                     })
-                    ->orWhere(function(Builder $subQ1) use ($leadTimeInDays) {
+                    ->orWhere(function (Builder $subQ1) use ($leadTimeInDays) {
                         $subQ1
                             ->where('ships_every_x_weeks', '=', 4)
-                            ->whereDoesntHave('orders', function(Builder $subQ) use ($leadTimeInDays) {
+                            ->whereDoesntHave('orders', function (Builder $subQ) use ($leadTimeInDays) {
                                 $subQ
                                     ->where('deliver_by', '>', Carbon::now()->addDays($leadTimeInDays - 28)->toDateString());
                             });
@@ -179,7 +183,8 @@ class Plan extends Model
      * @param Builder $query
      * @return $this
      */
-    public function scopeActive(Builder $query) {
+    public function scopeActive(Builder $query)
+    {
         return $query->where('active', true);
     }
 
@@ -191,14 +196,16 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getInternalCostAttribute($value) {
+    public function getInternalCostAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setInternalCostAttribute($value) {
+    public function setInternalCostAttribute($value)
+    {
         $this->attributes['internal_cost'] = round($value * 100);
     }
 
@@ -206,14 +213,16 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getShippingCostAttribute($value) {
+    public function getShippingCostAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setShippingCostAttribute($value) {
+    public function setShippingCostAttribute($value)
+    {
         $this->attributes['shipping_cost'] = round($value * 100);
     }
 
@@ -221,14 +230,16 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getWeeklyCostAttribute($value) {
+    public function getWeeklyCostAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setWeeklyCostAttribute($value) {
+    public function setWeeklyCostAttribute($value)
+    {
         $this->attributes['weekly_cost'] = round($value * 100);
     }
 
@@ -236,14 +247,16 @@ class Plan extends Model
      * @param $value
      * @return float|int
      */
-    public function getPetActivityLevelAttribute($value) {
+    public function getPetActivityLevelAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setPetActivityLevelAttribute($value) {
+    public function setPetActivityLevelAttribute($value)
+    {
         $this->attributes['pet_activity_level'] = round($value * 100);
     }
 
@@ -255,7 +268,8 @@ class Plan extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function products() {
+    public function products()
+    {
         return $this->belongsToMany(Product::class)
             ->withPivot('quantity');
     }
@@ -263,64 +277,73 @@ class Plan extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function customer() {
+    public function customer()
+    {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function package() {
+    public function package()
+    {
         return $this->belongsTo(Package::class, 'package_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function payments() {
+    public function payments()
+    {
         return $this->morphMany(Payment::class, 'paymentable');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class, 'plan_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function deliveryAddress() {
+    public function deliveryAddress()
+    {
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pet() {
+    public function pet()
+    {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function mealReplacements() {
+    public function mealReplacements()
+    {
         return $this->hasMany(MealReplacement::class, 'plan_id');
     }
 
     /**
      * @return mixed
      */
-    public function getMealsAttribute() {
+    public function getMealsAttribute()
+    {
         $meals = $this->package->meals()->with('meats')->get();
         $replacements = $this->mealReplacements;
 
-        foreach($replacements as $replacement) {
-            $meals = $meals->map(function($meal) use ($replacement) {
+        foreach ($replacements as $replacement) {
+            $meals = $meals->map(function ($meal) use ($replacement) {
                 if ($meal->id === $replacement->removed_meal_id) {
                     $newMeal = clone $replacement->addedMeal()->with('meats')->first();
                     $newMeal->pivot = clone $meal->pivot;
+                    $newMeal->subbed = true;
                     return $newMeal;
                 }
                 return $meal;
@@ -336,7 +359,8 @@ class Plan extends Model
     /**
      * @return mixed
      */
-    public function getLatestOrder() {
+    public function getLatestOrder()
+    {
         return $this->orders()
             ->orderBy('deliver_by', 'DESC')
             ->first();
@@ -345,7 +369,8 @@ class Plan extends Model
     /**
      * @return bool
      */
-    public function hasOrders() {
+    public function hasOrders()
+    {
         return !! $this->orders()->count();
     }
 
@@ -353,7 +378,8 @@ class Plan extends Model
      * @param Meal|null $specificMeal
      * @return mixed
      */
-    public function mealCounts(Meal $specificMeal = null, $number_of_weeks = null) {
+    public function mealCounts(Meal $specificMeal = null, $number_of_weeks = null)
+    {
         $weeks_of_food_per_shipment = $number_of_weeks ?: $this->weeks_of_food_per_shipment;
         $breakfast_modifier = $this->pet->daily_meals == 3 ? 1 : 0;
         $breakfasts = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
@@ -362,11 +388,11 @@ class Plan extends Model
         $meals = $this->package->meals;
         $replacements = $this->mealReplacements;
 
-        foreach($replacements as $replacement) {
-            $meals = $meals->map(function($meal) use ($replacement) {
+        foreach ($replacements as $replacement) {
+            $meals = $meals->map(function ($meal) use ($replacement) {
                 if ($meal->id === $replacement->removed_meal_id) {
                     $newMeal = clone $replacement->addedMeal;
-                    $newMeal->pivot = new Object();
+                    $newMeal->pivot = new \stdClass();
                     $newMeal->pivot->calendar_code = $meal->pivot->calendar_code;
                     return $newMeal;
                 }
@@ -374,7 +400,7 @@ class Plan extends Model
             });
         }
 
-        $counted = $meals->map(function($meal) use ($breakfast_modifier, $breakfasts) {
+        $counted = $meals->map(function ($meal) use ($breakfast_modifier, $breakfasts) {
             $calendar_code = $meal->calendar_code ?: $meal->pivot->calendar_code;
             $increment = in_array($calendar_code, $breakfasts) ? $breakfast_modifier : 0;
             $meal->count = 1 + $increment;
@@ -382,10 +408,10 @@ class Plan extends Model
             unset($meal->pivot);
             return $meal;
         });
-        $grouped = $counted->mapToGroups(function($meal, $key) {
+        $grouped = $counted->mapToGroups(function ($meal, $key) {
             return [$meal->id => $meal];
-        })->map(function($group) {
-            return $group->reduce(function($carry, $meal) {
+        })->map(function ($group) {
+            return $group->reduce(function ($carry, $meal) {
                 if (!$carry) {
                     return $meal;
                 }
@@ -395,14 +421,15 @@ class Plan extends Model
         });
 
         if ($weeks_of_food_per_shipment > 1) {
-            $grouped->map(function($meal) use ($weeks_of_food_per_shipment) {
+            $grouped->map(function ($meal) use ($weeks_of_food_per_shipment) {
                 $meal->count *= $weeks_of_food_per_shipment;
                 return $meal;
             });
         }
 
-        if (! $specificMeal)
+        if (! $specificMeal) {
             return $grouped;
+        }
 
         return $grouped->where('id', $specificMeal->id)
             ->first()
@@ -418,7 +445,8 @@ class Plan extends Model
      *
      * @return Order
      */
-    public function generateOrder(): Order {
+    public function generateOrder(): Order
+    {
         $delivery_date = $this->getNextDeliveryDate();
 
         $subtotal = $this->calculateSubtotal();
@@ -437,8 +465,9 @@ class Plan extends Model
             'plan_order'    => true,
         ]);
 
-        if (! $this->hasProducts() )
+        if (! $this->hasProducts()) {
             return $order;
+        }
 
         foreach ($this->products as $prod) {
             $order->addProduct($prod);
@@ -447,15 +476,16 @@ class Plan extends Model
         return $order;
     }
 
-    public function hasProducts() {
+    public function hasProducts()
+    {
         return !! $this->products->count();
     }
 
     /**
      * @return array
      */
-    public function getMeatWeightsByCode() {
-
+    public function getMeatWeightsByCode()
+    {
         $packageMealWeights = [$this->package->code => 0];
         $meatWeights = [];
 
@@ -464,8 +494,9 @@ class Plan extends Model
 
         foreach ($this->package->meals as $meal) {
             foreach ($meal->meats as $meat) {
-                if ( ! isset($meatWeights[$meat->code]))
+                if (! isset($meatWeights[$meat->code])) {
                     $meatWeights[$meat->code] = 0;
+                }
 
                 $meatWeights[$meat->code] += $mealSize;
             }
@@ -486,21 +517,25 @@ class Plan extends Model
      *
      * @return mixed
      */
-    public function getNextDeliveryDate() {
+    public function getNextDeliveryDate()
+    {
         $lead_time_in_days = 4;
 
-        if ( ! $this->orders()->count()) {
-            if ($this->latest_delivery_at)
+        if (! $this->orders()->count()) {
+            if ($this->latest_delivery_at) {
                 return $this->latest_delivery_at->addDays($this->ships_every_x_weeks * 7);
+            }
 
             return $this->created_at->addDays($lead_time_in_days);
         }
 
         $latestOrder = $this->getLatestOrder();
 
-        $weeks_delay = max($latestOrder->weeks_shipped,
+        $weeks_delay = max(
+            $latestOrder->weeks_shipped,
              $latestOrder->weeks_packed,
-             $this->ships_every_x_weeks);
+             $this->ships_every_x_weeks
+        );
 
         return $latestOrder->deliver_by->addDays($weeks_delay * 7);
     }
@@ -508,7 +543,8 @@ class Plan extends Model
     /**
      * @return mixed
      */
-    public function calculateSubtotal() {
+    public function calculateSubtotal()
+    {
         return self::getPrice($this->pet_weight, $this->package, $this->weeks_of_food_per_shipment === 4 ? 0 : 1);
     }
 
@@ -517,7 +553,8 @@ class Plan extends Model
      *
      * @return float
      */
-    public function packagingCost() {
+    public function packagingCost()
+    {
         return Container::selectContainer($this->pet->mealSizeInGrams())
             ->costPerWeek();
     }
@@ -527,7 +564,8 @@ class Plan extends Model
      *
      * @return float
      */
-    public function packingCost() {
+    public function packingCost()
+    {
         return self::HOURLY_RATE_FOR_PACKING_ORDERS
             * (self::MINUTES_REQUIRED_TO_PACK_A_WEEK / 60);
     }
@@ -535,7 +573,8 @@ class Plan extends Model
     /**
      * @return float
      */
-    public function totalPackingCost() {
+    public function totalPackingCost()
+    {
         return $this->packingCost() + $this->packagingCost();
     }
 
@@ -545,7 +584,8 @@ class Plan extends Model
      *
      * @return mixed
      */
-    public function costPerWeek() {
+    public function costPerWeek()
+    {
         return $this->package
             ->costPerWeek($this->pet);
     }
@@ -555,7 +595,8 @@ class Plan extends Model
      *
      * @return float|int
      */
-    public function costPerPoundOfDog() {
+    public function costPerPoundOfDog()
+    {
         return $this->weekly_cost / $this->pet_weight;
     }
 
@@ -564,7 +605,8 @@ class Plan extends Model
      *
      * @return mixed
      */
-    public function profit() {
+    public function profit()
+    {
         return $this->weekly_cost -
             ($this->totalPackingCost() + $this->costPerWeek());
     }
@@ -576,7 +618,8 @@ class Plan extends Model
      * @param bool $propagate
      * @return $this
      */
-    public function updatePackage($package_id, $propagate = true) {
+    public function updatePackage($package_id, $propagate = true)
+    {
         $this->package_id = $package_id;
         $this->save();
         return $this;
@@ -586,7 +629,8 @@ class Plan extends Model
      * @param Meal $meal
      * @return MealReplacement
      */
-    public function replaceMeal(Meal $meal) {
+    public function replaceMeal(Meal $meal)
+    {
         return new MealReplacement([
             'plan_id'           => $this->id,
             'removed_meal_id'   => $meal->id,
@@ -604,18 +648,21 @@ class Plan extends Model
      * @param $product
      * @return Model
      */
-    public function addProduct($product, $quantity = 1) {
-        if (is_string($product))
+    public function addProduct($product, $quantity = 1)
+    {
+        if (is_string($product)) {
             return $this->products()->save(
                 Product::whereCode($product)->firstOrFail(),
                 compact('quantity')
             );
+        }
 
-        if ($product instanceof Product)
+        if ($product instanceof Product) {
             return $this->products()->save(
                 $product,
                 compact('quantity')
             );
+        }
 
         return $this->products()->save(
             Product::findOrFail($product),
@@ -624,20 +671,23 @@ class Plan extends Model
     }
 
 
-    public function hasProduct($product) {
-        if ($this->products->count() == 0)
+    public function hasProduct($product)
+    {
+        if ($this->products->count() == 0) {
             return false;
+        }
 
         if ($product instanceof Product) {
-            return !! $this->products->filter(function($val, $key) use ($product) {
+            return !! $this->products->filter(function ($val, $key) use ($product) {
                 return $val->id === $product->id;
             })->count();
         }
 
-        if (is_integer($product))
-            return !! $this->products->filter(function($val, $key) use ($product) {
+        if (is_integer($product)) {
+            return !! $this->products->filter(function ($val, $key) use ($product) {
                 return $val->id === $product;
             })->count();
+        }
 
 
         // TODO: Throw error here?
@@ -645,15 +695,17 @@ class Plan extends Model
     }
 
 
-    public function removeProduct($product) {
-        if ($product instanceof Product)
+    public function removeProduct($product)
+    {
+        if ($product instanceof Product) {
             return $this->products()->detach($product->id);
+        }
 
-        if (is_int($product))
+        if (is_int($product)) {
             return $this->products()->detach($product);
+        }
 
         // TODO: Throw error here?
         return false;
-
     }
 }

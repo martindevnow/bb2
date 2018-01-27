@@ -20,8 +20,8 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function about() {
-        $instagram = new Instagram();
-        $pics = $instagram->get('b.a.r.f.bento');
+        $instagram = new Instagram('4221042410.1677ed0.dd2ba4b789f94bedbc1579de08ecab29');
+        $pics = $instagram->get();
 
         return view('pages.about')->with(compact('pics'));
     }

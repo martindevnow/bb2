@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/material/css/preload.min.css" />
     <link rel="stylesheet" href="/material/css/plugins.min.css" />
-    <link rel="stylesheet" href="/material/css/style.light-blue-500.min.css" />
+    <link rel="stylesheet" href="/material/css/style.red-600.min.css" />
     <link rel="stylesheet" href="/material/css/width-boxed.min.css" id="ms-boxed" disabled="">
     <!--[if lt IE 9]>
     <script src="/material/js/html5shiv.min.js"></script>

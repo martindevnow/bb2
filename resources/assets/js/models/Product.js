@@ -12,6 +12,7 @@ export const loadProductFromData = function(data) {
     product.sku =           data.sku;
     product.ingredients =   data.ingredients;
     product.price =         Number.parseFloat(data.price);
+    product.active =         data.active;
 
     return product;
 };

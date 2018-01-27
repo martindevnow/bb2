@@ -37,8 +37,7 @@ Route::post('/stripe/webhook', 'WebhooksController@handle');
 Route::get('/user', 'UsersController@user');
 Route::get('/user/addresses', 'UsersController@addresses');
 Route::get('/user/pets', 'UsersController@pets');
-Route::post('/user/pets', function(Request $request) {
-
+Route::post('/user/pets', function (Request $request) {
     $requestData = $request->validate([
         'name'  => 'required',
         'breed' => 'required',
@@ -69,7 +68,7 @@ Route::get('/sizes', 'SubscriptionsController@sizes');
  */
 Route::post('github', 'GitHubController@handle');
 
-Route::get('products', function() {
+Route::get('products', function () {
     return [
      'id' => 1,
      'manId' => 3,
@@ -87,16 +86,16 @@ Route::get('products', function() {
 
 
 
-Route::get('meats', function() {
+Route::get('meats', function () {
     return \Martin\Products\Meat::all();
 });
 
-Route::get('meals', function() {
+Route::get('meals', function () {
     return \Martin\Products\Meal::all();
 });
 
-Route::get('packages', function() {
-    return \Martin\Subscriptions\Package::all()->map(function($pkg, $index) {
+Route::get('packages', function () {
+    return \Martin\Subscriptions\Package::all()->map(function ($pkg, $index) {
         /** @var \Martin\Subscriptions\Package $pkg */
         $pkg->costPerLb = round($pkg->costPerLb() * 1.2, 2);
         return $pkg;
@@ -106,7 +105,7 @@ Route::get('packages', function() {
 /**
  * Return the cost model for the different sizes
  */
-Route::get('pricing', function() {
+Route::get('pricing', function () {
     return \Martin\Subscriptions\CostModel::all();
 });
 

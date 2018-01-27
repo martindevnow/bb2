@@ -15,11 +15,11 @@
     <meta property="og:url" content="http://barfbento.com/">
     <meta property="og:site_name" content="BARFBento - Raw Dog Food Delivery Service">
 
-    <link rel="shortcut icon" href="/material/img/favicon.png?v=3">
+    <!-- <link rel="shortcut icon" href="/material/img/favicon.png?v=3"> -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/material/css/preload.min.css" />
     <link rel="stylesheet" href="/material/css/plugins.min.css" />
-    <link rel="stylesheet" href="/material/css/style.light-blue-500.min.css" />
+    <link rel="stylesheet" href="/material/css/style.red-600.min.css" />
     <link rel="stylesheet" href="/barfbento/css/app.css" />
     <link rel="stylesheet" href="/barfbento/css/barf.css" />
     <link rel="stylesheet" href="/css/sweetalert2.min.css" />
@@ -29,6 +29,21 @@
     <script src="/material/js/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+        .form-group {
+            margin: inherit;
+            padding: inherit;
+        }
+        .table-tight > tbody > tr > td {
+            padding: 8px!important;
+        }
+        td.money {
+            text-align: right;
+        }
+        .ms-hero-bg-info::after {
+            background-color: rgba(85, 0, 0, 0.85);
+        }
+    </style>
     <script>
         window.BarfBento = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -47,7 +62,7 @@
         </div>
     </div>
 </div>
-<div class="sb-site-container" id="content">
+<div class="sb-site-container" id="client-app">
 
     @include('layouts.material.nav.top')
 
@@ -68,7 +83,6 @@
 <script src="/material/js/plugins.min.js"></script>
 <script src="/material/js/app.min.js"></script>
 <script src="/material/js/index.js"></script>
-<script src="https://checkout.stripe.com/checkout.js"></script>
 <script src="/js/app.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

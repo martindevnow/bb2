@@ -11,6 +11,7 @@ use Martin\Core\Traits\CoreRelations;
 use Martin\Customers\Pet;
 use Martin\Subscriptions\Plan;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use Notifiable;
     use CoreRelations;
+    use HasApiTokens;
 
     use LogsActivity;
     static $logFillable = true;
@@ -35,6 +37,7 @@ class User extends Authenticatable
         'last_name',
         'stripe_active',
         'subscription_end_at',
+        'stripe_customer_id',
     ];
 
     /**

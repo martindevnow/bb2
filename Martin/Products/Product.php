@@ -3,6 +3,7 @@
 namespace Martin\Products;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Martin\Core\Traits\CoreRelations;
 use Martin\Subscriptions\Plan;
@@ -19,12 +20,33 @@ class Product extends Model
         'size',
         'sku',
         'ingredients',
-        'price'
+        'price',
+        'active',
+        'priority',
+        'benefits',
+        'storage',
     ];
 
     protected $casts = [
         'price' => 'integer',
     ];
+
+    /*
+     * Scopes
+     */
+
+
+    /**
+     * @param Builder $query
+     * @return $this
+     */
+     public function scopeActive(Builder $query) {
+        return $query->where('active', '=', 1);
+     }
+
+    /*
+     * Mutators
+     */
 
     /**
      * @param $value
@@ -41,6 +63,14 @@ class Product extends Model
         $this->attributes['price'] = round($value * 100);
     }
 
+
+    /*
+     * Relationships
+     */
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function plans() {
         return $this->belongsToMany(Plan::class)
             ->withPivot('quantity');
