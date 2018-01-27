@@ -114,4 +114,7 @@ Route::put('users/{user}/attachAddress', function(User $user, Request $request) 
     return response('Success', 200);
 });
 
+Route::get('user', function() {
+    return request()->user();
+});
 Route::resource('users', 'UsersController');
