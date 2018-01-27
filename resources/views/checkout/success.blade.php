@@ -12,6 +12,8 @@
           <div class="col-md-9">
 
 
+            @include('flash::message')
+
             @guest
             <div class="card card-primary">
                 <div class="card-header">

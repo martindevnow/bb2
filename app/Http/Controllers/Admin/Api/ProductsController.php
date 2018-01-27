@@ -32,8 +32,6 @@ class ProductsController extends Controller {
             'active'            => 'nullable',
         ]);
 
-        // $validData['active'] = !! $validData['active'];
-
         $product = Product::create($validData);
 
         return $product;
@@ -55,8 +53,6 @@ class ProductsController extends Controller {
             'price'             => 'required|numeric',
             'active'            => 'nullable',
         ]);
-
-        // $validData['active'] = !! $validData['active'];
 
         $product->update($validData);
 

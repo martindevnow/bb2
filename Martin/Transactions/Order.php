@@ -23,7 +23,7 @@ class Order extends Model
     use CoreRelations;
 
     use LogsActivity;
-    static $logFillable = true;
+    public static $logFillable = true;
 
     protected $fillable = [
         'plan_id',
@@ -55,7 +55,8 @@ class Order extends Model
      * @param $crudAction
      * @return string
      */
-    public function adminUrl($crudAction) {
+    public function adminUrl($crudAction)
+    {
         switch ($crudAction) {
             case 'index':
             case 'store':
@@ -71,12 +72,14 @@ class Order extends Model
         }
     }
 
-    public static function createFromCart(CartRepository $cart, Address $address) {
+    public static function createFromCart(CartRepository $cart, Address $address)
+    {
         $addressable = $address->addressable;
-        if ($addressable instanceof User)
+        if ($addressable instanceof User) {
             $customer_id = $addressable->id;
-        else
+        } else {
             $customer_id = 0;
+        }
 
         $subtotal = $cart->getSubTotal();
         $tax = $cart->getCondition('HST 13%')->getCalculatedValue($subtotal);
@@ -109,14 +112,16 @@ class Order extends Model
      * @param $value
      * @return float|int
      */
-    public function getSubtotalAttribute($value) {
+    public function getSubtotalAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setSubtotalAttribute($value) {
+    public function setSubtotalAttribute($value)
+    {
         $this->attributes['subtotal'] = round($value * 100);
     }
 
@@ -124,14 +129,16 @@ class Order extends Model
      * @param $value
      * @return float|int
      */
-    public function getTaxAttribute($value) {
+    public function getTaxAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setTaxAttribute($value) {
+    public function setTaxAttribute($value)
+    {
         $this->attributes['tax'] = round($value * 100);
     }
 
@@ -139,14 +146,16 @@ class Order extends Model
      * @param $value
      * @return float|int
      */
-    public function getTotalCostAttribute($value) {
+    public function getTotalCostAttribute($value)
+    {
         return $value / 100;
     }
 
     /**
      * @param $value
      */
-    public function setTotalCostAttribute($value) {
+    public function setTotalCostAttribute($value)
+    {
         $this->attributes['total_cost'] = round($value * 100);
     }
 
@@ -161,7 +170,8 @@ class Order extends Model
      * @param Payment $payment
      * @return $this
      */
-    public function markAsPaid(Payment $payment) {
+    public function markAsPaid(Payment $payment)
+    {
         $this->paid = true;
         $this->payments()->save($payment);
         $this->save();
@@ -173,7 +183,8 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsPacked($data = null) {
+    public function markAsPacked($data = null)
+    {
         $numberOfWeeks = isset($data['weeks_packed']) ? $data['weeks_packed'] : $this->plan->weeks_of_food_per_shipment;
         $packageId = isset($data['packed_package_id']) ? $data['packed_package_id'] : $this->plan->package_id;
 
@@ -195,7 +206,8 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsPicked() {
+    public function markAsPicked()
+    {
         $this->reduceMealInventory();
 
         $this->picked = true;
@@ -208,7 +220,8 @@ class Order extends Model
      * @param Delivery $delivery
      * @return $this
      */
-    public function markAsShipped(Delivery $delivery) {
+    public function markAsShipped(Delivery $delivery)
+    {
         $delivery->recipient_id = $this->customer_id;
         $this->delivery()->save($delivery);
 
@@ -229,22 +242,26 @@ class Order extends Model
      *
      * @return $this
      */
-    public function markAsDelivered() {
+    public function markAsDelivered()
+    {
         $this->delivered = true;
 
         $this->save();
         return $this;
     }
 
-    public function delayShipmentDays($daysToDelay, $affectOnlyThisOrder = false) {
-        if ($daysToDelay < 1)
-            return false; // TODO: Throw error;
+    public function delayShipmentDays($daysToDelay, $affectOnlyThisOrder = false)
+    {
+        if ($daysToDelay < 1) {
+            return false;
+        } // TODO: Throw error;
 
         $this->deliver_by = $this->deliver_by->addDays($daysToDelay);
         $this->save();
 
-        if ($affectOnlyThisOrder)
+        if ($affectOnlyThisOrder) {
             return $this;
+        }
 
         return $this->plan->delayOrdersAfter($this, $daysToDelay);
     }
@@ -253,23 +270,25 @@ class Order extends Model
      * @param Meal|null $meal
      * @return mixed
      */
-    public function mealCounts(Meal $meal = null, $number_of_weeks = null) {
+    public function mealCounts(Meal $meal = null, $number_of_weeks = null)
+    {
         return $this->plan->mealCounts($meal, $number_of_weeks);
     }
 
     /**
      * TODO: Move to Plan
      */
-    private function reduceMeatInventory($number_of_weeks, $package_id) {
+    private function reduceMeatInventory($number_of_weeks, $package_id)
+    {
         $pet_meal_size = $this->plan->pet->mealSize();
 
         // TODO: This should be on the Plan model too.. no reason for it to be here....
-        $meals = $this->mealCounts()->map(function($meal, $key) use ($pet_meal_size){
+        $meals = $this->mealCounts()->map(function ($meal, $key) use ($pet_meal_size) {
             $meal->total_weight = $meal->count * $pet_meal_size;
             return $meal;
         });
 
-        foreach($meals as $meal) {
+        foreach ($meals as $meal) {
             foreach ($meal->meats as $meat) {
                 $this->inventoryChanges()->create([
                     'inventoryable_id'      => $meat->id,
@@ -284,10 +303,11 @@ class Order extends Model
      * TODO: Make it public and simply reference the plan.. these methods should be on Plan
      * @param null $number_of_weeks
      */
-    private function increaseMealInventory($number_of_weeks = null) {
+    private function increaseMealInventory($number_of_weeks = null)
+    {
         $meals = $this->mealCounts(null, $number_of_weeks);
 
-        foreach($meals as $meal) {
+        foreach ($meals as $meal) {
             $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
@@ -300,10 +320,11 @@ class Order extends Model
     /**
      * TODO: Make it public and simply reference the plan.. these methods should be on Plan
      */
-    private function reduceMealInventory() {
+    private function reduceMealInventory()
+    {
         $meals = $this->mealCounts();
 
-        foreach($meals as $meal) {
+        foreach ($meals as $meal) {
             $this->inventoryChanges()->create([
                 'inventoryable_id'  => $meal->id,
                 'inventoryable_type'=> get_class($meal),
@@ -316,7 +337,8 @@ class Order extends Model
     /**
      * Cancels an order
      */
-    public function cancel() {
+    public function cancel()
+    {
         $this->cancelled = true;
         $this->save();
     }
@@ -326,7 +348,8 @@ class Order extends Model
      * @param bool $applyToFutureOrders
      * @return bool
      */
-    public function updateDeliverBy($newDate, $applyToFutureOrders = false) {
+    public function updateDeliverBy($newDate, $applyToFutureOrders = false)
+    {
         $oldDeliverBy = clone $this->deliver_by;
         $this->deliver_by = Carbon::createFromFormat('Y-m-d', $newDate);
 
@@ -357,7 +380,8 @@ class Order extends Model
      * @param Builder $query
      * @return mixed
      */
-    public function scopeNeedsPacking(Builder $query) {
+    public function scopeNeedsPacking(Builder $query)
+    {
         return $query->where('packed', '=', 0)
             ->where('cancelled', 0);
     }
@@ -365,7 +389,8 @@ class Order extends Model
      * @param Builder $query
      * @return mixed
      */
-    public function scopeNeedsPicking(Builder $query) {
+    public function scopeNeedsPicking(Builder $query)
+    {
         return $query->where('picked', '=', 0)
             ->where('cancelled', 0);
     }
@@ -374,7 +399,8 @@ class Order extends Model
      * @param Builder $query
      * @return $this
      */
-    public function scopeForPlans(Builder $query) {
+    public function scopeForPlans(Builder $query)
+    {
         return $query->where('plan_id', '>', 0);
     }
 
@@ -386,49 +412,56 @@ class Order extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function customer() {
+    public function customer()
+    {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function delivery() {
+    public function delivery()
+    {
         return $this->hasOne(Delivery::class, 'order_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function deliveryAddress() {
+    public function deliveryAddress()
+    {
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function details() {
+    public function details()
+    {
         return $this->hasMany(OrderDetail::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function inventoryChanges() {
+    public function inventoryChanges()
+    {
         return $this->morphMany(Inventory::class, 'changeable');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function payments() {
+    public function payments()
+    {
         return $this->morphMany(Payment::class, 'paymentable');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function plan() {
+    public function plan()
+    {
         return $this->belongsTo(Plan::class, 'plan_id');
     }
 
@@ -436,7 +469,8 @@ class Order extends Model
      * @param Product $product
      * @param int $quantity
      */
-    public function addProduct($product, $quantity = 1) {
+    public function addProduct($product, $quantity = 1)
+    {
         if (is_array($product)) {
             $product = Product::findOrFail($product['id']);
         }
@@ -452,7 +486,8 @@ class Order extends Model
         ]);
     }
 
-    public function hasProduct(Product $product) {
+    public function hasProduct(Product $product)
+    {
         return !! $this->details()
             ->where('orderable_type', get_class($product))
             ->where('orderable_id', $product->id)
@@ -462,7 +497,8 @@ class Order extends Model
     /**
      * @param Product $product
      */
-    public function removeProduct(Product $product) {
+    public function removeProduct(Product $product)
+    {
         $this->details()
             ->where('orderable_type', get_class($product))
             ->where('orderable_id', $product->id)

@@ -11,9 +11,12 @@ class UsersController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function user(Request $request) {
+    public function user(Request $request)
+    {
         return $request->user();
     }
 
@@ -21,16 +24,17 @@ class UsersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function pets(Request $request) {
+    public function pets(Request $request)
+    {
         return $request->user()->pets;
-
     }
 
     /**
      * @param Request $request
      * @return mixed
      */
-    public function addresses(Request $request) {
+    public function addresses(Request $request)
+    {
         return $request->user()->addresses;
     }
 }

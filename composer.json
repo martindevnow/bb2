@@ -12,6 +12,7 @@
         "laracasts/flash": "^3.0",
         "laravel/cashier": "~7.0",
         "laravel/framework": "5.5.*",
+        "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
         "mikehaertl/phpwkhtmltopdf": "^2.2",
         "php-http/guzzle6-adapter": "^1.1",

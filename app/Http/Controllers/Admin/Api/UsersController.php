@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Martin\ACL\User;
 
-class UsersController extends Controller {
+class UsersController extends Controller
+{
 
     /**
      * Fetch a list of Users
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[] |Illuminate\Database\Eloquent\Collection
      */
-    public function index() {
+    public function index()
+    {
         return User::with(['pets', 'addresses'])->get();
     }
 
@@ -22,7 +24,8 @@ class UsersController extends Controller {
      * @param Request $request
      * @return mixed
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $post = $request->validate([
             'name'  => 'required',
             'email' => 'required|email|unique:users,email',
@@ -39,7 +42,8 @@ class UsersController extends Controller {
         return $user;
     }
 
-    public function update(User $user, Request $request) {
+    public function update(User $user, Request $request)
+    {
         $validData = $request->validate([
             'name'  => 'required',
             'email' => 'required|email',
@@ -49,10 +53,11 @@ class UsersController extends Controller {
             'password'      => '',
         ]);
 
-        if ($validData['password'])
+        if ($validData['password']) {
             $validData['password'] = bcrypt($validData['password']);
-        else
+        } else {
             unset($validData['password']);
+        }
 
         $user->update($validData);
         return $user->fresh(['pets']);
