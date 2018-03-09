@@ -59,7 +59,7 @@ class BackupDatabase extends Command
                 . $date->format('Y-m-d') .'_'. $date->format('H:i') .'.sql';
         }
 
-        $this->line('Generating SQL backup of table martioo7_itcdash:');
+        $this->line('Generating SQL backup of table '. env('DB_DATABASE') .':');
         $command = 'mysqldump -u '. escapeshellarg(env('DB_USERNAME'))
             .' -p'. escapeshellarg(env('DB_PASSWORD'))
             .' '. escapeshellarg(env('DB_DATABASE'))
