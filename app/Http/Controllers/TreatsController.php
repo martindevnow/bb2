@@ -16,7 +16,7 @@ class TreatsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $treats = Product::all();
+        $treats = Product::active()->get();
         return view('treats.index')->with(compact('treats'));
     }
 
@@ -25,7 +25,7 @@ class TreatsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($sku) {
-        $treat = Product::whereSku($sku)->firstOrFail();
+        $treat = Product::active()->whereSku($sku)->firstOrFail();
         return view('treats.show')->with(compact('treat'));
     }
 }

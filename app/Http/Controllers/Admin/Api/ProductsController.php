@@ -28,7 +28,8 @@ class ProductsController extends Controller {
             'size'              => 'required',
             'sku'               => 'required',
             'ingredients'       => 'required',
-            'price'             => 'required|numeric',
+            'price'             => 'required|numeric',            
+            'active'            => 'nullable',
         ]);
 
         $product = Product::create($validData);
@@ -50,6 +51,7 @@ class ProductsController extends Controller {
             'sku'               => 'required',
             'ingredients'       => 'required',
             'price'             => 'required|numeric',
+            'active'            => 'nullable',
         ]);
 
         $product->update($validData);

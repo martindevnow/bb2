@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table table-bordered table-responsive table-striped">
+        <table class="table table-bordered table-responsive">
             <thead>
             <tr>
                 <th v-bind:colspan="numColumns + 1">
@@ -38,7 +38,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="product in filteredData(collection)">
+            <tr v-for="product in filteredData(collection)"
+                :class="{'in-active': ! product.active }"
+            >
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.description_long }}</td>
@@ -126,6 +128,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.in-active {
+    background-color: orange;
+}
 </style>

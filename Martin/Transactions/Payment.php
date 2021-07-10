@@ -23,6 +23,8 @@ class Payment extends Model
         'received_at',
         'format',               // CASH, STRIPE, etc...
         'amount_paid',
+        'stripe_customer_id',
+        'stripe_customer_email',
     ];
 
     /**

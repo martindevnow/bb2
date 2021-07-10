@@ -24,9 +24,7 @@ Route::patch('packages/{package}/mealPlan', function(Package $package, Request $
     return $package->fresh(['meals']);
 });
 
-
 Route::resource('meats', 'MeatsController');
-
 Route::resource('meals', 'MealsController');
 
 Route::delete('mealReplacements/{id}', function($id) {
@@ -80,6 +78,7 @@ Route::post('/orders/{order}/deliverBy', 'OrdersController@updateDeliverBy');
 Route::resource('pets', 'PetsController');
 
 Route::post('plans/{plan}/replaceMeal', 'PlansController@replaceMeal');
+Route::post('plans/{plan}/cancel', 'PlansController@cancel');
 Route::resource('plans', 'PlansController');
 
 Route::post('plans/{plan}/updatePackage', function(Plan $plan, Request $request) {
@@ -101,6 +100,10 @@ Route::get('toppings', function() {
     return Topping::all();
 });
 
+Route::get('user', function() {
+    return request()->user();
+});
+
 Route::put('users/{user}/attachAddress', function(User $user, Request $request) {
     $validData = $request->validate([
         'address_id' => 'required|exists:addresses,id',
@@ -111,4 +114,7 @@ Route::put('users/{user}/attachAddress', function(User $user, Request $request) 
     return response('Success', 200);
 });
 
+Route::get('user', function() {
+    return request()->user();
+});
 Route::resource('users', 'UsersController');

@@ -33,6 +33,11 @@ class Address extends Model
 
     protected $type;
 
+    public static function createFromForm($formData) {
+        $formData['active'] = 1;
+        return Address::create($formData);
+    }
+
     /**
      * Return the Type of Address
      *

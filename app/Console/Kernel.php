@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AssociateAddressesToUsers::class,
         \App\Console\Commands\GenerateOrders::class,
         \App\Console\Commands\CheckAllActions::class,
-        \App\Console\Commands\EnsureQueueListenerIsRunning::class,
         \App\Console\Commands\BackupDatabase::class,
     ];
 
@@ -28,9 +27,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('queue:checkup')
-            ->everyFiveMinutes();
-
         $schedule->command('backup:database --email=1')
             ->dailyAt('1:00');
     }

@@ -14,6 +14,10 @@
                     <a href="/treats" data-name="treats">Treats
                     </a>
                 </li>
+                <li class="{{ app('request')->is('cart') ? 'active' : '' }}">
+                    <a href="/cart" data-name="cart">Cart
+                    </a>
+                </li>
 
                 <!-- <li class="btn-navbar-menu"><a href="javascript:void(0)" class="sb-toggle-left"><i class="zmdi zmdi-menu"></i></a></li> -->
             </ul>

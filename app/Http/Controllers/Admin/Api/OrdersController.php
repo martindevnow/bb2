@@ -16,7 +16,8 @@ class OrdersController extends Controller
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function index() {
+    public function index()
+    {
         return Order::with([
             'customer',
             'plan.pet',
@@ -24,16 +25,19 @@ class OrdersController extends Controller
             'plan.package',
             'deliveryAddress'
         ])
+            ->forPlans()
             ->orderBy('deliver_by', 'DESC')
-            ->limit(60)
-            ->get();
+            ->limit(120)
+            ->get()
+            ->toArray();
     }
 
     /**
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function packed(Order $order) {
+    public function packed(Order $order)
+    {
         $order->markAsPacked();
         $order->save();
         return response('success', 200);
@@ -44,7 +48,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function storePayment(Order $order, Request $request) {
+    public function storePayment(Order $order, Request $request)
+    {
         $paymentData = $request->validate([
             'format'        => 'required',
             'amount_paid'   => 'required|numeric|min:1',
@@ -66,7 +71,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function markAsPacked(Order $order, Request $request) {
+    public function markAsPacked(Order $order, Request $request)
+    {
         $packedData = $request->validate([
             'weeks_packed'      => 'required|integer|min:1',
             'packed_package_id' => 'required|exists:packages,id',
@@ -81,12 +87,14 @@ class OrdersController extends Controller
      * @param Order $order
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function markAsPicked(Order $order) {
+    public function markAsPicked(Order $order)
+    {
         $order->markAsPicked();
         return response('success', 200);
     }
 
-    public function storeShipment(Order $order, Request $request) {
+    public function storeShipment(Order $order, Request $request)
+    {
         $deliveryData = $request->validate([
             'courier_id'            => 'required|exists:couriers,id',
             'shipped_at'            => 'required|date_format:Y-m-d',
@@ -101,7 +109,8 @@ class OrdersController extends Controller
         return response('success', 200);
     }
 
-    public function storeDelivery(Order $order, Request $request) {
+    public function storeDelivery(Order $order, Request $request)
+    {
         $request->validate([
             'delivered_at'    => 'required|date_format:Y-m-d',
         ]);
@@ -113,8 +122,9 @@ class OrdersController extends Controller
         return response('success', 200);
     }
 
-    public function cancel(Order $order) {
-        if ( ! $order->notes->count()) {
+    public function cancel(Order $order)
+    {
+        if (! $order->notes->count()) {
             return response(['error' => 'no note was saved...'], 500);
         }
 
@@ -127,7 +137,8 @@ class OrdersController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function updateDeliverBy(Order $order, Request $request) {
+    public function updateDeliverBy(Order $order, Request $request)
+    {
         $validData = $request->validate([
             'deliver_by'    => 'required|date_format:Y-m-d',
             'updateFuture'  => 'nullable',
@@ -137,4 +148,3 @@ class OrdersController extends Controller
         return response('Success', 200);
     }
 }
-

@@ -18,7 +18,7 @@ class EnsureQueueListenerIsRunning extends Command
      *
      * @var string
      */
-    protected $description = 'Ensure that the queue worker is running.';
+    protected $description = 'Ensure that the queue listener is running.';
 
     /**
      * Create a new command instance.
@@ -36,16 +36,16 @@ class EnsureQueueListenerIsRunning extends Command
     public function handle()
     {
         if ( ! $this->isQueueListenerRunning()) {
-            $this->comment('Queue worker is being started.');
+            $this->comment('Queue listener is being started.');
             $pid = $this->startQueueListener();
             $this->saveQueueListenerPID($pid);
         }
 
-        $this->comment('Queue worker is running.');
+        $this->comment('Queue listener is running.');
     }
 
     /**
-     * Check if the queue worker is running.
+     * Check if the queue listener is running.
      *
      * @return bool
      */
@@ -55,14 +55,14 @@ class EnsureQueueListenerIsRunning extends Command
             return false;
         }
 
-        $process = exec("ps -p $pid -opid=,cmd=");
-        $processIsQueueListener = str_contains($process, 'queue:work');
+        $process = exec("ps -p $pid -opid=,command=");
+        $processIsQueueListener = str_contains($process, 'queue:listen');
 
         return $processIsQueueListener;
     }
 
     /**
-     * Get any existing queue worker PID.
+     * Get any existing queue listener PID.
      *
      * @return bool|string
      */
@@ -76,7 +76,7 @@ class EnsureQueueListenerIsRunning extends Command
     }
 
     /**
-     * Save the queue worker PID to a file.
+     * Save the queue listener PID to a file.
      *
      * @param $pid
      *
@@ -88,13 +88,13 @@ class EnsureQueueListenerIsRunning extends Command
     }
 
     /**
-     * Start the queue worker.
+     * Start the queue listener.
      *
      * @return int
      */
     private function startQueueListener()
     {
-        $command = 'php ' . base_path() . '/artisan queue:work --tries=5';
+        $command = 'php ' . base_path() . '/artisan queue:listen --timeout=60 --sleep=5 --tries=3 > /dev/null & echo $!';
         $pid = exec($command);
 
         return $pid;
